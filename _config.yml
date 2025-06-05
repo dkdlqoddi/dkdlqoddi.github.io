@@ -85,11 +85,11 @@ content:
     layout: list
     content:
       - layout: right
-        title: Samsung Electronics Co., Ltd. - Foundry Business, Customer Design Support Team
-        sub_title: Embedded Software Engineer
+        title: Samsung Electronics Co., Ltd.
+        sub_title: Foundry Business, Customer Design Support Team
         caption: March 2022 - present
         quote: >
-          Hwaseong, South Korea
+          Embedded Software Engineer
         description: | # this will include new lines to allow paragraphs
           Experienced engineer with a strong background in DevOps, automation,
           and semiconductor tool development. Skilled in building CI/CD pipelines,
