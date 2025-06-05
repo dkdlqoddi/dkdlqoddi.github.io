@@ -85,31 +85,39 @@ content:
     layout: list
     content:
       - layout: right
-        title: Company name
-        sub_title: Job title
-        caption: Date Range (eg. November 2016 - present)
-        link: Link to company (optional)
+        title: Samsung Electronics Co., Ltd. - Foundry Business, Customer Design Support Team
+        sub_title: Embedded Software Engineer
+        caption: March 2022 - present
         quote: >
-          Short description of the company (optional)
+          Hwaseong, South Korea
         description: | # this will include new lines to allow paragraphs
-          Description of role
+          Experienced engineer with a strong background in DevOps, automation,
+          and semiconductor tool development. Skilled in building CI/CD pipelines,
+          developing full-stack design tools, and working on embedded systems
+          including ARM Cortex platforms and Linux device drivers.
+          - Built and maintained DevOps pipelines using Docker, Jenkins,
+          GitHub Actions, Coverity, and Checkpatch.
+          - Developed automation tools with Python and SQL databases.
+          - Created chip design tools using Python (PyQt)
+          and web stack (React, TypeScript, Next.js, PostgreSQL).
+          - Ported and developed software for ARM Cortex-A/M platforms.
+          - Developed and debugged Linux device drivers.
   - title: Education
     layout: list
     content:
       - layout: top-right
-        title: Institution name
-        sub_title: Qualifications (eg. BA Performing Arts)
-        caption: Date Range (eg. 2016 - 2019)
+        title: Sungkyunkwan University
+        sub_title: Bachelor of Science in Semiconductor Systems Engineering
+        caption: 2014 - 2022
         quote: >
           Short institution or course description (optional)
         description: | # this will include new lines to allow paragraphs
-          Description of qualification
-  - title: A Little More About Me
-    layout: text
-    content: | # this will include new lines to allow paragraphs
-      This is where you can write a little more about yourself. You could title this section **Interests** and include some of your other interests.
-
-      Or you could title it **Skills** and write a bit more about things that make you more desirable, like *leadership* or *teamwork*
+          Semiconductor Fundamentals
+          Device and Process Technology
+          Circuit and System Design
+          Computer Architecture and Programming
+          Materials and Reliability
+          Capstone and Practical Experience
 
 # Footer
 footer_show_references: true
