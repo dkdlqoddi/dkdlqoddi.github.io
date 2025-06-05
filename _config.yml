@@ -112,12 +112,32 @@ content:
         quote: >
           Short institution or course description (optional)
         description: | # this will include new lines to allow paragraphs
-          Semiconductor Fundamentals
-          Device and Process Technology
-          Circuit and System Design
-          Computer Architecture and Programming
-          Materials and Reliability
-          Capstone and Practical Experience
+          - Semiconductor Fundamentals:
+            - Semiconductor Physics
+            - Solid-State Electronics
+            - Quantum Mechanics for Engineers
+          - Device and Process Technology:
+            - Semiconductor Device Fabrication
+            - CMOS Technology
+            - Photolithography and Etching
+            - Cleanroom Practice & Equipment Training
+          - Circuit and System Design:
+            - Digital Logic Design
+            - Analog and Mixed-Signal Circuits
+            - VLSI Design (Verilog/SystemVerilog)
+            - SoC (System on Chip) Design
+          - Computer Architecture and Programming:
+            - Embedded Systems
+            - Microprocessors and Microcontrollers
+            - Hardware Description Languages (HDLs)
+            - C/C++ Programming and System-Level Modeling
+          - Materials and Reliability:
+            - Semiconductor Materials
+            - Failure Analysis and Reliability Engineering
+            - Capstone and Practical Experience:
+            - Capstone Design Projects
+            - Industry-Linked Internships (e.g., Samsung, SK Hynix)
+            - Design Automation Tools (EDA, Cadence, Synopsys)
 
 # Footer
 footer_show_references: true
