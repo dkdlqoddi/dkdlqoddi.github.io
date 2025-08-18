@@ -91,6 +91,16 @@ content:
           that operates in an on-premise environment without internet access.
           The system allows users to browse the database and generate data on a remote server,
           providing a secure and efficient solution tailored to restricted network conditions.
+      - layout: left
+        border: weak
+        title: Controlling remote boards
+        quote: >
+          Combination of Ubuntu Server and IoT device
+        description: |
+          I built a remote board control system by utilizing an Ubuntu server and T32 driver,
+          enabling efficient software-based management. In addition, I implemented control of
+          hardware components that could not be managed purely through software by integrating
+          Arduino and servo motors, ensuring comprehensive and reliable system operation.
   - title: Experience
     layout: list
     content:
