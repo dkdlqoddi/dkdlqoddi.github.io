@@ -122,6 +122,23 @@ content:
           and web stack (React, TypeScript, Next.js, PostgreSQL).
           - Ported and developed software for ARM Cortex-A/M platforms.
           - Developed and debugged Linux device drivers.
+      - layout: right
+        title: SEC Laboratory
+        sub_title: System Development Team
+        caption: January 2018 - June 2019
+        quote: >
+          Software Developer
+        description: |
+          Designed and implemented a real-time digital signal processing system 
+          for Software Defined Radio (SDR) using GNU Radio and CPython. 
+          The project focused on integrating legacy C programs with modern 
+          signal processing frameworks and coordinating distributed hardware resources.
+          - Connected legacy C files and GNU Radio through CPython bindings 
+            and dynamic libraries.
+          - Developed automation for real-time SDR programs that controlled 
+            distributed servers and antennas across the country.
+          - Ensured efficient performance in resource-constrained environments 
+            by optimizing data flow and system communication.
   - title: Education
     layout: list
     content:
