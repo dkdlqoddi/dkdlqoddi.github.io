@@ -52,13 +52,16 @@ github_username:  dkdlqoddi
 # about_title: About Me (Use this to override about section title)
 about_profile_image: images/jaeyul_woo_image.jpg
 about_content: | # this will include new lines to allow paragraphs
-  Write an awesome description about yourself here, this supports markdown, so you can add [links](http://foobar.com) and highlight things <mark>like this</mark>.
+  I have a strong interest in embedded software and automation.
+  In recent projects, I have focused on developing an offline agent leveraging the Jetson board and
+  designing an automated cryptocurrency trading system to integrate advanced algorithms with practical applications.
 
-  You can even add paragraphs by using empty lines like this and add anything else [markdown](https://www.markdownguide.org/getting-started#what-is-markdown) supports such as
-    - Lists
-    - Tables
-    - <a href="google.com">Links</a>
-    - Images ![alt text](/images/landscape-trees.jpg "Trees")
+# Write an awesome description about yourself here, this supports markdown, so you can add [links](http://foobar.com) and highlight things <mark>like this</mark>.
+# You can even add paragraphs by using empty lines like this and add anything else [markdown](https://www.markdownguide.org/getting-started#what-is-markdown) supports such as
+#   - Lists
+#   - Tables
+#   - <a href="google.com">Links</a>
+#   - Images ![alt text](/images/landscape-trees.jpg "Trees")
 
 content:
   - title: Projects # Title for the section
