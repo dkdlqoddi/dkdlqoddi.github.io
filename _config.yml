@@ -81,7 +81,16 @@ content:
           Specifically, I participated in the development of the RTOS and device drivers
           for the REBEL Quad chip, enabling efficient operation and hardware–software integration
           of this cutting-edge technology.
-
+      - layout: left
+        border: weak
+        title: Web viewer
+        quote: >
+          On-premise web page
+        description: |
+          I developed a web application using Next.js, Tailwind CSS, and Material-UI
+          that operates in an on-premise environment without internet access.
+          The system allows users to browse the database and generate data on a remote server,
+          providing a secure and efficient solution tailored to restricted network conditions.
   - title: Experience
     layout: list
     content:
