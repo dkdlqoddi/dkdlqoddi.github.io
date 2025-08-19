@@ -68,8 +68,6 @@ content:
     layout: list # Type of content section (list/text)
     content:
       - layout: left
-        border: weak  # Value of `weak` will display a weak border below this item. # Any 
-                      # other value (or no value) means no border will be displayed
         title: RTOS on REBEL Quad
         link: https://rebellions.ai/ko/rebellions-product/rebel-quad/
         link_text: REBEL Quad
@@ -82,7 +80,6 @@ content:
           for the REBEL Quad chip, enabling efficient operation and hardware–software integration
           of this cutting-edge technology.
       - layout: left
-        border: weak
         title: Web viewer
         quote: >
           On-premise web page
@@ -123,6 +120,7 @@ content:
           - Ported and developed software for ARM Cortex-A/M platforms.
           - Developed and debugged Linux device drivers.
       - layout: left
+        border: weak
         title: SEC Laboratory
         sub_title: System Development Team
         caption: January 2018 - June 2019
@@ -143,6 +141,7 @@ content:
     layout: list
     content:
       - layout: top-left
+        border: weak
         title: Sungkyunkwan University
         sub_title: Bachelor of Science in Semiconductor Systems Engineering
         caption: 2014 - 2022
@@ -210,6 +209,7 @@ content:
           - 3D & Graphics Tools
             - OpenGL, Panda3D, Blender, Unreal Engine
       - layout: top-left
+        border: weak
         title: DevOps, Cloud & Automation
           - Cloud & Containerization
             - AWS, Docker, Kubernetes
