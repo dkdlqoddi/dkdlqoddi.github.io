@@ -192,6 +192,7 @@ content:
             - CMake, Make, npm, poetry
       - layout: top-left
         title: Data, AI & Visualization
+        description: |
           - Data & AI
             - NumPy, Pandas, TensorFlow, PyTorch, SciPy
           - Signal Processing
@@ -202,6 +203,7 @@ content:
             - MySQL, PostgreSQL, Cassandra DB
       - layout: top-left
         title: Embedded Systems & Low-Level Engineering
+        description: |
           - Embedded & RTOS
             - FreeRTOS, Zephyr, Raspberry Pi, Arduino, Jetson board
           - Reverse Engineering & Debugging
@@ -211,6 +213,7 @@ content:
       - layout: top-left
         border: weak
         title: DevOps, Cloud & Automation
+        description: |
           - Cloud & Containerization
             - AWS, Docker, Kubernetes
           - CI/CD & Automation
