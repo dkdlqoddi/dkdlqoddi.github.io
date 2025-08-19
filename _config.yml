@@ -148,7 +148,7 @@ content:
         caption: 2014 - 2022
         description: | # this will include new lines to allow paragraphs
           - Research Intern (Undergraduate)
-            - [IRIS Lab](https://iris.skku.edu/)
+            - [IRIS Lab](https://iris.skku.edu/){:target="_blank"}
             - From March 2020 to February 2022
             - Thesis : A Proposal for a Weight Changeable Model corresponds to Network Packet Errors
           - Semiconductor Fundamentals:
