@@ -179,6 +179,16 @@ content:
             - Design Automation Tools (EDA, Cadence, Synopsys)
   - title: Skills
     layout: list
+    content:
+      - description: |
+          - Programming Languages: Assembly, C/C++, Python, Typescript, Shell Script
+          - Data & AI: NumPy, Pandas, TensorFlow, PyTorch, etc.
+          - Frameworks & Libraries: Qt, React, Next.js, Python C API, Selenium
+          - Build & Package Tools: CMake, Make, npm, poetry
+          - Embedded Systems & RTOS: FreeRTOS, Zephyr, Raspberry Pi, Arduino, Jetson board
+          - DevOps & Cloud: AWS, Docker, Kubernetes, Jenkins, Github Actions
+          - Monitoring & Visualization: Grafana
+          - Databases: MySQL, PostgreSQL, Cassandra DB
   - title: Contact
     layout: list
   - title: Career Goal
