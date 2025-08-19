@@ -104,7 +104,7 @@ content:
   - title: Experience
     layout: list
     content:
-      - layout: right
+      - layout: left
         title: Samsung Electronics Co., Ltd.
         sub_title: Foundry Business, Customer Design Support Team
         caption: March 2022 - present
@@ -122,7 +122,7 @@ content:
           and web stack (React, TypeScript, Next.js, PostgreSQL).
           - Ported and developed software for ARM Cortex-A/M platforms.
           - Developed and debugged Linux device drivers.
-      - layout: right
+      - layout: left
         title: SEC Laboratory
         sub_title: System Development Team
         caption: January 2018 - June 2019
@@ -142,13 +142,15 @@ content:
   - title: Education
     layout: list
     content:
-      - layout: top-right
+      - layout: top-left
         title: Sungkyunkwan University
         sub_title: Bachelor of Science in Semiconductor Systems Engineering
         caption: 2014 - 2022
-        quote: >
-          Short institution or course description (optional)
         description: | # this will include new lines to allow paragraphs
+          - Research Intern (Undergraduate)
+            - [IRIS Lab](https://iris.skku.edu/)
+            - From March 2020 to February 2022
+            - Thesis : A Proposal for a Weight Changeable Model corresponds to Network Packet Errors
           - Semiconductor Fundamentals:
             - Semiconductor Physics
             - Solid-State Electronics
@@ -175,9 +177,16 @@ content:
             - Capstone Design Projects
             - Industry-Linked Internships (e.g., Samsung, SK Hynix)
             - Design Automation Tools (EDA, Cadence, Synopsys)
+  - title: Skills
+    layout: list
+  - title: Contact
+    layout: list
+  - title: Career Goal
+    layout: list
+
 
 # Footer
-footer_show_references: true
+footer_show_references: false
 # references_title: References on request (Override references text)
 
 # Build settings
