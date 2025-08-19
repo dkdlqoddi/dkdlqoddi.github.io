@@ -181,12 +181,15 @@ content:
     layout: list
     content:
       - description: |
-          - Programming Languages: Assembly, C/C++, Python, Typescript, Shell Script
+          - Programming Languages: Assembly, C/C++, Python, Typescript, Shell Script, Dart
           - Data & AI: NumPy, Pandas, TensorFlow, PyTorch, etc.
           - Frameworks & Libraries: Qt, React, Next.js, Python C API, Selenium
+          - 3D Tools: OpenGL, Panda3D, Blender, Unreal Engine
+          - Design Tools: Blender, Adobe Illustrator
+          - App: Flutter
           - Build & Package Tools: CMake, Make, npm, poetry
           - Embedded Systems & RTOS: FreeRTOS, Zephyr, Raspberry Pi, Arduino, Jetson board
-          - DevOps & Cloud: AWS, Docker, Kubernetes, Jenkins, Github Actions
+          - DevOps & Cloud: AWS, Docker, Kubernetes, Jenkins, Github Actions, n8n, Apache Kafka
           - Monitoring & Visualization: Grafana
           - Databases: MySQL, PostgreSQL, Cassandra DB
   - title: Contact
