@@ -192,6 +192,8 @@ content:
           - DevOps & Cloud: AWS, Docker, Kubernetes, Jenkins, Github Actions, n8n, Apache Kafka
           - Monitoring & Visualization: Grafana
           - Databases: MySQL, PostgreSQL, Cassandra DB
+          - Signal Processing: GNU Radio, scipy
+          - Reverse Engineering: Ghidra, GDB
   - title: Contact
     layout: list
   - title: Career Goal
