@@ -52,9 +52,12 @@ github_username:  dkdlqoddi
 # about_title: About Me (Use this to override about section title)
 about_profile_image: images/jaeyul_woo_image.jpg
 about_content: | # this will include new lines to allow paragraphs
-  I have a strong interest in embedded software and automation.
-  In recent projects, I have focused on developing an offline agent leveraging the Jetson board and
-  designing an automated cryptocurrency trading system to integrate advanced algorithms with practical applications.
+  I have a strong interest in embedded software, hardware–software integration, and automation.
+  In recent projects, I have focused on developing an offline agent leveraging the Jetson board
+  and designing an automated cryptocurrency trading system to integrate advanced algorithms
+  with practical applications. Under the guidance of Professor Jong Hwan Ko, I was able to
+  strengthen my technical expertise significantly, and through his mentorship I developed
+  a deep enthusiasm for active participation in projects and research.
 
 # Write an awesome description about yourself here, this supports markdown, so you can add [links](http://foobar.com) and highlight things <mark>like this</mark>.
 # You can even add paragraphs by using empty lines like this and add anything else [markdown](https://www.markdownguide.org/getting-started#what-is-markdown) supports such as
