@@ -220,10 +220,6 @@ content:
             - Jenkins, GitHub Actions, n8n
           - Messaging & Streaming
             - Apache Kafka
-  - title: Contact
-    layout: list
-  - title: Career Goal
-    layout: list
 
 
 # Footer
