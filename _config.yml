@@ -147,7 +147,7 @@ content:
         caption: 2014 - 2022
         description: | # this will include new lines to allow paragraphs
           - Research Intern (Undergraduate)
-            - Research advised by Professor Jong Hwan Ko
+            - Research advised by [Professor Jong Hwan Ko](https://professor.skku.edu/researcher/professorList.do?mode=view&perId=LZStrBYMwcgjg0gjALAWwMYBMBqBLAmgTyQYQHUAJNAZgwHcBeaoA%20&categoryId=G&jojikCode1=3173&jojikCode2=7101A6){:target="_blank"}
             - [IRIS Lab](https://iris.skku.edu/){:target="_blank"}
             - From March 2020 to February 2022
             - Thesis : A Proposal for a Weight Changeable Model corresponds to Network Packet Errors
