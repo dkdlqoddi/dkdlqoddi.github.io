@@ -11,3 +11,5 @@ The repository is currently **empty** (freshly reset — no source files yet). T
 This is `dkdlqoddi.github.io` — a **GitHub Pages user site** repository. Repos named `<username>.github.io` are served by GitHub Pages from the default branch (`main`) at https://dkdlqoddi.github.io.
 
 Practical implication: pushing to `main` publishes the live site. There is no separate deploy step — the branch *is* the deployment.
+
+@.claude/shared/MANDATE.md
