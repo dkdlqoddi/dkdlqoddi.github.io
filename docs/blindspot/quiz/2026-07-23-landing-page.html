@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 발표자료 랜딩 페이지</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 발표자료 랜딩 페이지</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<ul>
+  <li>발표자료들을 안내하는 첫 화면(랜딩 페이지)과 예시 발표자료 1개가 만들어졌습니다.</li>
+  <li>발표 목록은 목록 파일 하나로 관리합니다. 새 발표는 이 파일에 제목, 날짜, 한 줄 설명, 폴더 이름을 적어 등록합니다.</li>
+  <li>목록 항목에 필수 정보(제목·날짜·폴더 이름)가 빠지면, 그 항목 하나만 목록에서 빠지고 나머지는 정상 표시됩니다.</li>
+  <li>발표 도구(reveal.js)를 저장소 안에 동봉했습니다. 그래서 개별 발표자료는 인터넷 없이도 열립니다. 단, 첫 화면의 목록은 인터넷이 필요합니다.</li>
+  <li>저장소에는 "자동 변환기 끄기" 파일이 있습니다. 이 파일을 지우면 자동 변환기가 켜져 배포가 실패하거나 슬라이드가 훼손될 수 있습니다.</li>
+  <li>저장소에 연결된 부속 저장소(서브모듈)는 공개 상태와 HTTPS 주소를 유지해야 합니다. 어기면 사이트 배포 전체가 실패합니다.</li>
+  <li>발표 폴더 이름은 영문 소문자와 하이픈만 씁니다. 폴더 이름이 곧 공유 주소가 되며, 주소는 한번 공유되면 바꾸기 어렵습니다. 이름을 자동으로 고쳐 주는 기능은 없습니다.</li>
+  <li>새 발표를 공개한 뒤 방문자 화면에 목록이 반영되기까지 최대 10분 늦을 수 있습니다.</li>
+  <li>지금은 아직 공개 전입니다. 머지하고 push해야 실제 사이트에 공개됩니다.</li>
+</ul>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "새 발표를 목록 파일에 등록하다가 날짜를 빠뜨렸습니다. 첫 화면 목록은 어떻게 되나요?",
+    options: [
+      "화면 전체가 오류로 바뀌어 아무 발표도 안 보인다",
+      "그 발표 하나만 빠지고 나머지는 정상 표시된다",
+      "날짜가 오늘 날짜로 자동으로 채워져 표시된다"
+    ], answer: 1,
+    explain: "필수 정보가 빠진 항목은 그 항목만 건너뜁니다. 처음 구현은 항목 하나의 오류가 목록 전체를 무너뜨렸는데, 검증 로직(main.js의 항목 필터)을 넣어 고쳤습니다. 날짜 자동 채움 기능은 없습니다." },
+
+  { q: "인터넷이 안 되는 발표장에 노트북만 들고 갔습니다. 무엇이 열리나요?",
+    options: [
+      "첫 화면과 발표자료 모두 열린다",
+      "첫 화면과 발표자료 모두 안 열린다",
+      "발표자료는 열리지만, 첫 화면의 목록은 안 열린다"
+    ], answer: 2,
+    explain: "발표 도구(reveal.js)가 저장소에 동봉되어 발표자료는 인터넷 없이 열립니다. 첫 화면은 목록 파일을 네트워크로 읽어 와야 해서 인터넷이 필요합니다. 발표장에서는 발표자료 주소나 파일을 바로 여는 것이 안전합니다." },
+
+  { q: "저장소를 정리하다가 \"자동 변환기 끄기\" 파일을 지웠습니다. 어떤 일이 생길 수 있나요?",
+    options: [
+      "배포가 실패하거나 슬라이드 내용이 훼손될 수 있다",
+      "아무 일도 없다 — 장식용 빈 파일이다",
+      "사이트 속도가 조금 느려질 뿐이다"
+    ], answer: 0,
+    explain: "그 파일(.nojekyll)이 없으면 GitHub의 자동 변환기(Jekyll)가 켜집니다. 변환기는 발표 도구 파일 속 특수 문구를 자기 명령으로 오해해 배포를 깨뜨리거나 내용을 바꿔 버릴 수 있습니다. 빈 파일이지만 장식이 아닙니다." },
+
+  { q: "저장소에 연결된 부속 저장소(서브모듈)를 비공개로 전환하면 어떻게 되나요?",
+    options: [
+      "그 부속 저장소만 안 보이고 사이트는 정상이다",
+      "발표 사이트의 배포 전체가 실패한다",
+      "방문자에게는 영향이 없고 관리 화면만 느려진다"
+    ], answer: 1,
+    explain: "배포 과정이 부속 저장소를 함께 내려받는데, 비공개가 되면 접근하지 못해 배포 전체가 멈춥니다. 부속 저장소는 공개 상태와 HTTPS 주소를 유지해야 합니다." },
+
+  { q: "새 발표 폴더 이름을 \"My Talk\"(대문자와 공백 포함)로 지으면 어떤 위험이 있나요?",
+    options: [
+      "자동으로 소문자로 바뀌어 문제없다",
+      "화면에는 나오지만 클릭이 안 된다",
+      "공유한 주소가 어긋나거나 깨진 글자로 보일 수 있다"
+    ], answer: 2,
+    explain: "웹 서버는 대소문자를 구분하고, 공백이나 한글은 주소에서 퍼센트 기호 조합으로 바뀝니다. 그래서 규칙이 영문 소문자와 하이픈입니다. 이름을 자동으로 고쳐 주는 기능은 없습니다." },
+
+  { q: "새 발표를 등록하고 공개(push)했는데 5분째 목록에 안 보입니다. 가장 알맞은 대응은?",
+    options: [
+      "조금 더 기다린다 — 반영이 최대 10분 늦을 수 있다",
+      "저장소를 새로 만들어 다시 올린다",
+      "목록 파일을 지웠다가 다시 만든다"
+    ], answer: 0,
+    explain: "배포에 몇 분, 방문자 브라우저의 저장본(캐시) 때문에 최대 10분까지 지연이 정상 범위입니다. 파일 삭제나 저장소 재생성은 불필요하고 위험만 더합니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
