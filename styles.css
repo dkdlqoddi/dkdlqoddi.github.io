@@ -1,0 +1,304 @@
+/* ──────────────────────────────────────────────────────────
+   발표 기록 — 흰 우주 계기판 테마
+   팔레트: paper #fcfcfb / ink #0e0e0e / graphite #53565c / hairline #dddedb
+   ────────────────────────────────────────────────────────── */
+
+:root {
+  --paper: #fcfcfb;
+  --ink: #0e0e0e;
+  --graphite: #53565c;
+  --hairline: #dddedb;
+  --hud-inset: 16px;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+/* ── 페이지 간 전환 (지원 브라우저 전용 장식) ───────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation-duration: 0.18s; }
+  ::view-transition-new(root) { animation-duration: 0.18s; }
+}
+
+/* ── HUD 프레임 (시그니처) ─────────────────────────────── */
+.hud {
+  position: fixed;
+  inset: var(--hud-inset);
+  border: 1px solid var(--hairline);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 프레임 상·하변의 눈금 */
+.hud::before,
+.hud::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--hairline) 0,
+    var(--hairline) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+}
+.hud::before { top: 0; }
+.hud::after { bottom: 0; }
+
+.hud-corner {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--graphite);
+  background: var(--paper);
+  padding: 0 6px;
+}
+.hud-tl { top: -0.5em; left: 14px; }
+.hud-tr { top: -0.5em; right: 14px; }
+.hud-bl { bottom: -0.5em; left: 14px; }
+.hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
+
+/* ── 별 입자: 흰 하늘의 검은 점 2겹 ────────────────────── */
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+.stars::before,
+.stars::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* 겹 1 — 또렷한 점 */
+.stars::before {
+  opacity: 0.5;
+  box-shadow:
+    8vw 12vh 0 0 var(--ink), 21vw 6vh 0 0 var(--ink), 34vw 18vh 0 0 var(--ink),
+    47vw 9vh 0 0 var(--ink), 61vw 15vh 0 0 var(--ink), 76vw 7vh 0 0 var(--ink),
+    89vw 21vh 0 0 var(--ink), 5vw 34vh 0 0 var(--ink), 27vw 42vh 0 0 var(--ink),
+    52vw 38vh 0 0 var(--ink), 71vw 44vh 0 0 var(--ink), 93vw 39vh 0 0 var(--ink),
+    12vw 58vh 0 0 var(--ink), 38vw 63vh 0 0 var(--ink), 57vw 55vh 0 0 var(--ink),
+    82vw 61vh 0 0 var(--ink), 9vw 78vh 0 0 var(--ink), 31vw 84vh 0 0 var(--ink),
+    49vw 76vh 0 0 var(--ink), 66vw 88vh 0 0 var(--ink), 87vw 81vh 0 0 var(--ink),
+    17vw 93vh 0 0 var(--ink), 73vw 94vh 0 0 var(--ink), 95vw 68vh 0 0 var(--ink);
+  animation: drift 140s linear infinite alternate;
+}
+
+/* 겹 2 — 희미한 점 (더 작게 보이도록 축소) */
+.stars::after {
+  opacity: 0.22;
+  transform: scale(0.6);
+  transform-origin: 0 0;
+  box-shadow:
+    14vw 24vh 0 0 var(--ink), 42vw 12vh 0 0 var(--ink), 68vw 27vh 0 0 var(--ink),
+    91vw 14vh 0 0 var(--ink), 24vw 51vh 0 0 var(--ink), 59vw 47vh 0 0 var(--ink),
+    79vw 53vh 0 0 var(--ink), 6vw 66vh 0 0 var(--ink), 44vw 71vh 0 0 var(--ink),
+    63vw 69vh 0 0 var(--ink), 15vw 88vh 0 0 var(--ink), 55vw 91vh 0 0 var(--ink),
+    84vw 74vh 0 0 var(--ink), 36vw 31vh 0 0 var(--ink), 97vw 47vh 0 0 var(--ink),
+    3vw 8vh 0 0 var(--ink), 88vw 96vh 0 0 var(--ink), 70vw 4vh 0 0 var(--ink);
+  animation: drift 200s linear infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from { translate: 0 0; }
+  to { translate: 0 -3vh; }
+}
+
+/* ── 히어로 ────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(28px, 8vw, 120px);
+  gap: 20px;
+}
+
+.eyebrow { animation: rise 0.7s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+.title {
+  font-size: clamp(3rem, 11vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  animation: rise 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tagline {
+  max-width: 34em;
+  color: var(--graphite);
+  animation: rise 0.7s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.scroll-cue {
+  margin-top: 8vh;
+  animation: rise 0.7s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cue-arrow {
+  display: inline-block;
+  animation: nudge 2.4s ease-in-out 1.2s infinite;
+}
+
+@keyframes rise {
+  from { opacity: 0; translate: 0 26px; filter: blur(5px); }
+  to { opacity: 1; translate: 0 0; filter: blur(0); }
+}
+
+@keyframes nudge {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 4px; }
+}
+
+/* ── 목록 ──────────────────────────────────────────────── */
+main { position: relative; z-index: 1; }
+
+.log {
+  padding: 4vh clamp(28px, 8vw, 120px) 12vh;
+  max-width: 1180px;
+}
+
+.log-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.log-rule { flex: 1; border-top: 1px solid var(--hairline); }
+
+.cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  position: relative;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--paper);
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  translate: 0 18px;
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 80ms),
+    translate 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 80ms),
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    scale 0.18s ease;
+}
+
+.card.in { opacity: 1; translate: 0 0; }
+
+.card:hover {
+  border-color: var(--ink);
+  box-shadow: 0 14px 34px rgba(14, 14, 14, 0.07);
+  scale: 1.01;
+}
+
+.card:has(a:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-color: var(--ink);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-title {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+/* 카드 전체 클릭 (block link) */
+.card-title a { color: inherit; text-decoration: none; outline: none; }
+.card-title a::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
+
+.card-desc {
+  font-size: 0.92rem;
+  color: var(--graphite);
+  flex: 1;
+}
+
+.card-open {
+  align-self: flex-end;
+  transition: translate 0.18s ease;
+}
+
+.card:hover .card-open { translate: 4px 0; }
+
+.status { padding: 32px 0; }
+
+/* ── 푸터 ──────────────────────────────────────────────── */
+.site-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 clamp(28px, 8vw, 120px) calc(var(--hud-inset) + 26px);
+}
+
+.foot-sep { color: var(--hairline); }
+
+/* ── 반응형 ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  :root { --hud-inset: 10px; }
+  .hero { min-height: 76vh; }
+  .hud-bl { display: none; }
+}
+
+/* ── 움직임 줄이기: 전부 정지 ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .stars::before, .stars::after { animation: none; }
+  .card { opacity: 1; translate: 0 0; }
+}

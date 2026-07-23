@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>발표 기록 · dkdlqoddi</title>
+  <meta name="description" content="dkdlqoddi의 발표자료 모음. 카드를 선택하면 해당 슬라이드로 이동합니다.">
+  <meta property="og:title" content="발표 기록 · dkdlqoddi">
+  <meta property="og:description" content="dkdlqoddi의 발표자료 모음">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#fcfcfb">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfcfb'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%230e0e0e'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 시그니처: 화면을 감싸는 계기판(HUD) 프레임 -->
+  <div class="hud" aria-hidden="true">
+    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
+    <span class="hud-corner hud-tr">EST 2026</span>
+    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
+    <span class="hud-corner hud-br">+</span>
+  </div>
+
+  <!-- 흰 하늘의 검은 미세 별 (장식) -->
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="eyebrow mono">PRESENTATION LOG — 발표자료 모음</p>
+    <h1 class="title">발표 기록</h1>
+    <p class="tagline">아래 목록에서 발표자료를 선택하면 해당 슬라이드로 이동합니다.</p>
+    <p class="scroll-cue mono" aria-hidden="true">SCROLL <span class="cue-arrow">↓</span></p>
+  </header>
+
+  <main>
+    <section class="log" aria-labelledby="log-heading">
+      <div class="log-head">
+        <h2 id="log-heading" class="mono">LOG INDEX</h2>
+        <span class="log-rule" aria-hidden="true"></span>
+        <span id="log-count" class="mono log-count"></span>
+      </div>
+      <ol class="cards" id="cards"></ol>
+      <p class="status mono" id="status" hidden></p>
+      <noscript>
+        <p class="status mono">목록 표시에는 자바스크립트가 필요합니다. 주소창에 slides/발표이름/ 을 직접 입력해도 열 수 있습니다.</p>
+      </noscript>
+    </section>
+  </main>
+
+  <footer class="site-foot mono">
+    <span>37.53°N · 127.02°E</span>
+    <span class="foot-sep" aria-hidden="true">─────</span>
+    <span>SYS OK</span>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
