@@ -71,13 +71,26 @@
       return res.json();
     })
     .then(function (list) {
-      if (!Array.isArray(list) || list.length === 0) {
+      if (!Array.isArray(list)) {
+        showStatus("목록 파일 형식이 올바르지 않습니다. slides.json을 확인해 주세요.");
+        return;
+      }
+      /* 잘못된 항목은 목록 전체를 죽이지 않고 그 항목만 건너뛴다 */
+      var valid = list.filter(function (item) {
+        var ok = item &&
+          typeof item.title === "string" && item.title.trim() !== "" &&
+          typeof item.dir === "string" && item.dir.trim() !== "" &&
+          /^\d{4}-\d{2}-\d{2}$/.test(item.date || "");
+        if (!ok) { console.warn("slides.json 항목 건너뜀(필수: title, date=YYYY-MM-DD, dir):", item); }
+        return ok;
+      });
+      if (valid.length === 0) {
         showStatus("아직 기록된 발표가 없습니다.");
         return;
       }
       /* LOG 번호는 시간순(오래된 발표가 001), 표시는 최신순 */
-      var chrono = list.slice().sort(function (a, b) {
-        return a.date < b.date ? -1 : 1;
+      var chrono = valid.slice().sort(function (a, b) {
+        return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
       });
       var numberOf = new Map();
       chrono.forEach(function (item, i) { numberOf.set(item, i + 1); });
@@ -87,7 +100,7 @@
         return buildCard(item, numberOf.get(item), order);
       });
       grid.append.apply(grid, cards);
-      count.textContent = String(list.length).padStart(2, "0") + " ENTRIES";
+      count.textContent = String(valid.length).padStart(2, "0") + " ENTRIES";
       reveal(cards);
     })
     .catch(function () {
