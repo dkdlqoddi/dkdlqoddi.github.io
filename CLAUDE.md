@@ -20,8 +20,20 @@ No build, lint, or test tooling — plain static HTML/CSS/JS.
 - `slides.json` — single manifest driving the landing card grid. Entry schema: `{"title", "date": "YYYY-MM-DD", "description", "dir"}`. `main.js` skips invalid entries with a console warning instead of failing the whole list.
 - `index.html` / `styles.css` / `main.js` — landing page (white-space HUD theme, monochrome, Korean UI). The landing never loads reveal.js; it links to decks by URL only.
 - `slides/<slug>/` — one self-contained reveal.js deck per talk. Slug = lowercase letters + hyphens (it becomes the shared public URL — a published contract). New decks: copy `slides/sample/` (it doubles as the how-to guide), edit, register in slides.json.
+- `slides/sample/` — the copy-me template. Deliberately **not** in slides.json, so visitors don't see it, but `/slides/sample/` still resolves. Don't delete it and don't "fix" its absence from the manifest.
 - `vendor/reveal.js/` — reveal.js **6.0.1 pinned**, only `white`/`black` themes vendored (they embed fonts, so decks work fully offline) + upstream LICENSE. Decks reference it via **relative** paths (`../../vendor/…`) — keep relative so decks open via file:// without internet.
-- `docs/blindspot/` — internal process docs (requirements/unknowns/explainer/reports/quizzes). Not site content, but publicly fetchable by URL (accepted trade-off; repo is public anyway).
+- `docs/blindspot/` — internal process docs (requirements/unknowns/explainer/reports/quizzes). Not site content, but publicly fetchable by URL. Treat them as published: whatever must not appear on a slide must not appear here either.
+
+## Deck authoring rules
+
+These live in no config file — only in `slides/sample/`, so they vanish the moment someone writes a deck from scratch.
+
+- **No reveal plugins exist.** `vendor/reveal.js/dist/plugin/` is absent entirely. Referencing `notes`, `highlight`, `markdown`, or `math` yields a 404 and `plugins: [...]` throws a ReferenceError. Write plain HTML. `<aside class="notes">` silently hides rather than working.
+- **Cancel heading uppercase.** Both themes set `--r-heading-text-transform: uppercase`, so `Opencode` renders as `OPENCODE`. Every deck needs `.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }`.
+- **Never add `maximum-scale` or `user-scalable=no`** to a deck's viewport meta (WCAG 1.4.4). Upstream reveal.js examples ship with them; strip them on paste. Fixed once already in `90c73d4`.
+- **Zero external resources.** No CDN fonts — not even the Pretendard the landing page uses. Korean falls back to the system font because the vendored themes carry no Hangul glyphs; that is accepted. Control Korean line breaks with explicit `<br>`.
+- **Opt into the page transition** with `@view-transition { navigation: auto; }` inside `@media (prefers-reduced-motion: no-preference)`. Both documents must declare it or the landing-to-deck transition silently does nothing.
+- **CSS-only diagrams need `role="img"` + `aria-label`**, plus a visually-hidden description. Boxes drawn from `div` borders convey nothing to a screen reader or to print.
 
 ## Hard constraints
 

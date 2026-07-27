@@ -20,6 +20,8 @@
     @media (prefers-reduced-motion: no-preference) {
       @view-transition { navigation: auto; }
     }
+    /* 두 테마 모두 제목을 대문자로 바꾼다 — 끄지 않으면 "Opencode"가 "OPENCODE"로 보인다 */
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
     .reveal .kbd {
       font-family: ui-monospace, Menlo, Consolas, monospace;
       font-size: 0.7em;
