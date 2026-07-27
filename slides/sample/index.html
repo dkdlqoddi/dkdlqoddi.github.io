@@ -25,8 +25,9 @@
     html { background: #0e0e0e; color-scheme: dark; }
 
     /* 검은 우주 팔레트 (bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a)
-       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다. */
-    :root {
+       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다.
+       html:root 표기인 이유: 테마 <link>와 이 블록의 순서가 바뀌어도 항상 이기도록 특이성을 한 단계 올림 */
+    html:root {
       --r-background: #0e0e0e;
       --r-background-color: #0e0e0e;
       --r-main-color: #dedede;

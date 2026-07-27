@@ -337,6 +337,18 @@ main { position: relative; z-index: 1; }
   .ship { top: 12vh; }
 }
 
+/* ── 인쇄: 어두운 화면을 흰 종이용으로 되돌림 ──────────
+   브라우저는 기본으로 배경을 인쇄하지 않으므로, 회백 글자(#dedede)가
+   흰 종이에 그대로 나가면 읽을 수 없다. 카드는 JS 등장 전 상태(opacity 0)로
+   인쇄될 수 있어 강제로 노출한다. */
+@media print {
+  html, body { background: #fff; }
+  body, .title, .card-title, .tagline, .card-desc, .mono, .foot-sep { color: #000; }
+  .stars, .ship, .hud, .scroll-cue { display: none; }
+  .card { opacity: 1; translate: 0 0; border-color: #000; }
+  .log-rule { border-top-color: #000; }
+}
+
 /* ── 움직임 줄이기: 전부 정지 ──────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

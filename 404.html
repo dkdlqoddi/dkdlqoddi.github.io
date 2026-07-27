@@ -52,6 +52,13 @@
     }
     a:hover { background: #fcfcfb; color: #0e0e0e; }
     a:focus-visible { outline: 2px solid #fcfcfb; outline-offset: 3px; }
+    /* 인쇄: 흰 종이용 되돌림 (배경은 기본적으로 인쇄되지 않음) */
+    @media print {
+      html, body { background: #fff; }
+      body, h1, .code, p, a { color: #000; }
+      a { border-color: #000; }
+      .frame { display: none; }
+    }
   </style>
 </head>
 <body>
