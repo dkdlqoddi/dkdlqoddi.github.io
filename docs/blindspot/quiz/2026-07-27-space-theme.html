@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 우주 유영 테마 리디자인</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 우주 유영 테마 리디자인</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>사이트의 모든 화면이 검은 우주 테마로 바뀌었습니다. 첫 화면, 발표 자료 두 개, 404 페이지가 같은 색을 씁니다. 흰 별이 아주 천천히 흐릅니다. 흰 우주선은 첫 화면과 발표 표지에만 떠다닙니다. 내용 슬라이드에는 우주선을 일부러 넣지 않았습니다. 발표 중 집중을 방해하지 않기 위해서입니다.</p>
+<p>한글 글꼴 Pretendard(프리텐다드)를 사이트 안에 담았습니다. 외부 서버에서 받지 않으므로 인터넷 없이 열어도 똑같이 나옵니다. 대신 처음 방문할 때 내려받는 양이 약 2MB로 늘었습니다. 느린 회선에서는 글꼴이 도착할 때까지 글자가 잠시 안 보일 수 있습니다. 글꼴 파일은 한번 저장소에 넣으면, 나중에 빼더라도 저장 이력에 용량이 영구히 남습니다.</p>
+<p>화면을 여는 순간부터 어둡게 보이도록 문서 머리에 "어두운 화면" 선언을 미리 넣었습니다. 화면을 그리는 프로그램이 늦게 시작해도 흰 번쩍임이 없습니다. 발표 자료를 보통 방법(Ctrl+P)으로 인쇄하면 흰 종이에 검은 글자와 검은 도형으로 되돌아갑니다. 별과 우주선은 종이에 찍히지 않습니다.</p>
+<p>발표자 표기는 "우제율", 발표일은 2026-07-30으로 갱신했습니다. 운영체제에서 "움직임 줄이기"를 켠 사용자에게는 모든 움직임이 정지합니다. 배포 직후에는 방문자 캐시 때문에 최대 10분간 예전 흰 화면이 잠깐 섞여 보일 수 있습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "인터넷이 느린 곳에서 사이트를 처음 방문했습니다. 화면에서 무엇을 겪을 수 있나요?",
+    options: [
+      "화면이 끝까지 하얗게 남는다",
+      "글꼴이 도착할 때까지 글자가 잠시 안 보인다",
+      "우주선이 화면 밖으로 사라진다"
+    ], answer: 1,
+    explain: "글꼴 약 2MB를 사이트에서 직접 내려받으므로, 느린 회선에서는 글자가 잠시 늦게 나타날 수 있습니다(font-display: block). 화면 자체는 미리 넣은 선언 덕분에 처음부터 어둡게 칠해지므로 하얗게 남지 않습니다." },
+  { q: "나중에 \"글꼴을 다시 외부에서 받자\"고 결정해 글꼴 파일을 뺐습니다. 무엇이 남나요?",
+    options: [
+      "아무것도 남지 않고 완전히 원래대로 된다",
+      "글꼴이 화면에 계속 나온다",
+      "저장 이력에 약 2MB 용량이 영구히 남는다"
+    ], answer: 2,
+    explain: "저장소(git)는 과거를 전부 기억하므로, 파일을 지워도 이력 속 용량은 사라지지 않습니다(2.7MB blob). 그래서 이 결정은 사실상 되돌릴 수 없는 종류이고, 머지 전에 알고 승인해야 합니다." },
+  { q: "화면을 그리는 프로그램이 아주 늦게 시작했습니다. 여는 순간 화면은 어떻게 보이나요?",
+    options: [
+      "처음부터 어둡게 보인다",
+      "흰 화면이 번쩍인 뒤 어두워진다",
+      "예전의 흰 테마로 보인다"
+    ], answer: 0,
+    explain: "문서 머리에 \"어두운 화면\" 선언(color-scheme: dark + html 배경색)을 미리 넣어, 프로그램 실행 전에도 브라우저가 어둡게 칠합니다. 이 선언이 없으면 흰 번쩍임이 생기는데, 그게 이번에 막은 문제입니다." },
+  { q: "발표 자료를 보통 방법(Ctrl+P)으로 인쇄했습니다. 종이에는 어떻게 나오나요?",
+    options: [
+      "검은 종이처럼 배경까지 검게 나온다",
+      "글자와 도형이 흰 선으로 나와 안 보인다",
+      "흰 종이에 검은 글자와 도형, 별·우주선은 빠진다"
+    ], answer: 2,
+    explain: "인쇄 전용 규칙이 글자와 도형을 검정으로 되돌리고 장식(별·우주선)을 숨깁니다. 이 규칙이 없으면 직접 그린 도형이 흰 종이에 흰 선으로 나가 사라지는데, 그 문제를 막았습니다. (reveal 전용 인쇄 주소 ?view=print만 어두운 화면 그대로 PDF가 됩니다.)" },
+  { q: "발표 중 내용 슬라이드를 넘겨 봤습니다. 우주선이 보이지 않는 이유는 무엇인가요?",
+    options: [
+      "만들다가 빠뜨린 실수다",
+      "집중을 방해하지 않으려고 일부러 뺐다",
+      "내용 슬라이드에서는 기술적으로 불가능해서다"
+    ], answer: 1,
+    explain: "우주선은 첫 화면과 발표 표지에만 넣기로 결정했습니다(요구사항 인터뷰에서 확정). 내용 슬라이드는 별 배경까지만 허용해 청중의 집중을 지킵니다. 실수도, 기술 한계도 아닙니다." },
+  { q: "방금 배포했는데 재방문자에게 예전 흰 화면이 잠깐 보인다고 합니다. 무엇이 맞나요?",
+    options: [
+      "캐시 때문이며 최대 10분 안에 사라진다",
+      "배포가 실패한 것이니 되돌려야 한다",
+      "그 방문자의 기기 고장이다"
+    ], answer: 0,
+    explain: "이 사이트는 방문자 캐시가 최대 10분(600초) 유지됩니다. 배포 직후에는 예전 파일과 새 파일이 잠깐 섞여 보일 수 있고, 기다리면 해소됩니다. 배포 실패로 오해해 되돌리면 오히려 혼란이 커집니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
