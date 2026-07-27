@@ -1,28 +1,36 @@
 /* ──────────────────────────────────────────────────────────
-   발표 기록 — 흰 우주 계기판 테마
-   팔레트: paper #fcfcfb / ink #0e0e0e / graphite #53565c / hairline #dddedb
+   발표 기록 — 검은 우주 계기판 테마 (2세대)
+   팔레트: bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a
+   대비(on #0e0e0e): text 14.3:1 · bright 18.8:1 · dim 7.3:1 · hairline 1.35:1(의도적 희미함)
    ────────────────────────────────────────────────────────── */
 
 :root {
-  --paper: #fcfcfb;
-  --ink: #0e0e0e;
-  --graphite: #53565c;
-  --hairline: #dddedb;
+  color-scheme: dark;
+  --bg: #0e0e0e;
+  --text: #dedede;
+  --bright: #fcfcfb;
+  --dim: #9aa0a6;
+  --hairline: #2a2b2a;
   --hud-inset: 16px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); /* euiyun.com 차용 expo-out */
   --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--bg); }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
   font-size: 16px;
+  font-weight: 500; /* 어두운 배경에서 가는 획 뭉개짐 방지 */
   line-height: 1.6;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -33,7 +41,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--graphite);
+  color: var(--dim);
 }
 
 /* ── 페이지 간 전환 (지원 브라우저 전용 장식) ───────────── */
@@ -77,8 +85,8 @@ body {
   font-size: 0.5625rem;
   font-weight: 500;
   letter-spacing: 0.12em;
-  color: var(--graphite);
-  background: var(--paper);
+  color: var(--dim);
+  background: var(--bg); /* 프레임 선을 파내는 노크아웃 */
   padding: 0 6px;
 }
 .hud-tl { top: -0.5em; left: 14px; }
@@ -86,52 +94,87 @@ body {
 .hud-bl { bottom: -0.5em; left: 14px; }
 .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
 
-/* ── 별 입자: 흰 하늘의 검은 점 2겹 ────────────────────── */
+/* ── 별 입자: 검은 우주의 흰 점 2겹 ─────────────────────
+   좌표는 전 화면(0~100vw, 0~104vh)에 분포. 104vh까지 두는 이유:
+   drift가 위로 3vh 흐르는 동안 하단이 비지 않게 하는 여유분. */
 .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
 .stars::before,
 .stars::after {
   content: "";
   position: absolute;
-  width: 2px;
-  height: 2px;
   border-radius: 50%;
   background: transparent;
 }
 
-/* 겹 1 — 또렷한 점 */
+/* 겹 1 — 또렷한 별 (2px × 40개) */
 .stars::before {
-  opacity: 0.5;
+  width: 2px;
+  height: 2px;
+  opacity: 0.55;
   box-shadow:
-    8vw 12vh 0 0 var(--ink), 21vw 6vh 0 0 var(--ink), 34vw 18vh 0 0 var(--ink),
-    47vw 9vh 0 0 var(--ink), 61vw 15vh 0 0 var(--ink), 76vw 7vh 0 0 var(--ink),
-    89vw 21vh 0 0 var(--ink), 5vw 34vh 0 0 var(--ink), 27vw 42vh 0 0 var(--ink),
-    52vw 38vh 0 0 var(--ink), 71vw 44vh 0 0 var(--ink), 93vw 39vh 0 0 var(--ink),
-    12vw 58vh 0 0 var(--ink), 38vw 63vh 0 0 var(--ink), 57vw 55vh 0 0 var(--ink),
-    82vw 61vh 0 0 var(--ink), 9vw 78vh 0 0 var(--ink), 31vw 84vh 0 0 var(--ink),
-    49vw 76vh 0 0 var(--ink), 66vw 88vh 0 0 var(--ink), 87vw 81vh 0 0 var(--ink),
-    17vw 93vh 0 0 var(--ink), 73vw 94vh 0 0 var(--ink), 95vw 68vh 0 0 var(--ink);
+    3vw 7vh 0 0 var(--bright), 11vw 22vh 0 0 var(--bright), 19vw 4vh 0 0 var(--bright),
+    26vw 15vh 0 0 var(--bright), 33vw 28vh 0 0 var(--bright), 41vw 9vh 0 0 var(--bright),
+    48vw 19vh 0 0 var(--bright), 56vw 6vh 0 0 var(--bright), 63vw 24vh 0 0 var(--bright),
+    71vw 13vh 0 0 var(--bright), 79vw 27vh 0 0 var(--bright), 87vw 8vh 0 0 var(--bright),
+    94vw 18vh 0 0 var(--bright), 6vw 38vh 0 0 var(--bright), 15vw 49vh 0 0 var(--bright),
+    23vw 41vh 0 0 var(--bright), 31vw 55vh 0 0 var(--bright), 44vw 44vh 0 0 var(--bright),
+    52vw 58vh 0 0 var(--bright), 60vw 39vh 0 0 var(--bright), 68vw 52vh 0 0 var(--bright),
+    76vw 43vh 0 0 var(--bright), 84vw 57vh 0 0 var(--bright), 92vw 47vh 0 0 var(--bright),
+    98vw 33vh 0 0 var(--bright), 9vw 68vh 0 0 var(--bright), 18vw 79vh 0 0 var(--bright),
+    27vw 88vh 0 0 var(--bright), 36vw 72vh 0 0 var(--bright), 45vw 84vh 0 0 var(--bright),
+    53vw 95vh 0 0 var(--bright), 62vw 76vh 0 0 var(--bright), 70vw 90vh 0 0 var(--bright),
+    78vw 70vh 0 0 var(--bright), 86vw 66vh 0 0 var(--bright), 93vw 74vh 0 0 var(--bright),
+    97vw 97vh 0 0 var(--bright), 39vw 102vh 0 0 var(--bright), 65vw 103vh 0 0 var(--bright),
+    13vw 99vh 0 0 var(--bright);
   animation: drift 140s linear infinite alternate;
 }
 
-/* 겹 2 — 희미한 점 (더 작게 보이도록 축소) */
+/* 겹 2 — 희미한 별 (1px × 40개, 축소 변환 없이 크기 자체를 줄임) */
 .stars::after {
-  opacity: 0.22;
-  transform: scale(0.6);
-  transform-origin: 0 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0.3;
   box-shadow:
-    14vw 24vh 0 0 var(--ink), 42vw 12vh 0 0 var(--ink), 68vw 27vh 0 0 var(--ink),
-    91vw 14vh 0 0 var(--ink), 24vw 51vh 0 0 var(--ink), 59vw 47vh 0 0 var(--ink),
-    79vw 53vh 0 0 var(--ink), 6vw 66vh 0 0 var(--ink), 44vw 71vh 0 0 var(--ink),
-    63vw 69vh 0 0 var(--ink), 15vw 88vh 0 0 var(--ink), 55vw 91vh 0 0 var(--ink),
-    84vw 74vh 0 0 var(--ink), 36vw 31vh 0 0 var(--ink), 97vw 47vh 0 0 var(--ink),
-    3vw 8vh 0 0 var(--ink), 88vw 96vh 0 0 var(--ink), 70vw 4vh 0 0 var(--ink);
+    7vw 13vh 0 0 var(--bright), 14vw 31vh 0 0 var(--bright), 22vw 9vh 0 0 var(--bright),
+    29vw 47vh 0 0 var(--bright), 37vw 18vh 0 0 var(--bright), 43vw 33vh 0 0 var(--bright),
+    50vw 12vh 0 0 var(--bright), 58vw 29vh 0 0 var(--bright), 66vw 44vh 0 0 var(--bright),
+    74vw 21vh 0 0 var(--bright), 81vw 36vh 0 0 var(--bright), 89vw 15vh 0 0 var(--bright),
+    96vw 42vh 0 0 var(--bright), 4vw 53vh 0 0 var(--bright), 12vw 61vh 0 0 var(--bright),
+    21vw 70vh 0 0 var(--bright), 30vw 64vh 0 0 var(--bright), 38vw 57vh 0 0 var(--bright),
+    47vw 66vh 0 0 var(--bright), 55vw 73vh 0 0 var(--bright), 64vw 61vh 0 0 var(--bright),
+    72vw 58vh 0 0 var(--bright), 80vw 63vh 0 0 var(--bright), 88vw 49vh 0 0 var(--bright),
+    95vw 60vh 0 0 var(--bright), 10vw 86vh 0 0 var(--bright), 25vw 95vh 0 0 var(--bright),
+    34vw 81vh 0 0 var(--bright), 49vw 91vh 0 0 var(--bright), 59vw 87vh 0 0 var(--bright),
+    69vw 97vh 0 0 var(--bright), 77vw 82vh 0 0 var(--bright), 85vw 93vh 0 0 var(--bright),
+    91vw 79vh 0 0 var(--bright), 99vw 88vh 0 0 var(--bright), 17vw 44vh 0 0 var(--bright),
+    2vw 26vh 0 0 var(--bright), 83vw 4vh 0 0 var(--bright), 57vw 49vh 0 0 var(--bright),
+    46vw 103vh 0 0 var(--bright);
   animation: drift 200s linear infinite alternate-reverse;
 }
 
 @keyframes drift {
   from { translate: 0 0; }
   to { translate: 0 -3vh; }
+}
+
+/* ── 흰 우주선 (장식, 첫 화면 전용) ─────────────────────
+   부유: 주기 9초, 이동량 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
+.ship {
+  position: fixed;
+  top: 22vh;
+  right: clamp(24px, 9vw, 130px);
+  width: clamp(110px, 15vw, 200px);
+  pointer-events: none;
+  z-index: 0;
+  animation: float 9s ease-in-out infinite;
+}
+
+.ship svg { display: block; width: 100%; height: auto; }
+
+@keyframes float {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  50% { translate: 0 -4px; rotate: -1.4deg; }
 }
 
 /* ── 히어로 ────────────────────────────────────────────── */
@@ -146,25 +189,26 @@ body {
   gap: 20px;
 }
 
-.eyebrow { animation: rise 0.7s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.eyebrow { animation: rise 0.7s 0.05s var(--ease) both; }
 
 .title {
   font-size: clamp(3rem, 11vw, 7rem);
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  font-weight: 600; /* 어두운 배경에서 굵은 흰 글자의 번짐 완화 */
+  letter-spacing: -0.025em;
   line-height: 1.04;
-  animation: rise 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  color: var(--bright);
+  animation: rise 0.7s 0.16s var(--ease) both;
 }
 
 .tagline {
   max-width: 34em;
-  color: var(--graphite);
-  animation: rise 0.7s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  color: var(--dim);
+  animation: rise 0.7s 0.28s var(--ease) both;
 }
 
 .scroll-cue {
   margin-top: 8vh;
-  animation: rise 0.7s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 0.7s 0.4s var(--ease) both;
 }
 
 .cue-arrow {
@@ -210,7 +254,7 @@ main { position: relative; z-index: 1; }
   position: relative;
   border: 1px solid var(--hairline);
   border-radius: 10px;
-  background: var(--paper);
+  background: var(--bg);
   padding: 18px 20px 20px;
   display: flex;
   flex-direction: column;
@@ -218,8 +262,8 @@ main { position: relative; z-index: 1; }
   opacity: 0;
   translate: 0 18px;
   transition:
-    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 80ms),
-    translate 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 80ms),
+    opacity 0.6s var(--ease) calc(var(--i) * 80ms),
+    translate 0.6s var(--ease) calc(var(--i) * 80ms),
     border-color 0.18s ease,
     box-shadow 0.18s ease,
     scale 0.18s ease;
@@ -228,15 +272,15 @@ main { position: relative; z-index: 1; }
 .card.in { opacity: 1; translate: 0 0; }
 
 .card:hover {
-  border-color: var(--ink);
-  box-shadow: 0 14px 34px rgba(14, 14, 14, 0.07);
+  border-color: var(--dim);
+  box-shadow: 0 0 28px rgba(252, 252, 251, 0.07); /* 어두운 배경용 흰 글로우 */
   scale: 1.01;
 }
 
 .card:has(a:focus-visible) {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--bright);
   outline-offset: 3px;
-  border-color: var(--ink);
+  border-color: var(--bright);
 }
 
 .card-top {
@@ -247,9 +291,10 @@ main { position: relative; z-index: 1; }
 
 .card-title {
   font-size: 1.22rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.35;
+  color: var(--bright);
 }
 
 /* 카드 전체 클릭 (block link) */
@@ -258,7 +303,7 @@ main { position: relative; z-index: 1; }
 
 .card-desc {
   font-size: 0.92rem;
-  color: var(--graphite);
+  color: var(--dim);
   flex: 1;
 }
 
@@ -289,6 +334,7 @@ main { position: relative; z-index: 1; }
   :root { --hud-inset: 10px; }
   .hero { min-height: 76vh; }
   .hud-bl { display: none; }
+  .ship { top: 12vh; }
 }
 
 /* ── 움직임 줄이기: 전부 정지 ──────────────────────────── */
@@ -300,5 +346,6 @@ main { position: relative; z-index: 1; }
     transition-duration: 0.01ms !important;
   }
   .stars::before, .stars::after { animation: none; }
+  .ship { animation: none; }
   .card { opacity: 1; translate: 0 0; }
 }

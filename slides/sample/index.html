@@ -5,17 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>새 발표자료 추가 방법</title>
   <meta name="description" content="이 저장소에 발표자료를 추가하는 4단계 절차">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfcfb'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%230e0e0e'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0e0e0e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
 
   <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
        상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
 
-  <!-- 테마는 데크마다 자유. 동봉 테마: white.css, black.css (오프라인 자기완결형) -->
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css">
+  <!-- 테마는 데크마다 자유. 동봉 테마: black.css(현재 기본), white.css (둘 다 오프라인 자기완결형) -->
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
+  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
 
   <style>
+    /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
+       JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
+    html { background: #0e0e0e; color-scheme: dark; }
+
+    /* 검은 우주 팔레트 (bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a)
+       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다. */
+    :root {
+      --r-background: #0e0e0e;
+      --r-background-color: #0e0e0e;
+      --r-main-color: #dedede;
+      --r-heading-color: #fcfcfb;
+      --r-heading-font-weight: 600;
+      --r-heading-letter-spacing: -0.025em;
+      --r-main-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-heading-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-link-color: #dedede;
+      --r-link-color-hover: #fcfcfb;
+      --r-link-color-dark: #9aa0a6;
+      --r-selection-background-color: #fcfcfb;
+      --r-selection-color: #0e0e0e;
+    }
+
+    /* 어두운 배경에서 가는 한글 획 뭉개짐 방지 + 한글 줄바꿈 */
+    .reveal {
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    /* 링크는 색이 본문과 같으므로 밑줄로 구분한다 */
+    .reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
+
     /* 랜딩과 이어지는 페이지 전환 (지원 브라우저 전용 장식) */
     @media (prefers-reduced-motion: no-preference) {
       @view-transition { navigation: auto; }
@@ -29,15 +66,91 @@
       border-radius: 6px;
       padding: 0.05em 0.4em;
     }
-    .reveal pre { box-shadow: none; border: 1px solid #ddd; }
+    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; }
     .reveal .small { font-size: 0.6em; }
+
+    /* 검은 우주의 흰 별 (장식) — 슬라이드 캔버스 밖 고정 층에 둔다 */
+    .deck-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .deck-stars::before,
+    .deck-stars::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: transparent;
+    }
+    .deck-stars::before {
+      width: 2px; height: 2px; opacity: 0.4;
+      box-shadow:
+        5vw 9vh 0 0 #fcfcfb, 17vw 26vh 0 0 #fcfcfb, 28vw 7vh 0 0 #fcfcfb,
+        39vw 19vh 0 0 #fcfcfb, 55vw 5vh 0 0 #fcfcfb, 70vw 14vh 0 0 #fcfcfb,
+        84vw 9vh 0 0 #fcfcfb, 95vw 24vh 0 0 #fcfcfb, 8vw 55vh 0 0 #fcfcfb,
+        22vw 74vh 0 0 #fcfcfb, 34vw 90vh 0 0 #fcfcfb, 47vw 79vh 0 0 #fcfcfb,
+        62vw 92vh 0 0 #fcfcfb, 76vw 76vh 0 0 #fcfcfb, 88vw 88vh 0 0 #fcfcfb,
+        96vw 63vh 0 0 #fcfcfb, 3vw 84vh 0 0 #fcfcfb, 51vw 102vh 0 0 #fcfcfb;
+      animation: deck-drift 160s linear infinite alternate;
+    }
+    .deck-stars::after {
+      width: 1px; height: 1px; opacity: 0.22;
+      box-shadow:
+        11vw 15vh 0 0 #fcfcfb, 24vw 38vh 0 0 #fcfcfb, 43vw 11vh 0 0 #fcfcfb,
+        60vw 22vh 0 0 #fcfcfb, 78vw 30vh 0 0 #fcfcfb, 91vw 42vh 0 0 #fcfcfb,
+        6vw 33vh 0 0 #fcfcfb, 15vw 92vh 0 0 #fcfcfb, 30vw 61vh 0 0 #fcfcfb,
+        41vw 96vh 0 0 #fcfcfb, 57vw 68vh 0 0 #fcfcfb, 69vw 83vh 0 0 #fcfcfb,
+        82vw 59vh 0 0 #fcfcfb, 93vw 97vh 0 0 #fcfcfb, 66vw 47vh 0 0 #fcfcfb,
+        2vw 68vh 0 0 #fcfcfb;
+      animation: deck-drift 220s linear infinite alternate-reverse;
+    }
+    @keyframes deck-drift {
+      from { translate: 0 0; }
+      to { translate: 0 -3vh; }
+    }
+
+    /* 표지의 흰 우주선 (장식) — 부유는 주기 9초, 상하 4px, 시작·끝 동일 위치 */
+    .reveal .cover-ship { width: 5em; margin: 0 auto 0.5em; }
+    .reveal .cover-ship svg { display: block; width: 100%; height: auto; }
+    .cover-ship { animation: ship-float 9s ease-in-out infinite; }
+    @keyframes ship-float {
+      0%, 100% { translate: 0 0; rotate: 0deg; }
+      50% { translate: 0 -4px; rotate: -1.4deg; }
+    }
+
+    /* 움직임 줄이기: 장식 전부 정지 (새 덱마다 이 블록을 유지할 것) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .deck-stars::before, .deck-stars::after, .cover-ship { animation: none !important; }
+    }
+
+    /* 인쇄 방어 — 별·우주선은 종이에 찍지 않는다.
+       직접 만든 도형(div/span)이 있는 덱은 여기에
+       html:not(.print-pdf) 조건으로 검정 되돌림 규칙을 추가할 것
+       (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
+    @media print {
+      .deck-stars, .cover-ship { display: none; }
+    }
   </style>
 </head>
 <body>
+  <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
+  <div class="deck-stars" aria-hidden="true"></div>
+
   <div class="reveal">
     <div class="slides">
 
       <section>
+        <div class="cover-ship" aria-hidden="true">
+          <svg viewBox="0 0 150 60" xmlns="http://www.w3.org/2000/svg">
+            <line x1="4" y1="30" x2="24" y2="30" stroke="#fcfcfb" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 9" opacity="0.5"/>
+            <path d="M52 17 L37 6 L45 20 Z" fill="#fcfcfb"/>
+            <path d="M52 43 L37 54 L45 40 Z" fill="#fcfcfb"/>
+            <rect x="27" y="24" width="9" height="12" rx="3" fill="#fcfcfb"/>
+            <path d="M34 30c0-8.8 7.2-16 16-16h40c22 0 42 9 50 16-8 7-28 16-50 16H50c-8.8 0-16-7.2-16-16Z" fill="#fcfcfb"/>
+            <circle cx="104" cy="30" r="6.5" fill="none" stroke="#0e0e0e" stroke-width="2.6"/>
+          </svg>
+        </div>
         <p style="font-size:0.5em; letter-spacing:0.12em;">DKDLQODDI · PRESENTATION LOG</p>
         <h2>새 발표자료<br>추가 방법</h2>
         <p class="small">이 데크 자체가 새 발표의 본보기입니다.<br>
@@ -54,7 +167,7 @@
       <section>
         <h3>2단계 — 내용 수정</h3>
         <p class="small"><code>index.html</code>의 <code>&lt;section&gt;</code> 하나가 슬라이드 한 장입니다.</p>
-        <p class="small">테마 교체: <code>theme/white.css</code> → <code>theme/black.css</code><br>
+        <p class="small">테마 교체: <code>theme/black.css</code> ↔ <code>theme/white.css</code><br>
         전환 효과: <code>Reveal.initialize</code>의 <code>transition</code> 값<br>
         (none · fade · slide · convex · concave · zoom)</p>
         <p class="small">발표마다 테마·전환을 자유롭게 골라도<br>다른 발표에 영향을 주지 않습니다.</p>
@@ -75,8 +188,8 @@
         <h3>4단계 — 공개</h3>
         <p class="small">main 브랜치에 push하면 몇 분 안에 공개됩니다.<br>
         방문자에 따라 목록 반영이 최대 10분 늦을 수 있습니다.</p>
-        <p class="small">⚠ 슬라이드 도구(reveal.js 6.0.1)는 <code>vendor/</code>의<br>
-        공유 사본을 쓰므로 인터넷 없이도 동작합니다.</p>
+        <p class="small">⚠ 슬라이드 도구(reveal.js 6.0.1)와 글꼴(Pretendard)은<br>
+        <code>vendor/</code>의 공유 사본을 쓰므로 인터넷 없이도 동작합니다.</p>
       </section>
 
       <section>
