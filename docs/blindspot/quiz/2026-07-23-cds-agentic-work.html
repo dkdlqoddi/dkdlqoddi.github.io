@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: CDS Agentic Work 발표자료</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: CDS Agentic Work 발표자료</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>이 웹사이트에 첫 실제 발표자료를 올렸습니다. 제목은 "CDS Agentic Work"이고 슬라이드는 20장입니다. 망이 나뉜 환경에서 AI 코딩 도구를 쓰는 방법을 설명합니다. 그리고 각 업무 담당 조직에 협조 세 가지를 순서대로 요청합니다.</p>
+
+<p>기존에 있던 예시 발표자료는 목록에서만 뺐습니다. 폴더와 파일은 지우지 않았습니다. 다음 발표자료를 만들 때 복사본으로 계속 쓰기 때문입니다. 저장소 안내문도 "예시를 복사해서 시작하라"로 그대로 남아 있습니다. 다만 예시 발표자료의 주소를 직접 치면 여전히 열립니다.</p>
+
+<p>발표자료 주소 끝에 붙는 폴더 이름은 한 번 공유되면 바꿀 수 없는 약속으로 다뤘습니다. 반면 제목과 한 줄 설명과 날짜는 목록 파일에서 한 줄만 고치면 됩니다.</p>
+
+<p>이 웹사이트는 누구나 열어볼 수 있습니다. 그래서 사내 시스템의 약한 지점은 자료에 적지 않았습니다. 대신 발표 중에 말로 설명하기로 했고, 말할 내용은 저장소 밖 비공개 파일에 정리했습니다. 산출물 문서가 들어가는 폴더도 같은 주소로 열리기 때문에 그 문서들에도 같은 기준을 적용했습니다.</p>
+
+<p>발표자료는 인터넷 없이도 열립니다. 글꼴이나 그림을 바깥에서 가져오지 않기 때문입니다. 화면 확대도 막지 않았습니다. 시력이 약한 분을 위해서입니다. 그림에는 눈으로 보지 않아도 내용을 알 수 있는 설명을 붙였습니다.</p>
+
+<p>담당자에게 요청하는 첫 단계는 "실행 절차를 글로 내려 달라"입니다. 그 절차는 지금 시스템에서 바로 실행되지는 않습니다. 그래도 글로 남기는 것 자체가 목적이라고 자료에 밝혔습니다.</p>
+
+<p>이 저장소에는 자동으로 돌아가는 검사 도구가 없습니다. 대신 사람이 아홉 가지를 손으로 확인했고, 브라우저로 20장 전부를 열어 봤습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  {
+    q: "동료가 \"예시 발표자료를 지웠다면서 왜 주소를 치면 아직 열리냐\"고 묻습니다. 무엇이 실제로 일어난 일인가요?",
+    options: [
+      "지웠는데 반영이 늦어 곧 사라집니다.",
+      "지우다가 중간에 실패해 일부만 남았습니다.",
+      "목록에서만 뺐고 파일은 그대로 두었습니다.",
+      "지운 뒤 실수로 다시 되살아났습니다."
+    ],
+    answer: 2,
+    explain: "방문자 목록에서만 항목을 뺐고 폴더와 파일은 남겼습니다. 다음 발표자료를 만들 때 복사본으로 쓰기 때문입니다. \"반영이 늦어 곧 사라진다\"가 그럴듯해 보이지만 틀렸습니다. 반영 지연은 목록에만 해당합니다. 주소 자체는 파일이 있는 한 계속 열립니다."
+  },
+  {
+    q: "발표자가 \"주소 이름을 다른 걸로 바꾸고 싶다\"고 합니다. 무엇을 알려 드려야 하나요?",
+    options: [
+      "목록 파일만 고치면 되니 바꿔도 됩니다.",
+      "이미 공유됐다면 기존 주소가 전부 깨집니다.",
+      "제목만 바꾸면 주소도 따라 바뀝니다.",
+      "주소는 자동으로 만들어져 바꿀 수 없습니다."
+    ],
+    answer: 1,
+    explain: "폴더 이름은 공유되는 순간 되돌릴 수 없는 약속으로 다뤘습니다. \"목록 파일만 고치면 된다\"는 제목과 한 줄 설명과 날짜에만 해당합니다. 그 셋은 되돌리기 쉬운 항목입니다."
+  },
+  {
+    q: "사내 시스템의 약한 지점을 슬라이드에 적지 않기로 했습니다. 그 판단의 근거는 무엇인가요?",
+    options: [
+      "청중이 이미 다 알고 있는 내용이기 때문입니다.",
+      "분량이 20장을 넘어가기 때문입니다.",
+      "아직 사실 확인이 끝나지 않았기 때문입니다.",
+      "발표자료가 공개 사이트에 영구히 남기 때문입니다."
+    ],
+    answer: 3,
+    explain: "이 사이트는 누구나 열어볼 수 있어 팀 이름과 묶인 약점 정보가 영구히 남습니다. 청중에게는 발표 중 말로 똑같이 전달합니다. 그러므로 \"이미 안다\"가 이유는 아닙니다. 확인이 끝나지 않아서도 아닙니다."
+  },
+  {
+    q: "같은 기준을 발표자료 말고 어디에까지 적용했나요? 그 이유는 무엇인가요?",
+    options: [
+      "작업 과정 문서에도 적용했습니다. 같은 주소로 열리기 때문입니다.",
+      "발표자료에만 적용했습니다. 과정 문서는 내부용이기 때문입니다.",
+      "비공개 파일에만 적용했습니다. 거기가 제일 위험하기 때문입니다.",
+      "아무 데도 적용하지 않았습니다. 발표 후에 정하기로 했습니다."
+    ],
+    answer: 0,
+    explain: "작업 과정 문서가 들어가는 폴더도 인터넷에서 주소로 열립니다. 슬라이드만 가리고 문서를 열어 두면 방어가 절반만 적용된 셈입니다. 그래서 \"과정 문서는 내부용\"이라고 보는 것은 사실과 다릅니다."
+  },
+  {
+    q: "담당자가 요청받은 대로 실행 절차를 글로 내서 제출했습니다. 그 절차는 곧바로 어떻게 되나요?",
+    options: [
+      "제출 즉시 자동으로 실행되어 결과가 나옵니다.",
+      "검사를 통과하면 그날 바로 실행됩니다.",
+      "지금은 실행되지 않습니다. 글로 남기는 것이 목적입니다.",
+      "실행되지 않으므로 제출할 필요가 없습니다."
+    ],
+    answer: 2,
+    explain: "요청의 목적은 사람 머릿속의 절차를 글로 남기고 공유하는 것입니다. 자료에도 \"오늘 바로 실행되지는 않습니다\"라고 밝혔습니다. \"실행되지 않으니 제출할 필요 없다\"가 반대 방향으로 그럴듯합니다. 그러나 절차를 모으는 것 자체가 이번 요청입니다."
+  },
+  {
+    q: "이 저장소에는 자동으로 돌아가는 검사 도구가 없습니다. 그러면 이번 변경이 사이트를 깨뜨리지 않는다는 근거는 무엇인가요?",
+    options: [
+      "자동 검사가 통과했으므로 문제가 없습니다.",
+      "사람이 아홉 가지를 손으로 확인하고 브라우저로 열어 봤습니다.",
+      "이전 발표자료를 복사했으므로 깨질 일이 없습니다.",
+      "근거가 없어 배포 후에 확인해야 합니다."
+    ],
+    answer: 1,
+    explain: "목록 파일 형식, 폴더 대응, 외부 연결 없음, 화면 확대 허용 등 아홉 가지를 손으로 확인했습니다. 그리고 브라우저에서 20장 전부를 넓은 화면과 좁은 화면으로 열어 봤습니다. \"자동 검사가 통과했다\"는 성립하지 않습니다. 이 저장소에는 자동 검사가 아예 없습니다."
+  },
+  {
+    q: "이번에 일부러 하지 않기로 한 것은 무엇인가요?",
+    options: [
+      "발표자료를 20장으로 맞추는 일입니다.",
+      "예시 발표자료를 목록에서 빼는 일입니다.",
+      "그림에 대체 설명을 붙이는 일입니다.",
+      "발견된 보안 항목을 직접 고치는 일입니다."
+    ],
+    answer: 3,
+    explain: "보안 항목을 고치려면 다른 저장소를 손대야 하고 발표자료 작업 범위를 크게 벗어납니다. 그래서 내용만 따로 전달하고 조치 판단은 발표자에게 맡겼습니다. 나머지 세 보기는 모두 이번에 실제로 한 일입니다."
+  }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
