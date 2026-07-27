@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDS Agentic Work</title>
+  <meta name="description" content="망이 분리된 환경에서 AI 코딩 도구를 쓰는 방법, 그리고 각 Domain에 필요한 세 단계 협조 요청">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfcfb'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%230e0e0e'/%3E%3C/svg%3E">
+
+  <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
+       상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css">
+
+  <style>
+    /* 랜딩과 이어지는 페이지 전환 (지원 브라우저 전용 장식) */
+    @media (prefers-reduced-motion: no-preference) {
+      @view-transition { navigation: auto; }
+    }
+
+    /* white 테마 기본값이 제목을 전부 대문자로 만든다 — "Opencode"가 "OPENCODE"로 보이는 것을 막는다 */
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+
+    .reveal .small { font-size: 0.62em; }
+    .reveal .tiny { font-size: 0.5em; color: #53565c; }
+    .reveal pre { box-shadow: none; border: 1px solid #ddd; }
+
+    .reveal .eyebrow {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.42em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #53565c;
+    }
+
+    /* 구조 그림 — 확장 기능 없이 상자와 선만으로 그린다 */
+    /* nowrap: 줄바꿈되면 "입구 둘 → 중개 서버" 배치가 무너져 3단 직렬처럼 보인다.
+       reveal는 960x700 고정 캔버스를 축소하므로 좁은 화면에서도 배치가 유지된다. */
+    .reveal .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      font-size: 0.5em;
+      line-height: 1.35;
+      flex-wrap: nowrap;
+    }
+    .reveal .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      overflow: hidden; clip-path: inset(50%);
+    }
+    .reveal .diagram .col { display: flex; flex-direction: column; gap: 0.6em; }
+    /* 각 입구에서 선이 따로 나가야 한다 — 입구는 둘이고 화살표도 둘이다 */
+    .reveal .diagram .row { display: flex; align-items: stretch; }
+    .reveal .diagram .row .link { align-self: stretch; justify-content: center; }
+    .reveal .box {
+      border: 1px solid #0e0e0e;
+      border-radius: 8px;
+      padding: 0.6em 0.9em;
+      min-width: 6.5em;
+    }
+    .reveal .box.dashed { border-style: dashed; color: #53565c; }
+    .reveal .box b { display: block; font-weight: 600; }
+    .reveal .link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #53565c;
+      font-size: 0.85em;
+      min-width: 5em;
+    }
+    .reveal .link .line { width: 100%; border-top: 1px solid #53565c; margin: 0.2em 0; }
+
+    /* 좌우 대비 배치 */
+    .reveal .cols { display: flex; gap: 1.2em; text-align: left; font-size: 0.6em; }
+    .reveal .cols > div { flex: 1; }
+    .reveal .cols h4 { font-size: 1em; margin: 0 0 0.25em; }
+    .reveal .cols p { margin: 0 0 0.9em; }
+
+    /* 진행 단계 */
+    .reveal .steps { display: flex; gap: 0.4em; font-size: 0.42em; justify-content: center; flex-wrap: wrap; }
+    .reveal .steps span {
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      padding: 0.4em 0.9em;
+      color: #53565c;
+    }
+    .reveal .steps span.done { border-color: #0e0e0e; color: #0e0e0e; }
+    .reveal .steps span.now { border-color: #0e0e0e; color: #0e0e0e; font-weight: 600; }
+
+    .reveal ol.checks { font-size: 0.58em; }
+    .reveal ol.checks li { margin-bottom: 0.35em; }
+    .reveal .ask { border-left: 3px solid #0e0e0e; padding-left: 0.7em; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1 — 표지 -->
+      <section>
+        <p class="eyebrow">CDS · Presentation Log</p>
+        <h2>CDS Agentic Work</h2>
+        <p class="small">AI 코딩 도구 운영 방법과<br>Domain 협조 요청</p>
+        <p class="tiny">2026-07-23 · 우재율</p>
+      </section>
+
+      <!-- 2 — 왜 이 이야기를 하는가 -->
+      <section>
+        <h3>구조는 만들었습니다.<br>이제 여러분의 지식이 필요합니다.</h3>
+        <p class="small">오늘은 알려드리는 자리이자 부탁드리는 자리입니다.</p>
+        <p class="tiny">발표가 끝나면 각 Domain에 할 일이 세 가지 생깁니다.</p>
+      </section>
+
+      <!-- 3 — 두 망이 나뉘어 있다 -->
+      <section>
+        <h3>우리 업무망은 둘로 나뉘어 있습니다</h3>
+        <p class="visually-hidden">그림 설명: 사무망과 가상작업공간이 나란히 있고 둘 사이에 직접 연결이 없습니다.</p>
+        <div class="diagram" role="img" aria-label="사무망과 가상작업공간이 분리되어 있고 둘 사이에 직접 연결이 없는 그림">
+          <div class="box"><b>사무망 (Office)</b>일반 업무<br>AI 코딩 도구 사용 가능</div>
+          <div class="link"><span>분리</span><div class="line"></div><span class="tiny">직접 연결 없음</span></div>
+          <div class="box"><b>가상작업공간 (VWP)</b>보호 대상 데이터<br>AI 코딩 도구 반입 불가</div>
+        </div>
+        <p class="small">가상작업공간 안의 데이터는 보호 대상입니다.<br>
+        그래서 AI 코딩 도구를 그 안에서 직접 돌릴 수 없습니다.</p>
+      </section>
+
+      <!-- 4 — 그래서 중개 서버를 두었다 -->
+      <section>
+        <h3>그래서 중개 서버를 두었습니다</h3>
+        <p class="small">AI 코딩 도구는 사무망에만 둡니다.<br>
+        가상작업공간 쪽 자료가 필요하면 중개 서버에 물어봅니다.</p>
+        <p class="small">중개 서버는 <b>미리 허락된 요청만</b> 통과시킵니다.</p>
+        <p class="tiny">건물 안내 데스크와 같습니다. 아무나 안으로 들여보내지 않습니다.<br>
+        정해진 용무만 대신 처리해 줍니다.</p>
+      </section>
+
+      <!-- 5 — 실제 연결 구조 -->
+      <section>
+        <h3>실제 연결 구조</h3>
+        <p class="visually-hidden">그림 설명: 왼쪽에 입구 두 개가 있습니다. 하나는 Opencode이고 다른 하나는 API 서버입니다. 두 입구가 각각 가운데 중개 서버로 연결됩니다. 중개 서버만 오른쪽 가상작업공간에 닿습니다.</p>
+        <div class="diagram" role="img" aria-label="입구 두 개가 각각 하나의 중개 서버로 연결되고, 중개 서버만 가상작업공간에 닿는 그림">
+          <div class="col">
+            <div class="row">
+              <div class="box"><b>Opencode</b>AI 코딩 도구</div>
+              <div class="link"><span class="tiny">원격 연결</span><div class="line"></div></div>
+            </div>
+            <div class="row">
+              <div class="box"><b>API 서버</b>웹 주소 방식 창구</div>
+              <div class="link"><span class="tiny">웹 주소 호출</span><div class="line"></div></div>
+            </div>
+          </div>
+          <div class="box"><b>중개 서버</b>허락된 요청만<br>통과시킴</div>
+          <div class="link"><div class="line"></div></div>
+          <div class="box dashed"><b>가상작업공간</b>파일 · 조회 명령<br>데이터베이스 · 사내 API</div>
+        </div>
+        <p class="small">입구는 <b>둘</b>입니다. 둘 다 같은 중개 서버를 봅니다.</p>
+        <p class="tiny">세 시스템이 한 줄로 이어진 구조가 아닙니다. 두 입구는 형제 관계입니다.</p>
+      </section>
+
+      <!-- 6 — 두 번째 입구는 왜 있는가 -->
+      <section>
+        <h3>두 번째 입구는 왜 있나요</h3>
+        <p class="small">중개 서버에 직접 붙을 수 없는 PC가 있습니다.</p>
+        <p class="small">그런 PC를 위해 API 서버가<br>같은 기능을 웹 주소 방식으로 다시 열어 줍니다.</p>
+        <p class="tiny">두 입구가 여는 기능은 같습니다. 붙는 방법만 다릅니다.</p>
+      </section>
+
+      <!-- 7 — 중개 서버가 열어 둔 것 -->
+      <section>
+        <h3>중개 서버가 열어 둔 것</h3>
+        <div class="cols">
+          <div>
+            <h4>파일 읽기</h4>
+            <p class="tiny">내용 보기 · 목록 보기 · 찾기</p>
+            <h4>파일 쓰기</h4>
+            <p class="tiny">새로 쓰기 · 부분 고치기</p>
+            <h4>미리 등록해 둔 작업</h4>
+            <p class="tiny">조회 명령 · 데이터 조회 · 사내 API</p>
+          </div>
+          <div>
+            <h4>분석</h4>
+            <p class="tiny">파일 내용을 읽고 요약</p>
+            <h4>정책 조회</h4>
+            <p class="tiny">어느 폴더가 열려 있는지 확인</p>
+          </div>
+        </div>
+        <p class="small">모두 17개입니다. 다섯 묶음으로 나뉩니다.</p>
+        <p class="tiny">핵심은 <b>미리 등록해 둔 작업</b>입니다. 등록한 것만 돌아갑니다.<br>
+        아무 명령이나 실행되지 않습니다.</p>
+      </section>
+
+      <!-- 8 — 제한은 어디에서 나오는가 -->
+      <section>
+        <h3>제한은 어디에서 나오나요</h3>
+        <div class="cols">
+          <div>
+            <h4>1. 도구 목록</h4>
+            <p class="tiny">열어 둔 17개 밖의 일은 할 수 없습니다.</p>
+          </div>
+          <div>
+            <h4>2. 폴더 설정</h4>
+            <p class="tiny">폴더마다 읽기·쓰기·명령 실행을 따로 정합니다.</p>
+          </div>
+          <div>
+            <h4>3. 작업 목록</h4>
+            <p class="tiny">관리자가 등록한 명령만 실행됩니다.</p>
+          </div>
+        </div>
+        <p class="small"><b>제한은 설정에서 나옵니다.</b></p>
+        <p class="tiny">그래서 설정을 어떻게 잡느냐가 전부입니다.</p>
+      </section>
+
+      <!-- 9 — 그래서 설정이 전부다 -->
+      <section>
+        <h3>그래서 설정이 전부입니다</h3>
+        <p class="small">폴더를 좁게 잡으면 안전합니다.<br>
+        넓게 잡으면 그만큼 그대로 열립니다.</p>
+        <p class="small ask">그런데 <b>어느 폴더를 열어야 하는지</b>는<br>
+        그 업무를 하는 분만 알 수 있습니다.</p>
+        <p class="tiny">이 이야기는 뒤에서 다시 부탁드리겠습니다.</p>
+      </section>
+
+      <!-- 10 — 허용 목록은 보안 경계가 아니다 -->
+      <section>
+        <h3>흔한 오해 하나</h3>
+        <p class="small">"허용 목록을 만들었으니 안전하다"</p>
+        <p class="small">허용 목록은 이름을 <b>글자 그대로</b> 맞춰 봅니다.<br>
+        그래서 빈틈이 생깁니다.</p>
+        <p class="small">허용 목록은 <b>실수를 막는 장치</b>입니다.<br>
+        악의를 막는 장치가 아닙니다.</p>
+        <p class="tiny">진짜 방어는 두 가지입니다. 폴더를 좁게 잡는 것,<br>
+        그리고 되돌릴 수 있게 만드는 것입니다.</p>
+      </section>
+
+      <!-- 11 — 지금 어디까지 왔는가 -->
+      <section>
+        <h3>지금 어디까지 왔나요</h3>
+        <div class="steps">
+          <span class="done">1. 구조 설계</span>
+          <span class="done">2. 구현</span>
+          <span class="now">3. 개발망 연결 확인</span>
+          <span>4. 사내 실환경 확인</span>
+          <span>5. 실제 업무 적용</span>
+        </div>
+        <p class="small">다섯 단계 중 셋째 단계입니다. 아직 진행 중입니다.</p>
+        <p class="tiny">AI 코딩 도구가 중개 서버에 붙는 것까지는 확인했습니다.<br>
+        사람 없이 도는 자동 실행 전체는 사내 환경에서 아직 돌려보지 않았습니다.</p>
+      </section>
+
+      <!-- 12 — 왜 Domain 협조가 필요한가 -->
+      <section>
+        <h3>왜 Domain 협조가 필요한가</h3>
+        <p class="small">여기서 말하는 <b>Domain 담당자</b>는<br>
+        각 업무 영역의 데이터와 시스템을 실제로 아는 분입니다.</p>
+        <p class="tiny">기존 문서의 "데이터 소유 부서", "운영자"와 같은 분들입니다.</p>
+        <p class="small">무엇을 자동화할지는<br><b>그 업무를 하는 사람만 압니다.</b></p>
+        <p class="tiny">구조는 준비됐지만 등록된 업무 자동화는 아직 없습니다.<br>
+        빈 그릇이 준비되어 있는 상태입니다.</p>
+      </section>
+
+      <!-- 13 — 요청 1단계 -->
+      <section data-transition="zoom">
+        <p class="eyebrow">요청 1단계</p>
+        <h3>절차를 글로 내려 주세요</h3>
+        <p class="small">실행 대리 프로그램이 그대로 따라 할 수 있는<br>
+        <b>완전한 절차</b>를 부탁드립니다.</p>
+        <p class="small">형상관리 도구(Perforce) 연동을 포함해 주세요.<br>
+        권한 전환 명령(<code>newgrp</code>)도 포함해 주세요.<br>
+        환경변수 설정도 포함해 주세요.</p>
+        <p class="tiny">제출한 절차가 오늘 바로 실행되지는 않습니다.<br>
+        그래도 글로 남기는 것이 이번 요청의 목적입니다.</p>
+      </section>
+
+      <!-- 14 — "완전하다"는 무슨 뜻인가 -->
+      <section>
+        <h3>"완전하다"는 무슨 뜻인가요</h3>
+        <ol class="checks">
+          <li>화면 꾸밈이나 터미널 기능에 기대지 않는가.</li>
+          <li>필요한 환경변수를 스스로 선언하고 없으면 즉시 멈추는가.</li>
+          <li>어느 폴더에서 실행해도 결과가 같은가.</li>
+          <li>중간이 실패하면 거기서 멈추는가.</li>
+          <li>확인을 묻는 명령에 자동 응답이 붙어 있는가.</li>
+          <li>종료 코드의 뜻이 표로 적혀 있는가.</li>
+        </ol>
+        <p class="tiny">이 여섯은 <b>실행 가능성</b>만 봅니다.<br>
+        형상관리 도구와 권한 전환이 들어갔는지는 따로 확인합니다.</p>
+      </section>
+
+      <!-- 15 — 가장 자주 걸리는 한 가지 -->
+      <section>
+        <h3>가장 자주 걸리는 한 가지</h3>
+        <p class="small">사람이 쓰는 터미널은 시작 설정 파일을 읽습니다.<br>
+        사람이 지켜보지 않는 실행은 그 파일을 읽다가 중간에 멈춥니다.</p>
+        <p class="small">결과는 이렇습니다.<br>
+        내 터미널에서 잘 되던 명령이<br>
+        <b>"명령을 찾을 수 없다"</b>고 뜹니다.</p>
+        <p class="tiny">그래서 스크립트가 필요한 환경변수를 스스로 선언해야 합니다.<br>
+        위 판정 기준 2번이 이것입니다.</p>
+      </section>
+
+      <!-- 16 — 권한 전환 명령의 함정 -->
+      <section>
+        <h3>권한 전환 명령의 함정</h3>
+        <p class="small"><code>newgrp</code>은 지금 셸을 <b>새 셸로 갈아치웁니다.</b><br>
+        스크립트 안에서 부르면 그 아래 줄이 실행되지 않습니다.</p>
+        <p class="tiny">실행 대리 프로그램에게는 멈춘 것처럼 보입니다.</p>
+        <div class="cols">
+          <div>
+            <h4>1순위</h4>
+            <p class="tiny">그룹 전환 자체를 없앱니다. 계정 설정이나 폴더 설정으로 미리 해결합니다.</p>
+          </div>
+          <div>
+            <h4>2순위</h4>
+            <p class="tiny">스크립트 첫머리에서 자기 자신을 다시 실행합니다.</p>
+          </div>
+          <div>
+            <h4>3순위</h4>
+            <p class="tiny">명령 하나만 감쌉니다. 감싼 명령이 다른 셸에서 도는 함정이 있습니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 17 — 요청 2단계 -->
+      <section data-transition="zoom">
+        <p class="eyebrow">요청 2단계</p>
+        <h3>직접 한 번 써 보세요</h3>
+        <p class="small">Opencode로 업무 자동화와 분석 자동화를<br>
+        직접 시도해 보시기 바랍니다.</p>
+        <p class="small">완성이 목적이 아닙니다.<br>
+        <b>어디서 막히는지</b> 알아내는 것이 목적입니다.</p>
+        <p class="tiny">막힌 지점이 곧 다음에 열어야 할 도구 목록이 됩니다.<br>
+        실패한 시도도 결과입니다. 그대로 알려 주세요.</p>
+      </section>
+
+      <!-- 18 — 요청 3단계 -->
+      <section data-transition="zoom">
+        <p class="eyebrow">요청 3단계</p>
+        <h3>확정하고 안전하게 만드세요</h3>
+        <p class="small">Domain 안에서 여러 사람이 같은 방법을 쓰게 되면<br>
+        그것을 확정합니다.</p>
+        <p class="small">확정한 것을 재사용 절차와 실행 스크립트로 만듭니다.</p>
+        <p class="small ask">그리고 앞서 말씀드린 것,<br>
+        <b>어느 폴더를 열지 정하는 일</b>도 이 단계에 포함됩니다.</p>
+      </section>
+
+      <!-- 19 — "안전하다"는 무슨 뜻인가 -->
+      <section>
+        <h3>"안전하다"는 무슨 뜻인가요</h3>
+        <p class="tiny">새 규칙이 아닙니다. 이미 쓰고 있는 약속입니다.</p>
+        <ul class="checks" style="font-size:0.55em;">
+          <li>인자는 정해진 개수만 받는다.</li>
+          <li>성공하면 정해진 종료 코드와 결과 파일을 남긴다.</li>
+          <li>성공과 실패를 출력 <b>첫 줄</b>에 고정 문구로 알린다.</li>
+          <li>여러 번 실행해도 결과가 같아야 한다.</li>
+          <li>되돌릴 수 없는 동작은 스크립트 맨 위에 경고로 적는다.</li>
+        </ul>
+        <p class="tiny">네 번째가 중요합니다. 실패하면 자동으로 다시 돌기 때문입니다.</p>
+      </section>
+
+      <!-- 20 — 정리와 다음 걸음 -->
+      <section>
+        <h3>정리</h3>
+        <div class="cols">
+          <div>
+            <h4>1단계</h4>
+            <p class="tiny">절차를 글로 내려 주세요<br><br>언제까지: ______</p>
+          </div>
+          <div>
+            <h4>2단계</h4>
+            <p class="tiny">직접 한 번 써 보세요<br><br>언제까지: ______</p>
+          </div>
+          <div>
+            <h4>3단계</h4>
+            <p class="tiny">확정하고 안전하게 만드세요<br><br>언제까지: ______</p>
+          </div>
+        </div>
+        <p class="small"><b>접수 방식은 오늘 함께 정합시다.</b></p>
+        <p class="tiny"><a href="../../">← 발표 기록으로 돌아가기</a></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: "slide"
+    });
+  </script>
+</body>
+</html>
