@@ -29,6 +29,7 @@ index.html, styles.css, main.js   랜딩(발표 목록)
 slides.json                       발표 목록 데이터 — 여기에만 등록하면 랜딩에 반영
 slides/<slug>/                    발표자료 (발표당 폴더 1개, reveal.js)
 vendor/reveal.js/                 reveal.js 6.0.1 공유 사본 (오프라인 발표 대비, MIT — LICENSE 동봉)
+vendor/pretendard/                한글 글꼴 Pretendard v1.3.9 — CSS에 base64 내장 (OFL — LICENSE 동봉)
 404.html                          잘못된 주소 안내
 .nojekyll                         Jekyll 빌드 비활성화 — 삭제 금지
 docs/blindspot/                   내부 작업 문서 (사이트 기능 아님)
@@ -48,6 +49,7 @@ docs/blindspot/                   내부 작업 문서 (사이트 기능 아님)
 - **제목의 영문이 전부 대문자로 나옵니다.** 테마 기본값입니다. `text-transform: none`을 제목에 걸어야 `Opencode`가 그대로 보입니다.
 - **reveal.js 확장 기능은 하나도 들어 있지 않습니다.** 코드 색칠, 발표자 노트, 마크다운 변환을 부르면 화면이 깨집니다. 순수 HTML로 쓰세요.
 - **화면 확대를 막지 마세요.** 인터넷에서 가져온 예제에는 확대 금지 설정이 붙어 있는 경우가 많습니다. 붙여넣을 때 지우세요.
-- **바깥에서 파일을 가져오지 마세요.** 웹폰트도 안 됩니다. 한글은 시스템 글꼴로 나오며, 줄바꿈은 `<br>`로 직접 잡습니다.
+- **바깥(CDN)에서 파일을 가져오지 마세요.** 글꼴이 필요하면 동봉본을 쓰세요 — 한글 글꼴(Pretendard)은 `vendor/pretendard/pretendard.css`에 base64로 내장되어 있어 인터넷 없이도 나옵니다. 글꼴 데이터를 줄이는 가공(서브셋)은 라이선스상 이름을 바꿔야 하므로 금지입니다. 줄바꿈은 `<br>`로 직접 잡습니다.
+- **덱 머리(head)에는 어두운 화면 선언이 필요합니다.** `html { background: #0e0e0e; color-scheme: dark; }` 두 줄이 없으면 여는 순간 흰 화면이 번쩍입니다. `sample`에 이미 들어 있습니다.
 - **그림을 상자와 선으로 그렸다면** 화면 낭독기용 설명을 함께 넣으세요. 그렇지 않으면 눈으로 보지 않는 사람에게는 빈 칸입니다.
 - `docs/blindspot/`의 문서도 인터넷에서 주소로 열립니다. 발표자료에 못 넣을 내용은 그 문서에도 넣지 마세요.
