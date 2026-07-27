@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: cds-agentic-work 덱 비주얼 개편</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: cds-agentic-work 덱 비주얼 개편</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>7월 30일 발표 자료의 글을 크게 줄이고, 그 자리를 그림과 등장 효과로 채웠습니다. 발표 내용과 장 수(20장), 이야기 순서는 그대로입니다. 모든 장의 제목은 결론을 말하는 문장이 되었습니다. 글자는 최소 24픽셀로 커졌습니다(이전 최소 8.9픽셀).</p>
+<p>그림 조각을 차례로 보여주는 단계 공개가 31회 생겼습니다. 그래서 발표자가 화살표 키를 누르는 총횟수는 19회에서 50회로 늘었습니다. 발표 전 리허설이 필요합니다.</p>
+<p>3·4·5장은 순서대로 넘길 때만 그림이 이어지며 자라나는 효과가 나옵니다. 순서를 건너뛰어 이동하면 효과 없이 완성된 그림만 보입니다. 발표 중 Esc 키를 누르면 전체 조망 화면이 열리는데, 아직 공개하지 않은 조각까지 모두 보입니다. 이 화면은 리허설 점검용입니다. 발표자 전용 화면이 따로 없으므로 청중에게 그대로 노출됩니다.</p>
+<p>화면에서 지워진 세부 설명은 이제 발표자가 말로 전달합니다. 이 덱은 발표 전용으로 정해져, 부록 장이나 별도 문서를 만들지 않았습니다.</p>
+<p>일반 인쇄(Ctrl+P)를 하면 흰 종이에 검정으로 찍히고, 새 그림은 배치가 그대로 보존됩니다. 별과 우주선 장식은 인쇄에서 숨겨집니다. 표지 우주선이 흰 얼룩으로 찍히던 기존 결함도 이번에 고쳤습니다. 전용 인쇄 주소로 열면 장당 1쪽, 총 20쪽이 나옵니다. 움직임 줄이기 설정을 켠 사람에게는 모든 움직임이 즉시 완료된 상태로 보입니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+// QUESTIONS: work-report가 이 배열을 실제 문항으로 교체한다.
+// 모든 문장은 비전문가 기준(work-report SKILL.md 4단계 규칙). explain은 필수 — 정답 확인 후 표시된다.
+const QUESTIONS = [
+  { q: "개편 전 발표자는 화살표 키를 총 19회 눌렀습니다. 개편 후에는 총 몇 회를 누르게 되나요?",
+    options: ["19회로 그대로다", "약 50회로 늘어난다", "약 100회로 늘어난다"], answer: 1,
+    explain: "단계 공개 31회가 새로 생겨 19 더하기 31, 약 50회가 됩니다. 그래서 발표 전 리허설이 필요합니다. 100회는 과장된 수치입니다." },
+  { q: "발표 중 3·4·5장을 순서대로 넘기지 않고 다른 장에서 4장으로 바로 이동했습니다. 화면에 무엇이 보이나요?",
+    options: ["그림이 자라나는 효과가 그대로 나온다", "화면이 비어 보인다", "완성된 그림만 바로 보인다"], answer: 2,
+    explain: "이어지며 자라는 효과는 앞장과 짝이 맞을 때만 나옵니다. 건너뛰면 효과 없이 완성 상태가 뜹니다. 내용이 사라지는 것은 아니므로 화면이 비지는 않습니다." },
+  { q: "발표 도중 실수로 Esc 키를 눌러 전체 조망 화면이 열렸습니다. 어떤 위험이 있나요?",
+    options: ["아직 공개 안 한 조각까지 청중에게 보인다", "발표 자료가 처음 장으로 되돌아간다", "특별한 위험이 없다"], answer: 0,
+    explain: "조망 화면은 리허설 점검용으로 미공개 조각까지 모두 표시하도록 바꿨습니다. 발표자 전용 화면이 없어 청중 스크린에 그대로 나갑니다. 처음 장으로 되돌아가지는 않습니다." },
+  { q: "화면에서 지워진 세부 설명(예: 도구 묶음별 상세 내용)은 이제 어떻게 전달되나요?",
+    options: ["덱 맨 뒤 부록 장에서 보여준다", "발표자가 말로 전달한다", "마지막 장의 문서 링크로 안내한다"], answer: 1,
+    explain: "이 덱은 발표 전용으로 확정되어 부록 장도 별도 문서도 만들지 않았습니다. 지워진 내용은 발표자의 말이 담당합니다. 그래서 발표를 안 들은 사람이 혼자 읽기에는 불친절해집니다." },
+  { q: "이 자료를 일반 인쇄(Ctrl+P)하면 그림은 어떻게 나오나요?",
+    options: ["흰 종이에 검정으로, 배치가 그대로 나온다", "화면처럼 어두운 배경 그대로 나온다", "그림은 인쇄에서 빠지고 글만 나온다"], answer: 0,
+    explain: "새 그림 방식은 종이에서도 배치가 보존되고 색이 검정으로 바뀝니다. 어두운 배경 그대로 나오는 것은 전용 인쇄 주소 쪽 방식입니다. 숨겨지는 것은 별·우주선 장식뿐입니다." },
+  { q: "움직임 줄이기 설정을 켠 사람이 이 덱을 보면 어떻게 되나요?",
+    options: ["애니메이션이 그대로 재생된다", "조각이 영영 나타나지 않는다", "모든 움직임이 즉시 완료된 상태로 보인다"], answer: 2,
+    explain: "등장 효과와 그림이 자라는 효과 모두 즉시 완료 상태로 나타납니다. 내용은 하나도 사라지지 않습니다. 애니메이션이 그대로 재생되던 빈틈도 이번에 막았습니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
