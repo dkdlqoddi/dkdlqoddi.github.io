@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: cds-agentic-architecture</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: cds-agentic-architecture</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>새로 추가된 발표자료는 에이전트 연동 시스템 전체 구조를 보여줍니다. 오픈코드에서 시작해 중개 서버를 거쳐 가상 작업망까지 도달하는 연결 과정을 순서대로 보여줍니다.</p>
+<p>가상 작업망 환경에서 담당자들이 에이전트를 위해 설정해야 할 세 가지 핵심 작업을 안내합니다. 첫째, 툴 설정값을 명시적으로 문서화해야 합니다. 둘째, 환경 스크립트는 기존 사용자의 셋업을 존중하고 단일 권한만 부여해 멈춤을 방지해야 합니다. 셋째, 단순한 검증 위반만 기계가 고치고 복잡한 에러는 사람이 승인하도록 로그 분석 기준을 마련해야 합니다.</p>
+<p>실제 백엔드 에이전트 코드나 통신 스크립트 구현은 이번 작업에서 철저히 제외했습니다. 본 저장소는 발표자료를 담는 곳이기 때문입니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "에이전트 연동 시스템 전체 구조를 설명하는 발표자료에서, 이번 작업에 포함되지 않은 구현 내용은 무엇입니까?", options: ["실제 백엔드 에이전트 코드 및 통신 스크립트 구현", "도메인 담당자가 설정해야 할 핵심 작업 3단계 안내", "가상 작업망 환경에서 담당자들이 유의할 설정값 문서화"], answer: 0,
+    explain: "실제 서버 인프라 코드나 백엔드 에이전트 통신 스크립트는 발표자료 영역이 아니므로 이번 작업에서 철저히 제외되었습니다. 도메인 담당자가 해야 할 세 가지 작업 안내는 발표 내용에 포함되어 있습니다." },
+  { q: "가상 작업망 환경의 스크립트를 준비할 때 에이전트가 중간에 멈추는 것을 막기 위해 담당자가 지켜야 할 규칙은 무엇입니까?", options: ["기존 권한을 덮어쓰고 통일된 권한을 강제 적용해야 합니다.", "단일 권한만 부여해 서브셸 초기화로 인한 멈춤을 방지해야 합니다.", "로그 분석 결과와 상관없이 항상 재실행을 반복해야 합니다."], answer: 1,
+    explain: "환경 설정 과정에서 셸이 통째로 바뀌며 에이전트가 무한정 멈추는 것을 방지하려면, 계정 전체를 바꾸는 대신 단일 작업에만 권한을 부여하는 방식을 써야 합니다." },
+  { q: "담당자가 에이전트를 위해 세워야 하는 '로그 분석 기준' 중에서 기계가 스스로 수정해도 되는 대상은 무엇입니까?", options: ["라이선스 용량이 초과되어 발생하는 오류", "툴 서버 자체에 연결할 수 없는 네트워크 에러", "기계가 스스로 고쳐도 안전한 사전 정의된 단순 위반"], answer: 2,
+    explain: "복잡한 물리 회로 오류를 기계가 마음대로 수정하면 치명적일 수 있습니다. 따라서 사전에 정의된 단순 위반(오프그리드 등)만 에이전트가 스스로 고칠 수 있도록 선을 그어야 합니다." },
+  { q: "환경 스크립트 작성 시 기존 사용자의 셋업을 우선 존중해야 하는 가장 큰 이유는 무엇입니까?", options: ["병렬 작업 시 기존 사용자의 작업 공간이 덮어써지는 사고를 막기 위함입니다.", "에이전트가 시스템의 모든 권한을 강제로 차지할 수 있도록 돕기 위함입니다.", "툴 설정값을 명시적으로 문서화하는 과정을 단축하기 위함입니다."], answer: 0,
+    explain: "동일한 환경(Perforce 워크스페이스 등)을 기계와 여러 사람이 동시에 사용할 때, 기존 셋업을 무시하면 다른 사람의 작업물을 덮어쓰는 사고가 발생할 수 있습니다. 이를 예방하기 위해 기존 셋업을 존중합니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

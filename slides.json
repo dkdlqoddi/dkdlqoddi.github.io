@@ -4,5 +4,11 @@
     "date": "2026-07-30",
     "description": "망이 분리된 환경에서 AI 코딩 도구를 쓰는 방법, 그리고 각 Domain에 필요한 세 단계 협조 요청",
     "dir": "cds-agentic-work"
+  },
+  {
+    "title": "CDS Agentic Architecture",
+    "date": "2026-07-28",
+    "description": "에이전트 연동 시스템 전체 구조 및 도메인 담당자 작업 3단계 안내",
+    "dir": "cds-agentic-architecture"
   }
 ]
