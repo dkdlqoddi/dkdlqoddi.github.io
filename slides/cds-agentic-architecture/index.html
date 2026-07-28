@@ -13,22 +13,24 @@
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
+  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
 
   <style>
     html { background: #0e0e0e; color-scheme: dark; }
 
     html:root {
-      --primary: #9d4edd;
-      --secondary: #00f5d4;
+      --primary: #fcfcfb;
+      --secondary: #9aa0a6;
       --r-background: #0e0e0e;
       --r-background-color: #0e0e0e;
       --r-main-color: #dedede;
       --r-heading-color: #fcfcfb;
       --r-heading-font-weight: 600;
       --r-heading-letter-spacing: -0.025em;
-      --r-main-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-heading-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
       --r-link-color: var(--primary);
       --r-link-color-hover: var(--secondary);
       --r-link-color-dark: #9aa0a6;
@@ -37,6 +39,8 @@
     }
 
     .reveal {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       font-weight: 500;
       letter-spacing: -0.01em;
       word-break: keep-all;

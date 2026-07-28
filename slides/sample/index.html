@@ -17,6 +17,8 @@
   <!-- 테마는 데크마다 자유. 동봉 테마: black.css(현재 기본), white.css (둘 다 오프라인 자기완결형) -->
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
   <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
+  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
 
   <style>
@@ -28,16 +30,16 @@
        black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다.
        html:root 표기인 이유: 테마 <link>와 이 블록의 순서가 바뀌어도 항상 이기도록 특이성을 한 단계 올림 */
     html:root {
-      --primary: #9d4edd;
-      --secondary: #00f5d4;
+      --primary: #fcfcfb;
+      --secondary: #9aa0a6;
       --r-background: #0e0e0e;
       --r-background-color: #0e0e0e;
       --r-main-color: #dedede;
       --r-heading-color: #fcfcfb;
       --r-heading-font-weight: 600;
       --r-heading-letter-spacing: -0.025em;
-      --r-main-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-heading-font: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
       --r-link-color: var(--primary);
       --r-link-color-hover: var(--secondary);
       --r-link-color-dark: #9aa0a6;
@@ -47,6 +49,8 @@
 
     /* 어두운 배경에서 가는 한글 획 뭉개짐 방지 + 한글 줄바꿈 */
     .reveal {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       font-weight: 500;
       letter-spacing: -0.01em;
       word-break: keep-all;
