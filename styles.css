@@ -99,66 +99,7 @@ body {
 /* ── 별 입자: 검은 우주의 흰 점 2겹 ─────────────────────
    좌표는 전 화면(0~100vw, 0~104vh)에 분포. 104vh까지 두는 이유:
    drift가 위로 3vh 흐르는 동안 하단이 비지 않게 하는 여유분. */
-.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-
-.stars::before,
-.stars::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: transparent;
-}
-
-/* 겹 1 — 또렷한 별 (2px × 40개) */
-.stars::before {
-  width: 2px;
-  height: 2px;
-  opacity: 0.55;
-  box-shadow:
-    3vw 7vh 0 0 var(--bright), 11vw 22vh 0 0 var(--bright), 19vw 4vh 0 0 var(--bright),
-    26vw 15vh 0 0 var(--bright), 33vw 28vh 0 0 var(--bright), 41vw 9vh 0 0 var(--bright),
-    48vw 19vh 0 0 var(--bright), 56vw 6vh 0 0 var(--bright), 63vw 24vh 0 0 var(--bright),
-    71vw 13vh 0 0 var(--bright), 79vw 27vh 0 0 var(--bright), 87vw 8vh 0 0 var(--bright),
-    94vw 18vh 0 0 var(--bright), 6vw 38vh 0 0 var(--bright), 15vw 49vh 0 0 var(--bright),
-    23vw 41vh 0 0 var(--bright), 31vw 55vh 0 0 var(--bright), 44vw 44vh 0 0 var(--bright),
-    52vw 58vh 0 0 var(--bright), 60vw 39vh 0 0 var(--bright), 68vw 52vh 0 0 var(--bright),
-    76vw 43vh 0 0 var(--bright), 84vw 57vh 0 0 var(--bright), 92vw 47vh 0 0 var(--bright),
-    98vw 33vh 0 0 var(--bright), 9vw 68vh 0 0 var(--bright), 18vw 79vh 0 0 var(--bright),
-    27vw 88vh 0 0 var(--bright), 36vw 72vh 0 0 var(--bright), 45vw 84vh 0 0 var(--bright),
-    53vw 95vh 0 0 var(--bright), 62vw 76vh 0 0 var(--bright), 70vw 90vh 0 0 var(--bright),
-    78vw 70vh 0 0 var(--bright), 86vw 66vh 0 0 var(--bright), 93vw 74vh 0 0 var(--bright),
-    97vw 97vh 0 0 var(--bright), 39vw 102vh 0 0 var(--bright), 65vw 103vh 0 0 var(--bright),
-    13vw 99vh 0 0 var(--bright);
-  animation: drift 140s linear infinite alternate;
-}
-
-/* 겹 2 — 희미한 별 (1px × 40개, 축소 변환 없이 크기 자체를 줄임) */
-.stars::after {
-  width: 1px;
-  height: 1px;
-  opacity: 0.3;
-  box-shadow:
-    7vw 13vh 0 0 var(--bright), 14vw 31vh 0 0 var(--bright), 22vw 9vh 0 0 var(--bright),
-    29vw 47vh 0 0 var(--bright), 37vw 18vh 0 0 var(--bright), 43vw 33vh 0 0 var(--bright),
-    50vw 12vh 0 0 var(--bright), 58vw 29vh 0 0 var(--bright), 66vw 44vh 0 0 var(--bright),
-    74vw 21vh 0 0 var(--bright), 81vw 36vh 0 0 var(--bright), 89vw 15vh 0 0 var(--bright),
-    96vw 42vh 0 0 var(--bright), 4vw 53vh 0 0 var(--bright), 12vw 61vh 0 0 var(--bright),
-    21vw 70vh 0 0 var(--bright), 30vw 64vh 0 0 var(--bright), 38vw 57vh 0 0 var(--bright),
-    47vw 66vh 0 0 var(--bright), 55vw 73vh 0 0 var(--bright), 64vw 61vh 0 0 var(--bright),
-    72vw 58vh 0 0 var(--bright), 80vw 63vh 0 0 var(--bright), 88vw 49vh 0 0 var(--bright),
-    95vw 60vh 0 0 var(--bright), 10vw 86vh 0 0 var(--bright), 25vw 95vh 0 0 var(--bright),
-    34vw 81vh 0 0 var(--bright), 49vw 91vh 0 0 var(--bright), 59vw 87vh 0 0 var(--bright),
-    69vw 97vh 0 0 var(--bright), 77vw 82vh 0 0 var(--bright), 85vw 93vh 0 0 var(--bright),
-    91vw 79vh 0 0 var(--bright), 99vw 88vh 0 0 var(--bright), 17vw 44vh 0 0 var(--bright),
-    2vw 26vh 0 0 var(--bright), 83vw 4vh 0 0 var(--bright), 57vw 49vh 0 0 var(--bright),
-    46vw 103vh 0 0 var(--bright);
-  animation: drift 200s linear infinite alternate-reverse;
-}
-
-@keyframes drift {
-  from { translate: 0 0; }
-  to { translate: 0 -3vh; }
-}
+.galaxy-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
 /* ── 흰 우주선 (장식, 첫 화면 전용) ─────────────────────
    부유: 주기 9초, 이동량 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
@@ -347,7 +288,7 @@ main { position: relative; z-index: 1; }
 @media print {
   html, body { background: #fff; }
   body, .title, .card-title, .tagline, .card-desc, .mono, .foot-sep { color: #000; }
-  .stars, .ship, .hud, .scroll-cue { display: none; }
+  .galaxy-bg, .ship, .hud, .scroll-cue { display: none; }
   .card { opacity: 1; translate: 0 0; border-color: #000; }
   .log-rule { border-top-color: #000; }
 }
@@ -360,7 +301,7 @@ main { position: relative; z-index: 1; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .stars::before, .stars::after { animation: none; }
+  /* JS Canvas .galaxy-bg will handle reduced-motion internally */
   .ship { animation: none; }
   .card { opacity: 1; translate: 0 0; }
 }
