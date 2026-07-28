@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 다중 은하수 패럴랙스 분산 배치</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 다중 은하수 패럴랙스 분산 배치</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+기존 마우스 포인터를 쫓아다니던 단일 은하계를 대신하여, 화면 곳곳에 서로 다른 크기와 원근감을 지닌 총 5개의 은하를 분산 배치했습니다.
+마우스를 움직이면 멀리 있는 은하는 천천히, 가까이 있는 은하는 빠르게 부유하는 시차(Parallax) 효과를 구현했습니다. 
+터치 기기에서도 화면 튐 없이 부드럽게 스크롤링이 가능하며, 브라우저 화면 크기를 조절해도 반응형으로 은하들의 위치 비율이 유지됩니다.
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "마우스 커서를 움직일 때 화면의 은하들은 어떻게 반응합니까?", options: ["모든 은하가 마우스를 똑같은 속도로 쫓아다닌다.", "멀리 있는 은하는 느리게, 가까운 은하는 빠르게 부유하며 입체감을 준다.", "마우스와 완전히 반대 방향으로 무조건 도망친다.", "마우스 움직임과 무관하게 멈춰있는다."], answer: 1,
+    explain: "시차(Parallax) 효과를 적용해 각 은하의 깊이(원근감)에 따라 마우스 움직임에 서로 다른 속도로 반응하도록 설계했습니다." },
+  { q: "이번 업데이트로 화면에 띄워진 은하는 총 몇 개입니까?", options: ["1개", "3개", "5개", "100개"], answer: 2,
+    explain: "화면 곳곳을 조화롭게 채우면서 성능 한도(입자 100개)를 지키기 위해, 총 5개의 은하를 분산 배치하고 각각 20개의 파티클을 배정했습니다." },
+  { q: "창 크기를 줄이거나 늘릴(리사이즈) 때, 은하들의 위치는 어떻게 됩니까?", options: ["절대 위치가 고정되어 있어 창 밖에 가려져 버립니다.", "정해진 화면 비율에 맞춰 새 위치로 반응형 재배치됩니다.", "창을 조절하면 애니메이션이 중지되고 은하가 모두 사라집니다.", "화면 좌상단 구석으로 몽땅 몰려 뭉치게 됩니다."], answer: 1,
+    explain: "고정된 픽셀 값이 아닌 화면 비율을 사용해 좌표를 계산하므로, 리사이징 시에도 알맞게 분산된 위치를 반응형으로 유지합니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
