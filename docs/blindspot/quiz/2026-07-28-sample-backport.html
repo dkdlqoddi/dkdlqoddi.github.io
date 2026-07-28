@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: sample 덱 역이식</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: sample 덱 역이식</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>발표 덱에서 만든 표현 기법을 견본 덱(sample)에 물려주었습니다. 견본은 안내문 6장에서 8장이 되었습니다. 새로 생긴 "보너스" 두 장은 안내 4단계 뒤, 마지막 장 앞에 있습니다. 첫 데모 장은 "복사, 수정, 등록" 세 상자가 화살표 키마다 차례로 나타납니다. 둘째 데모 장으로 넘기면 같은 상자들이 미끄러지며 "공개" 상자가 더해집니다.</p>
+<p>예전 견본을 종이에 인쇄하면 표지의 우주선 그림이 흰 종이에 흰 덩어리로 찍혔습니다. 이번에 고쳐서 이제 인쇄물에서 우주선은 아예 나오지 않습니다. 별 배경은 원래부터 정상적으로 숨었습니다. 새 그림들은 인쇄하면 검정으로 바뀌어 배치 그대로 나옵니다.</p>
+<p>그림마다 화면 낭독기용 설명 문단이 숨겨져 있습니다. 이 문단은 화면과 종이 어디서도 글자가 보이지 않지만, 종이에서는 빈 줄만큼 공백을 차지합니다. 키 배지(화살표 표시)는 크기를 따로 정하지 않고 주변 글자를 따라갑니다. 그래서 작은 글자 안에서는 적당하지만, 큰 본문에 직접 쓰면 배지도 같이 커집니다.</p>
+<p>견본과 발표 덱의 공통 안전 규칙은 이제 같습니다. 다만 "작은 글자" 크기는 견본과 발표 덱이 서로 다릅니다. 한쪽 덱의 내용을 다른 덱으로 복사하면 글자 크기가 말없이 바뀝니다. 방문자가 보는 발표 목록에는 변화가 없습니다 — 견본은 목록에 일부러 넣지 않은 내부용이기 때문입니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+// QUESTIONS: work-report가 이 배열을 실제 문항으로 교체한다.
+// 모든 문장은 비전문가 기준(work-report SKILL.md 4단계 규칙). explain은 필수 — 정답 확인 후 표시된다.
+const QUESTIONS = [
+  { q: "개편 전 견본 덱을 종이에 인쇄했습니다. 표지는 어떻게 나왔었나요?",
+    options: ["우주선이 흰 종이에 흰 덩어리로 찍혔다", "별 배경이 까만 점으로 가득 찍혔다", "표지 전체가 인쇄에서 빠졌다"], answer: 0,
+    explain: "표지 우주선을 숨기는 규칙이 발표 도구 자체 인쇄 규칙에 져서 흰 덩어리로 찍혔습니다. 이번에 최우선 표시(!important)를 붙여 고쳤습니다. 별 배경은 원래부터 정상적으로 숨었습니다." },
+  { q: "개편된 견본을 처음부터 끝까지 넘기면 어떤 순서로 보이나요?",
+    options: ["데모 2장이 먼저 나오고 안내 4단계가 뒤따른다", "안내 4단계, 데모 2장, 마지막 장 순서다", "데모는 마지막 장 뒤에 숨어 있다"], answer: 1,
+    explain: "데모 두 장은 안내 4단계 뒤, 마지막 장 앞에 있습니다. 절차를 다 배운 뒤 표현 기법을 보는 순서입니다. 데모 소재도 같은 절차(복사, 수정, 등록, 공개)라 이야기가 이어집니다." },
+  { q: "그림에 숨겨 둔 화면 낭독기용 설명 문단을 종이에 인쇄하면 어떻게 되나요?",
+    options: ["설명 글자가 그대로 인쇄된다", "아무 흔적도 남지 않는다", "글자는 안 보이고 빈 줄 공백만 남는다"], answer: 2,
+    explain: "발표 도구의 인쇄 규칙이 숨김 배치를 일부 되돌려서 자리만 차지하게 됩니다. 글자는 여전히 보이지 않습니다. 발표 덱에도 있던 현상이고, 견본을 복사하는 새 덱에도 같이 전달됩니다." },
+  { q: "키 배지(화살표 표시)를 견본의 큰 본문 문장에 직접 옮겨 쓰면 어떻게 되나요?",
+    options: ["배지가 본문 크기만큼 커진다", "배지가 알아서 작게 유지된다", "배지가 화면에서 사라진다"], answer: 0,
+    explain: "배지는 크기를 따로 정하지 않고 주변 글자를 따라갑니다. 작은 글자 안에서는 적당하지만 큰 본문에서는 같이 커집니다. 너무 작아지는 문제를 막는 방식이라 커지는 쪽은 막지 않습니다." },
+  { q: "발표 덱의 문장 한 단락을 견본 덱으로 복사해 붙였습니다. 무엇을 확인해야 하나요?",
+    options: ["복사하면 자동으로 크기가 맞춰지므로 확인할 것 없다", "그림이 검정으로 바뀌었는지 확인한다", "글자 크기가 달라졌는지 확인한다"], answer: 2,
+    explain: "두 덱의 '작은 글자' 크기가 서로 다릅니다. 같은 이름을 쓰지만 값이 달라 복사하면 크기가 말없이 바뀝니다. 그림 검정 전환은 인쇄할 때 얘기라 이 상황과 무관합니다." },
+  { q: "이번 개편이 배포된 뒤, 사이트 방문자가 보는 발표 목록은 어떻게 되나요?",
+    options: ["견본 덱이 목록에 새로 나타난다", "아무 변화가 없다", "발표 목록 순서가 바뀐다"], answer: 1,
+    explain: "견본은 복사용 원본이라 목록에 일부러 넣지 않습니다. 이번에도 목록 파일은 손대지 않았습니다. 주소를 직접 아는 사람만 견본을 열 수 있는 상태가 유지됩니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

@@ -60,15 +60,26 @@
     }
     /* 두 테마 모두 제목을 대문자로 바꾼다 — 끄지 않으면 "Opencode"가 "OPENCODE"로 보인다 */
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+    /* 글자 하한: 캔버스(960x700) 기준 24px = 0.58em.
+       크기는 컨테이너가 아니라 잎 클래스에서 한 번만 지정할 것 —
+       중첩되면 곱해져서 하한 아래로 떨어진다 (cds 덱에서 8.9px까지 떨어졌던 실패 사례). */
     .reveal .kbd {
       font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.7em;
+      /* 크기 미지정: 주변 글자를 그대로 물려받는다 — 0.7em을 두면 .small 안에서 곱해져 하한 미달 */
       border: 1px solid currentColor;
       border-radius: 6px;
       padding: 0.05em 0.4em;
     }
-    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; }
+    /* pre 크기: 테마 기본 0.55em(23.1px)이 하한 미달이라 올린다 */
+    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; font-size: 0.58em; }
     .reveal .small { font-size: 0.6em; }
+    .reveal .eyebrow {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.58em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9aa0a6;
+    }
 
     /* 검은 우주의 흰 별 (장식) — 슬라이드 캔버스 밖 고정 층에 둔다 */
     .deck-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
@@ -115,22 +126,56 @@
       50% { translate: 0 -4px; rotate: -1.4deg; }
     }
 
-    /* 움직임 줄이기: 장식 전부 정지 (새 덱마다 이 블록을 유지할 것) */
+    /* 구조 그림 (인라인 SVG) — CSS 상자(div) 대신 SVG인 이유:
+       인쇄에서 reveal이 모든 div를 display:block으로 리셋해 flex 배치가 무너지지만
+       svg는 배치가 보존된다. 좌표는 viewBox로 고정되어 글자를 키워도 폭이 안 넘친다.
+       색은 전부 currentColor — 기본 #dedede, 위계는 .dim/.bright 두 클래스로만.
+       뜻을 나르는 선·테두리는 #9aa0a6 이상만 쓸 것 (#2a2b2a는 대비 1.36:1 — 장식 전용). */
+    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
+    .reveal .diag .dim { color: #9aa0a6; }
+    .reveal .diag .bright { color: #fcfcfb; }
+    .reveal .diag text { font-family: inherit; }
+    /* SVG 내부 요소에 CSS transform(모핑·fragment 등장)이 먹으려면 필수 */
+    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
+    /* 그림마다 낭독기용 전체 설명을 이 클래스의 문단으로 바로 앞에 둘 것 (조각내지 말 것) */
+    .reveal .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      overflow: hidden; clip-path: inset(50%);
+    }
+
+    /* 리허설 조망(Esc): 코어가 미공개 fragment의 visibility를 숨긴 채 두어
+       빈칸으로 보인다 — 조망을 넘침 검사 도구로 쓰므로 보정한다.
+       주의: 발표 중 Esc를 누르면 미공개 내용도 청중에게 보인다. */
+    .reveal.overview .slides section .fragment { visibility: visible; }
+
+    /* 움직임 줄이기: 장식·전환 전부 정지 (새 덱마다 이 블록을 유지할 것)
+       마지막 줄: 모핑(auto-animate)의 주입 스타일은 !important라 * 규칙을 이긴다 —
+       같은 !important에 더 높은 특이성으로 눌러야 실제로 멈춘다. */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
       }
       .deck-stars::before, .deck-stars::after, .cover-ship { animation: none !important; }
+      .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
 
     /* 인쇄 방어 — 별·우주선은 종이에 찍지 않는다.
-       직접 만든 도형(div/span)이 있는 덱은 여기에
-       html:not(.print-pdf) 조건으로 검정 되돌림 규칙을 추가할 것
-       (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
+       !important인 이유: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로
+       이겨 우주선이 흰 종이에 흰 얼룩으로 찍힌다. 모핑이 남긴 주입 스타일도 !important라
+       색 되돌림 규칙에도 !important가 필요하다.
+       SVG 그림을 currentColor로만 그리면 아래 svg 한 규칙로 검정 되돌림이 끝난다.
+       직접 만든 도형(div/span)이 있는 덱은 여기에 html:not(.print-pdf) 조건으로
+       색 되돌림 규칙을 추가할 것 (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
     @media print {
-      .deck-stars, .cover-ship { display: none; }
+      html:not(.print-pdf) .reveal svg,
+      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
+      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
+      .deck-stars, .cover-ship { display: none !important; }
     }
   </style>
 </head>
@@ -152,7 +197,7 @@
             <circle cx="104" cy="30" r="6.5" fill="none" stroke="#0e0e0e" stroke-width="2.6"/>
           </svg>
         </div>
-        <p style="font-size:0.5em; letter-spacing:0.12em;">DKDLQODDI · PRESENTATION LOG</p>
+        <p class="eyebrow">DKDLQODDI · PRESENTATION LOG</p>
         <h2>새 발표자료<br>추가 방법</h2>
         <p class="small">이 데크 자체가 새 발표의 본보기입니다.<br>
         <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
@@ -193,6 +238,71 @@
         <code>vendor/</code>의 공유 사본을 쓰므로 인터넷 없이도 동작합니다.</p>
       </section>
 
+      <!-- 데모 1/2 — 그림 + 단계 공개 (이 두 장이 표현 기법의 실물 견본이다)
+           · 그림은 인라인 SVG + currentColor: 인쇄에서 배치가 보존되고 자동으로 검정이 된다
+           · role="img" + aria-label + 바로 앞의 visually-hidden 문단은 한 세트다 (낭독기 대응)
+           · class="fragment fade-up"을 SVG <g>에 붙이면 조각이 화살표 키마다 차례로 등장한다
+           · data-auto-animate: 다음 장과 짝 — 같은 data-id 상자가 미끄러지며 이어진다
+           · 주의: 모핑이 켜진 장 쌍에서는 data-transition="zoom"이 무시된다 (둘 다는 불가) -->
+      <section data-auto-animate>
+        <h3>보너스 — 단계 공개</h3>
+        <p class="visually-hidden">그림 설명: 복사, 수정, 등록 세 상자가 차례로 나타나며 화살표로 이어집니다.</p>
+        <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="복사, 수정, 등록 세 단계가 화살표로 이어지는 그림" xmlns="http://www.w3.org/2000/svg">
+          <g data-id="copy">
+            <rect x="40" y="50" width="220" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">1 복사</text>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="266" y1="95" x2="326" y2="95" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="338,95 324,88 324,102" fill="currentColor" class="dim"/>
+            <g data-id="edit">
+              <rect x="340" y="50" width="220" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="450" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">2 수정</text>
+            </g>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="566" y1="95" x2="626" y2="95" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="638,95 624,88 624,102" fill="currentColor" class="dim"/>
+            <g data-id="reg">
+              <rect x="640" y="50" width="220" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="750" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">3 등록</text>
+            </g>
+          </g>
+        </svg>
+        <p class="small">화살표 키를 누르면 그림 조각이 차례로 나타납니다.</p>
+      </section>
+
+      <!-- 데모 2/2 — 모핑(auto-animate)
+           · 앞 장과 같은 좌표계(viewBox)에서 같은 data-id 상자가 새 위치로 미끄러진다
+           · 짝(data-id) 없는 새 요소("4 공개" 상자)는 자동 페이드로 등장한다 — 기본 동작 시연
+           · 자동 페이드가 fragment와 겹쳐 거슬리면 data-auto-animate-unmatched="false"를
+             그 요소에 붙일 것 (실제 사용례: slides/cds-agentic-work/) -->
+      <section data-auto-animate>
+        <h3>보너스 — 모핑</h3>
+        <p class="visually-hidden">그림 설명: 세 상자가 왼쪽으로 좁혀지며 이동하고, 넷째 상자 공개가 더해집니다.</p>
+        <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="세 단계 상자가 이동하고 공개 상자가 더해지는 그림" xmlns="http://www.w3.org/2000/svg">
+          <g data-id="copy">
+            <rect x="40" y="50" width="180" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="130" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">1 복사</text>
+          </g>
+          <g data-id="edit">
+            <rect x="250" y="50" width="180" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="340" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">2 수정</text>
+          </g>
+          <g data-id="reg">
+            <rect x="460" y="50" width="180" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="550" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">3 등록</text>
+          </g>
+          <g>
+            <line x1="646" y1="95" x2="666" y2="95" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="678,95 664,88 664,102" fill="currentColor" class="dim"/>
+            <rect x="680" y="50" width="180" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" class="bright"/>
+            <text x="770" y="105" text-anchor="middle" font-size="28" font-weight="600" fill="currentColor" class="bright">4 공개</text>
+          </g>
+        </svg>
+        <p class="small">장을 넘기면 같은 상자가 미끄러지며 이어집니다.</p>
+      </section>
+
       <section>
         <h2>끝.</h2>
         <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
@@ -205,7 +315,10 @@
   <script>
     Reveal.initialize({
       hash: true,
-      transition: "slide"
+      transition: "slide",
+      // 전용 인쇄 주소(?view=print)에서 fragment 단계마다 쪽이 복제되는 것을
+      // 막는다 — 장당 1쪽(모든 단계 표시)으로 고정. 일반 인쇄(Ctrl+P)는 무관.
+      pdfSeparateFragments: false
     });
   </script>
 </body>
