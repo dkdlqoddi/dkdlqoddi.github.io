@@ -103,7 +103,17 @@
       count.textContent = String(valid.length).padStart(2, "0") + " ENTRIES";
       reveal(cards);
     })
-    .catch(function () {
-      showStatus("목록을 불러오지 못했습니다. 새로고침해 주세요.");
+    .catch(function (err) {
+      showStatus("데이터를 불러오지 못했습니다. 네트워크 상태를 확인해 주세요. (" + err.message + ")");
     });
+
+  // 스크롤 시 scrolled 클래스 추가 (도입부 애니메이션 및 카드 등장)
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      document.body.classList.add('scrolled');
+    } else {
+      document.body.classList.remove('scrolled');
+    }
+  });
+
 })();
