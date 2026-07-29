@@ -85,25 +85,9 @@ const planetFragmentShader = `
 // 전역 객체 window.THREE 를 사용 (UMD 라이브러리)
 
 
-const cloudVertexShader = `
-  varying vec3 vColor;
-  void main() {
-    vColor = color;
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = 40.0 * (100.0 / -mvPosition.z);
-  }
-`;
 
-const cloudFragmentShader = `
-  varying vec3 vColor;
-  void main() {
-    float strength = distance(gl_PointCoord, vec2(0.5));
-    strength = 1.0 - strength;
-    strength = pow(strength, 1.5);
-    gl_FragColor = vec4(vColor, strength * 0.1);
-  }
-`;
+
+
 
 // 은하수 파라미터
 const params = {
@@ -119,10 +103,10 @@ const params = {
 
 let scene, camera, renderer, points, geometry, material;
 
-let giantStars, giantGeometry, giantMaterial;
-let clouds, cloudGeometry, cloudMaterial;
+let giantStarLayers = [];
+
 let comets = [];
-const COMET_COUNT = 5;
+const COMET_COUNT = 20;
 
 let cards = [];
 let anchors = [];
@@ -162,7 +146,6 @@ function init() {
 
   generateGalaxy();
   generateGiantStars();
-  generateClouds();
   initComets();
 
 
@@ -246,13 +229,12 @@ function init() {
     if (!prefersReducedMotion && points) {
       points.rotation.y = elapsedTime * 0.05;
     }
-    if (!prefersReducedMotion && giantStars) {
-      giantStars.rotation.y = elapsedTime * 0.05;
+    if (!prefersReducedMotion && giantStarLayers.length > 0) {
+      giantStarLayers.forEach(layer => {
+        layer.rotation.y = elapsedTime * 0.05;
+      });
     }
-    if (!prefersReducedMotion && clouds) {
-      clouds.rotation.y = elapsedTime * 0.04; // 구름은 살짝 느리게
-    }
-    if (!prefersReducedMotion) {
+if (!prefersReducedMotion) {
       updateComets();
     }
 
@@ -364,108 +346,75 @@ function generateGalaxy() {
 }
 
 
+
 function generateGiantStars() {
-  if (giantStars !== undefined) {
-    scene.remove(giantStars);
-    giantGeometry.dispose();
-    giantMaterial.dispose();
+  // Clear old layers
+  if (giantStarLayers.length > 0) {
+    giantStarLayers.forEach(layer => {
+      scene.remove(layer);
+      layer.geometry.dispose();
+      layer.material.dispose();
+    });
+    giantStarLayers = [];
   }
 
-  giantGeometry = new THREE.BufferGeometry();
-  const count = 300;
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-  
   const baseColors = params.colors.map(c => new THREE.Color(c));
+  
+  // Layer config: [count, sizeMultiplier]
+  const layers = [
+    [800, 3],
+    [400, 5],
+    [200, 7],
+    [100, 10]
+  ];
 
-  for (let i = 0; i < count; i++) {
-    const i3 = i * 3;
-    const radius = Math.random() * params.radius;
-    const spinAngle = radius * params.spin;
-    const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
+  layers.forEach(config => {
+    const [count, sizeMult] = config;
+    const giantGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
 
-    const randomX = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
-    const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius * 0.5;
-    const randomZ = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      const radius = Math.random() * params.radius;
+      const spinAngle = radius * params.spin;
+      const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
 
-    positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
-    positions[i3 + 1] = randomY;
-    positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+      const randomX = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
+      const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius * 0.5;
+      const randomZ = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
 
-    const color = baseColors[Math.floor(Math.random() * baseColors.length)].clone();
-    // 50% chance to be bright white giant
-    if (Math.random() < 0.5) color.lerp(new THREE.Color('#ffffff'), 0.8);
+      positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+      positions[i3 + 1] = randomY;
+      positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+      const color = baseColors[Math.floor(Math.random() * baseColors.length)].clone();
+      // 50% chance to be bright white giant
+      if (Math.random() < 0.5) color.lerp(new THREE.Color('#ffffff'), 0.8);
+      
+      colors[i3] = color.r;
+      colors[i3 + 1] = color.g;
+      colors[i3 + 2] = color.b;
+    }
     
-    colors[i3] = color.r;
-    colors[i3 + 1] = color.g;
-    colors[i3 + 2] = color.b;
-  }
-  
-  giantGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  giantGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    giantGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    giantGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-  giantMaterial = new THREE.PointsMaterial({
-    size: params.size * 5, // 5배 큼
-    sizeAttenuation: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true
+    const giantMaterial = new THREE.PointsMaterial({
+      size: params.size * sizeMult,
+      sizeAttenuation: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true
+    });
+
+    const pointsObj = new THREE.Points(giantGeometry, giantMaterial);
+    scene.add(pointsObj);
+    giantStarLayers.push(pointsObj);
   });
-
-  giantStars = new THREE.Points(giantGeometry, giantMaterial);
-  scene.add(giantStars);
 }
 
 
-function generateClouds() {
-  if (clouds !== undefined) {
-    scene.remove(clouds);
-    cloudGeometry.dispose();
-    cloudMaterial.dispose();
-  }
-
-  const count = 2000;
-  cloudGeometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-  
-  const baseColors = params.colors.map(c => new THREE.Color(c));
-
-  for (let i = 0; i < count; i++) {
-    const i3 = i * 3;
-    const radius = Math.random() * params.radius * 0.8;
-    const spinAngle = radius * params.spin;
-    const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
-
-    const randomX = (Math.random() - 0.5) * 30;
-    const randomY = (Math.random() - 0.5) * 15;
-    const randomZ = (Math.random() - 0.5) * 30;
-
-    positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
-    positions[i3 + 1] = randomY;
-    positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
-
-    const color = baseColors[Math.floor(Math.random() * baseColors.length)].clone();
-    colors[i3] = color.r;
-    colors[i3 + 1] = color.g;
-    colors[i3 + 2] = color.b;
-  }
-  
-  cloudGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  cloudGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  cloudMaterial = new THREE.ShaderMaterial({
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true,
-    vertexShader: cloudVertexShader,
-    fragmentShader: cloudFragmentShader,
-    transparent: true
-  });
-
-  clouds = new THREE.Points(cloudGeometry, cloudMaterial);
-  scene.add(clouds);
-}
 
 
 function initComets() {
@@ -492,7 +441,7 @@ function createComet() {
   comets.push({
     mesh: comet,
     pos: new THREE.Vector3(Math.cos(theta) * radius, y, Math.sin(theta) * radius),
-    vel: new THREE.Vector3((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 2).normalize().multiplyScalar(0.5 + Math.random() * 1.5),
+    vel: new THREE.Vector3((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 2).normalize().multiplyScalar(0.5 + Math.pow(Math.random(), 2) * 5.0),
     history: [],
     life: 0,
     maxLife: 200 + Math.random() * 200
