@@ -105,7 +105,7 @@ let animationFrameId = null;
 // 카메라 시점 제어용 변수 (구면 좌표계)
 let isDragging = false;
 let theta = 0;
-let phi = Math.PI / 3; // 약간 위에서 내려다보기
+let phi = Math.PI * 0.45; // 옆면을 더 바라보도록 각도 조정 (90도에 가깝게)
 const camRadius = 180;
 
 let targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
@@ -121,7 +121,7 @@ function init() {
   scene = new THREE.Scene();
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 100, 150);
+  camera.position.set(targetCameraX, targetCameraY, targetCameraZ);
   camera.lookAt(0, 0, 0);
 
   renderer = new THREE.WebGLRenderer({
