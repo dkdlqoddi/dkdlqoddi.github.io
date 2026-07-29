@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 배경 버그 수정 및 패럴랙스 완전 제거</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 배경 버그 수정 및 패럴랙스 완전 제거</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+발표자료 슬라이드에 접근했을 때 글자가 보이지 않고 검은 우주만 보이던 현상을 해결했습니다. 원인은 개별 슬라이드 파일들 안의 CSS가 과거 버전(`.deck-stars`)에 머물러 있어 캔버스가 고정(Fixed)되지 않고 슬라이드 본문을 화면 밑으로 밀어버렸기 때문이었습니다. 모든 슬라이드 파일의 내장 CSS를 최신으로 교체하여 다시 본문이 배경 위로 뜨게 고쳤습니다.<br><br>
+아울러 사용자 피드백에 따라 배경 은하수에서 마우스 반응형 움직임(Parallax)을 전부 떼어냈습니다. 이제 마우스를 마구 휘저어도 우주는 위치를 바꾸지 않고 그저 제자리에서 천천히 자전하기만 합니다.
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "발표자료 슬라이드 본문이 보이지 않았던 진짜 원인은 무엇입니까?", options: ["자바스크립트(JS) 애니메이션 코드가 슬라이드의 글씨를 투명하게 지워버렸다.", "슬라이드 파일 안의 CSS가 구버전이라, 캔버스 배경이 고정되지 않고 본문을 밑으로 밀어내버렸다.", "reveal.js 프레임워크 자체의 최신 버전 호환성 버그이다.", "마우스 패럴랙스 효과의 속도가 너무 빨라서 글씨가 날아갔다."], answer: 1,
+    explain: "개별 슬라이드 파일 내부의 `<style>`이 구버전 `.deck-stars`인 채로 방치되어, 새 캔버스가 `position: static` 상태가 되며 화면 레이아웃을 망가뜨린 것이 원인이었습니다." },
+  { q: "마우스를 움직일 때 배경 은하수들의 반응은 현재 어떻게 처리되었습니까?", options: ["기존처럼 3D 공간을 부유하듯 멀고 가까움에 따라 빠르게 반응한다.", "오로지 모바일 터치 환경에서만 튕기듯이 반응하도록 엣지케이스만 열어두었다.", "발표에 집중할 수 있도록 마우스 추적 코드를 완전히 없애버려, 제자리에서 혼자 돌기만 한다.", "마우스를 올리면 은하의 크기가 2배로 커지도록 수정했다."], answer: 2,
+    explain: "집중을 분산시키지 않기 위해 사용자 요청대로 `mousemove` 등 이벤트를 전량 삭제하고 제자리 자전만 유지했습니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

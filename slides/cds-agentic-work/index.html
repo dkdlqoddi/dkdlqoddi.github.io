@@ -92,40 +92,7 @@
     /* ── 검은 우주의 흰 별 (장식) ─────────────────────────
        슬라이드 캔버스(.slides)는 확대 배율이 곱해지므로 별은 그 밖의
        고정 층에 둔다. 내용 집중을 위해 랜딩보다 수를 줄이고 흐리게. */
-    .deck-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .deck-stars::before,
-    .deck-stars::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      background: transparent;
-    }
-    .deck-stars::before {
-      width: 2px; height: 2px; opacity: 0.4;
-      box-shadow:
-        5vw 9vh 0 0 #fcfcfb, 17vw 26vh 0 0 #fcfcfb, 28vw 7vh 0 0 #fcfcfb,
-        39vw 19vh 0 0 #fcfcfb, 55vw 5vh 0 0 #fcfcfb, 70vw 14vh 0 0 #fcfcfb,
-        84vw 9vh 0 0 #fcfcfb, 95vw 24vh 0 0 #fcfcfb, 8vw 55vh 0 0 #fcfcfb,
-        22vw 74vh 0 0 #fcfcfb, 34vw 90vh 0 0 #fcfcfb, 47vw 79vh 0 0 #fcfcfb,
-        62vw 92vh 0 0 #fcfcfb, 76vw 76vh 0 0 #fcfcfb, 88vw 88vh 0 0 #fcfcfb,
-        96vw 63vh 0 0 #fcfcfb, 3vw 84vh 0 0 #fcfcfb, 51vw 102vh 0 0 #fcfcfb;
-      animation: deck-drift 160s linear infinite alternate;
-    }
-    .deck-stars::after {
-      width: 1px; height: 1px; opacity: 0.22;
-      box-shadow:
-        11vw 15vh 0 0 #fcfcfb, 24vw 38vh 0 0 #fcfcfb, 43vw 11vh 0 0 #fcfcfb,
-        60vw 22vh 0 0 #fcfcfb, 78vw 30vh 0 0 #fcfcfb, 91vw 42vh 0 0 #fcfcfb,
-        6vw 33vh 0 0 #fcfcfb, 15vw 92vh 0 0 #fcfcfb, 30vw 61vh 0 0 #fcfcfb,
-        41vw 96vh 0 0 #fcfcfb, 57vw 68vh 0 0 #fcfcfb, 69vw 83vh 0 0 #fcfcfb,
-        82vw 59vh 0 0 #fcfcfb, 93vw 97vh 0 0 #fcfcfb, 66vw 47vh 0 0 #fcfcfb,
-        2vw 68vh 0 0 #fcfcfb;
-      animation: deck-drift 220s linear infinite alternate-reverse;
-    }
-    @keyframes deck-drift {
-      from { translate: 0 0; }
-      to { translate: 0 -3vh; }
-    }
+    .galaxy-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
     /* ── 표지의 흰 우주선 (장식) ──────────────────────────
        부유: 주기 9초, 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
@@ -147,7 +114,8 @@
         transition-duration: 0.01ms !important;
         transition-delay: 0s !important;
       }
-      .deck-stars::before, .deck-stars::after, .cover-ship { animation: none !important; }
+      /* JS Canvas .galaxy-bg will handle reduced-motion internally */
+      .cover-ship { animation: none !important; }
       .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
 
@@ -170,7 +138,7 @@
       html:not(.print-pdf) .reveal svg * { color: #000 !important; }
       /* !important: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로 이겨
          우주선이 흰 종이에 흰 얼룩으로 찍히는 것을 막는다 */
-      .deck-stars, .cover-ship { display: none !important; }
+      .galaxy-bg, .cover-ship { display: none !important; }
     }
 
     /* 리허설 조망(Esc): 코어가 fragment의 opacity만 되돌리고 visibility는

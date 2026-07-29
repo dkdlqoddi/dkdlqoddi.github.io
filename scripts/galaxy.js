@@ -16,13 +16,6 @@
   const particlesPerGalaxy = 20;
   let galaxies = [];
 
-  // Mouse tracking (normalized offset from center)
-  // (-1.0 to 1.0 depending on mouse position)
-  let mouseTargetX = 0;
-  let mouseTargetY = 0;
-  let mouseLerpX = 0;
-  let mouseLerpY = 0;
-  
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -37,37 +30,6 @@
 
   window.addEventListener('resize', resize);
   
-  function handlePointer(clientX, clientY) {
-    if (width === 0 || height === 0) return;
-    // Calculate relative to center: -1.0 to 1.0
-    // To prevent galaxies from flying completely off-screen on ultra-wides,
-    // we clamp the offset.
-    const offsetX = (clientX - width / 2) / (width / 2);
-    const offsetY = (clientY - height / 2) / (height / 2);
-    
-    mouseTargetX = Math.max(-1, Math.min(1, offsetX));
-    mouseTargetY = Math.max(-1, Math.min(1, offsetY));
-  }
-
-  window.addEventListener('mousemove', (e) => {
-    handlePointer(e.clientX, e.clientY);
-  });
-  
-  window.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
-      handlePointer(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  }, { passive: true });
-  
-  window.addEventListener('touchstart', (e) => {
-    if (e.touches.length > 0) {
-      handlePointer(e.touches[0].clientX, e.touches[0].clientY);
-      // Immediately set lerp to target to prevent jump on touch
-      mouseLerpX = mouseTargetX;
-      mouseLerpY = mouseTargetY;
-    }
-  }, { passive: true });
-
   function initGalaxies() {
     galaxies = [];
     const arms = 3;
@@ -76,11 +38,11 @@
     
     // Spread 5 galaxies across the screen using ratios [0.1, 0.9]
     const positions = [
-      { rx: 0.2, ry: 0.2, depth: 1.2, scale: 0.8 },
-      { rx: 0.8, ry: 0.3, depth: 0.5, scale: 0.5 },
-      { rx: 0.5, ry: 0.5, depth: 0.8, scale: 1.0 },
-      { rx: 0.15, ry: 0.7, depth: 0.3, scale: 0.4 },
-      { rx: 0.75, ry: 0.8, depth: 1.0, scale: 0.7 }
+      { rx: 0.2, ry: 0.2, scale: 0.8 },
+      { rx: 0.8, ry: 0.3, scale: 0.5 },
+      { rx: 0.5, ry: 0.5, scale: 1.0 },
+      { rx: 0.15, ry: 0.7, scale: 0.4 },
+      { rx: 0.75, ry: 0.8, scale: 0.7 }
     ];
 
     for (let g = 0; g < numGalaxies; g++) {
@@ -112,7 +74,6 @@
       galaxies.push({
         ratioX: pos.rx,
         ratioY: pos.ry,
-        depth: pos.depth,
         particles: particles
       });
     }
@@ -136,29 +97,13 @@
       then = now - (elapsed % fpsInterval);
     }
 
-    // Time-based Lerp (independent of exact frame timing) for parallax
-    // Default lerp for forced render (1.0 means instant)
-    let lerpFactor = 1.0;
-    if (!forceRender) {
-      const elapsedForLerp = now - then;
-      lerpFactor = 1 - Math.pow(0.001, Math.max(16, elapsedForLerp) / 1000); 
-    }
-    
-    mouseLerpX += (mouseTargetX - mouseLerpX) * lerpFactor;
-    mouseLerpY += (mouseTargetY - mouseLerpY) * lerpFactor;
-
     ctx.clearRect(0, 0, width, height);
 
     // Render each galaxy
     galaxies.forEach(galaxy => {
       // Calculate fixed base position based on screen ratio
-      const baseX = width * galaxy.ratioX;
-      const baseY = height * galaxy.ratioY;
-      
-      // Calculate parallax offset based on depth (max offset is depth * 200px roughly)
-      const maxOffset = 200; 
-      const cx = baseX + (mouseLerpX * maxOffset * galaxy.depth);
-      const cy = baseY + (mouseLerpY * maxOffset * galaxy.depth);
+      const cx = width * galaxy.ratioX;
+      const cy = height * galaxy.ratioY;
       
       galaxy.particles.forEach(p => {
         if (!forceRender) {
