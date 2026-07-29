@@ -74,7 +74,18 @@
     .reveal .steps span.done { border-color: #dedede; color: #dedede; }
     .reveal .steps span.now { border-color: #fcfcfb; color: #fcfcfb; font-weight: 600; }
 
-    .galaxy-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .galaxy-bg {
+      position: fixed;
+      top: 50%; left: 50%;
+      width: 150vmax; height: 150vmax;
+      translate: -50% -50%;
+      background: url('../../assets/galaxy.jpg') no-repeat center center;
+      background-size: cover;
+      pointer-events: none; z-index: 0;
+      animation: galaxy-spin 240s linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes galaxy-spin { from { rotate: 0deg; } to { rotate: 360deg; } }
 
     .reveal .cover-ship { width: 5em; margin: 0 auto 0.5em; }
     .reveal .cover-ship svg { display: block; width: 100%; height: auto; }
@@ -99,7 +110,7 @@
         transition-duration: 0.01ms !important;
         transition-delay: 0s !important;
       }
-      /* JS Canvas .galaxy-bg will handle reduced-motion internally */
+      .galaxy-bg { animation: none !important; }
       .cover-ship { animation: none !important; }
       .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
@@ -114,7 +125,7 @@
   </style>
 </head>
 <body>
-  <canvas class="galaxy-bg" aria-hidden="true"></canvas>
+  <div class="galaxy-bg" aria-hidden="true"></div>
 
   <div class="reveal">
     <div class="slides">
@@ -306,6 +317,6 @@
       pdfSeparateFragments: false
     });
   </script>
-  <script src="../../scripts/galaxy.js" defer></script>
+
 </body>
 </html>

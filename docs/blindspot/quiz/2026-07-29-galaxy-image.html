@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 단일 은하수 이미지 배경 전환</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 단일 은하수 이미지 배경 전환</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+기존의 작은 점(원)들로 그렸던 자바스크립트 캔버스 파티클 배경을 제거하고, 웅장하고 사실적인 1장의 큰 은하수(Galaxy) 이미지로 교체했습니다. 이 이미지는 화면 가운데를 축으로 천천히 자전하여 신비로움을 더합니다.<br><br>
+사각형 형태의 이미지가 회전할 때 네 모서리의 잘림 현상이 화면 안에 드러나지 않도록, 브라우저 화면의 대각선 길이보다 더 큰 `150vmax` 사이즈로 크기를 키운 뒤 정중앙에 배치시켰습니다. 캔버스가 사라졌으므로 CPU를 사용하던 `scripts/galaxy.js`는 완전 삭제되었고, 애니메이션은 전부 CSS(하드웨어 가속) 기반으로 구동됩니다.
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "기존에 배경을 렌더링하기 위해 동작하던 자바스크립트(JS)는 어떻게 처리되었습니까?", options: ["은하수 이미지의 회전을 계산하기 위해 내부 코드만 바뀌었다.", "더 이상 불필요해졌으므로 완전히 삭제되었다.", "모바일 환경에서만 동작하도록 엣지케이스용으로 남겨두었다.", "별의 반짝거림 효과를 위해 그대로 유지되었다."], answer: 1,
+    explain: "자바스크립트 캔버스를 제거하고 CSS 이미지로 100% 대체했기 때문에, 기존 렌더링에 쓰이던 `scripts/galaxy.js` 파일은 완전히 삭제되었습니다." },
+  { q: "사각형인 은하수 이미지가 회전할 때, 모서리가 화면 안에 잘려 보이지 않게 하려고 취한 방법은 무엇입니까?", options: ["CSS의 border-radius: 50%를 주어 동그랗게 깎아냈다.", "이미지의 크기를 화면 대각선보다 넉넉하게 큰 150vmax로 설정하여 화면 바깥으로 모서리를 빼냈다.", "회전 속도를 엄청나게 빠르게 해서 잘린 부분이 안 보이도록 착시를 유도했다.", "이미지 모서리에 투명한 그라데이션 이미지를 하나 더 덮어씌웠다."], answer: 1,
+    explain: "가로/세로 중 더 긴 쪽을 기준으로 하는 단위인 vmax를 사용해 150vmax(대각선보다 큰 크기)로 화면보다 훨씬 크게 만들어 잘림을 회피했습니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

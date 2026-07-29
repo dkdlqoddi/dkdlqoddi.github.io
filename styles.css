@@ -99,7 +99,18 @@ body {
 /* ── 별 입자: 검은 우주의 흰 점 2겹 ─────────────────────
    좌표는 전 화면(0~100vw, 0~104vh)에 분포. 104vh까지 두는 이유:
    drift가 위로 3vh 흐르는 동안 하단이 비지 않게 하는 여유분. */
-.galaxy-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.galaxy-bg {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 150vmax; height: 150vmax;
+  translate: -50% -50%;
+  background: url('assets/galaxy.jpg') no-repeat center center;
+  background-size: cover;
+  pointer-events: none; z-index: 0;
+  animation: galaxy-spin 240s linear infinite;
+  opacity: 0.7;
+}
+@keyframes galaxy-spin { from { rotate: 0deg; } to { rotate: 360deg; } }
 
 /* ── 흰 우주선 (장식, 첫 화면 전용) ─────────────────────
    부유: 주기 9초, 이동량 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
@@ -301,7 +312,7 @@ main { position: relative; z-index: 1; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  /* JS Canvas .galaxy-bg will handle reduced-motion internally */
+  .galaxy-bg { animation: none !important; }
   .ship { animation: none; }
   .card { opacity: 1; translate: 0 0; }
 }
