@@ -108,6 +108,9 @@ function init() {
       if (points) {
         anchor.mesh.position.copy(anchor.basePosition);
         anchor.mesh.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), points.rotation.y);
+
+        anchor.cardPos.copy(anchor.baseCardPosition);
+        anchor.cardPos.applyAxisAngle(new THREE.Vector3(0, 1, 0), points.rotation.y);
       }
     });
 
@@ -222,7 +225,13 @@ function assignAnchors() {
     mesh.position.copy(basePosition);
     scene.add(mesh);
 
-    anchors.push({ basePosition, mesh });
+    anchors.push({
+        element: card,
+        basePosition: basePosition,
+        baseCardPosition: new THREE.Vector3(basePosition.x + 40, basePosition.y + 15, basePosition.z + 10), // 버튼의 3D 공간 상 오프셋
+        cardPos: new THREE.Vector3(),
+        mesh: mesh
+      });
   });
 }
 
@@ -246,19 +255,25 @@ function updateLabels() {
   if (!svgLayer) return;
 
   let svgContent = '';
+
   const tempV = new THREE.Vector3();
+  const cardV = new THREE.Vector3();
   const hw = window.innerWidth / 2;
   const hh = window.innerHeight / 2;
 
-  cards.forEach((card, i) => {
-    const anchor = anchors[i];
-    if (!anchor) return;
-
-    // 3D 위치를 2D 화면 좌표로 투영 (mesh의 현재 위치 사용)
+  anchors.forEach((anchor, i) => {
+    const card = anchor.element;
+    
+    // 행성(별)의 화면 투영 좌표
     tempV.copy(anchor.mesh.position);
     tempV.project(camera);
 
-    if (tempV.z > 1) {
+    // 버튼(카드)의 화면 투영 좌표
+    cardV.copy(anchor.cardPos);
+    cardV.project(camera);
+
+    // 카메라 뒤로 넘어간 경우 숨김
+    if (tempV.z > 1 || cardV.z > 1) {
       card.style.opacity = '0';
       return;
     }
@@ -266,21 +281,19 @@ function updateLabels() {
     const startX = (tempV.x * hw) + hw;
     const startY = -(tempV.y * hh) + hh;
 
-    // 카드 오프셋 (행성에서 길게 뻗어나오는 형태)
-    // 약간 우측 상단으로 고정된 오프셋을 두어, 별과 함께 돌아가도록 함
-    const offsetX = 150;
-    const offsetY = -100;
-    const endX = startX + offsetX;
-    const endY = startY + offsetY;
+    const endX = (cardV.x * hw) + hw;
+    const endY = -(cardV.y * hh) + hh;
 
     // 카드 실제 위치 적용
     card.style.left = `${endX}px`;
     card.style.top = `${endY}px`;
 
-    // 원근법 적용 (선택 사항)
-    const scale = Math.max(0.3, 1 - tempV.z);
+    // 원근법(Z값)에 따른 버튼 크기 적용 (가까우면 크고 멀면 작음)
+    const scale = Math.max(0.3, 1 - cardV.z);
     card.style.zIndex = Math.floor(scale * 100);
-    card.style.transform = `translate(-50%, -50%) scale(${(0.7 + scale * 0.3).toFixed(3)})`;
+    // scale(0.6 ~ 1.0 정도의 비율)
+    const targetScale = (0.5 + scale * 0.5).toFixed(3);
+    card.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
 
     // 카드 가시성 처리
     card.style.opacity = '1';
