@@ -107,6 +107,23 @@ body {
   z-index: 0;
 }
 
+#hud-lines {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+#hud-lines line {
+  stroke: rgba(0, 255, 255, 0.4);
+  stroke-width: 1.5;
+  transition: stroke 0.3s, stroke-width 0.3s;
+}
+#hud-lines line.hover {
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 2.5;
+}
+
 /* ── 흰 우주선 (장식, 첫 화면 전용) ─────────────────────
    부유: 주기 9초, 이동량 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
 .ship {
@@ -192,44 +209,48 @@ main { position: relative; z-index: 1; }
 
 .log-rule { flex: 1; border-top: 1px solid var(--hairline); }
 
-/* ── 카드 리스트 (그리드 -> 3D 투영 절대 좌표) ───────────── */
+/* ── 카드 리스트 (우측 사이드바 셋업) ───────────── */
 .cards {
   position: absolute;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  pointer-events: none; /* 클릭은 카드 내부 요소만 되도록 */
+  top: 50%;
+  right: 5vw;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 10;
   margin: 0;
   padding: 0;
+  pointer-events: none; /* 클릭은 카드 내부 요소만 되도록 */
 }
 
 /* ── 홀로그램 개별 카드 ───────────────────────────────── */
 .card {
-  position: absolute; /* galaxy3d.js가 left/top을 투영 좌표로 주입함 */
-  translate: -50% -50%; /* 중앙 정렬 투영 */
   pointer-events: auto; /* 카드 자체는 클릭 가능 */
   display: block;
-  width: max-content;
-  max-width: 280px;
+  width: 250px;
   text-decoration: none;
   color: var(--secondary);
-  background: rgba(14, 14, 14, 0.6);
-  border: 1px solid rgba(252, 252, 251, 0.15);
-  border-radius: 8px;
+  background: rgba(14, 14, 25, 0.6);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-left: 3px solid rgba(0, 255, 255, 0.5);
+  border-radius: 4px;
   padding: 1rem;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  transition: opacity 0.3s ease, border-color 0.2s, background 0.2s;
-  transform-origin: center center;
-  /* 화면에서 벗어나는 카드를 숨길 때 opacity를 조절 */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
 }
 
 .card.in { opacity: 1; }
 
-.card:hover, .card:focus-visible {
+.card:hover, .card:focus-visible, .card.hover-active {
   color: var(--primary);
-  background: rgba(14, 14, 14, 0.85);
-  border-color: rgba(252, 252, 251, 0.5);
-  box-shadow: 0 8px 30px rgba(252, 252, 251, 0.1);
+  background: rgba(20, 30, 50, 0.85);
+  border-color: rgba(0, 255, 255, 0.8);
+  border-left: 5px solid rgba(0, 255, 255, 1);
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
+  transform: translateX(-10px);
   outline: none;
 }
 .card:has(a:focus-visible) {

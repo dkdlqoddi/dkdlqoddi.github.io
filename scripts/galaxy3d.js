@@ -9,25 +9,30 @@ const params = {
   spin: 1,
   randomness: 2.5,
   randomnessPower: 3,
-  insideColor: '#ff6030',
-  outsideColor: '#1b3984'
+  colors: ['#0a192f', '#1b3984', '#00d2ff', '#8a2be2', '#ffffff'] // 다채로운 푸른색/보라색 계열
 };
 
 let scene, camera, renderer, points, geometry, material;
-const cardAnchors = [];
 let cards = [];
+let anchors = [];
+let hoveredCardIndex = -1;
 let animationFrameId = null;
+
+// 카메라 시점 제어용 변수
+let mouseX = 0;
+let mouseY = 0;
+let targetCameraX = 0;
+let targetCameraY = 100;
+let targetCameraZ = 150;
 
 function init() {
   const canvas = document.querySelector('#galaxy-3d-bg');
   if (!canvas) return;
 
-  // Reduced motion 체크
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   scene = new THREE.Scene();
 
-  // 대각선 위에서 내려다보는 뷰 (Isometric 느낌)
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 100, 150);
   camera.lookAt(0, 0, 0);
@@ -42,23 +47,51 @@ function init() {
 
   generateGalaxy();
 
-  // 리사이즈 이벤트
+  // 마우스 이동에 따른 카메라 시점 전환 (Parallax Orbit)
+  document.addEventListener('mousemove', (event) => {
+    // 화면 중심 기준 정규화 (-1 ~ +1)
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    if (!prefersReducedMotion) {
+      targetCameraX = mouseX * 80;
+      targetCameraY = 100 + mouseY * 30; // 높이 약간 조정
+      targetCameraZ = 150 - Math.abs(mouseX) * 20; // 측면으로 갈수록 약간 다가감
+    }
+  });
+
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // 애니메이션 루프
   const clock = new THREE.Clock();
 
   function tick() {
     const elapsedTime = clock.getElapsedTime();
 
-    // 모션 저감이 켜져 있으면 회전 멈춤
     if (!prefersReducedMotion && points) {
       points.rotation.y = elapsedTime * 0.05;
     }
+
+    // 카메라 부드러운 이동 (Lerp)
+    camera.position.x += (targetCameraX - camera.position.x) * 0.05;
+    camera.position.y += (targetCameraY - camera.position.y) * 0.05;
+    camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
+    camera.lookAt(0, 0, 0);
+
+    // 앵커(행성) 스케일 업데이트
+    anchors.forEach((anchor, idx) => {
+      const targetScale = (hoveredCardIndex === idx) ? 3.5 : 1.0;
+      anchor.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      
+      // 행성도 은하수와 함께 공전해야 하므로 위치 업데이트
+      if (points) {
+        anchor.mesh.position.copy(anchor.basePosition);
+        anchor.mesh.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), points.rotation.y);
+      }
+    });
 
     renderer.render(scene, camera);
     updateLabels();
@@ -68,12 +101,12 @@ function init() {
 
   tick();
 
-  // DOM 로딩 완료 및 main.js 데이터 fetch 이후 카드들이 생성되었는지 주기적으로 확인
   const checkCards = setInterval(() => {
     const domCards = document.querySelectorAll('.card');
     if (domCards.length > 0 && domCards.length !== cards.length) {
       cards = Array.from(domCards);
       assignAnchors();
+      setupCardEvents();
     }
   }, 500);
 }
@@ -89,28 +122,32 @@ function generateGalaxy() {
   const positions = new Float32Array(params.count * 3);
   const colors = new Float32Array(params.count * 3);
 
-  const colorInside = new THREE.Color(params.insideColor);
-  const colorOutside = new THREE.Color(params.outsideColor);
+  const baseColors = params.colors.map(c => new THREE.Color(c));
 
   for (let i = 0; i < params.count; i++) {
     const i3 = i * 3;
 
-    // 위치
     const radius = Math.random() * params.radius;
     const spinAngle = radius * params.spin;
     const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
 
     const randomX = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
-    const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius * 0.5; // 납작하게
+    const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius * 0.5;
     const randomZ = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
 
     positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
     positions[i3 + 1] = randomY;
     positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
-    // 색상
-    const mixedColor = colorInside.clone();
-    mixedColor.lerp(colorOutside, radius / params.radius);
+    // 랜덤하게 팔레트에서 2개 색상을 섞어서 다채로운 느낌 생성
+    const color1 = baseColors[Math.floor(Math.random() * baseColors.length)];
+    const color2 = baseColors[Math.floor(Math.random() * baseColors.length)];
+    const mixedColor = color1.clone().lerp(color2, Math.random());
+
+    // 중심부는 밝고 하얗게
+    if (radius < 15) {
+      mixedColor.lerp(new THREE.Color('#ffffff'), 1.0 - (radius/15));
+    }
 
     colors[i3] = mixedColor.r;
     colors[i3 + 1] = mixedColor.g;
@@ -132,64 +169,103 @@ function generateGalaxy() {
   scene.add(points);
 }
 
-// 각 카드에 매핑될 주요 항성(Anchor) 생성
 function assignAnchors() {
-  cardAnchors.length = 0;
-  
-  // 나선팔의 궤적을 따라 적당한 간격으로 별 위치를 선정
+  // 기존 앵커 지우기
+  anchors.forEach(a => {
+    scene.remove(a.mesh);
+    a.mesh.geometry.dispose();
+    a.mesh.material.dispose();
+  });
+  anchors = [];
+
+  const sphereGeo = new THREE.SphereGeometry(1.5, 16, 16);
+  const sphereMat = new THREE.MeshBasicMaterial({ 
+    color: 0x00ffff, 
+    transparent: true, 
+    opacity: 0.9 
+  });
+
   cards.forEach((card, index) => {
-    // 인덱스에 따라 은하 중심에서 바깥으로 퍼지게 배치
     const step = (index + 1) / cards.length;
-    const radius = 20 + step * (params.radius - 30);
+    const radius = 25 + step * (params.radius - 40);
     const branchAngle = ((index % params.branches) / params.branches) * Math.PI * 2;
     const spinAngle = radius * params.spin;
     
-    // 약간의 랜덤성
     const offsetAngle = (Math.random() - 0.5) * 0.5;
     
     const x = Math.cos(branchAngle + spinAngle + offsetAngle) * radius;
-    const y = (Math.random() - 0.5) * 10; // 높이 약간 띄움
+    const y = (Math.random() - 0.5) * 10;
     const z = Math.sin(branchAngle + spinAngle + offsetAngle) * radius;
 
-    const anchorVector = new THREE.Vector3(x, y, z);
-    cardAnchors.push(anchorVector);
+    const basePosition = new THREE.Vector3(x, y, z);
+    
+    // 행성 렌더링용 구체
+    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+    mesh.position.copy(basePosition);
+    scene.add(mesh);
+
+    anchors.push({ basePosition, mesh });
+  });
+}
+
+function setupCardEvents() {
+  cards.forEach((card, index) => {
+    card.addEventListener('mouseenter', () => {
+      hoveredCardIndex = index;
+    });
+    card.addEventListener('mouseleave', () => {
+      if (hoveredCardIndex === index) {
+        hoveredCardIndex = -1;
+      }
+    });
   });
 }
 
 function updateLabels() {
-  if (cards.length === 0 || cardAnchors.length === 0 || !points) return;
+  if (cards.length === 0 || anchors.length === 0 || !points) return;
 
+  const svgLayer = document.querySelector('#hud-lines');
+  if (!svgLayer) return;
+
+  let svgContent = '';
   const tempV = new THREE.Vector3();
   const hw = window.innerWidth / 2;
   const hh = window.innerHeight / 2;
 
   cards.forEach((card, i) => {
-    const anchor = cardAnchors[i];
+    const anchor = anchors[i];
     if (!anchor) return;
 
-    // 점 객체의 로컬 좌표를 월드 좌표를 거쳐 투영
-    tempV.copy(anchor);
-    tempV.applyMatrix4(points.matrixWorld);
+    // 3D 위치를 2D 화면 좌표로 투영 (mesh의 현재 위치 사용)
+    tempV.copy(anchor.mesh.position);
     tempV.project(camera);
 
-    // 카메라 뒤쪽인지 확인
     if (tempV.z > 1) {
-      card.style.display = 'none';
+      card.style.opacity = '0';
       return;
     }
 
-    const x = (tempV.x * hw) + hw;
-    const y = -(tempV.y * hh) + hh;
+    const startX = (tempV.x * hw) + hw;
+    const startY = -(tempV.y * hh) + hh;
 
-    card.style.display = 'block';
-    card.style.left = `${x}px`;
-    card.style.top = `${y}px`;
+    // 카드의 중심 좌표 계산
+    const rect = card.getBoundingClientRect();
+    const endX = rect.left + rect.width / 2;
+    const endY = rect.top + rect.height / 2;
+
+    // 카드 가시성 처리
+    card.style.opacity = '1';
+
+    // SVG Line 생성
+    const isHovered = (hoveredCardIndex === i);
+    const lineClass = isHovered ? 'hover' : '';
+    svgContent += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" class="${lineClass}" />`;
     
-    // 원근법: 카메라에서 멀어지면 투명도를 낮추거나 z-index 처리
-    const scale = Math.max(0.3, 1 - tempV.z);
-    card.style.zIndex = Math.floor(scale * 100);
-    card.style.scale = (0.7 + scale * 0.3).toFixed(3);
+    // 타겟팅 원(행성 위치)
+    svgContent += `<circle cx="${startX}" cy="${startY}" r="${isHovered ? 6 : 3}" fill="none" stroke="rgba(0, 255, 255, 0.8)" stroke-width="2" />`;
   });
+
+  svgLayer.innerHTML = svgContent;
 }
 
 window.addEventListener('DOMContentLoaded', init);
