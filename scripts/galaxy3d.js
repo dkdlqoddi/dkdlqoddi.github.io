@@ -1,4 +1,4 @@
-import * as THREE from '../vendor/three.js/three.module.min.js';
+// 전역 객체 window.THREE 를 사용 (UMD 라이브러리)
 
 // 은하수 파라미터
 const params = {

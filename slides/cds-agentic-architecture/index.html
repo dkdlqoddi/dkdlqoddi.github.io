@@ -74,18 +74,14 @@
     .reveal .steps span.done { border-color: #dedede; color: #dedede; }
     .reveal .steps span.now { border-color: #fcfcfb; color: #fcfcfb; font-weight: 600; }
 
-    .galaxy-bg {
+    #galaxy-3d-bg {
       position: fixed;
-      top: 50%; left: 50%;
-      width: 150vmax; height: 150vmax;
-      translate: -50% -50%;
-      background: url('../../assets/galaxy.jpg') no-repeat center center;
-      background-size: cover;
-      pointer-events: none; z-index: 0;
-      animation: galaxy-spin 240s linear infinite;
-      opacity: 0.7;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
     }
-    @keyframes galaxy-spin { from { rotate: 0deg; } to { rotate: 360deg; } }
+     to { rotate: 360deg; } }
 
     .reveal .cover-ship { width: 5em; margin: 0 auto 0.5em; }
     .reveal .cover-ship svg { display: block; width: 100%; height: auto; }
@@ -110,7 +106,13 @@
         transition-duration: 0.01ms !important;
         transition-delay: 0s !important;
       }
-      .galaxy-bg { animation: none !important; }
+      #galaxy-3d-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
       .cover-ship { animation: none !important; }
       .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
@@ -120,12 +122,12 @@
       html:not(.print-pdf) .reveal svg * { color: #000 !important; }
       html:not(.print-pdf) .reveal .eyebrow,
       html:not(.print-pdf) .reveal .steps span { color: #000 !important; border-color: #000 !important; }
-      .galaxy-bg, .cover-ship { display: none !important; }
+      #galaxy-3d-bg, .cover-ship { display: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="galaxy-bg" aria-hidden="true"></div>
+  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
 
   <div class="reveal">
     <div class="slides">
@@ -318,5 +320,8 @@
     });
   </script>
 
+
+  <script src="../../vendor/three.js/three.min.js"></script>
+  <script src="../../scripts/galaxy3d.js"></script>
 </body>
 </html>

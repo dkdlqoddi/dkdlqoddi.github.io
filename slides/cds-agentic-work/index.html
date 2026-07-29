@@ -92,18 +92,14 @@
     /* ── 검은 우주의 흰 별 (장식) ─────────────────────────
        슬라이드 캔버스(.slides)는 확대 배율이 곱해지므로 별은 그 밖의
        고정 층에 둔다. 내용 집중을 위해 랜딩보다 수를 줄이고 흐리게. */
-    .galaxy-bg {
+    #galaxy-3d-bg {
       position: fixed;
-      top: 50%; left: 50%;
-      width: 150vmax; height: 150vmax;
-      translate: -50% -50%;
-      background: url('../../assets/galaxy.jpg') no-repeat center center;
-      background-size: cover;
-      pointer-events: none; z-index: 0;
-      animation: galaxy-spin 240s linear infinite;
-      opacity: 0.7;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
     }
-    @keyframes galaxy-spin { from { rotate: 0deg; } to { rotate: 360deg; } }
+     to { rotate: 360deg; } }
 
     /* ── 표지의 흰 우주선 (장식) ──────────────────────────
        부유: 주기 9초, 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
@@ -125,7 +121,13 @@
         transition-duration: 0.01ms !important;
         transition-delay: 0s !important;
       }
-      .galaxy-bg { animation: none !important; }
+      #galaxy-3d-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
       .cover-ship { animation: none !important; }
       .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
@@ -149,7 +151,7 @@
       html:not(.print-pdf) .reveal svg * { color: #000 !important; }
       /* !important: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로 이겨
          우주선이 흰 종이에 흰 얼룩으로 찍히는 것을 막는다 */
-      .galaxy-bg, .cover-ship { display: none !important; }
+      #galaxy-3d-bg, .cover-ship { display: none !important; }
     }
 
     /* 리허설 조망(Esc): 코어가 fragment의 opacity만 되돌리고 visibility는
@@ -214,7 +216,7 @@
 </head>
 <body>
   <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
-  <div class="galaxy-bg" aria-hidden="true"></div>
+  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
 
   <div class="reveal">
     <div class="slides">
@@ -658,5 +660,8 @@
     });
   </script>
 
+
+  <script src="../../vendor/three.js/three.min.js"></script>
+  <script src="../../scripts/galaxy3d.js"></script>
 </body>
 </html>
