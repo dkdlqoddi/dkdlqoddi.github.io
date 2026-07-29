@@ -94,14 +94,10 @@
       showStatus("데이터를 불러오지 못했습니다. 네트워크 상태를 확인해 주세요. (" + err.message + ")");
     });
 
-  // 스크롤 시 scrolled 클래스 추가 (도입부 애니메이션 및 카드 등장)
-  window.addEventListener('scroll', function() {
-    if (window.scrollY > 50) {
-      document.body.classList.add('scrolled');
-    } else {
-      document.body.classList.remove('scrolled');
-    }
-  });
+  // 로딩 즉시 페이드인 처리 (기존 스크롤 의존성 제거)
+  setTimeout(function() {
+    document.body.classList.add('scrolled');
+  }, 100);
 
   // 마우스 좌표 기반 위도/경도 업데이트
   var coordsTicking = false;
