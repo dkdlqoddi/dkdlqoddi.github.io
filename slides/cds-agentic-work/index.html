@@ -103,13 +103,6 @@
 
     /* ── 표지의 흰 우주선 (장식) ──────────────────────────
        부유: 주기 9초, 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
-    .reveal .cover-ship { width: 5em; margin: 0 auto 0.5em; }
-    .reveal .cover-ship svg { display: block; width: 100%; height: auto; }
-    .cover-ship { animation: ship-float 9s ease-in-out infinite; }
-    @keyframes ship-float {
-      0%, 100% { translate: 0 0; rotate: 0deg; }
-      50% { translate: 0 -4px; rotate: -1.4deg; }
-    }
 
     /* ── 움직임 줄이기: 장식·전환 전부 정지 ───────────────
        마지막 줄: auto-animate(모핑)는 주입 스타일이 (0,2,0)+!important라
@@ -128,7 +121,6 @@
       pointer-events: none;
       z-index: 0;
     }
-      .cover-ship { animation: none !important; }
       .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
     }
 
@@ -151,7 +143,7 @@
       html:not(.print-pdf) .reveal svg * { color: #000 !important; }
       /* !important: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로 이겨
          우주선이 흰 종이에 흰 얼룩으로 찍히는 것을 막는다 */
-      #galaxy-3d-bg, .cover-ship { display: none !important; }
+      #galaxy-3d-bg,
     }
 
     /* 리허설 조망(Esc): 코어가 fragment의 opacity만 되돌리고 visibility는
@@ -272,6 +264,17 @@
       .hud-bl { display: none; }
     }
 
+  
+    /* 로켓 랩 커버 테마 */
+    .reveal .slides > section:first-of-type h1 {
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
+    }
+    .reveal .slides > section:first-of-type .eyebrow {
+      color: rgba(0, 255, 255, 0.85) !important;
+      letter-spacing: 0.15em !important;
+      font-weight: 500 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -290,16 +293,6 @@
 
       <!-- 1 — 표지 (제목 규격 예외: 덱 이름) -->
       <section>
-        <div class="cover-ship" aria-hidden="true">
-          <svg viewBox="0 0 150 60" xmlns="http://www.w3.org/2000/svg">
-            <line x1="4" y1="30" x2="24" y2="30" stroke="#fcfcfb" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 9" opacity="0.5"/>
-            <path d="M52 17 L37 6 L45 20 Z" fill="#fcfcfb"/>
-            <path d="M52 43 L37 54 L45 40 Z" fill="#fcfcfb"/>
-            <rect x="27" y="24" width="9" height="12" rx="3" fill="#fcfcfb"/>
-            <path d="M34 30c0-8.8 7.2-16 16-16h40c22 0 42 9 50 16-8 7-28 16-50 16H50c-8.8 0-16-7.2-16-16Z" fill="#fcfcfb"/>
-            <circle cx="104" cy="30" r="6.5" fill="none" stroke="#0e0e0e" stroke-width="2.6"/>
-          </svg>
-        </div>
         <p class="eyebrow">CDS · Presentation Log</p>
         <h2>CDS Agentic Work</h2>
         <p class="small">AI 코딩 도구 운영 방법과<br>Domain 협조 요청</p>
