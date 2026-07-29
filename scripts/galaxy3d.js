@@ -17,6 +17,7 @@ const planetFragmentShader = `
   uniform float uHover;
   uniform float uSeed;
   uniform float uTime;
+  uniform float uOpacity;
   
   varying vec2 vUv;
   varying vec3 vNormal;
@@ -76,7 +77,7 @@ const planetFragmentShader = `
     vec3 markerColor = vec3(0.0, 1.0, 1.0);
     vec3 finalColor = mix(markerColor, planetColor, uHover);
     
-    float alpha = mix(0.9, 1.0, uHover);
+    float alpha = mix(0.9, 1.0, uHover) * uOpacity;
     
     gl_FragColor = vec4(finalColor, alpha);
   }
@@ -188,10 +189,13 @@ function init() {
       const targetScale = isHovered ? 3.5 : 1.0;
       anchor.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
       
-      // Shader uniform uHover lerp (0.0 to 1.0)
+      // Shader uniform uHover and uOpacity lerp
       if (anchor.mesh.material && anchor.mesh.material.uniforms) {
+          const isScrolled = document.body.classList.contains('scrolled');
           const targetHover = isHovered ? 1.0 : 0.0;
+          const targetOpacity = isScrolled ? 1.0 : 0.0;
           anchor.mesh.material.uniforms.uHover.value += (targetHover - anchor.mesh.material.uniforms.uHover.value) * 0.1;
+          anchor.mesh.material.uniforms.uOpacity.value += (targetOpacity - anchor.mesh.material.uniforms.uOpacity.value) * 0.1;
           anchor.mesh.material.uniforms.uTime.value = elapsedTime;
       }
       
@@ -314,7 +318,8 @@ function assignAnchors() {
       uniforms: {
         uHover: { value: 0.0 },
         uSeed: { value: Math.random() * 100.0 },
-        uTime: { value: 0.0 }
+        uTime: { value: 0.0 },
+        uOpacity: { value: 0.0 }
       },
       transparent: true,
       blending: THREE.NormalBlending

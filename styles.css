@@ -113,6 +113,13 @@ body {
   width: 100vw; height: 100vh;
   pointer-events: none;
   z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+body.scrolled #hud-lines {
+  opacity: 1;
+  visibility: visible;
 }
 #hud-lines line {
   stroke: rgba(0, 255, 255, 0.4);
@@ -136,7 +143,13 @@ body {
   gap: 20px;
 }
 
-.eyebrow { animation: rise 0.7s 0.05s var(--ease) both; }
+.eyebrow {
+  animation: rise 0.7s 0.05s var(--ease) both;
+  color: rgba(0, 255, 255, 0.85); /* 터미널/HUD 시안 포인트 컬러 */
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 
 .title {
   font-size: clamp(3rem, 11vw, 7rem);
@@ -145,6 +158,7 @@ body {
   line-height: 1.04;
   color: var(--bright);
   animation: rise 0.7s 0.16s var(--ease) both;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3); /* 홀로그램 네온 발광 효과 */
 }
 
 .tagline {
@@ -156,11 +170,13 @@ body {
 .scroll-cue {
   margin-top: 8vh;
   animation: rise 0.7s 0.4s var(--ease) both;
+  color: rgba(0, 255, 255, 0.7);
+  letter-spacing: 0.1em;
 }
 
 .cue-arrow {
   display: inline-block;
-  animation: nudge 2.4s ease-in-out 1.2s infinite;
+  animation: bounce 1.5s infinite ease-in-out;
 }
 
 @keyframes rise {
@@ -168,9 +184,9 @@ body {
   to { opacity: 1; translate: 0 0; filter: blur(0); }
 }
 
-@keyframes nudge {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 4px; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
 }
 
 /* ── 목록 ──────────────────────────────────────────────── */
@@ -185,10 +201,19 @@ main { position: relative; z-index: 1; }
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 28px;
+  opacity: 0.8; /* 기존 0.6에서 가독성을 위해 살짝 상향 */
+  margin-bottom: 0.6rem;
 }
-
-.log-rule { flex: 1; border-top: 1px solid var(--hairline); }
+.log-rule {
+  flex: 1;
+  border-top: 1px dashed rgba(0, 255, 255, 0.3); /* 일반 실선에서 대시드 라인으로 HUD 느낌 부여 */
+}
+.log-count {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  color: rgba(0, 255, 255, 0.85); /* 시안 컬러 통일 */
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
 
 /* ── 카드 리스트 (3D 투영 절대 궤도) ───────────── */
 .cards {
@@ -292,18 +317,18 @@ body.scrolled .cards {
 
 .status { padding: 32px 0; }
 
-/* ── 푸터 ──────────────────────────────────────────────── */
+/* ── 사이트 푸터 ────────────────────────────────────────── */
 .site-foot {
-  position: relative;
-  z-index: 1;
+  padding: 40px clamp(28px, 8vw, 120px) 40px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 0 clamp(28px, 8vw, 120px) calc(var(--hud-inset) + 26px);
+  justify-content: space-between;
+  color: rgba(0, 255, 255, 0.6);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  border-top: 1px solid rgba(0, 255, 255, 0.15);
 }
-
-.foot-sep { color: var(--hairline); }
+.site-foot span { display: block; }
+.foot-sep { color: rgba(0, 255, 255, 0.3); }
 
 /* ── 반응형 ────────────────────────────────────────────── */
 @media (max-width: 640px) {
