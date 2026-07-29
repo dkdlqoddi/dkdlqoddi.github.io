@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark">
+  <title>Secure Agentic Architecture</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+
+  <style>
+    html { background: #0e0e0e; color-scheme: dark; }
+    
+    /* 폰트 초기화 및 한글 단어 잘림 방지 */
+    :root {
+      --r-main-font: 'Pretendard Variable', -apple-system, sans-serif;
+      --r-heading-font: 'Pretendard Variable', -apple-system, sans-serif;
+      --r-heading-text-transform: none; /* 대문자 강제 변환 금지 */
+    }
+    
+    .reveal {
+      font-family: var(--r-main-font);
+      word-break: keep-all;
+    }
+    
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      text-transform: none;
+      font-family: var(--r-heading-font);
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+    
+    /* HUD 스타일 테마 통일 */
+    body {
+      background: #0e0e0e;
+      color: #dedede;
+    }
+    
+    /* 다이어그램 기본 스타일 */
+    .svg-diagram {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+    }
+    .node-office { fill: rgba(0, 255, 255, 0.1); stroke: #00ffff; stroke-width: 2; }
+    .node-vwp { fill: rgba(255, 100, 100, 0.1); stroke: #ff4444; stroke-width: 2; }
+    .node-shield { fill: rgba(0, 255, 0, 0.05); stroke: #00ff00; stroke-width: 2; stroke-dasharray: 4,4; }
+    .node-text { fill: #dedede; font-family: 'Pretendard Variable', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }
+    .node-subtext { fill: #9aa0a6; font-family: 'Pretendard Variable', monospace; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+    .line-flow { stroke: #dedede; stroke-width: 2; fill: none; }
+    .line-flow-anim { stroke: #00ffff; stroke-width: 3; stroke-dasharray: 10,10; animation: dash 2s linear infinite; fill: none; }
+    
+    .fw-line { stroke: #ff0055; stroke-width: 4; stroke-dasharray: 8,8; }
+    .fw-text { fill: #ff0055; font-family: 'Pretendard Variable', sans-serif; font-size: 14px; letter-spacing: 2px; font-weight: bold; }
+    
+    @keyframes dash {
+      to { stroke-dashoffset: -20; }
+    }
+    
+    @media print {
+      html:not(.print-pdf) svg, html:not(.print-pdf) svg * { display: block !important; }
+    }
+    
+    @media (prefers-reduced-motion: no-preference) {
+      @view-transition { navigation: auto; }
+    }
+    
+    .hud-box {
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      margin: 20px auto;
+      display: inline-block;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Cover -->
+      <section>
+        <h1>Secure Agentic Architecture</h1>
+        <h3 style="color: #9aa0a6; font-size: 1.2em;">Office to VWP Network Bridge</h3>
+        
+        <div style="margin-top: 40px;">
+          <svg class="svg-diagram" viewBox="0 0 800 200" role="img" aria-label="Abstract radar connection">
+            <circle cx="200" cy="100" r="40" class="node-office" />
+            <circle cx="200" cy="100" r="60" class="node-office" style="stroke-opacity: 0.3;" />
+            <circle cx="600" cy="100" r="40" class="node-vwp" />
+            <circle cx="600" cy="100" r="60" class="node-vwp" style="stroke-opacity: 0.3;" />
+            
+            <path d="M 260 100 L 540 100" class="line-flow-anim" />
+            
+            <line x1="400" y1="20" x2="400" y2="180" class="fw-line" />
+            <text x="400" y="10" text-anchor="middle" class="fw-text">FIREWALL</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Slide 2: Overview -->
+      <section>
+        <h2>Topology Overview</h2>
+        <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Topology">
+          <!-- Background Zones -->
+          <rect x="10" y="50" width="360" height="300" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="190" y="30" class="node-text" fill="#00ffff">OFFICE NETWORK</text>
+          
+          <rect x="430" y="50" width="360" height="300" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="610" y="30" class="node-text" fill="#ff4444">VWP NETWORK</text>
+          
+          <!-- Firewall -->
+          <line x1="400" y1="20" x2="400" y2="380" class="fw-line" />
+          
+          <!-- Office Components -->
+          <rect x="110" y="100" width="160" height="200" rx="10" class="node-shield" />
+          <text x="190" y="120" class="node-text" fill="#00ff00">Harness (Agent)</text>
+          
+          <rect x="130" y="160" width="120" height="120" rx="10" class="node-office" />
+          <text x="190" y="210" class="node-text">Opencode</text>
+          <text x="190" y="240" class="node-subtext">(CodeMate LLM)</text>
+          
+          <!-- VWP Components -->
+          <rect x="480" y="100" width="120" height="80" rx="10" class="node-vwp" style="stroke: #ffbb00;" />
+          <text x="540" y="130" class="node-text">API Server</text>
+          <text x="540" y="155" class="node-subtext">Token Relay</text>
+          
+          <rect x="580" y="220" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="640" y="250" class="node-text">MCP Server</text>
+          <text x="640" y="275" class="node-subtext">Safe Functions</text>
+          
+          <!-- Links -->
+          <path d="M 270 200 L 400 200" class="line-flow-anim" />
+          <path d="M 400 200 L 480 140" class="line-flow-anim" />
+          <path d="M 600 140 L 640 220" class="line-flow-anim" />
+        </svg>
+      </section>
+
+      <!-- Slide 3: Office Network -->
+      <section>
+        <h2>Office Network (Decision)</h2>
+        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="Office Network Details">
+          <circle cx="400" cy="150" r="140" class="node-shield" />
+          <text x="400" y="40" class="node-text" fill="#00ff00">Harness Shield Layer</text>
+          
+          <rect x="300" y="100" width="200" height="100" rx="15" class="node-office" />
+          <text x="400" y="140" class="node-text">Opencode</text>
+          <text x="400" y="170" class="node-subtext">CodeMate LLM (Limited)</text>
+          
+          <rect x="250" y="200" width="100" height="40" rx="5" class="node-office" style="fill: #222;" />
+          <text x="300" y="220" class="node-subtext">Request Verify</text>
+          
+          <rect x="450" y="200" width="100" height="40" rx="5" class="node-office" style="fill: #222;" />
+          <text x="500" y="220" class="node-subtext">Format Catch</text>
+        </svg>
+      </section>
+
+      <!-- Slide 4: VWP Network -->
+      <section>
+        <h2>VWP Network (Action & Safety)</h2>
+        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="VWP Network Details">
+          <line x1="100" y1="20" x2="100" y2="280" class="fw-line" />
+          
+          <path d="M 100 150 L 250 150" class="line-flow-anim" />
+          
+          <rect x="250" y="100" width="180" height="100" rx="15" class="node-vwp" style="stroke: #ffbb00;" />
+          <text x="340" y="140" class="node-text">API Server</text>
+          <text x="340" y="170" class="node-subtext">Auth & Gateway</text>
+          
+          <path d="M 430 150 L 550 150" class="line-flow-anim" />
+          
+          <rect x="550" y="100" width="180" height="100" rx="15" class="node-vwp" />
+          <text x="640" y="140" class="node-text">MCP Server</text>
+          <text x="640" y="170" class="node-subtext">Data Sandbox</text>
+          
+          <circle cx="640" cy="150" r="80" class="node-shield" style="stroke-opacity: 0.5;" />
+        </svg>
+      </section>
+
+      <!-- Slide 5: Limitations -->
+      <section>
+        <h2>Architectural Limitations</h2>
+        <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Limitations">
+          <rect x="10" y="50" width="360" height="300" fill="rgba(0, 255, 255, 0.05)" />
+          <rect x="430" y="50" width="360" height="300" fill="rgba(255, 100, 100, 0.05)" />
+          <line x1="400" y1="20" x2="400" y2="380" class="fw-line" />
+          
+          <rect x="130" y="160" width="120" height="120" rx="10" class="node-office" />
+          <text x="190" y="200" class="node-text">LLM</text>
+          
+          <rect x="500" y="160" width="120" height="120" rx="10" class="node-vwp" />
+          <text x="560" y="200" class="node-text">Data</text>
+          
+          <path d="M 250 200 L 500 200" class="line-flow" style="stroke: #ffbb00;" />
+          <path d="M 500 240 L 250 240" class="line-flow" style="stroke: #ffbb00;" />
+          
+          <!-- Warnings -->
+          <circle cx="190" cy="250" r="15" fill="#ff0000" />
+          <text x="190" y="250" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">1</text>
+          <text x="190" y="320" class="node-text" fill="#ff4444" font-size="14">Hallucination</text>
+          
+          <circle cx="380" cy="180" r="15" fill="#ff0000" />
+          <text x="380" y="180" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">2</text>
+          <text x="400" y="130" class="node-text" fill="#ff4444" font-size="14">Latency x N Loops</text>
+          
+          <circle cx="560" cy="250" r="15" fill="#ff0000" />
+          <text x="560" y="250" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">3</text>
+          <text x="560" y="320" class="node-text" fill="#ff4444" font-size="14">Context Overflow</text>
+        </svg>
+      </section>
+
+      <!-- Slide 6: Conclusion -->
+      <section>
+        <h2>Mitigation & Next Steps</h2>
+        <div class="hud-box">
+          <ul style="list-style-type: square; color: #00ffff; margin-left: 20px;">
+            <li style="margin-bottom: 15px;">
+              <strong style="color: #fff;">Schema Validation Strictness:</strong><br>
+              <span style="color: #9aa0a6; font-size: 0.8em;">Harness 계층에서 엄격한 JSON 파싱 및 Auto-Retry 적용</span>
+            </li>
+            <li style="margin-bottom: 15px;">
+              <strong style="color: #fff;">Payload Compression:</strong><br>
+              <span style="color: #9aa0a6; font-size: 0.8em;">API Server단에서 불필요한 로그 필터링 후 요약 반환</span>
+            </li>
+            <li>
+              <strong style="color: #fff;">Safe Tool Whitelisting:</strong><br>
+              <span style="color: #9aa0a6; font-size: 0.8em;">MCP Server에서 Read-only 및 격리된 기능만 선별 노출</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: true,
+      center: true,
+      hash: true,
+      transition: 'none',
+      backgroundTransition: 'none',
+      disableLayout: false
+    });
+  </script>
+</body>
+</html>
