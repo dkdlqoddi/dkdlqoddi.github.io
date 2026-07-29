@@ -86,7 +86,6 @@
         return buildCard(item, numberOf.get(item), order);
       });
       grid.append.apply(grid, cards);
-      count.textContent = String(valid.length).padStart(2, "0") + " ENTRIES";
       
       // 알림: 카드 렌더링이 끝났음을 galaxy3d.js 등에 알림
       document.dispatchEvent(new Event('cards-rendered'));
@@ -101,6 +100,24 @@
       document.body.classList.add('scrolled');
     } else {
       document.body.classList.remove('scrolled');
+    }
+  });
+
+  // 마우스 좌표 기반 위도/경도 업데이트
+  var coordsTicking = false;
+  window.addEventListener('mousemove', function(event) {
+    if (!coordsTicking) {
+      window.requestAnimationFrame(function() {
+        var lon = (event.clientX / window.innerWidth) * 360 - 180;
+        var lat = ((window.innerHeight - event.clientY) / window.innerHeight) * 180 - 90;
+        
+        var latStr = Math.abs(lat).toFixed(2) + "°" + (lat >= 0 ? "N" : "S");
+        var lonStr = Math.abs(lon).toFixed(2) + "°" + (lon >= 0 ? "E" : "W");
+        
+        count.textContent = latStr + " · " + lonStr;
+        coordsTicking = false;
+      });
+      coordsTicking = true;
     }
   });
 

@@ -212,6 +212,9 @@ main { position: relative; z-index: 1; }
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
   color: rgba(0, 255, 255, 0.85); /* 시안 컬러 통일 */
+  font-variant-numeric: tabular-nums;
+  min-width: 140px; /* 공간 확보 */
+  text-align: right;
   text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
 }
 
