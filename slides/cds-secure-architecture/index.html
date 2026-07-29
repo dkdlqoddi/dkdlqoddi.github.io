@@ -79,61 +79,91 @@
       text-align: left;
       border-radius: 8px;
     }
+    
+    .hud-box-warning {
+      border: 1px solid rgba(255, 0, 0, 0.6);
+      background: rgba(80, 0, 0, 0.4);
+      padding: 15px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+      text-align: center;
+      transition: all 0.3s;
+    }
 
-    /* 광자 펄스(Data Pulse) 애니메이션 */
+    /* 광자 펄스(Data Pulse) 다중 루프 애니메이션 */
     .pulse-dot {
       fill: #00ff00;
       filter: drop-shadow(0 0 5px #00ff00);
       opacity: 0;
     }
     
-    @keyframes movePulse1 {
+    /* 1. User -> Opencode */
+    @keyframes multiPulse1 {
       0% { transform: translate(110px, 200px); opacity: 1; }
-      20% { transform: translate(250px, 200px); opacity: 1; }
-      21% { opacity: 0; }
+      5% { transform: translate(250px, 200px); opacity: 1; }
+      6% { opacity: 0; }
       100% { opacity: 0; }
     }
-    @keyframes movePulse2 {
+    /* 2. Ping-pong (Opencode <-> MCP) 3 times */
+    @keyframes multiPulsePing {
       0% { opacity: 0; }
-      20% { transform: translate(250px, 200px); opacity: 1; }
-      40% { transform: translate(370px, 200px); opacity: 1; }
-      41% { opacity: 0; }
+      5% { transform: translate(250px, 200px); opacity: 1; }
+      15% { transform: translate(620px, 200px); opacity: 1; } /* to MCP */
+      25% { transform: translate(250px, 200px); opacity: 1; } /* to Opencode */
+      35% { transform: translate(620px, 200px); opacity: 1; }
+      45% { transform: translate(250px, 200px); opacity: 1; }
+      55% { transform: translate(620px, 200px); opacity: 1; }
+      65% { transform: translate(250px, 200px); opacity: 1; }
+      66% { opacity: 0; }
       100% { opacity: 0; }
     }
-    @keyframes movePulse3 {
+    /* 3. MCP -> Opencode Return (Final Result) */
+    @keyframes multiPulseReturn {
       0% { opacity: 0; }
-      40% { transform: translate(370px, 200px); opacity: 1; }
-      60% { transform: translate(490px, 200px); opacity: 1; }
-      61% { opacity: 0; }
+      65% { transform: translate(620px, 220px); opacity: 1; }
+      75% { transform: translate(110px, 220px); opacity: 1; }
       100% { opacity: 0; }
     }
-    @keyframes movePulse4 {
-      0% { opacity: 0; }
-      60% { transform: translate(490px, 200px); opacity: 1; }
-      80% { transform: translate(620px, 200px); opacity: 1; }
-      81% { opacity: 0; }
-      100% { opacity: 0; }
-    }
-    @keyframes movePulseReturn {
-      0% { opacity: 0; }
-      80% { transform: translate(620px, 220px); opacity: 1; }
-      99% { transform: translate(110px, 220px); opacity: 1; }
+    /* Loop Counter Text */
+    @keyframes loopCounter {
+      0% { opacity: 0; content: "Agentic Loop: 0"; }
+      5% { opacity: 1; }
+      25% { opacity: 1; }
+      45% { opacity: 1; }
+      65% { opacity: 1; }
+      75% { opacity: 0; }
       100% { opacity: 0; }
     }
 
-    .pulse-1 { animation: movePulse1 5s linear infinite; }
-    .pulse-2 { animation: movePulse2 5s linear infinite; }
-    .pulse-3 { animation: movePulse3 5s linear infinite; }
-    .pulse-4 { animation: movePulse4 5s linear infinite; }
-    .pulse-return { fill: #00ffff; filter: drop-shadow(0 0 5px #00ffff); animation: movePulseReturn 5s linear infinite; }
+    .pulse-multi-1 { animation: multiPulse1 8s linear infinite; }
+    .pulse-multi-ping { animation: multiPulsePing 8s linear infinite; }
+    .pulse-multi-return { fill: #00ffff; filter: drop-shadow(0 0 5px #00ffff); animation: multiPulseReturn 8s linear infinite; }
     
-    @keyframes fadeInOut {
-      0%, 80%, 100% { opacity: 0; }
-      90%, 95% { opacity: 1; }
+    @keyframes fadeInOutResult {
+      0%, 75%, 100% { opacity: 0; }
+      80%, 95% { opacity: 1; }
     }
-    .result-text {
-      animation: fadeInOut 5s linear infinite;
+    .result-multi-text {
+      animation: fadeInOutResult 8s linear infinite;
     }
+    
+    .code-snippet {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: monospace;
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      text-align: left;
+      border: 1px solid #333;
+      white-space: pre-wrap;
+    }
+    .code-red { color: #f44747; }
+    .code-green { color: #6a9955; }
+    .code-blue { color: #569cd6; }
+    .code-yellow { color: #dcdcaa; }
+    
   </style>
 </head>
 <body>
@@ -198,7 +228,7 @@
         </svg>
       </section>
 
-      <!-- Slide 3: Office Network (Title Subtext) -->
+      <!-- Slide 3: Office Network -->
       <section>
         <h2>Office Network</h2>
         <h3 style="color: #9aa0a6; font-size: 1.2em;">(Decision & Relay)</h3>
@@ -227,7 +257,7 @@
         </svg>
       </section>
 
-      <!-- Slide 4: VWP Network (Title Subtext) -->
+      <!-- Slide 4: VWP Network -->
       <section>
         <h2>VWP Network</h2>
         <h3 style="color: #9aa0a6; font-size: 1.2em;">(Action & Safety)</h3>
@@ -247,10 +277,16 @@
         </svg>
       </section>
 
-      <!-- Slide 5: Complete Execution Flow Animation (Moved Here) -->
+      <!-- Slide 5: Complete Execution Flow Animation (Multi-Iteration) -->
       <section>
-        <h2>Execution Flow (Auto-Pulse)</h2>
+        <h2>Execution Flow (Agentic Loop)</h2>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
+          <!-- Loop Counter Text -->
+          <text x="400" y="80" class="node-text" fill="#ffbb00" font-size="20">
+            <animate attributeName="opacity" values="0;1;1;1;1;0" keyTimes="0;0.05;0.25;0.45;0.65;1" dur="8s" repeatCount="indefinite" />
+            <tspan>Agentic Iteration Loop (Thinking...)</tspan>
+          </text>
+          
           <!-- Background Zones -->
           <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
           <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
@@ -275,64 +311,143 @@
           <path d="M 570 220 L 110 220" class="line-flow" style="stroke-opacity: 0.3;" />
           
           <!-- Animated Pulses -->
-          <!-- 1. User to Opencode -->
-          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-1" />
-          <!-- 2. Opencode to API Server -->
-          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-2" />
-          <!-- 3. API Server to Firewall -->
-          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-3" />
-          <!-- 4. Firewall to MCP -->
-          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-4" />
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-1" />
+          <!-- Ping-pong multiple times -->
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-ping" />
           
           <!-- Return Path: MCP to Opencode -->
-          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-return" />
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
           
           <!-- Result Output -->
-          <text x="160" y="140" class="node-text result-text" fill="#00ff00" font-size="14">Output Ready!</text>
+          <text x="160" y="140" class="node-text result-multi-text" fill="#00ff00" font-size="14">Result Output!</text>
         </svg>
       </section>
 
-      <!-- Slide 6: Limitations (With Inconvenience Added) -->
+      <!-- Slide 6: Limitations (Dimmed Background, Huge Warnings) -->
       <section>
         <h2>Architectural Limitations</h2>
-        <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Limitations">
-          <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" />
-          <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" />
-          <line x1="500" y1="20" x2="500" y2="380" class="fw-line" />
+        <div style="position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
+          <!-- Dimmed Background SVG -->
+          <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Limitations" style="position: absolute; opacity: 0.15; z-index: 1;">
+            <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" />
+            <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" />
+            <line x1="500" y1="20" x2="500" y2="380" class="fw-line" />
+            <rect x="50" y="160" width="120" height="120" rx="10" class="node-office" />
+            <text x="110" y="200" class="node-text">LLM</text>
+            <rect x="250" y="160" width="120" height="120" rx="10" class="node-office" style="stroke:#ffbb00;" />
+            <text x="310" y="200" class="node-text">API Server</text>
+            <rect x="600" y="160" width="120" height="120" rx="10" class="node-vwp" />
+            <text x="660" y="200" class="node-text">Data</text>
+            <path d="M 170 200 L 250 200" class="line-flow" style="stroke: #ffbb00;" />
+            <path d="M 370 200 L 600 200" class="line-flow" style="stroke: #ffbb00;" />
+          </svg>
           
-          <!-- Nodes -->
-          <rect x="50" y="160" width="120" height="120" rx="10" class="node-office" />
-          <text x="110" y="200" class="node-text">LLM</text>
-          
-          <rect x="250" y="160" width="120" height="120" rx="10" class="node-office" style="stroke:#ffbb00;" />
-          <text x="310" y="200" class="node-text">API Server</text>
-          
-          <rect x="600" y="160" width="120" height="120" rx="10" class="node-vwp" />
-          <text x="660" y="200" class="node-text">Data</text>
-          
-          <!-- Lines -->
-          <path d="M 170 200 L 250 200" class="line-flow" style="stroke: #ffbb00;" />
-          <path d="M 370 200 L 600 200" class="line-flow" style="stroke: #ffbb00;" />
-          
-          <!-- Warnings (Korean) -->
-          <circle cx="110" cy="250" r="15" fill="#ff0000" />
-          <text x="110" y="250" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">1</text>
-          <text x="110" y="300" class="node-text" fill="#ff4444" font-size="14">환각 현상 및</text>
-          <text x="110" y="320" class="node-text" fill="#ff4444" font-size="14">낮은 성능으로 인한 불편함</text>
-          
-          <circle cx="435" cy="180" r="15" fill="#ff0000" />
-          <text x="435" y="180" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">2</text>
-          <text x="435" y="130" class="node-text" fill="#ff4444" font-size="14">다중 호출로 인한</text>
-          <text x="435" y="150" class="node-text" fill="#ff4444" font-size="14">응답 지연(Latency)</text>
-          
-          <circle cx="660" cy="250" r="15" fill="#ff0000" />
-          <text x="660" y="250" fill="#fff" font-weight="bold" font-size="16" text-anchor="middle" dominant-baseline="middle">3</text>
-          <text x="660" y="300" class="node-text" fill="#ff4444" font-size="14">대규모 데이터 반환 시</text>
-          <text x="660" y="320" class="node-text" fill="#ff4444" font-size="14">컨텍스트 한계 돌파</text>
-        </svg>
+          <!-- Warning Panels (Overlay) -->
+          <div style="z-index: 2; display: flex; flex-direction: column; gap: 20px; width: 80%;">
+            <div class="hud-box-warning">
+              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 1. Hallucination</h3>
+              <p style="margin: 0; color: #fff; font-size: 18px;">환각 현상 및 낮은 기저모델 성능으로 인한 극심한 <strong>사용자 불편함</strong></p>
+            </div>
+            <div class="hud-box-warning">
+              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 2. Latency Penalty</h3>
+              <p style="margin: 0; color: #fff; font-size: 18px;">Agentic Loop 반복 횟수만큼 누적되는 <strong>방화벽 및 네트워크 응답 지연</strong></p>
+            </div>
+            <div class="hud-box-warning">
+              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 3. Context Overflow</h3>
+              <p style="margin: 0; color: #fff; font-size: 18px;">VWP망의 방대한 데이터 반환 시 <strong>LLM 컨텍스트 한계 돌파</strong></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Slide 7: Detail 1 (Hallucination) -->
+      <section>
+        <h2>Issue 1: Hallucination</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em;">CodeMate LLM의 치명적 오작동 사례</h3>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
+          <div style="flex: 1; padding: 20px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              사내 상용 모델(CodeMate)의 추론 능력 부족으로 인해, 존재하지 않는 툴을 호출하거나 필수 인자(Parameter)를 빼먹는 JSON 오류가 매우 잦습니다.<br><br>
+              이로 인해 사용자는 오류 메시지를 반복해서 봐야 하는 불편함을 겪게 되며, Harness의 JSON 파싱(Auto-Retry) 부담이 극도로 가중됩니다.
+            </p>
+          </div>
+          <div style="flex: 1;">
+            <div class="code-snippet">
+<span class="code-green">// 예상되는 올바른 MCP 툴 호출</span>
+{
+  <span class="code-blue">"tool"</span>: <span class="code-yellow">"vwp_search_logs"</span>,
+  <span class="code-blue">"args"</span>: { <span class="code-blue">"query"</span>: <span class="code-yellow">"error"</span> }
+}
+
+<span class="code-red">// 실제 CodeMate가 뱉어내는 할루시네이션 예시</span>
+{
+  <span class="code-blue">"tool"</span>: <span class="code-yellow">"search_db_which_doesnt_exist"</span>,
+  <span class="code-blue">"arguments"</span>: <span class="code-yellow">"error"</span> <span class="code-green">// Object가 아닌 String 반환</span>
+}
+            </div>
+          </div>
+        </div>
       </section>
 
-      <!-- Slide 7: Conclusion -->
+      <!-- Slide 8: Detail 2 (Latency) -->
+      <section>
+        <h2>Issue 2: Latency</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em;">망 분리와 반복 호출의 늪</h3>
+        <div style="margin-top: 30px; text-align: center;">
+          <p style="font-size: 18px; color: #dedede;">Agentic Loop 1회 동작 시 소요되는 타임라인 (왕복)</p>
+          <div style="margin: 20px auto; width: 90%; background: #222; border-radius: 10px; padding: 20px; box-shadow: inset 0 0 10px #000;">
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+              <div style="width: 150px; text-align: right; padding-right: 15px; color: #00ff00;">LLM 추론</div>
+              <div style="width: 30%; height: 20px; background: #00ff00; border-radius: 5px;"></div>
+              <div style="margin-left: 10px; font-size: 14px; color: #9aa0a6;">(2,000ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+              <div style="width: 150px; text-align: right; padding-right: 15px; color: #ffbb00;">API Server 릴레이</div>
+              <div style="width: 10%; height: 20px; background: #ffbb00; border-radius: 5px;"></div>
+              <div style="margin-left: 10px; font-size: 14px; color: #9aa0a6;">(500ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+              <div style="width: 150px; text-align: right; padding-right: 15px; color: #ff0055;">망 연동 방화벽</div>
+              <div style="width: 15%; height: 20px; background: #ff0055; border-radius: 5px;"></div>
+              <div style="margin-left: 10px; font-size: 14px; color: #9aa0a6;">(800ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+              <div style="width: 150px; text-align: right; padding-right: 15px; color: #00ffff;">MCP Server 처리</div>
+              <div style="width: 40%; height: 20px; background: #00ffff; border-radius: 5px;"></div>
+              <div style="margin-left: 10px; font-size: 14px; color: #9aa0a6;">(3,000ms)</div>
+            </div>
+          </div>
+          <p style="font-size: 18px; color: #ff4444; font-weight: bold;">총 6.3초 소요. 만약 5번의 Loop를 돌면 30초 이상의 딜레이 발생!</p>
+        </div>
+      </section>
+
+      <!-- Slide 9: Detail 3 (Overflow) -->
+      <section>
+        <h2>Issue 3: Context Overflow</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
+          <div style="flex: 1;">
+            <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: #888;">
+{"log_id": "89312", "timestamp": "2026-07-29T20:51:00", "severity": "INFO", "message": "Transaction verified", "trace": "..."}
+{"log_id": "89313", "timestamp": "2026-07-29T20:51:01", "severity": "WARN", "message": "Memory threshold 80%", "trace": "..."}
+{"log_id": "89314", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89315", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89316", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89317", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+... (10,000+ lines omitted) ...
+<span style="color: #ff4444; font-size: 14px; font-weight: bold;">[ERROR] Maximum Context Length Exceeded (32K tokens)</span>
+            </div>
+          </div>
+          <div style="flex: 1; padding: 10px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              VWP망의 로그 파일이나 DB 레코드 쿼리 시, 필터링되지 않은 원본 데이터(Raw Data)가 한 번에 쏟아져 들어옵니다.<br><br>
+              이로 인해 LLM의 컨텍스트 윈도우가 즉시 가득 차게 되며, 이전 대화 내용(Memory)마저 지워지는 대형 참사가 발생합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Conclusion (Mitigation) -->
       <section>
         <h2>Mitigation & Next Steps</h2>
         <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
