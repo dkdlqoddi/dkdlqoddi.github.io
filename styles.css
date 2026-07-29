@@ -260,9 +260,6 @@ body.scrolled .cards {
   100% { transform: translateY(-8px); }
 }
 
-
-.card.in { opacity: 1; }
-
 .card:hover, .card:focus-visible, .card.hover-active {
   color: var(--primary);
   background: rgba(20, 30, 50, 0.85);

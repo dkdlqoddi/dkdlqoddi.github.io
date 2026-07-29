@@ -134,18 +134,55 @@ function init() {
 
   generateGalaxy();
 
-  // 휠 버튼 드래그 시점 전환 (Orbit)
+  // 드래그 시점 전환 (Orbit - 마우스 & 모바일 터치)
   document.addEventListener('mousedown', (event) => {
-    if (event.button === 1) { // 휠(가운데) 버튼
+    if (event.button === 1 || event.button === 0) { // 휠 및 좌클릭 허용
       isDragging = true;
-      event.preventDefault(); // 기본 스크롤 방지
+      if (event.button === 1) event.preventDefault(); // 휠 버튼만 텍스트 선택 등 기본 스크롤 방지
     }
   });
 
   document.addEventListener('mouseup', (event) => {
-    if (event.button === 1) {
+    if (event.button === 1 || event.button === 0) {
       isDragging = false;
     }
+  });
+
+  // 모바일 터치 이벤트 추가
+  let lastTouchX = 0;
+  let lastTouchY = 0;
+
+  document.addEventListener('touchstart', (event) => {
+    if (event.touches.length === 1 && !prefersReducedMotion) {
+      isDragging = true;
+      lastTouchX = event.touches[0].clientX;
+      lastTouchY = event.touches[0].clientY;
+    }
+  });
+
+  document.addEventListener('touchmove', (event) => {
+    if (isDragging && !prefersReducedMotion && event.touches.length === 1) {
+      const touchX = event.touches[0].clientX;
+      const touchY = event.touches[0].clientY;
+      const movementX = touchX - lastTouchX;
+      const movementY = touchY - lastTouchY;
+      
+      theta -= movementX * 0.005;
+      phi -= movementY * 0.005;
+
+      phi = Math.max(0.1, Math.min(Math.PI / 2, phi));
+
+      targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
+      targetCameraY = camRadius * Math.cos(phi);
+      targetCameraZ = camRadius * Math.sin(phi) * Math.cos(theta);
+      
+      lastTouchX = touchX;
+      lastTouchY = touchY;
+    }
+  });
+
+  document.addEventListener('touchend', () => {
+    isDragging = false;
   });
 
   document.addEventListener('mousemove', (event) => {
@@ -217,14 +254,12 @@ function init() {
 
   tick();
 
-  const checkCards = setInterval(() => {
+  document.addEventListener('cards-rendered', () => {
     const domCards = document.querySelectorAll('.card');
-    if (domCards.length > 0 && domCards.length !== cards.length) {
-      cards = Array.from(domCards);
-      assignAnchors();
-      setupCardEvents();
-    }
-  }, 500);
+    cards = Array.from(domCards);
+    assignAnchors();
+    setupCardEvents();
+  });
 }
 
 function generateGalaxy() {
@@ -293,6 +328,8 @@ function assignAnchors() {
     a.mesh.material.dispose();
   });
   anchors = [];
+  const svgLayer = document.querySelector('#hud-lines');
+  if (svgLayer) svgLayer.innerHTML = '';
 
   const sphereGeo = new THREE.SphereGeometry(1.5, 16, 16);
 
@@ -328,12 +365,27 @@ function assignAnchors() {
     mesh.position.copy(basePosition);
     scene.add(mesh);
 
+    
+    let svgLine = null;
+    let svgCircle = null;
+    if (svgLayer) {
+        svgLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        svgCircle.setAttribute('fill', 'none');
+        svgCircle.setAttribute('stroke', 'rgba(0, 255, 255, 0.8)');
+        svgCircle.setAttribute('stroke-width', '2');
+        svgLayer.appendChild(svgLine);
+        svgLayer.appendChild(svgCircle);
+    }
+
     anchors.push({
         element: card,
         basePosition: basePosition,
-        baseCardPosition: new THREE.Vector3(basePosition.x + 40, basePosition.y + 15, basePosition.z + 10), // 버튼의 3D 공간 상 오프셋
+        baseCardPosition: new THREE.Vector3(basePosition.x + 40, basePosition.y + 15, basePosition.z + 10),
         cardPos: new THREE.Vector3(),
-        mesh: mesh
+        mesh: mesh,
+        svgLine: svgLine,
+        svgCircle: svgCircle
       });
   });
 }
@@ -354,11 +406,6 @@ function setupCardEvents() {
 function updateLabels() {
   if (cards.length === 0 || anchors.length === 0 || !points) return;
 
-  const svgLayer = document.querySelector('#hud-lines');
-  if (!svgLayer) return;
-
-  let svgContent = '';
-
   const tempV = new THREE.Vector3();
   const cardV = new THREE.Vector3();
   const hw = window.innerWidth / 2;
@@ -375,9 +422,12 @@ function updateLabels() {
     cardV.copy(anchor.cardPos);
     cardV.project(camera);
 
-    // 카메라 뒤로 넘어간 경우 숨김
+    // 카메라 뒤로 넘어간 경우 숨김 (접근성 향상: visibility hidden)
     if (tempV.z > 1 || cardV.z > 1) {
       card.style.opacity = '0';
+      card.style.visibility = 'hidden';
+      if (anchor.svgLine) anchor.svgLine.style.display = 'none';
+      if (anchor.svgCircle) anchor.svgCircle.style.display = 'none';
       return;
     }
 
@@ -391,26 +441,34 @@ function updateLabels() {
     card.style.left = `${endX}px`;
     card.style.top = `${endY}px`;
 
-    // 원근법(Z값)에 따른 버튼 크기 적용 (가까우면 크고 멀면 작음)
+    // 원근법(Z값)에 따른 버튼 크기 적용
     const scale = Math.max(0.3, 1 - cardV.z);
     card.style.zIndex = Math.floor(scale * 100);
-    // scale(0.6 ~ 1.0 정도의 비율)
     const targetScale = (0.5 + scale * 0.5).toFixed(3);
     card.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
 
     // 카드 가시성 처리
     card.style.opacity = '1';
+    card.style.visibility = 'visible';
 
-    // SVG Line 생성
-    const isHovered = (hoveredCardIndex === i);
-    const lineClass = isHovered ? 'hover' : '';
-    svgContent += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" class="${lineClass}" />`;
-    
-    // 타겟팅 원(행성 위치)
-    svgContent += `<circle cx="${startX}" cy="${startY}" r="${isHovered ? 6 : 3}" fill="none" stroke="rgba(0, 255, 255, 0.8)" stroke-width="2" />`;
+    // SVG Line/Circle 개별 DOM 속성 직접 업데이트 (Layout Thrashing 방지)
+    if (anchor.svgLine && anchor.svgCircle) {
+      anchor.svgLine.style.display = '';
+      anchor.svgCircle.style.display = '';
+      
+      anchor.svgLine.setAttribute('x1', startX);
+      anchor.svgLine.setAttribute('y1', startY);
+      anchor.svgLine.setAttribute('x2', endX);
+      anchor.svgLine.setAttribute('y2', endY);
+      
+      const isHovered = (hoveredCardIndex === i);
+      anchor.svgLine.setAttribute('class', isHovered ? 'hover' : '');
+      
+      anchor.svgCircle.setAttribute('cx', startX);
+      anchor.svgCircle.setAttribute('cy', startY);
+      anchor.svgCircle.setAttribute('r', isHovered ? "6" : "3");
+    }
   });
-
-  svgLayer.innerHTML = svgContent;
 }
 
 window.addEventListener('DOMContentLoaded', init);

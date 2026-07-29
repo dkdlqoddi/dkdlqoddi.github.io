@@ -49,21 +49,7 @@
     return li;
   }
 
-  function reveal(cards) {
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      cards.forEach(function (c) { c.classList.add("in"); });
-      return;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: "0px 0px -8% 0px" });
-    cards.forEach(function (c) { observer.observe(c); });
-  }
+
 
   fetch("slides.json", { cache: "no-cache" })
     .then(function (res) {
@@ -101,7 +87,9 @@
       });
       grid.append.apply(grid, cards);
       count.textContent = String(valid.length).padStart(2, "0") + " ENTRIES";
-      reveal(cards);
+      
+      // 알림: 카드 렌더링이 끝났음을 galaxy3d.js 등에 알림
+      document.dispatchEvent(new Event('cards-rendered'));
     })
     .catch(function (err) {
       showStatus("데이터를 불러오지 못했습니다. 네트워크 상태를 확인해 주세요. (" + err.message + ")");
