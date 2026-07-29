@@ -117,7 +117,8 @@ let animationFrameId = null;
 let isDragging = false;
 let theta = 0;
 let phi = Math.PI * 0.45; // 옆면을 더 바라보도록 각도 조정 (90도에 가깝게)
-const camRadius = 180;
+let camRadius = 180;
+let targetCamRadius = 180;
 
 let targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
 let targetCameraY = camRadius * Math.cos(phi);
@@ -214,6 +215,16 @@ function init() {
     }
   });
 
+  
+  // 마우스 휠을 통한 줌(Zoom) 인/아웃
+  document.addEventListener('wheel', (event) => {
+    if (!prefersReducedMotion) {
+      targetCamRadius += event.deltaY * 0.1;
+      // 너무 뚫고 지나가거나 우주 밖으로 이탈하지 않도록 제한
+      targetCamRadius = Math.max(120, Math.min(250, targetCamRadius));
+    }
+  });
+
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -238,6 +249,14 @@ if (!prefersReducedMotion) {
       updateComets();
     }
 
+
+    // 줌 인/아웃(반경) 부드러운 이동 (Lerp)
+    if (!prefersReducedMotion) {
+      camRadius += (targetCamRadius - camRadius) * 0.05;
+      targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
+      targetCameraY = camRadius * Math.cos(phi);
+      targetCameraZ = camRadius * Math.sin(phi) * Math.cos(theta);
+    }
 
     // 카메라 부드러운 이동 (Lerp)
     camera.position.x += (targetCameraX - camera.position.x) * 0.05;
@@ -362,10 +381,10 @@ function generateGiantStars() {
   
   // Layer config: [count, sizeMultiplier]
   const layers = [
-    [800, 3],
-    [400, 5],
-    [200, 7],
-    [100, 10]
+    [200, 3],
+    [100, 5],
+    [30, 7],
+    [20, 10]
   ];
 
   layers.forEach(config => {
