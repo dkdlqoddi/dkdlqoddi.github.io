@@ -1,3 +1,86 @@
+
+const planetVertexShader = `
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+
+  void main() {
+    vUv = uv;
+    vNormal = normalize(normalMatrix * normal);
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    vViewPosition = -mvPosition.xyz;
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
+
+const planetFragmentShader = `
+  uniform float uHover;
+  uniform float uSeed;
+  uniform float uTime;
+  
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+
+  float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+  }
+  
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i + vec2(0.0,0.0)), hash(i + vec2(1.0,0.0)), u.x),
+               mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), u.x), u.y);
+  }
+
+  float fbm(vec2 p) {
+    float f = 0.0;
+    float amp = 0.5;
+    for(int i=0; i<4; i++){
+      f += amp * noise(p);
+      p *= 2.0;
+      amp *= 0.5;
+    }
+    return f;
+  }
+
+  void main() {
+    vec3 normal = normalize(vNormal);
+    vec3 viewDir = normalize(vViewPosition);
+    float fresnel = dot(normal, viewDir);
+    fresnel = clamp(1.0 - fresnel, 0.0, 1.0);
+    fresnel = pow(fresnel, 2.0);
+
+    vec2 uv = vUv * 3.0 + vec2(uSeed, uSeed);
+    uv.x += uTime * 0.05;
+    
+    float n = fbm(uv + fbm(uv + uTime * 0.1));
+    float band = sin(vUv.y * 10.0 + n * 5.0) * 0.5 + 0.5;
+    
+    vec3 baseColor = vec3(0.0, 0.5, 1.0);
+    vec3 accentColor = vec3(0.0, 1.0, 0.8);
+    vec3 darkColor = vec3(0.05, 0.1, 0.3);
+    
+    float hueShift = fract(uSeed * 0.618);
+    baseColor = mix(baseColor, vec3(0.5, 0.0, 1.0), hueShift);
+    
+    vec3 planetColor = mix(darkColor, baseColor, band);
+    planetColor = mix(planetColor, accentColor, n);
+    
+    vec3 atmosphereColor = mix(vec3(0.0, 1.0, 1.0), vec3(0.5, 0.5, 1.0), hueShift);
+    planetColor += atmosphereColor * fresnel * 1.5;
+    
+    vec3 markerColor = vec3(0.0, 1.0, 1.0);
+    vec3 finalColor = mix(markerColor, planetColor, uHover);
+    
+    float alpha = mix(0.9, 1.0, uHover);
+    
+    gl_FragColor = vec4(finalColor, alpha);
+  }
+`;
 // 전역 객체 window.THREE 를 사용 (UMD 라이브러리)
 
 // 은하수 파라미터
@@ -99,10 +182,18 @@ function init() {
     camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
     camera.lookAt(0, 0, 0);
 
-    // 앵커(행성) 스케일 업데이트
+    // 앵커(행성) 스케일 업데이트 및 셰이더 uniform 업데이트
     anchors.forEach((anchor, idx) => {
-      const targetScale = (hoveredCardIndex === idx) ? 3.5 : 1.0;
+      const isHovered = (hoveredCardIndex === idx);
+      const targetScale = isHovered ? 3.5 : 1.0;
       anchor.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      
+      // Shader uniform uHover lerp (0.0 to 1.0)
+      if (anchor.mesh.material && anchor.mesh.material.uniforms) {
+          const targetHover = isHovered ? 1.0 : 0.0;
+          anchor.mesh.material.uniforms.uHover.value += (targetHover - anchor.mesh.material.uniforms.uHover.value) * 0.1;
+          anchor.mesh.material.uniforms.uTime.value = elapsedTime;
+      }
       
       // 행성도 은하수와 함께 공전해야 하므로 위치 업데이트
       if (points) {
@@ -200,11 +291,7 @@ function assignAnchors() {
   anchors = [];
 
   const sphereGeo = new THREE.SphereGeometry(1.5, 16, 16);
-  const sphereMat = new THREE.MeshBasicMaterial({ 
-    color: 0x00ffff, 
-    transparent: true, 
-    opacity: 0.9 
-  });
+
 
   cards.forEach((card, index) => {
     const step = (index + 1) / cards.length;
@@ -220,8 +307,19 @@ function assignAnchors() {
 
     const basePosition = new THREE.Vector3(x, y, z);
     
-    // 행성 렌더링용 구체
-    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+    // 행성 렌더링용 구체 (ShaderMaterial 적용)
+    const planetMat = new THREE.ShaderMaterial({
+      vertexShader: planetVertexShader,
+      fragmentShader: planetFragmentShader,
+      uniforms: {
+        uHover: { value: 0.0 },
+        uSeed: { value: Math.random() * 100.0 },
+        uTime: { value: 0.0 }
+      },
+      transparent: true,
+      blending: THREE.NormalBlending
+    });
+    const mesh = new THREE.Mesh(sphereGeo, planetMat);
     mesh.position.copy(basePosition);
     scene.add(mesh);
 
