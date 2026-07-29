@@ -112,6 +112,81 @@ let targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
 let targetCameraY = camRadius * Math.cos(phi);
 let targetCameraZ = camRadius * Math.sin(phi) * Math.cos(theta);
 
+
+// --- Comets ---
+let comets = [];
+const COMET_COUNT = 5;
+function initComets() {
+  for (let i = 0; i < COMET_COUNT; i++) {
+    createComet();
+  }
+}
+
+function createComet() {
+  const cometGeo = new THREE.BufferGeometry();
+  const cometMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+  
+  // Trail points
+  const points = new Float32Array(15 * 3);
+  cometGeo.setAttribute('position', new THREE.BufferAttribute(points, 3));
+  
+  const comet = new THREE.Line(cometGeo, cometMat);
+  
+  // Random start position
+  const radius = 100 + Math.random() * 50;
+  const theta = Math.random() * Math.PI * 2;
+  const y = (Math.random() - 0.5) * 50;
+  
+  scene.add(comet);
+  
+  comets.push({
+    mesh: comet,
+    pos: new THREE.Vector3(Math.cos(theta) * radius, y, Math.sin(theta) * radius),
+    vel: new THREE.Vector3((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 2).normalize().multiplyScalar(0.5 + Math.random() * 1.5),
+    history: [],
+    life: 0,
+    maxLife: 200 + Math.random() * 200
+  });
+}
+
+function updateComets() {
+  for (let i = comets.length - 1; i >= 0; i--) {
+    let c = comets[i];
+    c.life++;
+    c.pos.add(c.vel);
+    
+    c.history.unshift(c.pos.clone());
+    if (c.history.length > 15) c.history.pop();
+    
+    const positions = c.mesh.geometry.attributes.position.array;
+    for (let j = 0; j < c.history.length; j++) {
+      positions[j*3] = c.history[j].x;
+      positions[j*3+1] = c.history[j].y;
+      positions[j*3+2] = c.history[j].z;
+    }
+    // Fill remainder if history < 15
+    for (let j = c.history.length; j < 15; j++) {
+      if(c.history.length > 0) {
+        positions[j*3] = c.history[c.history.length-1].x;
+        positions[j*3+1] = c.history[c.history.length-1].y;
+        positions[j*3+2] = c.history[c.history.length-1].z;
+      }
+    }
+    c.mesh.geometry.attributes.position.needsUpdate = true;
+    
+    // Fade out
+    c.mesh.material.opacity = (1.0 - (c.life / c.maxLife)) * 0.8;
+    
+    if (c.life >= c.maxLife) {
+      scene.remove(c.mesh);
+      c.mesh.geometry.dispose();
+      c.mesh.material.dispose();
+      comets.splice(i, 1);
+      createComet();
+    }
+  }
+}
+
 function init() {
   const canvas = document.querySelector('#galaxy-3d-bg');
   if (!canvas) return;
@@ -207,12 +282,20 @@ function init() {
 
   const clock = new THREE.Clock();
 
+
   function tick() {
     const elapsedTime = clock.getElapsedTime();
 
     if (!prefersReducedMotion && points) {
       points.rotation.y = elapsedTime * 0.05;
     }
+    if (!prefersReducedMotion && clouds) {
+      clouds.rotation.y = elapsedTime * 0.04; // slightly slower
+    }
+    if (!prefersReducedMotion) {
+      updateComets();
+    }
+
 
     // 카메라 부드러운 이동 (Lerp)
     camera.position.x += (targetCameraX - camera.position.x) * 0.05;
@@ -262,22 +345,88 @@ function init() {
   });
 }
 
+
+let clouds;
+
+const galaxyVertexShader = `
+  uniform float uTime;
+  attribute float aScale;
+  attribute vec3 aRandomness;
+  varying vec3 vColor;
+  
+  void main() {
+    vColor = color;
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    
+    // Slight rotation over time for individual particles (optional)
+    
+    vec4 viewPosition = viewMatrix * modelPosition;
+    gl_Position = projectionMatrix * viewPosition;
+    
+    // Size attenuation and scale
+    gl_PointSize = 2.0 * aScale * (100.0 / -viewPosition.z);
+  }
+`;
+
+const galaxyFragmentShader = `
+  varying vec3 vColor;
+  void main() {
+    // Disc shape
+    float strength = distance(gl_PointCoord, vec2(0.5));
+    strength = 1.0 - strength;
+    strength = pow(strength, 3.0); // Make it a sharp point
+    
+    vec3 finalColor = mix(vec3(0.0), vColor, strength);
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
+const cloudVertexShader = `
+  uniform float uTime;
+  attribute float aScale;
+  varying vec3 vColor;
+  varying vec2 vUv;
+  void main() {
+    vColor = color;
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    vec4 viewPosition = viewMatrix * modelPosition;
+    gl_Position = projectionMatrix * viewPosition;
+    gl_PointSize = 40.0 * aScale * (100.0 / -viewPosition.z);
+  }
+`;
+
+const cloudFragmentShader = `
+  varying vec3 vColor;
+  void main() {
+    float strength = distance(gl_PointCoord, vec2(0.5));
+    strength = 1.0 - strength;
+    strength = pow(strength, 1.5); // Softer edge
+    gl_FragColor = vec4(vColor, strength * 0.15); // Low opacity
+  }
+`;
+
 function generateGalaxy() {
   if (points !== undefined) {
     scene.remove(points);
     geometry.dispose();
     material.dispose();
   }
+  if (clouds !== undefined) {
+    scene.remove(clouds);
+    clouds.geometry.dispose();
+    clouds.material.dispose();
+  }
 
+  // 1. Stars (Giant and normal)
   geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(params.count * 3);
   const colors = new Float32Array(params.count * 3);
+  const scales = new Float32Array(params.count);
 
   const baseColors = params.colors.map(c => new THREE.Color(c));
 
   for (let i = 0; i < params.count; i++) {
     const i3 = i * 3;
-
     const radius = Math.random() * params.radius;
     const spinAngle = radius * params.spin;
     const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
@@ -290,12 +439,10 @@ function generateGalaxy() {
     positions[i3 + 1] = randomY;
     positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
-    // 랜덤하게 팔레트에서 2개 색상을 섞어서 다채로운 느낌 생성
     const color1 = baseColors[Math.floor(Math.random() * baseColors.length)];
     const color2 = baseColors[Math.floor(Math.random() * baseColors.length)];
     const mixedColor = color1.clone().lerp(color2, Math.random());
 
-    // 중심부는 밝고 하얗게
     if (radius < 15) {
       mixedColor.lerp(new THREE.Color('#ffffff'), 1.0 - (radius/15));
     }
@@ -303,23 +450,80 @@ function generateGalaxy() {
     colors[i3] = mixedColor.r;
     colors[i3 + 1] = mixedColor.g;
     colors[i3 + 2] = mixedColor.b;
+    
+    // Add giant stars randomly (1% chance to be 5x larger, 5% to be 2x)
+    let s = Math.random();
+    if (s < 0.01) {
+      scales[i] = 5.0 + Math.random() * 3.0; // Giant
+    } else if (s < 0.05) {
+      scales[i] = 2.0 + Math.random() * 2.0; // Bright
+    } else {
+      scales[i] = 0.5 + Math.random(); // Normal
+    }
   }
 
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
 
-  material = new THREE.PointsMaterial({
-    size: params.size,
-    sizeAttenuation: true,
+  material = new THREE.ShaderMaterial({
     depthWrite: false,
     blending: THREE.AdditiveBlending,
-    vertexColors: true
+    vertexColors: true,
+    vertexShader: galaxyVertexShader,
+    fragmentShader: galaxyFragmentShader,
+    transparent: true
   });
 
   points = new THREE.Points(geometry, material);
   scene.add(points);
-}
+  
+  // 2. Milky Way Dust Clouds
+  const cloudCount = 2000; // dense particles
+  const cloudGeo = new THREE.BufferGeometry();
+  const cPositions = new Float32Array(cloudCount * 3);
+  const cColors = new Float32Array(cloudCount * 3);
+  const cScales = new Float32Array(cloudCount);
+  
+  for(let i=0; i<cloudCount; i++){
+    const i3 = i * 3;
+    const radius = Math.random() * params.radius * 0.8;
+    const spinAngle = radius * params.spin;
+    const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
 
+    const randomX = (Math.random() - 0.5) * 30;
+    const randomY = (Math.random() - 0.5) * 15;
+    const randomZ = (Math.random() - 0.5) * 30;
+
+    cPositions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+    cPositions[i3 + 1] = randomY;
+    cPositions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+    
+    const color = baseColors[Math.floor(Math.random() * baseColors.length)].clone();
+    cColors[i3] = color.r;
+    cColors[i3+1] = color.g;
+    cColors[i3+2] = color.b;
+    
+    cScales[i] = 1.0 + Math.random() * 2.0;
+  }
+  cloudGeo.setAttribute('position', new THREE.BufferAttribute(cPositions, 3));
+  cloudGeo.setAttribute('color', new THREE.BufferAttribute(cColors, 3));
+  cloudGeo.setAttribute('aScale', new THREE.BufferAttribute(cScales, 1));
+  
+  const cloudMat = new THREE.ShaderMaterial({
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true,
+    vertexShader: cloudVertexShader,
+    fragmentShader: cloudFragmentShader,
+    transparent: true
+  });
+  
+  clouds = new THREE.Points(cloudGeo, cloudMat);
+  scene.add(clouds);
+  
+  initComets();
+}
 function assignAnchors() {
   // 기존 앵커 지우기
   anchors.forEach(a => {

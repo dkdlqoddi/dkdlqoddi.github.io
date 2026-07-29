@@ -21,7 +21,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; background: var(--bg); }
+html { scroll-behavior: smooth; background: var(--bg); overflow: hidden; touch-action: none; height: 100vh; }
 
 body {
   background: var(--bg);
@@ -35,6 +35,8 @@ body {
   overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .mono {
