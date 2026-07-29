@@ -212,9 +212,76 @@
     .reveal .cols p { margin: 0 0 0.9em; }
 
     .reveal .ask { border-left: 3px solid #fcfcfb; padding-left: 0.7em; text-align: left; }
+  
+    
+    /* 로켓 랩 폰트 테마 (모든 텍스트 Montserrat 통일, 단 애니메이션 제외) */
+    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    
+    /* HUD UI CSS 복사 */
+    :root {
+      --hud-inset: 2em;
+      --hairline: #2a2b2a;
+      --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --dim: #9aa0a6;
+      --bg: #0e0e0e;
+    }
+    .hud {
+      position: fixed;
+      inset: var(--hud-inset);
+      border: 2px solid var(--hairline);
+      pointer-events: none;
+      z-index: 1000; /* 슬라이드 위로 올라오게 */
+    }
+    .hud::before,
+    .hud::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--hairline) 0,
+        var(--hairline) 1px,
+        transparent 1px,
+        transparent 48px
+      );
+    }
+    .hud::before { top: 0; }
+    .hud::after { bottom: 0; }
+    
+    .hud-corner {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 0.5625rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+      background: var(--bg);
+      padding: 0 6px;
+    }
+    .hud-tl { top: -0.5em; left: 14px; }
+    .hud-tr { top: -0.5em; right: 14px; }
+    .hud-bl { bottom: -0.5em; left: 14px; }
+    .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
+    
+    @media (max-width: 640px) {
+      :root { --hud-inset: 10px; }
+      .hud-bl { display: none; }
+    }
+
   </style>
 </head>
 <body>
+  <div class="hud" aria-hidden="true">
+    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
+    <span class="hud-corner hud-tr">EST 2026</span>
+    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
+    <span class="hud-corner hud-br">+</span>
+  </div>
+
   <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
   <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
 

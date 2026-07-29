@@ -124,25 +124,6 @@ body {
   stroke-width: 2.5;
 }
 
-/* ── 흰 우주선 (장식, 첫 화면 전용) ─────────────────────
-   부유: 주기 9초, 이동량 상하 4px(총 8px 이내), 시작·끝 동일 위치. */
-.ship {
-  position: fixed;
-  top: 22vh;
-  right: clamp(24px, 9vw, 130px);
-  width: clamp(110px, 15vw, 200px);
-  pointer-events: none;
-  z-index: 0;
-  animation: float 9s ease-in-out infinite;
-}
-
-.ship svg { display: block; width: 100%; height: auto; }
-
-@keyframes float {
-  0%, 100% { translate: 0 0; rotate: 0deg; }
-  50% { translate: 0 -4px; rotate: -1.4deg; }
-}
-
 /* ── 히어로 ────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -209,16 +190,10 @@ main { position: relative; z-index: 1; }
 
 .log-rule { flex: 1; border-top: 1px solid var(--hairline); }
 
-/* ── 카드 리스트 (우측 사이드바 셋업) ───────────── */
+/* ── 카드 리스트 (3D 투영 절대 궤도) ───────────── */
 .cards {
   position: absolute;
-  top: 50%;
-  right: 5vw;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  z-index: 10;
+  top: 0; left: 0; width: 100vw; height: 100vh;
   margin: 0;
   padding: 0;
   pointer-events: none; /* 클릭은 카드 내부 요소만 되도록 */
@@ -226,22 +201,24 @@ main { position: relative; z-index: 1; }
 
 /* ── 홀로그램 개별 카드 ───────────────────────────────── */
 .card {
+  position: absolute;
+  translate: -50% -50%;
   pointer-events: auto; /* 카드 자체는 클릭 가능 */
   display: block;
-  width: 250px;
+  width: 200px;
   text-decoration: none;
   color: var(--secondary);
   background: rgba(14, 14, 25, 0.6);
   border: 1px solid rgba(0, 255, 255, 0.2);
   border-left: 3px solid rgba(0, 255, 255, 0.5);
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.7rem;
+  font-size: 0.85rem;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   transition: all 0.3s ease;
 }
-
 .card.in { opacity: 1; }
 
 .card:hover, .card:focus-visible, .card.hover-active {
@@ -315,7 +292,6 @@ main { position: relative; z-index: 1; }
   :root { --hud-inset: 10px; }
   .hero { min-height: 76vh; }
   .hud-bl { display: none; }
-  .ship { top: 12vh; }
 }
 
 /* ── 인쇄: 어두운 화면을 흰 종이용으로 되돌림 ──────────
@@ -325,7 +301,7 @@ main { position: relative; z-index: 1; }
 @media print {
   html, body { background: #fff; }
   body, .title, .card-title, .tagline, .card-desc, .mono, .foot-sep { color: #000; }
-  .galaxy-bg, .ship, .hud, .scroll-cue { display: none; }
+  .galaxy-bg, .hud, .scroll-cue { display: none; }
   .card { opacity: 1; translate: 0 0; border-color: #000; }
   .log-rule { border-top-color: #000; }
 }
@@ -339,6 +315,5 @@ main { position: relative; z-index: 1; }
     transition-duration: 0.01ms !important;
   }
   #galaxy-3d-bg { display: none !important; }
-  .ship { animation: none; }
   .card { opacity: 1; translate: 0 0; }
 }

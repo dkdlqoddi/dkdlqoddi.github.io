@@ -18,12 +18,15 @@ let anchors = [];
 let hoveredCardIndex = -1;
 let animationFrameId = null;
 
-// 카메라 시점 제어용 변수
-let mouseX = 0;
-let mouseY = 0;
-let targetCameraX = 0;
-let targetCameraY = 100;
-let targetCameraZ = 150;
+// 카메라 시점 제어용 변수 (구면 좌표계)
+let isDragging = false;
+let theta = 0;
+let phi = Math.PI / 3; // 약간 위에서 내려다보기
+const camRadius = 180;
+
+let targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
+let targetCameraY = camRadius * Math.cos(phi);
+let targetCameraZ = camRadius * Math.sin(phi) * Math.cos(theta);
 
 function init() {
   const canvas = document.querySelector('#galaxy-3d-bg');
@@ -47,16 +50,31 @@ function init() {
 
   generateGalaxy();
 
-  // 마우스 이동에 따른 카메라 시점 전환 (Parallax Orbit)
-  document.addEventListener('mousemove', (event) => {
-    // 화면 중심 기준 정규화 (-1 ~ +1)
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+  // 휠 버튼 드래그 시점 전환 (Orbit)
+  document.addEventListener('mousedown', (event) => {
+    if (event.button === 1) { // 휠(가운데) 버튼
+      isDragging = true;
+      event.preventDefault(); // 기본 스크롤 방지
+    }
+  });
 
-    if (!prefersReducedMotion) {
-      targetCameraX = mouseX * 80;
-      targetCameraY = 100 + mouseY * 30; // 높이 약간 조정
-      targetCameraZ = 150 - Math.abs(mouseX) * 20; // 측면으로 갈수록 약간 다가감
+  document.addEventListener('mouseup', (event) => {
+    if (event.button === 1) {
+      isDragging = false;
+    }
+  });
+
+  document.addEventListener('mousemove', (event) => {
+    if (isDragging && !prefersReducedMotion) {
+      theta -= event.movementX * 0.005;
+      phi -= event.movementY * 0.005;
+
+      // phi 각도 제한 (너무 위나 아래로 가지 않도록)
+      phi = Math.max(0.1, Math.min(Math.PI / 2, phi));
+
+      targetCameraX = camRadius * Math.sin(phi) * Math.sin(theta);
+      targetCameraY = camRadius * Math.cos(phi);
+      targetCameraZ = camRadius * Math.sin(phi) * Math.cos(theta);
     }
   });
 
@@ -248,10 +266,21 @@ function updateLabels() {
     const startX = (tempV.x * hw) + hw;
     const startY = -(tempV.y * hh) + hh;
 
-    // 카드의 중심 좌표 계산
-    const rect = card.getBoundingClientRect();
-    const endX = rect.left + rect.width / 2;
-    const endY = rect.top + rect.height / 2;
+    // 카드 오프셋 (행성에서 길게 뻗어나오는 형태)
+    // 약간 우측 상단으로 고정된 오프셋을 두어, 별과 함께 돌아가도록 함
+    const offsetX = 150;
+    const offsetY = -100;
+    const endX = startX + offsetX;
+    const endY = startY + offsetY;
+
+    // 카드 실제 위치 적용
+    card.style.left = `${endX}px`;
+    card.style.top = `${endY}px`;
+
+    // 원근법 적용 (선택 사항)
+    const scale = Math.max(0.3, 1 - tempV.z);
+    card.style.zIndex = Math.floor(scale * 100);
+    card.style.transform = `translate(-50%, -50%) scale(${(0.7 + scale * 0.3).toFixed(3)})`;
 
     // 카드 가시성 처리
     card.style.opacity = '1';
