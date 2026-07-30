@@ -1,5 +1,11 @@
 [
   {
+    "title": "설계 자동화 (AI Coding Tool)",
+    "date": "2026-07-30",
+    "description": "자동 실행부터 로그 분석, 결과 보고까지 이어지는 AI 기반 설계 파이프라인",
+    "dir": "ai-coding-automation"
+  },
+  {
     "title": "Secure Agentic Architecture: Office to VWP",
     "date": "2026-07-29",
     "description": "오피스망-VWP망 연동 아키텍처 다이어그램 및 에이전틱 툴 호출 과정의 한계점과 방어선(Harness) 구조 분석",
