@@ -51,27 +51,42 @@ const planetFragmentShader = `
   void main() {
     vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(vViewPosition);
+    
+    // Directional light for 3D realism
+    vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
+    float diff = max(dot(normal, lightDir), 0.0);
+    float ambient = 0.2;
+    float lighting = ambient + diff * 0.8;
+    
     float fresnel = dot(normal, viewDir);
     fresnel = clamp(1.0 - fresnel, 0.0, 1.0);
-    fresnel = pow(fresnel, 2.0);
+    fresnel = pow(fresnel, 3.0);
 
     vec2 uv = vUv * 3.0 + vec2(uSeed, uSeed);
     uv.x += uTime * 0.05;
     
     float n = fbm(uv + fbm(uv + uTime * 0.1));
-    float band = sin(vUv.y * 10.0 + n * 5.0) * 0.5 + 0.5;
     
-    vec3 baseColor = vec3(0.0, 0.5, 1.0);
-    vec3 accentColor = vec3(0.0, 1.0, 0.8);
-    vec3 darkColor = vec3(0.05, 0.1, 0.3);
+    // Realistic Planet Colors (Water vs Land)
+    vec3 deepWater = vec3(0.01, 0.1, 0.3);
+    vec3 shallowWater = vec3(0.0, 0.4, 0.6);
+    vec3 land = vec3(0.1, 0.5, 0.2);
+    vec3 highLand = vec3(0.6, 0.7, 0.6);
+    vec3 cloudColor = vec3(1.0, 1.0, 1.0);
     
-    float hueShift = fract(uSeed * 0.618);
-    baseColor = mix(baseColor, vec3(0.5, 0.0, 1.0), hueShift);
+    vec3 planetColor;
+    if (n < 0.45) {
+      planetColor = mix(deepWater, shallowWater, n / 0.45);
+    } else if (n < 0.7) {
+      planetColor = mix(land, highLand, (n - 0.45) / 0.25);
+    } else {
+      planetColor = mix(highLand, cloudColor, (n - 0.7) / 0.3);
+    }
     
-    vec3 planetColor = mix(darkColor, baseColor, band);
-    planetColor = mix(planetColor, accentColor, n);
+    // Apply lighting
+    planetColor *= lighting;
     
-    vec3 atmosphereColor = mix(vec3(0.0, 1.0, 1.0), vec3(0.5, 0.5, 1.0), hueShift);
+    vec3 atmosphereColor = mix(vec3(0.3, 0.6, 1.0), vec3(0.0, 1.0, 1.0), fract(uSeed));
     planetColor += atmosphereColor * fresnel * 1.5;
     
     vec3 markerColor = vec3(0.0, 1.0, 1.0);
@@ -269,6 +284,7 @@ if (!prefersReducedMotion) {
       const isHovered = (hoveredCardIndex === idx);
       const targetScale = isHovered ? 3.5 : 1.0;
       anchor.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      anchor.mesh.rotation.y += 0.01;
       
       // Shader uniform uHover and uOpacity lerp
       if (anchor.mesh.material && anchor.mesh.material.uniforms) {
