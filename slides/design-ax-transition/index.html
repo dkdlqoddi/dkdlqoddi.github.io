@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>설계 AX 전환</title>
+  <meta name="description" content="프롬프트 엔지니어링에서 Harness 엔지니어링으로의 패러다임 전환">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0e0e0e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+
+  <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
+       상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
+
+  <!-- 테마는 데크마다 자유. 동봉 테마: black.css(현재 기본), white.css (둘 다 오프라인 자기완결형) -->
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
+  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
+  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+
+  <style>
+    /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
+       JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
+    html { background: #0e0e0e; color-scheme: dark; }
+
+    /* 검은 우주 팔레트 (bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a)
+       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다.
+       html:root 표기인 이유: 테마 <link>와 이 블록의 순서가 바뀌어도 항상 이기도록 특이성을 한 단계 올림 */
+    html:root {
+      --primary: #fcfcfb;
+      --secondary: #9aa0a6;
+      --r-background: #0e0e0e;
+      --r-background-color: #0e0e0e;
+      --r-main-color: #dedede;
+      --r-heading-color: #fcfcfb;
+      --r-heading-font-weight: 600;
+      --r-heading-letter-spacing: -0.025em;
+      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --r-link-color: var(--primary);
+      --r-link-color-hover: var(--secondary);
+      --r-link-color-dark: #9aa0a6;
+      --r-selection-background-color: var(--primary);
+      --r-selection-color: #fcfcfb;
+    }
+
+    /* 어두운 배경에서 가는 한글 획 뭉개짐 방지 + 한글 줄바꿈 */
+    .reveal {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    /* 링크는 색이 본문과 같으므로 밑줄로 구분한다 */
+    .reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
+
+    /* 랜딩과 이어지는 페이지 전환 (지원 브라우저 전용 장식) */
+    @media (prefers-reduced-motion: no-preference) {
+      @view-transition { navigation: auto; }
+    }
+    /* 두 테마 모두 제목을 대문자로 바꾼다 — 끄지 않으면 "Opencode"가 "OPENCODE"로 보인다 */
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+    /* 글자 하한: 캔버스(960x700) 기준 24px = 0.58em.
+       크기는 컨테이너가 아니라 잎 클래스에서 한 번만 지정할 것 —
+       중첩되면 곱해져서 하한 아래로 떨어진다 (cds 덱에서 8.9px까지 떨어졌던 실패 사례). */
+    .reveal .kbd {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      /* 크기 미지정: 주변 글자를 그대로 물려받는다 — 0.7em을 두면 .small 안에서 곱해져 하한 미달 */
+      border: 1px solid currentColor;
+      border-radius: 6px;
+      padding: 0.05em 0.4em;
+    }
+    /* pre 크기: 테마 기본 0.55em(23.1px)이 하한 미달이라 올린다 */
+    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; font-size: 0.58em; }
+    .reveal .small { font-size: 0.6em; }
+    .reveal .eyebrow {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.58em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9aa0a6;
+    }
+
+    /* 캔버스 은하수 배경 (장식) — 슬라이드 캔버스 밖 고정 층에 둔다 */
+    #galaxy-3d-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+     to { rotate: 360deg; } }
+
+    /* 표지의 흰 우주선 (장식) — 부유는 주기 9초, 상하 4px, 시작·끝 동일 위치 */
+
+    /* 구조 그림 (인라인 SVG) — CSS 상자(div) 대신 SVG인 이유:
+       인쇄에서 reveal이 모든 div를 display:block으로 리셋해 flex 배치가 무너지지만
+       svg는 배치가 보존된다. 좌표는 viewBox로 고정되어 글자를 키워도 폭이 안 넘친다.
+       색은 전부 currentColor — 기본 #dedede, 위계는 .dim/.bright 두 클래스로만.
+       뜻을 나르는 선·테두리는 #9aa0a6 이상만 쓸 것 (#2a2b2a는 대비 1.36:1 — 장식 전용). */
+    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
+    .reveal .diag .dim { color: #9aa0a6; }
+    .reveal .diag .bright { color: #fcfcfb; }
+    .reveal .diag text { font-family: inherit; }
+    /* SVG 내부 요소에 CSS transform(모핑·fragment 등장)이 먹으려면 필수 */
+    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
+    /* 그림마다 낭독기용 전체 설명을 이 클래스의 문단으로 바로 앞에 둘 것 (조각내지 말 것) */
+    .reveal .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      margin: -1px; padding: 0; border: 0;
+      overflow: hidden; clip-path: inset(50%);
+    }
+
+    /* 리허설 조망(Esc): 코어가 미공개 fragment의 visibility를 숨긴 채 두어
+       빈칸으로 보인다 — 조망을 넘침 검사 도구로 쓰므로 보정한다.
+       주의: 발표 중 Esc를 누르면 미공개 내용도 청중에게 보인다. */
+    .reveal.overview .slides section .fragment { visibility: visible; }
+
+    /* 움직임 줄이기: 장식·전환 전부 정지 (새 덱마다 이 블록을 유지할 것)
+       마지막 줄: 모핑(auto-animate)의 주입 스타일은 !important라 * 규칙을 이긴다 —
+       같은 !important에 더 높은 특이성으로 눌러야 실제로 멈춘다. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
+      #galaxy-3d-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+      .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
+    }
+
+    /* 인쇄 방어 — 별·우주선은 종이에 찍지 않는다.
+       !important인 이유: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로
+       이겨 우주선이 흰 종이에 흰 얼룩으로 찍힌다. 모핑이 남긴 주입 스타일도 !important라
+       색 되돌림 규칙에도 !important가 필요하다.
+       SVG 그림을 currentColor로만 그리면 아래 svg 한 규칙로 검정 되돌림이 끝난다.
+       직접 만든 도형(div/span)이 있는 덱은 여기에 html:not(.print-pdf) 조건으로
+       색 되돌림 규칙을 추가할 것 (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
+    @media print {
+      html:not(.print-pdf) .reveal svg,
+      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
+      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
+      #galaxy-3d-bg,
+    }
+  
+    
+    /* 로켓 랩 폰트 테마 (모든 텍스트 Montserrat 통일, 단 애니메이션 제외) */
+    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    
+    /* HUD UI CSS 복사 */
+    :root {
+      --hud-inset: 2em;
+      --hairline: #2a2b2a;
+      --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --dim: #9aa0a6;
+      --bg: #0e0e0e;
+    }
+    .hud {
+      position: fixed;
+      inset: var(--hud-inset);
+      border: 2px solid var(--hairline);
+      pointer-events: none;
+      z-index: 1000; /* 슬라이드 위로 올라오게 */
+    }
+    .hud::before,
+    .hud::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--hairline) 0,
+        var(--hairline) 1px,
+        transparent 1px,
+        transparent 48px
+      );
+    }
+    .hud::before { top: 0; }
+    .hud::after { bottom: 0; }
+    
+    .hud-corner {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 0.5625rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+      background: var(--bg);
+      padding: 0 6px;
+    }
+    .hud-tl { top: -0.5em; left: 14px; }
+    .hud-tr { top: -0.5em; right: 14px; }
+    .hud-bl { bottom: -0.5em; left: 14px; }
+    .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
+    
+    @media (max-width: 640px) {
+      :root { --hud-inset: 10px; }
+      .hud-bl { display: none; }
+    }
+
+  
+    /* 로켓 랩 커버 테마 */
+    .reveal .slides > section:first-of-type h1 {
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
+    }
+    .reveal .slides > section:first-of-type .eyebrow {
+      color: rgba(0, 255, 255, 0.85) !important;
+      letter-spacing: 0.15em !important;
+      font-weight: 500 !important;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="hud" aria-hidden="true">
+    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
+    <span class="hud-corner hud-tr">EST 2026</span>
+    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
+    <span class="hud-corner hud-br">+</span>
+  </div>
+
+  <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
+  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <p class="eyebrow">DKDLQODDI · AI STRATEGY</p>
+        <h2>설계 AX 전환</h2>
+        <p class="small">프롬프트 엔지니어링에서 Harness 엔지니어링으로<br>
+        <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
+      </section>
+
+      <section>
+        <h3>상반된 AI 모델 경험</h3>
+        <p class="visually-hidden">그림 설명: 상용 모델은 단순 지시에도 잘 동작하지만, 오픈소스 모델은 오동작하거나 맥락을 잊어버리는 모습을 비교.</p>
+        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="상용 모델과 오픈소스 모델의 성능 차이 비교" xmlns="http://www.w3.org/2000/svg">
+          <!-- 상단: Smart 상용 모델 -->
+          <g>
+            <rect x="50" y="30" width="800" height="120" rx="10" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
+            <text x="80" y="70" font-size="20" font-weight="600" fill="currentColor" class="dim">상용 모델 (스마트 모델)</text>
+            
+            <rect x="80" y="90" width="160" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="160" y="117" text-anchor="middle" font-size="18" fill="currentColor" class="bright">"이거 해줘"</text>
+            
+            <line x1="250" y1="110" x2="350" y2="110" stroke="currentColor" stroke-width="2"/>
+            <polygon points="360,110 345,103 345,117" fill="currentColor"/>
+            
+            <rect x="370" y="80" width="200" height="60" rx="6" fill="none" stroke="#fcfcfb" stroke-width="2"/>
+            <text x="470" y="117" text-anchor="middle" font-size="20" font-weight="600" fill="#fcfcfb">뛰어난 맥락 유지</text>
+            
+            <line x1="580" y1="110" x2="680" y2="110" stroke="#fcfcfb" stroke-width="2"/>
+            <polygon points="690,110 675,103 675,117" fill="#fcfcfb"/>
+            
+            <circle cx="750" cy="110" r="30" fill="none" stroke="#fcfcfb" stroke-width="3"/>
+            <text x="750" y="117" text-anchor="middle" font-size="20" font-weight="800" fill="#fcfcfb">완벽</text>
+          </g>
+
+          <!-- 하단: Dumb 오픈소스 모델 -->
+          <g class="fragment fade-up">
+            <rect x="50" y="200" width="800" height="120" rx="10" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
+            <text x="80" y="240" font-size="20" font-weight="600" fill="currentColor" class="dim">사내 오픈소스 모델 (학습 부족)</text>
+            
+            <rect x="80" y="260" width="160" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="160" y="287" text-anchor="middle" font-size="18" fill="currentColor" class="bright">"이거 해줘"</text>
+            
+            <line x1="250" y1="280" x2="350" y2="280" stroke="#9aa0a6" stroke-width="2" stroke-dasharray="6,4"/>
+            <polygon points="360,280 345,273 345,287" fill="#9aa0a6"/>
+            
+            <rect x="370" y="250" width="200" height="60" rx="6" fill="none" stroke="#f05050" stroke-width="2"/>
+            <text x="470" y="287" text-anchor="middle" font-size="20" font-weight="600" fill="#f05050">맥락 상실 · 자의적 판단</text>
+            
+            <line x1="580" y1="280" x2="680" y2="280" stroke="#f05050" stroke-width="2"/>
+            <polygon points="690,280 675,273 675,287" fill="#f05050"/>
+            
+            <line x1="730" y1="260" x2="770" y2="300" stroke="#f05050" stroke-width="3"/>
+            <line x1="770" y1="260" x2="730" y2="300" stroke="#f05050" stroke-width="3"/>
+            <text x="750" y="325" text-anchor="middle" font-size="16" font-weight="600" fill="#f05050">오동작</text>
+          </g>
+        </svg>
+      </section>
+
+      <section data-auto-animate>
+        <h3>해결책: 프롬프트 엔지니어링</h3>
+        <p class="visually-hidden">그림 설명: 오픈소스 모델의 한계를 극복하기 위해 세부 지침과 동작 예시(Few-shot)를 결합하여 견고한 프롬프트를 주입하는 구조.</p>
+        <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="세부 지침과 예시가 포함된 프롬프트 엔지니어링 파이프라인" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <!-- 묶음 상자 (프롬프트 템플릿) -->
+            <rect x="40" y="40" width="300" height="180" rx="10" fill="none" stroke="#fcfcfb" stroke-width="2" stroke-dasharray="6,4"/>
+            <text x="190" y="30" text-anchor="middle" font-size="18" fill="#fcfcfb">프롬프트 엔지니어링</text>
+            
+            <rect x="60" y="60" width="260" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="190" y="87" text-anchor="middle" font-size="18" fill="currentColor" class="dim">"이거 해줘" (모호한 명령)</text>
+
+            <rect x="60" y="110" width="260" height="40" rx="6" fill="none" stroke="#fcfcfb" stroke-width="2"/>
+            <text x="190" y="137" text-anchor="middle" font-size="18" font-weight="600" fill="#fcfcfb">+ 세부 지침 (제약 조건)</text>
+            
+            <rect x="60" y="160" width="260" height="40" rx="6" fill="none" stroke="#fcfcfb" stroke-width="2"/>
+            <text x="190" y="187" text-anchor="middle" font-size="18" font-weight="600" fill="#fcfcfb">+ 동작 예시 (Few-shot)</text>
+          </g>
+
+          <g class="fragment fade-right">
+            <line x1="350" y1="130" x2="520" y2="130" stroke="#fcfcfb" stroke-width="3"/>
+            <polygon points="535,130 520,123 520,137" fill="#fcfcfb"/>
+            <text x="440" y="120" text-anchor="middle" font-size="18" font-weight="600" fill="#fcfcfb">정교한 주입</text>
+            
+            <rect x="550" y="80" width="180" height="100" rx="10" fill="none" stroke="currentColor" stroke-width="3"/>
+            <text x="640" y="137" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor" class="bright">오픈소스 모델</text>
+            
+            <line x1="740" y1="130" x2="820" y2="130" stroke="#fcfcfb" stroke-width="3"/>
+            <polygon points="835,130 820,123 820,137" fill="#fcfcfb"/>
+            
+            <circle cx="855" cy="130" r="20" fill="none" stroke="#fcfcfb" stroke-width="3"/>
+            <text x="855" y="137" text-anchor="middle" font-size="16" font-weight="800" fill="#fcfcfb">OK</text>
+          </g>
+        </svg>
+      </section>
+
+      <section data-auto-animate>
+        <h3>패러다임 전환: Harness Engineering</h3>
+        <p class="visually-hidden">그림 설명: 단순한 텍스트 프롬프트를 넘어 시스템 룰, 도구, 가이드레일이 모델을 묶어내는(Wrapping) 구속구(Harness) 구조로 진화.</p>
+        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Agentic AI 시대의 형식화된 Harness 구조" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <!-- 외부 Harness 프레임워크 -->
+            <rect x="40" y="30" width="820" height="300" rx="20" fill="none" stroke="#fcfcfb" stroke-width="3"/>
+            <text x="450" y="20" text-anchor="middle" font-size="22" font-weight="600" fill="#fcfcfb">Harness (에이전트 제어 구속구)</text>
+          </g>
+          
+          <g class="fragment fade-up">
+            <rect x="80" y="70" width="200" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="180" y="107" text-anchor="middle" font-size="20" fill="currentColor" class="bright">System Rules</text>
+          </g>
+          
+          <g class="fragment fade-up">
+            <rect x="80" y="150" width="200" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="180" y="187" text-anchor="middle" font-size="20" fill="currentColor" class="bright">Available Tools</text>
+          </g>
+          
+          <g class="fragment fade-up">
+            <rect x="80" y="230" width="200" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="180" y="267" text-anchor="middle" font-size="20" fill="currentColor" class="bright">Guardrails</text>
+          </g>
+          
+          <g class="fragment fade-left">
+            <!-- 화살표들이 모델을 향함 -->
+            <line x1="290" y1="100" x2="380" y2="160" stroke="#9aa0a6" stroke-width="2"/>
+            <line x1="290" y1="180" x2="380" y2="180" stroke="#9aa0a6" stroke-width="2"/>
+            <line x1="290" y1="260" x2="380" y2="200" stroke="#9aa0a6" stroke-width="2"/>
+            
+            <!-- 중심 모델 -->
+            <rect x="400" y="110" width="180" height="140" rx="10" fill="none" stroke="currentColor" stroke-width="3"/>
+            <text x="490" y="187" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor" class="bright">AI 모델</text>
+            
+            <!-- 출력 검증 -->
+            <line x1="590" y1="180" x2="650" y2="180" stroke="#fcfcfb" stroke-width="3"/>
+            <polygon points="665,180 650,173 650,187" fill="#fcfcfb"/>
+            
+            <rect x="680" y="140" width="140" height="80" rx="8" fill="none" stroke="#fcfcfb" stroke-width="2"/>
+            <text x="750" y="187" text-anchor="middle" font-size="20" font-weight="600" fill="#fcfcfb">안전한<br>출력</text>
+          </g>
+        </svg>
+        <p class="small">텍스트 기반의 프롬프트가 Agentic AI 아키텍처 내에서 형식화된<br>시스템 구성요소(Harness Engineering)로 발전했습니다.</p>
+      </section>
+
+      <section>
+        <h2>끝.</h2>
+        <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: "fade",
+      // 전용 인쇄 주소(?view=print)에서 fragment 단계마다 쪽이 복제되는 것을
+      // 막는다 — 장당 1쪽(모든 단계 표시)으로 고정. 일반 인쇄(Ctrl+P)는 무관.
+      pdfSeparateFragments: false
+    });
+  </script>
+
+
+  <script src="../../vendor/three.js/three.min.js"></script>
+  <script src="../../scripts/galaxy3d.js"></script>
+</body>
+</html>

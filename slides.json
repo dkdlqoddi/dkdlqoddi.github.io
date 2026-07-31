@@ -1,5 +1,17 @@
 [
   {
+    "title": "설계 AX 전환",
+    "date": "2026-07-31",
+    "description": "프롬프트 엔지니어링에서 Harness 엔지니어링으로",
+    "dir": "design-ax-transition"
+  },
+  {
+    "title": "VWP망 내 안전한 Opencode 활용 구조",
+    "date": "2026-07-31",
+    "description": "격리된 환경에서의 파일 접근 및 실행 제어",
+    "dir": "secure-opencode"
+  },
+  {
     "title": "설계 자동화 (AI Coding Tool)",
     "date": "2026-07-30",
     "description": "자동 실행부터 로그 분석, 결과 보고까지 이어지는 AI 기반 설계 파이프라인",
