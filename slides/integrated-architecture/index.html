@@ -463,101 +463,173 @@
 
       <section>
         <h1>안전한 AI 설계 자동화</h1>
-        <h3 style="color: #9aa0a6; font-size: 1.2em;">오픈소스 모델 제어를 위한 VWP망 및 방어선 구축</h3>
-        <p class="small">똑똑한 유료 모델 vs 멍청한 오픈소스 모델의 구조적 차이</p>
+        <h3 style="color: #9aa0a6; font-size: 1.2em;">망 연동 환경에서의 3가지 아키텍처 대안</h3>
       </section>
 
       <section>
-        <h3>상용 모델의 단순한 아키텍처 (비교군)</h3>
-        <p class="visually-hidden">똑똑한 상용 모델은 단순한 API 호출만으로 완벽한 결과를 내므로 복잡한 방어선이 불필요함.</p>
-        <svg class="svg-diagram" viewBox="0 0 800 200" role="img" aria-label="상용 모델의 단순 아키텍처">
-          <rect x="50" y="50" width="120" height="80" rx="10" class="node-office" />
-          <text x="110" y="90" class="node-text">사용자</text>
-          
-          <rect x="340" y="50" width="120" height="80" rx="10" class="node-office" style="stroke: #00ffff;" />
-          <text x="400" y="80" class="node-text" fill="#00ffff">스마트 LLM</text>
-          <text x="400" y="105" class="node-subtext">(상용 모델)</text>
-          
-          <rect x="630" y="50" width="120" height="80" rx="10" class="node-office" />
-          <text x="690" y="90" class="node-text">데이터베이스</text>
-          
-          <path d="M 170 90 L 340 90" class="line-flow-anim" />
-          <path d="M 460 90 L 630 90" class="line-flow-anim" />
-          
-          <text x="400" y="160" class="node-subtext" style="fill: #00ff00;">✔ 별도의 방어선 없이 안전하게 동작</text>
-        </svg>
-      </section>
-
-      <section>
-        <h3>사내 오픈소스 모델의 복잡한 방어선</h3>
-        <p class="visually-hidden">멍청한 사내 오픈소스 모델은 오동작을 막기 위해 3중 방어선(Harness, 망 분리, 샌드박스)이 필요함.</p>
-        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="오픈소스 모델 제어용 3중 방어선 아키텍처">
-          <!-- 1차 방어 -->
-          <rect x="10" y="50" width="220" height="200" rx="15" class="node-shield" />
-          <text x="120" y="80" class="node-text" fill="#00ff00">1차: Harness</text>
-          <rect x="60" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #ff4444;" />
-          <text x="120" y="150" class="node-text" fill="#ff4444">사내 오픈소스</text>
-          <text x="120" y="175" class="node-subtext">(오동작 발생)</text>
-
-          <!-- 2차 방어 -->
-          <line x1="280" y1="30" x2="280" y2="270" class="fw-line" />
-          <text x="280" y="20" text-anchor="middle" class="fw-text">2차: 망 연동 방화벽</text>
-          
-          <rect x="330" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #ffbb00;" />
-          <text x="390" y="150" class="node-text">API Server</text>
-          <text x="390" y="175" class="node-subtext">(페이로드 압축)</text>
-
-          <!-- 3차 방어 -->
-          <rect x="520" y="50" width="260" height="200" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
-          <text x="650" y="80" class="node-text" fill="#ff4444">3차: VWP 샌드박스</text>
-          
-          <rect x="590" y="120" width="120" height="80" rx="10" class="node-vwp" />
-          <text x="650" y="150" class="node-text">Docker 컨테이너</text>
-          <text x="650" y="175" class="node-subtext">(Read-Only)</text>
-
-          <path d="M 180 160 L 330 160" class="line-flow-anim" />
-          <path d="M 450 160 L 590 160" class="line-flow-anim" />
-        </svg>
-      </section>
-
-      <section>
-        <h2>1차 방어: Harness 계층</h2>
-        <h3 style="color: #00ff00; font-size: 1.2em;">Format Catch & Auto-Retry</h3>
-        <p class="visually-hidden">환각 현상으로 잘못된 툴 호출 시 Harness가 이를 차단하고 자동 재시도 지시.</p>
-        <svg class="svg-diagram" viewBox="0 0 800 250" role="img" aria-label="Harness 자동 재시도 구조">
-          <circle cx="200" cy="125" r="80" class="node-office" style="stroke: #ff4444;" />
-          <text x="200" y="110" class="node-text">오픈소스 모델</text>
-          <text x="200" y="135" class="node-subtext" style="fill: #ff4444;">"존재하지 않는 툴 호출"</text>
-          
-          <rect x="500" y="60" width="180" height="130" rx="10" class="node-shield" />
-          <text x="590" y="100" class="node-text" fill="#00ff00">Harness Shield</text>
-          
-          <!-- 요청 거부 및 Auto-Retry -->
-          <line x1="280" y1="100" x2="480" y2="100" stroke="#ff4444" stroke-width="3" />
-          <polygon points="495,100 480,93 480,107" fill="#ff4444" />
-          <text x="390" y="90" text-anchor="middle" class="node-subtext" fill="#ff4444">잘못된 JSON (Hallucination)</text>
-          
-          <line x1="500" y1="150" x2="300" y2="150" stroke="#00ff00" stroke-width="3" stroke-dasharray="8,8" />
-          <polygon points="285,150 300,143 300,157" fill="#00ff00" />
-          <text x="390" y="175" text-anchor="middle" class="node-text" fill="#00ff00">"Auto-Retry: 다시 작성하라"</text>
-        </svg>
-      </section>
-
-      <section>
-        <h2>2차 방어: 페이로드 압축</h2>
-        <h3 style="color: #ffbb00; font-size: 1.2em;">Context Overflow 차단</h3>
-        <p class="visually-hidden">VWP망에서 넘어오는 방대한 데이터를 요약/압축하여 모델의 메모리 초과를 방지.</p>
-        <div style="display: flex; gap: 20px; text-align: left; margin-top: 20px;">
-          <div style="flex: 1;">
-            <div class="code-snippet" style="height: 200px; overflow: hidden; font-size: 11px; color: #888;">
-<span class="code-red">// VWP망 원본 데이터 (10,000+ Lines)</span>
-{"log_id": "89312", "timestamp": "2026-07-29T20:51:00", "severity": "INFO", "message": "Transaction verified", "trace": "..."}
-{"log_id": "89313", "timestamp": "2026-07-29T20:51:01", "severity": "WARN", "message": "Memory threshold 80%", "trace": "..."}
-{"log_id": "89314", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
-...
-<span style="color: #ff4444; font-size: 14px; font-weight: bold;">[DANGER] Context Limit Exceeded</span>
-            </div>
+        <h3>오픈소스 모델 제어를 위한 3가지 방법론</h3>
+        <p class="visually-hidden">망 분리 환경에서 사내 모델을 활용하여 VWP망의 데이터에 안전하게 접근하기 위한 3가지 아키텍처 방법론을 비교합니다.</p>
+        <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px;">
+          <div class="hud-box" style="width: 80%;">
+            <strong style="color: #00ffff;">방법론 1:</strong> Office망 LLM + Harness + MCP Server (통제형)
           </div>
+          <div class="hud-box" style="width: 80%;">
+            <strong style="color: #00ff00;">방법론 2:</strong> Office망 LLM + Office Docker + S3 Server (우회형)
+          </div>
+          <div class="hud-box" style="width: 80%;">
+            <strong style="color: #ff4444;">방법론 3:</strong> VWP망 LLM + VWP Docker (완전 격리형)
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>방법론 1: MCP Server 기반 통제형</h3>
+        <p class="visually-hidden">오피스망의 LLM이 Harness를 거쳐 VWP망의 MCP 서버를 통해 파일 시스템에 제한적으로 접근하는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 1 다이어그램">
+          <!-- Backgrounds -->
+          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          
+          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="675" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="450" y1="10" x2="450" y2="290" class="fw-line" />
+          <text x="450" y="15" text-anchor="middle" class="fw-text">Firewall</text>
+
+          <!-- Nodes -->
+          <rect x="50" y="120" width="120" height="80" rx="10" class="node-office" />
+          <text x="110" y="150" class="node-text">LLM +</text>
+          <text x="110" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="250" y="120" width="120" height="80" rx="10" class="node-shield" />
+          <text x="310" y="160" class="node-text" fill="#00ff00">Harness</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="580" y="160" class="node-text">MCP Server</text>
+
+          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="780" y="160" class="node-text">File System</text>
+
+          <!-- Links -->
+          <path d="M 170 160 L 250 160" class="line-flow-anim" />
+          <path d="M 370 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 720 160" class="line-flow-anim" />
+        </svg>
+        <p class="small" style="color:#00ff00;">장점: Harness가 위험한 요청을 필터링하고 통제함.</p>
+      </section>
+
+      <section>
+        <h3>방법론 2: S3 Server 기반 우회형</h3>
+        <p class="visually-hidden">오피스망의 Docker가 S3를 통해 VWP망의 파일 시스템을 Read-Only로 당겨와서 실행하는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 2 다이어그램">
+          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          
+          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="675" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="450" y1="10" x2="450" y2="290" class="fw-line" />
+          <text x="450" y="15" text-anchor="middle" class="fw-text">Firewall</text>
+
+          <rect x="50" y="120" width="120" height="80" rx="10" class="node-office" />
+          <text x="110" y="150" class="node-text">LLM +</text>
+          <text x="110" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="250" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #00ffff;" />
+          <text x="310" y="160" class="node-text">Docker</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: #ffbb00;" />
+          <text x="580" y="160" class="node-text" fill="#ffbb00">S3 Server</text>
+
+          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="780" y="160" class="node-text">File System</text>
+
+          <path d="M 170 160 L 250 160" class="line-flow-anim" />
+          <path d="M 370 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 720 160" class="line-flow-anim" />
+          
+          <text x="450" y="190" text-anchor="middle" class="node-subtext" fill="#ffbb00">Read-Only (오브젝트 마운트)</text>
+        </svg>
+        <p class="small" style="color:#ffbb00;">장점: 물리적으로 VWP망에 대한 실행(Execute) 코드가 넘어가지 않음.</p>
+      </section>
+
+      <section>
+        <h3>방법론 3: VWP망 내재화 (완전 격리형)</h3>
+        <p class="visually-hidden">모든 인프라(LLM, Docker)를 VWP망 내부에 배치하여 망을 넘어갈 필요가 없는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 3 다이어그램">
+          <rect x="10" y="20" width="200" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="110" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          <text x="110" y="160" class="node-subtext" fill="#9aa0a6">(사용 안함)</text>
+          
+          <rect x="230" y="20" width="660" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="560" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="220" y1="10" x2="220" y2="290" class="fw-line" />
+          
+          <rect x="300" y="120" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="360" y="150" class="node-text">LLM +</text>
+          <text x="360" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: #00ffff;" />
+          <text x="580" y="160" class="node-text">Docker</text>
+
+          <rect x="740" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="800" y="160" class="node-text">File System</text>
+
+          <path d="M 420 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 740 160" class="line-flow-anim" />
+        </svg>
+        <p class="small" style="color:#ff4444;">장점: 방화벽을 통과하지 않으므로 망 연동 지연(Latency) 제로.</p>
+      </section>
+
+      <section>
+        <h2>향후 과제: 성능 및 보안 테스트</h2>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">성능 측정 (Latency)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">망을 거치는 방화벽 검사 및 Agentic Loop 반복에 따른 응답 속도 지연율 비교</p>
+          </div>
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">보안성 (Isolation)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">망 분리 규정 준수 여부 및 실행 코드가 내부망으로 주입될 수 있는 취약점 점검</p>
+          </div>
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">AI 추론 품질</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">복잡한 아키텍처 환경에서도 Context를 온전히 유지하며 설계 파일을 분석해내는지 확인</p>
+          </div>
+        </div>
+      </section>
+
+      <section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- 행성 아크 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- 우주선 & 불꽃 애니메이션 -->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+
+</div>
+</div>
           <div style="flex: 1; padding-top: 10px;">
             <p style="font-size: 18px; line-height: 1.6;">
               사내 모델은 처리 가능한 컨텍스트 길이가 짧아 <strong>Context Overflow</strong>에 취약합니다.<br><br>
