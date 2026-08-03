@@ -460,129 +460,125 @@
 
   <div class="reveal">
     <div class="slides">
-<section>
-        <h1>Secure Agentic Architecture</h1>
-        <h3 style="color: #9aa0a6; font-size: 1.2em;">Office to VWP Network Bridge</h3>
-        
-        <div style="margin-top: 40px;">
-          <svg class="svg-diagram" viewBox="0 0 800 200" role="img" aria-label="Abstract radar connection">
-            <circle cx="200" cy="100" r="40" class="node-office" />
-            <circle cx="200" cy="100" r="60" class="node-office" style="stroke-opacity: 0.3;" />
-            <circle cx="600" cy="100" r="40" class="node-vwp" />
-            <circle cx="600" cy="100" r="60" class="node-vwp" style="stroke-opacity: 0.3;" />
-            
-            <path d="M 260 100 L 540 100" class="line-flow-anim" />
-            
-            <line x1="400" y1="20" x2="400" y2="180" class="fw-line" />
-            <text x="400" y="10" text-anchor="middle" class="fw-text">Firewall</text>
-          </svg>
+
+      <section>
+        <h1>안전한 AI 설계 자동화</h1>
+        <h3 style="color: #9aa0a6; font-size: 1.2em;">오픈소스 모델 제어를 위한 VWP망 및 방어선 구축</h3>
+        <p class="small">똑똑한 유료 모델 vs 멍청한 오픈소스 모델의 구조적 차이</p>
+      </section>
+
+      <section>
+        <h3>상용 모델의 단순한 아키텍처 (비교군)</h3>
+        <p class="visually-hidden">똑똑한 상용 모델은 단순한 API 호출만으로 완벽한 결과를 내므로 복잡한 방어선이 불필요함.</p>
+        <svg class="svg-diagram" viewBox="0 0 800 200" role="img" aria-label="상용 모델의 단순 아키텍처">
+          <rect x="50" y="50" width="120" height="80" rx="10" class="node-office" />
+          <text x="110" y="90" class="node-text">사용자</text>
+          
+          <rect x="340" y="50" width="120" height="80" rx="10" class="node-office" style="stroke: #00ffff;" />
+          <text x="400" y="80" class="node-text" fill="#00ffff">스마트 LLM</text>
+          <text x="400" y="105" class="node-subtext">(상용 모델)</text>
+          
+          <rect x="630" y="50" width="120" height="80" rx="10" class="node-office" />
+          <text x="690" y="90" class="node-text">데이터베이스</text>
+          
+          <path d="M 170 90 L 340 90" class="line-flow-anim" />
+          <path d="M 460 90 L 630 90" class="line-flow-anim" />
+          
+          <text x="400" y="160" class="node-subtext" style="fill: #00ff00;">✔ 별도의 방어선 없이 안전하게 동작</text>
+        </svg>
+      </section>
+
+      <section>
+        <h3>사내 오픈소스 모델의 복잡한 방어선</h3>
+        <p class="visually-hidden">멍청한 사내 오픈소스 모델은 오동작을 막기 위해 3중 방어선(Harness, 망 분리, 샌드박스)이 필요함.</p>
+        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="오픈소스 모델 제어용 3중 방어선 아키텍처">
+          <!-- 1차 방어 -->
+          <rect x="10" y="50" width="220" height="200" rx="15" class="node-shield" />
+          <text x="120" y="80" class="node-text" fill="#00ff00">1차: Harness</text>
+          <rect x="60" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #ff4444;" />
+          <text x="120" y="150" class="node-text" fill="#ff4444">사내 오픈소스</text>
+          <text x="120" y="175" class="node-subtext">(오동작 발생)</text>
+
+          <!-- 2차 방어 -->
+          <line x1="280" y1="30" x2="280" y2="270" class="fw-line" />
+          <text x="280" y="20" text-anchor="middle" class="fw-text">2차: 망 연동 방화벽</text>
+          
+          <rect x="330" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #ffbb00;" />
+          <text x="390" y="150" class="node-text">API Server</text>
+          <text x="390" y="175" class="node-subtext">(페이로드 압축)</text>
+
+          <!-- 3차 방어 -->
+          <rect x="520" y="50" width="260" height="200" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="650" y="80" class="node-text" fill="#ff4444">3차: VWP 샌드박스</text>
+          
+          <rect x="590" y="120" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="650" y="150" class="node-text">Docker 컨테이너</text>
+          <text x="650" y="175" class="node-subtext">(Read-Only)</text>
+
+          <path d="M 180 160 L 330 160" class="line-flow-anim" />
+          <path d="M 450 160 L 590 160" class="line-flow-anim" />
+        </svg>
+      </section>
+
+      <section>
+        <h2>1차 방어: Harness 계층</h2>
+        <h3 style="color: #00ff00; font-size: 1.2em;">Format Catch & Auto-Retry</h3>
+        <p class="visually-hidden">환각 현상으로 잘못된 툴 호출 시 Harness가 이를 차단하고 자동 재시도 지시.</p>
+        <svg class="svg-diagram" viewBox="0 0 800 250" role="img" aria-label="Harness 자동 재시도 구조">
+          <circle cx="200" cy="125" r="80" class="node-office" style="stroke: #ff4444;" />
+          <text x="200" y="110" class="node-text">오픈소스 모델</text>
+          <text x="200" y="135" class="node-subtext" style="fill: #ff4444;">"존재하지 않는 툴 호출"</text>
+          
+          <rect x="500" y="60" width="180" height="130" rx="10" class="node-shield" />
+          <text x="590" y="100" class="node-text" fill="#00ff00">Harness Shield</text>
+          
+          <!-- 요청 거부 및 Auto-Retry -->
+          <line x1="280" y1="100" x2="480" y2="100" stroke="#ff4444" stroke-width="3" />
+          <polygon points="495,100 480,93 480,107" fill="#ff4444" />
+          <text x="390" y="90" text-anchor="middle" class="node-subtext" fill="#ff4444">잘못된 JSON (Hallucination)</text>
+          
+          <line x1="500" y1="150" x2="300" y2="150" stroke="#00ff00" stroke-width="3" stroke-dasharray="8,8" />
+          <polygon points="285,150 300,143 300,157" fill="#00ff00" />
+          <text x="390" y="175" text-anchor="middle" class="node-text" fill="#00ff00">"Auto-Retry: 다시 작성하라"</text>
+        </svg>
+      </section>
+
+      <section>
+        <h2>2차 방어: 페이로드 압축</h2>
+        <h3 style="color: #ffbb00; font-size: 1.2em;">Context Overflow 차단</h3>
+        <p class="visually-hidden">VWP망에서 넘어오는 방대한 데이터를 요약/압축하여 모델의 메모리 초과를 방지.</p>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 20px;">
+          <div style="flex: 1;">
+            <div class="code-snippet" style="height: 200px; overflow: hidden; font-size: 11px; color: #888;">
+<span class="code-red">// VWP망 원본 데이터 (10,000+ Lines)</span>
+{"log_id": "89312", "timestamp": "2026-07-29T20:51:00", "severity": "INFO", "message": "Transaction verified", "trace": "..."}
+{"log_id": "89313", "timestamp": "2026-07-29T20:51:01", "severity": "WARN", "message": "Memory threshold 80%", "trace": "..."}
+{"log_id": "89314", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+...
+<span style="color: #ff4444; font-size: 14px; font-weight: bold;">[DANGER] Context Limit Exceeded</span>
+            </div>
+          </div>
+          <div style="flex: 1; padding-top: 10px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              사내 모델은 처리 가능한 컨텍스트 길이가 짧아 <strong>Context Overflow</strong>에 취약합니다.<br><br>
+              <strong>API Server</strong>는 망 연동 방화벽을 통과한 원본 데이터를 가로채 핵심 에러만 필터링(Payload Compression)하여 오픈소스 모델에 전달합니다.
+            </p>
+          </div>
         </div>
       </section>
 
-<section>
-        <h2>Topology Overview</h2>
-        <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Topology">
-          <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
-          <text x="240" y="30" class="node-text" fill="#00ffff">Office Network</text>
-          
-          <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
-          <text x="660" y="30" class="node-text" fill="#ff4444">VWP Network</text>
-          
-          <line x1="500" y1="20" x2="500" y2="380" class="fw-line" />
-          
-          <rect x="70" y="100" width="160" height="200" rx="10" class="node-shield" />
-          <text x="150" y="120" class="node-text" fill="#00ff00">Harness</text>
-          
-          <rect x="90" y="160" width="120" height="120" rx="10" class="node-office" />
-          <text x="150" y="210" class="node-text">Opencode</text>
-          <text x="150" y="240" class="node-subtext">(CodeMate)</text>
-          
-          <rect x="290" y="160" width="120" height="80" rx="10" class="node-office" style="stroke: #ffbb00;" />
-          <text x="350" y="190" class="node-text">API Server</text>
-          <text x="350" y="215" class="node-subtext">Token Relay</text>
-          
-          <rect x="580" y="160" width="160" height="80" rx="10" class="node-vwp" />
-          <text x="660" y="190" class="node-text">MCP Server</text>
-          <text x="660" y="215" class="node-subtext">Safe Functions</text>
-          
-          <path d="M 230 200 L 290 200" class="line-flow-anim" />
-          <path d="M 410 200 L 580 200" class="line-flow-anim" />
-        </svg>
-      </section>
-
-<section>
-        <h2>Office Network</h2>
-        <h3 style="color: #9aa0a6; font-size: 1.2em;">(Decision & Relay)</h3>
-        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="Office Network Details">
-          <circle cx="250" cy="150" r="140" class="node-shield" />
-          <text x="250" y="40" class="node-text" fill="#00ff00">Harness Shield Layer</text>
-          
-          <rect x="150" y="100" width="200" height="100" rx="15" class="node-office" />
-          <text x="250" y="140" class="node-text">Opencode</text>
-          <text x="250" y="170" class="node-subtext">CodeMate LLM</text>
-          
-          <rect x="100" y="200" width="100" height="30" rx="5" class="node-office" style="fill: #222;" />
-          <text x="150" y="215" class="node-subtext" style="font-size: 10px;">Request Verify</text>
-          
-          <rect x="300" y="200" width="100" height="30" rx="5" class="node-office" style="fill: #222;" />
-          <text x="350" y="215" class="node-subtext" style="font-size: 10px;">Format Catch</text>
-          
-          <path d="M 390 150 L 500 150" class="line-flow-anim" />
-          
-          <rect x="500" y="100" width="180" height="100" rx="15" class="node-office" style="stroke: #ffbb00;" />
-          <text x="590" y="140" class="node-text">API Server</text>
-          <text x="590" y="170" class="node-subtext">Gateway & Relay</text>
-        </svg>
-      </section>
-
-<section>
-        <h2>VWP Network</h2>
-        <h3 style="color: #9aa0a6; font-size: 1.2em;">(Action & Safety)</h3>
-        <svg class="svg-diagram" viewBox="0 0 800 300" role="img" aria-label="VWP Network Details">
-          <line x1="200" y1="20" x2="200" y2="280" class="fw-line" />
-          <text x="200" y="10" text-anchor="middle" class="fw-text">Firewall</text>
-          
-          <path d="M 50 150 L 350 150" class="line-flow-anim" />
-          
-          <rect x="350" y="100" width="220" height="100" rx="15" class="node-vwp" />
-          <text x="460" y="140" class="node-text">MCP Server</text>
-          <text x="460" y="170" class="node-subtext">Data Sandbox (Read-only)</text>
-          
-          <circle cx="460" cy="150" r="120" class="node-shield" style="stroke-opacity: 0.5;" />
-        </svg>
-      </section>
-
-<section>
-        <h3>아키텍처 오버뷰</h3>
-        <p class="visually-hidden">그림 설명: VWP망 내부에 Docker 컨테이너가 있고, 그 안에 Opencode가 실행되는 3중 중첩 구조.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="VWP망 내부의 Docker 안에서 작동하는 Opencode" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <rect x="50" y="20" width="800" height="260" rx="15" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="8,8" class="dim"/>
-            <text x="70" y="55" font-size="24" font-weight="600" fill="currentColor" class="dim">VWP 망 (내부망)</text>
-          </g>
-          <g class="fragment fade-up">
-            <rect x="90" y="70" width="720" height="190" rx="10" fill="none" stroke="#fcfcfb" stroke-width="3"/>
-            <text x="110" y="105" font-size="24" font-weight="600" fill="#fcfcfb">Docker Container</text>
-          </g>
-          <g class="fragment fade-up">
-            <rect x="130" y="120" width="640" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="450" y="190" text-anchor="middle" font-size="32" font-weight="600" fill="currentColor" class="bright">Opencode</text>
-          </g>
-        </svg>
-      </section>
-
-<section>
-        <h3>볼륨 마운트 전략</h3>
-        <p class="visually-hidden">그림 설명: 보호 대상 디렉토리는 Read-Only(RO)로 연결되고, 작업 대상 디렉토리는 Read-Write(RW)로 Docker 컨테이너에 연결됩니다.</p>
-        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="보호 디렉토리 RO 마운트와 작업 디렉토리 RW 마운트" xmlns="http://www.w3.org/2000/svg">
+      <section>
+        <h3>3차 방어: 물리적 샌드박스</h3>
+        <p class="visually-hidden">그림 설명: 보호 대상 디렉토리는 Read-Only(RO)로 연결하고, 작업 대상 디렉토리만 Read-Write(RW)로 연결하여 파일 손상을 물리적으로 차단합니다.</p>
+        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Docker 컨테이너를 활용한 VWP망 내부 Read-Only 마운트">
           <!-- Host -->
           <g>
-            <text x="250" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="dim">Host (VWP)</text>
+            <text x="250" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="dim">Host (VWP Network)</text>
             <rect x="100" y="70" width="300" height="80" rx="8" fill="none" stroke="#9aa0a6" stroke-width="2"/>
-            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">보호 대상 디렉토리</text>
+            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">보호 대상 디렉토리 (DB/소스)</text>
             
             <rect x="100" y="190" width="300" height="80" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">작업 대상 디렉토리</text>
+            <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">임시 작업 디렉토리</text>
           </g>
 
           <!-- Arrows -->
@@ -613,232 +609,92 @@
         </svg>
       </section>
 
-<section>
-        <h3>실행 환경 제약 (마운트 누락)</h3>
-        <p class="visually-hidden">그림 설명: 스크립트 실행 시 마운트되지 않은 호스트 경로를 참조하면 실행이 실패하는 과정.</p>
-        <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="마운트 누락 시 실행 실패 흐름도" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <rect x="40" y="50" width="200" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="140" y="105" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="bright">스크립트 실행</text>
-          </g>
-          <g class="fragment fade-up">
-            <line x1="250" y1="95" x2="310" y2="95" stroke="currentColor" stroke-width="2" class="dim"/>
-            <polygon points="320,95 306,88 306,102" fill="currentColor" class="dim"/>
-            <g>
-              <rect x="330" y="50" width="200" height="90" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="430" y="105" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="bright">외부 경로 참조</text>
-            </g>
-          </g>
-          <g class="fragment fade-up">
-            <line x1="540" y1="95" x2="600" y2="95" stroke="currentColor" stroke-width="2" class="dim"/>
-            <polygon points="610,95 596,88 596,102" fill="currentColor" class="dim"/>
-            <g>
-              <rect x="620" y="50" width="200" height="90" rx="10" fill="none" stroke="#f05050" stroke-width="2"/>
-              <line x1="640" y1="70" x2="800" y2="120" stroke="#f05050" stroke-width="2"/>
-              <line x1="800" y1="70" x2="640" y2="120" stroke="#f05050" stroke-width="2"/>
-              <text x="720" y="105" text-anchor="middle" font-size="28" font-weight="800" fill="#f05050">실행 실패</text>
-            </g>
-          </g>
-        </svg>
-        <p class="small">호스트에는 존재하지만 컨테이너에 마운트되지 않은 파일은<br>스크립트에서 접근할 수 없어 에러가 발생합니다.</p>
-      </section>
-
-<section data-auto-animate>
-        <h3>파이프라인 전체 구조</h3>
-        <p class="visually-hidden">그림 설명: 툴 실행, 로그 분석, 결과 보고의 세 가지 단계가 연결된 파이프라인 개요입니다.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="파이프라인 전체 구조" xmlns="http://www.w3.org/2000/svg">
-          <g data-id="step1">
-            <circle cx="150" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="150" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">1 툴 실행</text>
-          </g>
-          <line data-id="line1" x1="210" y1="150" x2="390" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-          
-          <g data-id="step2">
-            <circle cx="450" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="450" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">2 로그 분석</text>
-          </g>
-          <line data-id="line2" x1="510" y1="150" x2="690" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-
-          <g data-id="step3">
-            <circle cx="750" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="750" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">3 결과 보고</text>
-          </g>
-        </svg>
-      </section>
-
-<section data-auto-animate>
-        <h3>1단계: 툴 자동 실행</h3>
-        <p class="visually-hidden">그림 설명: 툴 실행 노드가 밝아지고 톱니바퀴가 돌아가며 로그가 출력되는 모습입니다.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="1단계 툴 실행 흐름" xmlns="http://www.w3.org/2000/svg">
-          <!-- 강조된 Step 1 -->
-          <g data-id="step1">
-            <circle cx="150" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="150" y="245" text-anchor="middle" font-size="24" font-weight="600" class="bright">1 툴 자동 실행</text>
-            <!-- 톱니바퀴 아이콘 (고정형 SVG) -->
-            <path d="M150,120 L150,180 M120,150 L180,150 M128.7,128.7 L171.3,171.3 M128.7,171.3 L171.3,128.7" stroke="currentColor" stroke-width="6" stroke-linecap="round" class="bright fragment" data-fragment-index="1" />
-            <circle cx="150" cy="150" r="10" fill="#0e0e0e" stroke="currentColor" stroke-width="4" class="bright fragment" data-fragment-index="1" />
-          </g>
-          
-          <!-- 로그 생성 (fragment) -->
-          <g class="fragment fade-right" data-id="logs" data-fragment-index="2">
-            <rect x="250" y="115" width="40" height="50" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
-            <line x1="260" y1="130" x2="280" y2="130" stroke="currentColor" stroke-width="2" class="bright"/>
-            <line x1="260" y1="140" x2="280" y2="140" stroke="currentColor" stroke-width="2" class="bright"/>
-            <line x1="260" y1="150" x2="275" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
-          </g>
-
-          <line data-id="line1" x1="225" y1="150" x2="390" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-          
-          <g data-id="step2">
-            <circle cx="450" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="450" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">2 로그 분석</text>
-          </g>
-          <line data-id="line2" x1="510" y1="150" x2="690" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-
-          <g data-id="step3">
-            <circle cx="750" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="750" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">3 결과 보고</text>
-          </g>
-        </svg>
-      </section>
-
-<section data-auto-animate>
-        <h3>2단계: 로그 자동 분석</h3>
-        <p class="visually-hidden">그림 설명: 생성된 로그가 분석 엔진으로 이동하며, 분석 엔진 내부에서 돋보기가 작동합니다.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="2단계 로그 분석 흐름" xmlns="http://www.w3.org/2000/svg">
-          <g data-id="step1">
-            <circle cx="150" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="150" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">1 툴 자동 실행</text>
-          </g>
-          
-          <line data-id="line1" x1="210" y1="150" x2="375" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-          
-          <!-- 로그가 분석기로 들어간 상태 -->
-          <g data-id="logs">
-            <rect x="360" y="115" width="20" height="25" fill="none" stroke="currentColor" stroke-width="1" class="dim"/>
-          </g>
-
-          <!-- 강조된 Step 2 -->
-          <g data-id="step2">
-            <circle cx="450" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="450" y="245" text-anchor="middle" font-size="24" font-weight="600" class="bright">2 로그 자동 분석</text>
-            <!-- 돋보기 아이콘 -->
-            <circle cx="445" cy="145" r="12" fill="none" stroke="currentColor" stroke-width="4" class="bright fragment" data-fragment-index="1" />
-            <line x1="455" y1="155" x2="465" y2="165" stroke="currentColor" stroke-width="4" stroke-linecap="round" class="bright fragment" data-fragment-index="1" />
-          </g>
-
-          <!-- 데이터 추출 (fragment) -->
-          <g class="fragment fade-right" data-id="data" data-fragment-index="2">
-            <circle cx="560" cy="150" r="8" fill="currentColor" class="bright"/>
-            <path d="M575,145 L595,145 M575,155 L595,155" stroke="currentColor" stroke-width="3" class="bright"/>
-          </g>
-
-          <line data-id="line2" x1="525" y1="150" x2="690" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-
-          <g data-id="step3">
-            <circle cx="750" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="750" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">3 결과 보고</text>
-          </g>
-        </svg>
-      </section>
-
-<section data-auto-animate>
-        <h3>3단계: 결과 자동 보고</h3>
-        <p class="visually-hidden">그림 설명: 분석된 데이터가 보고서 모듈로 전달되어 막대그래프 형태의 결과물이 생성됩니다.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="3단계 결과 보고 흐름" xmlns="http://www.w3.org/2000/svg">
-          <g data-id="step1">
-            <circle cx="150" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="150" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">1 툴 자동 실행</text>
-          </g>
-          <line data-id="line1" x1="210" y1="150" x2="390" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-          
-          <g data-id="step2">
-            <circle cx="450" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-            <text x="450" y="230" text-anchor="middle" font-size="20" font-weight="600" class="dim">2 로그 자동 분석</text>
-          </g>
-          
-          <line data-id="line2" x1="510" y1="150" x2="675" y2="150" stroke="currentColor" stroke-width="2" class="dim"/>
-
-          <g data-id="data">
-            <circle cx="660" cy="150" r="4" fill="currentColor" class="dim"/>
-          </g>
-
-          <!-- 강조된 Step 3 -->
-          <g data-id="step3">
-            <circle cx="750" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="750" y="245" text-anchor="middle" font-size="24" font-weight="600" class="bright">3 결과 자동 보고</text>
-            <!-- 막대그래프 아이콘 -->
-            <rect x="730" y="145" width="10" height="25" fill="currentColor" class="bright fragment fade-up" data-fragment-index="1" />
-            <rect x="745" y="125" width="10" height="45" fill="currentColor" class="bright fragment fade-up" data-fragment-index="2" />
-            <rect x="760" y="135" width="10" height="35" fill="currentColor" class="bright fragment fade-up" data-fragment-index="3" />
-            <line x1="720" y1="170" x2="780" y2="170" stroke="currentColor" stroke-width="4" class="bright fragment fade-in" data-fragment-index="1" />
-          </g>
-        </svg>
-      </section>
-
-<section>
-        <h2>Execution Flow (Agentic Loop)</h2>
+      <section>
+        <h2>Agentic Loop </h2>
+        <h3 style="color: #ffbb00; font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
-          <text x="400" y="80" class="node-text" fill="#ffbb00" font-size="20">
+          <text x="400" y="50" class="node-text" fill="#ffbb00" font-size="18">
             <animate attributeName="opacity" values="0;1;1;1;1;0" keyTimes="0;0.05;0.25;0.45;0.65;1" dur="8s" repeatCount="indefinite" />
-            <tspan>Agentic Iteration Loop (Thinking...)</tspan>
+            <tspan>오류 발생 → Harness 차단 → 재추론 → VWP망 조회 (반복)</tspan>
           </text>
           
-          <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
-          <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
-          <line x1="500" y1="20" x2="500" y2="380" class="fw-line" />
+          <rect x="10" y="80" width="460" height="270" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <rect x="530" y="80" width="260" height="270" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <line x1="500" y1="50" x2="500" y2="380" class="fw-line" />
           
-          <text x="50" y="200" class="node-text" fill="#fff" font-size="12">User Prompt</text>
-          <rect x="110" y="170" width="100" height="60" rx="10" class="node-shield" />
-          <text x="160" y="200" class="node-text" font-size="12">Opencode</text>
-          <rect x="250" y="170" width="100" height="60" rx="10" class="node-office" style="stroke: #ffbb00;" />
-          <text x="300" y="200" class="node-text" font-size="12">API Server</text>
-          <rect x="570" y="170" width="100" height="60" rx="10" class="node-vwp" />
-          <text x="620" y="200" class="node-text" font-size="12">MCP Server</text>
+          <text x="50" y="220" class="node-text" fill="#fff" font-size="12">User Prompt</text>
+          <rect x="110" y="190" width="100" height="60" rx="10" class="node-shield" />
+          <text x="160" y="220" class="node-text" font-size="12">Open Source</text>
+          <rect x="250" y="190" width="100" height="60" rx="10" class="node-office" style="stroke: #ffbb00;" />
+          <text x="300" y="220" class="node-text" font-size="12">API Server</text>
+          <rect x="570" y="190" width="100" height="60" rx="10" class="node-vwp" />
+          <text x="620" y="220" class="node-text" font-size="12">Docker</text>
           
-          <path d="M 50 200 L 110 200" class="line-flow" style="stroke-opacity: 0.3;" />
-          <path d="M 210 200 L 250 200" class="line-flow" style="stroke-opacity: 0.3;" />
-          <path d="M 350 200 L 570 200" class="line-flow" style="stroke-opacity: 0.3;" />
-          <path d="M 570 220 L 110 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 50 220 L 110 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 210 220 L 250 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 350 220 L 570 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 570 240 L 110 240" class="line-flow" style="stroke-opacity: 0.3;" />
           
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-1" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-ping" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
-          <text x="160" y="140" class="node-text result-multi-text" fill="#00ff00" font-size="14">Result Output!</text>
+          <text x="160" y="160" class="node-text result-multi-text" fill="#00ff00" font-size="14">최종 결과 Output!</text>
         </svg>
       </section>
 
-<section>
-        <h2>Architectural Limitations</h2>
-        <div style="position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
-          <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Architecture Limitations" style="position: absolute; opacity: 0.15; z-index: 1;">
-            <rect x="10" y="50" width="460" height="300" fill="rgba(0, 255, 255, 0.05)" />
-            <rect x="530" y="50" width="260" height="300" fill="rgba(255, 100, 100, 0.05)" />
-            <line x1="500" y1="20" x2="500" y2="380" class="fw-line" />
-            <rect x="50" y="160" width="120" height="120" rx="10" class="node-office" />
-            <text x="110" y="200" class="node-text">LLM</text>
-            <rect x="250" y="160" width="120" height="120" rx="10" class="node-office" style="stroke:#ffbb00;" />
-            <text x="310" y="200" class="node-text">API Server</text>
-            <rect x="600" y="160" width="120" height="120" rx="10" class="node-vwp" />
-            <text x="660" y="200" class="node-text">Data</text>
-            <path d="M 170 200 L 250 200" class="line-flow" style="stroke: #ffbb00;" />
-            <path d="M 370 200 L 600 200" class="line-flow" style="stroke: #ffbb00;" />
-          </svg>
+      <section data-auto-animate>
+        <h3>결론: 안전한 설계 자동화 파이프라인</h3>
+        <p class="visually-hidden">멍청한 사내 모델도 이 아키텍처 위에서는 안전하고 자동으로 임무를 수행합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="파이프라인 전체 구조 요약">
+          <g data-id="step1">
+            <circle cx="150" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="150" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">1 VWP 툴 실행</text>
+          </g>
+          <line data-id="line1" x1="225" y1="150" x2="375" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
           
-          <div style="z-index: 2; display: flex; flex-direction: column; gap: 20px; width: 80%;">
-            <div class="hud-box-warning">
-              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 1. Hallucination</h3>
-              <p style="margin: 0; color: #fff; font-size: 18px;">환각 현상 및 낮은 기저모델 성능으로 인한 극심한 <strong>사용자 불편함</strong></p>
-            </div>
-            <div class="hud-box-warning">
-              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 2. Latency Penalty</h3>
-              <p style="margin: 0; color: #fff; font-size: 18px;">Agentic Loop 반복 횟수만큼 누적되는 <strong>방화벽 및 네트워크 응답 지연</strong></p>
-            </div>
-            <div class="hud-box-warning">
-              <h3 style="color: #ff4444; margin: 0 0 10px 0; font-size: 24px;">⚠️ 3. Context Overflow</h3>
-              <p style="margin: 0; color: #fff; font-size: 18px;">VWP망의 방대한 데이터 반환 시 <strong>LLM 컨텍스트 한계 돌파</strong></p>
-            </div>
-          </div>
+          <g data-id="step2">
+            <circle cx="450" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="450" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">2 에러 자동 복구</text>
+          </g>
+          <line data-id="line2" x1="525" y1="150" x2="675" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
+
+          <g data-id="step3">
+            <circle cx="750" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="750" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">3 최종 결과 도출</text>
+          </g>
+        </svg>
+      </section>
+
+      <section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- 행성 아크 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- 우주선 & 불꽃 애니메이션 -->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+
+</div>
+</div>
         </div>
       </section>
 
