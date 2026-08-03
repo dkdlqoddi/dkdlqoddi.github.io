@@ -758,3 +758,484 @@
 
 
       <section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+
+</div>
+</div>
+      </section>
+
+      <section>
+        <h3>諛⑸쾿濡?1: MCP Server 湲곕컲 ?듭젣??/h3>
+        <p class="visually-hidden">?ㅽ뵾?ㅻ쭩??LLM??Harness瑜?嫄곗퀜 VWP留앹쓽 MCP ?쒕쾭瑜??듯빐 ?뚯씪 ?쒖뒪?쒖뿉 ?쒗븳?곸쑝濡??묎렐?섎뒗 援ъ“.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?1 ?ㅼ씠?닿렇??>
+          <!-- Backgrounds -->
+          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          
+          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="675" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="450" y1="10" x2="450" y2="290" class="fw-line" />
+          <text x="450" y="15" text-anchor="middle" class="fw-text">Firewall</text>
+
+          <!-- Nodes -->
+          <rect x="50" y="120" width="120" height="80" rx="10" class="node-office" />
+          <text x="110" y="150" class="node-text">LLM +</text>
+          <text x="110" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="250" y="120" width="120" height="80" rx="10" class="node-shield" />
+          <text x="310" y="160" class="node-text" fill="#00ff00">Harness</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="580" y="160" class="node-text">MCP Server</text>
+
+          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="780" y="160" class="node-text">File System</text>
+
+          <!-- Links -->
+          <path d="M 170 160 L 250 160" class="line-flow-anim" />
+          <path d="M 370 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 720 160" class="line-flow-anim" />
+        </svg>
+        <p class="small" style="color:#00ff00;">?μ젏: Harness媛 ?꾪뿕???붿껌???꾪꽣留곹븯怨??듭젣??</p>
+      </section>
+
+      <section>
+        <h3>諛⑸쾿濡?2: S3 Server 湲곕컲 ?고쉶??/h3>
+        <p class="visually-hidden">?ㅽ뵾?ㅻ쭩??Docker媛 S3瑜??듯빐 VWP留앹쓽 ?뚯씪 ?쒖뒪?쒖쓣 Read-Only濡??밴꺼????ㅽ뻾?섎뒗 援ъ“.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?2 ?ㅼ씠?닿렇??>
+          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          
+          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="675" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="450" y1="10" x2="450" y2="290" class="fw-line" />
+          <text x="450" y="15" text-anchor="middle" class="fw-text">Firewall</text>
+
+          <rect x="50" y="120" width="120" height="80" rx="10" class="node-office" />
+          <text x="110" y="150" class="node-text">LLM +</text>
+          <text x="110" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="250" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #00ffff;" />
+          <text x="310" y="160" class="node-text">Docker</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: #ffbb00;" />
+          <text x="580" y="160" class="node-text" fill="#ffbb00">S3 Server</text>
+
+          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="780" y="160" class="node-text">File System</text>
+
+          <path d="M 170 160 L 250 160" class="line-flow-anim" />
+          <path d="M 370 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 720 160" class="line-flow-anim" />
+          
+          <text x="450" y="190" text-anchor="middle" class="node-subtext" fill="#ffbb00">Read-Only (?ㅻ툕?앺듃 留덉슫??</text>
+        </svg>
+        <p class="small" style="color:#ffbb00;">?μ젏: 臾쇰━?곸쑝濡?VWP留앹뿉 ????ㅽ뻾(Execute) 肄붾뱶媛 ?섏뼱媛吏 ?딆쓬.</p>
+      </section>
+
+      <section>
+        <h3>諛⑸쾿濡?3: VWP留??댁옱??(?꾩쟾 寃⑸━??</h3>
+        <p class="visually-hidden">紐⑤뱺 ?명봽??LLM, Docker)瑜?VWP留??대???諛곗튂?섏뿬 留앹쓣 ?섏뼱媛??꾩슂媛 ?녿뒗 援ъ“.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?3 ?ㅼ씠?닿렇??>
+          <rect x="10" y="20" width="200" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <text x="110" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          <text x="110" y="160" class="node-subtext" fill="#9aa0a6">(?ъ슜 ?덊븿)</text>
+          
+          <rect x="230" y="20" width="660" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <text x="560" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          
+          <line x1="220" y1="10" x2="220" y2="290" class="fw-line" />
+          
+          <rect x="300" y="120" width="120" height="80" rx="10" class="node-vwp" />
+          <text x="360" y="150" class="node-text">LLM +</text>
+          <text x="360" y="175" class="node-subtext">Opencode</text>
+
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: #00ffff;" />
+          <text x="580" y="160" class="node-text">Docker</text>
+
+          <rect x="740" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <text x="800" y="160" class="node-text">File System</text>
+
+          <path d="M 420 160 L 520 160" class="line-flow-anim" />
+          <path d="M 640 160 L 740 160" class="line-flow-anim" />
+        </svg>
+        <p class="small" style="color:#ff4444;">?μ젏: 諛⑺솕踰쎌쓣 ?듦낵?섏? ?딆쑝誘濡?留??곕룞 吏??Latency) ?쒕줈.</p>
+      </section>
+
+      <section>
+        <h2>?ν썑 怨쇱젣: ?깅뒫 諛?蹂댁븞 ?뚯뒪??/h2>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">?깅뒫 痢≪젙 (Latency)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">留앹쓣 嫄곗튂??諛⑺솕踰?寃??諛?Agentic Loop 諛섎났???곕Ⅸ ?묐떟 ?띾룄 吏?곗쑉 鍮꾧탳</p>
+          </div>
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">蹂댁븞??(Isolation)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">留?遺꾨━ 洹쒖젙 以???щ? 諛??ㅽ뻾 肄붾뱶媛 ?대?留앹쑝濡?二쇱엯?????덈뒗 痍⑥빟???먭?</p>
+          </div>
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">AI 異붾줎 ?덉쭏</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">蹂듭옟???꾪궎?띿쿂 ?섍꼍?먯꽌??Context瑜??⑥쟾???좎??섎ŉ ?ㅺ퀎 ?뚯씪??遺꾩꽍?대궡?붿? ?뺤씤</p>
+          </div>
+        </div>
+      </section>
+
+      <section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+
+</div>
+</div>
+          <div style="flex: 1; padding-top: 10px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              ?щ궡 紐⑤뜽? 泥섎━ 媛?ν븳 而⑦뀓?ㅽ듃 湲몄씠媛 吏㏃븘 <strong>Context Overflow</strong>??痍⑥빟?⑸땲??<br><br>
+              <strong>API Server</strong>??留??곕룞 諛⑺솕踰쎌쓣 ?듦낵???먮낯 ?곗씠?곕? 媛濡쒖콈 ?듭떖 ?먮윭留??꾪꽣留?Payload Compression)?섏뿬 ?ㅽ뵂?뚯뒪 紐⑤뜽???꾨떖?⑸땲??
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>3李?諛⑹뼱: 臾쇰━???뚮뱶諛뺤뒪</h3>
+        <p class="visually-hidden">洹몃┝ ?ㅻ챸: 蹂댄샇 ????붾젆?좊━??Read-Only(RO)濡??곌껐?섍퀬, ?묒뾽 ????붾젆?좊━留?Read-Write(RW)濡??곌껐?섏뿬 ?뚯씪 ?먯긽??臾쇰━?곸쑝濡?李⑤떒?⑸땲??</p>
+        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Docker 而⑦뀒?대꼫瑜??쒖슜??VWP留??대? Read-Only 留덉슫??>
+          <!-- Host -->
+          <g>
+            <text x="250" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="dim">Host (VWP Network)</text>
+            <rect x="100" y="70" width="300" height="80" rx="8" fill="none" stroke="#9aa0a6" stroke-width="2"/>
+            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">蹂댄샇 ????붾젆?좊━ (DB/?뚯뒪)</text>
+            
+            <rect x="100" y="190" width="300" height="80" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">?꾩떆 ?묒뾽 ?붾젆?좊━</text>
+          </g>
+
+          <!-- Arrows -->
+          <g class="fragment fade-right">
+            <line x1="410" y1="110" x2="540" y2="110" stroke="#9aa0a6" stroke-width="3" stroke-dasharray="6,4"/>
+            <polygon points="550,110 535,103 535,117" fill="#9aa0a6"/>
+            <text x="480" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="#9aa0a6">Read-Only (RO)</text>
+          </g>
+          
+          <g class="fragment fade-right">
+            <line x1="410" y1="230" x2="540" y2="230" stroke="#fcfcfb" stroke-width="3"/>
+            <polygon points="550,230 535,223 535,237" fill="#fcfcfb"/>
+            <polygon points="410,230 425,223 425,237" fill="#fcfcfb"/>
+            <text x="480" y="220" text-anchor="middle" font-size="18" font-weight="600" fill="#fcfcfb">Read-Write (RW)</text>
+          </g>
+
+          <!-- Docker -->
+          <g>
+            <rect x="560" y="30" width="280" height="280" rx="10" fill="none" stroke="#fcfcfb" stroke-width="2"/>
+            <text x="700" y="65" text-anchor="middle" font-size="24" font-weight="600" fill="#fcfcfb">Docker Container</text>
+            
+            <rect x="590" y="90" width="220" height="40" rx="4" fill="none" stroke="#9aa0a6" stroke-width="1"/>
+            <text x="700" y="117" text-anchor="middle" font-size="18" fill="#9aa0a6">?쎄린 ?꾩슜 留덉슫??/text>
+            
+            <rect x="590" y="210" width="220" height="40" rx="4" fill="none" stroke="#fcfcfb" stroke-width="1"/>
+            <text x="700" y="237" text-anchor="middle" font-size="18" fill="#fcfcfb">?쎄린/?곌린 留덉슫??/text>
+          </g>
+        </svg>
+      </section>
+
+      <section>
+        <h2>Agentic Loop </h2>
+        <h3 style="color: #ffbb00; font-size: 1.2em;">?앸궡 ?듭쓣 李얠븘?대뒗 ?ㅻ룞??蹂듦뎄 怨쇱젙</h3>
+        <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
+          <text x="400" y="50" class="node-text" fill="#ffbb00" font-size="18">
+            <animate attributeName="opacity" values="0;1;1;1;1;0" keyTimes="0;0.05;0.25;0.45;0.65;1" dur="8s" repeatCount="indefinite" />
+            <tspan>?ㅻ쪟 諛쒖깮 ??Harness 李⑤떒 ???ъ텛濡???VWP留?議고쉶 (諛섎났)</tspan>
+          </text>
+          
+          <rect x="10" y="80" width="460" height="270" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
+          <rect x="530" y="80" width="260" height="270" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <line x1="500" y1="50" x2="500" y2="380" class="fw-line" />
+          
+          <text x="50" y="220" class="node-text" fill="#fff" font-size="12">User Prompt</text>
+          <rect x="110" y="190" width="100" height="60" rx="10" class="node-shield" />
+          <text x="160" y="220" class="node-text" font-size="12">Open Source</text>
+          <rect x="250" y="190" width="100" height="60" rx="10" class="node-office" style="stroke: #ffbb00;" />
+          <text x="300" y="220" class="node-text" font-size="12">API Server</text>
+          <rect x="570" y="190" width="100" height="60" rx="10" class="node-vwp" />
+          <text x="620" y="220" class="node-text" font-size="12">Docker</text>
+          
+          <path d="M 50 220 L 110 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 210 220 L 250 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 350 220 L 570 220" class="line-flow" style="stroke-opacity: 0.3;" />
+          <path d="M 570 240 L 110 240" class="line-flow" style="stroke-opacity: 0.3;" />
+          
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-1" />
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-ping" />
+          <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
+          <text x="160" y="160" class="node-text result-multi-text" fill="#00ff00" font-size="14">理쒖쥌 寃곌낵 Output!</text>
+        </svg>
+      </section>
+
+      <section data-auto-animate>
+        <h3>寃곕줎: ?덉쟾???ㅺ퀎 ?먮룞???뚯씠?꾨씪??/h3>
+        <p class="visually-hidden">硫띿껌???щ궡 紐⑤뜽?????꾪궎?띿쿂 ?꾩뿉?쒕뒗 ?덉쟾?섍퀬 ?먮룞?쇰줈 ?꾨Т瑜??섑뻾?⑸땲??</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="?뚯씠?꾨씪???꾩껜 援ъ“ ?붿빟">
+          <g data-id="step1">
+            <circle cx="150" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="150" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">1 VWP ???ㅽ뻾</text>
+          </g>
+          <line data-id="line1" x1="225" y1="150" x2="375" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
+          
+          <g data-id="step2">
+            <circle cx="450" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="450" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">2 ?먮윭 ?먮룞 蹂듦뎄</text>
+          </g>
+          <line data-id="line2" x1="525" y1="150" x2="675" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
+
+          <g data-id="step3">
+            <circle cx="750" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
+            <text x="750" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">3 理쒖쥌 寃곌낵 ?꾩텧</text>
+          </g>
+        </svg>
+      </section>
+
+      <section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+
+</div>
+</div>
+        </div>
+      </section>
+
+<section>
+        <h2>Issue 1: Hallucination</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em;">CodeMate LLM??移섎챸???ㅼ옉???щ?</h3>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
+          <div style="flex: 1; padding: 20px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              ?щ궡 ?곸슜 紐⑤뜽(CodeMate)??異붾줎 ?λ젰 遺議깆쑝濡??명빐, 議댁옱?섏? ?딅뒗 ?댁쓣 ?몄텧?섍굅???꾩닔 ?몄옄(Parameter)瑜?鍮쇰㉨??JSON ?ㅻ쪟媛 留ㅼ슦 ??뒿?덈떎.<br><br>
+              ?대줈 ?명빐 ?ъ슜?먮뒗 ?ㅻ쪟 硫붿떆吏瑜?諛섎났?댁꽌 遊먯빞 ?섎뒗 遺덊렪?⑥쓣 寃り쾶 ?섎ŉ, Harness??JSON ?뚯떛(Auto-Retry) 遺?댁씠 洹밸룄濡?媛以묐맗?덈떎.
+            </p>
+          </div>
+          <div style="flex: 1;">
+            <div class="code-snippet">
+<span class="code-green">// ?덉긽?섎뒗 ?щ컮瑜?MCP ???몄텧</span>
+{
+  <span class="code-blue">"tool"</span>: <span class="code-yellow">"vwp_search_logs"</span>,
+  <span class="code-blue">"args"</span>: { <span class="code-blue">"query"</span>: <span class="code-yellow">"error"</span> }
+}
+
+<span class="code-red">// ?ㅼ젣 CodeMate媛 諭됱뼱?대뒗 ?좊（?쒕꽕?댁뀡 ?덉떆</span>
+{
+  <span class="code-blue">"tool"</span>: <span class="code-yellow">"search_db_which_doesnt_exist"</span>,
+  <span class="code-blue">"arguments"</span>: <span class="code-yellow">"error"</span> <span class="code-green">// Object媛 ?꾨땶 String 諛섑솚</span>
+}
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section>
+        <h2>Issue 2: Latency</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em; margin-bottom: 5px;">留?遺꾨━? 諛섎났 ?몄텧????/h3>
+        <div style="margin-top: 10px; text-align: center;">
+          <p style="font-size: 16px; color: #dedede; margin-bottom: 5px;">Agentic Loop 1???숈옉 ???뚯슂?섎뒗 ??꾨씪??(?뺣났)</p>
+          <div style="margin: 10px auto; width: 90%; background: #222; border-radius: 10px; padding: 15px; box-shadow: inset 0 0 10px #000;">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ff00; font-size: 14px;">LLM 異붾줎</div>
+              <div style="width: 30%; height: 15px; background: #00ff00; border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(2,000ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ffbb00; font-size: 14px;">API Server 由대젅??/div>
+              <div style="width: 10%; height: 15px; background: #ffbb00; border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(500ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ff0055; font-size: 14px;">留??곕룞 諛⑺솕踰?/div>
+              <div style="width: 15%; height: 15px; background: #ff0055; border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(800ms)</div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ffff; font-size: 14px;">MCP Server 泥섎━</div>
+              <div style="width: 40%; height: 15px; background: #00ffff; border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(3,000ms)</div>
+            </div>
+          </div>
+          <p style="font-size: 16px; color: #ff4444; font-weight: bold; margin-top: 10px;">珥?6.3珥??뚯슂. 留뚯빟 5踰덉쓽 Loop瑜??뚮㈃ 30珥??댁긽???쒕젅??諛쒖깮!</p>
+        </div>
+      </section>
+
+<section>
+        <h2>Issue 3: Context Overflow</h2>
+        <h3 style="color: #ff4444; font-size: 1.2em;">諛⑸???VWP留??곗씠???먮낯 ??꺽</h3>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
+          <div style="flex: 1;">
+            <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: #888;">
+{"log_id": "89312", "timestamp": "2026-07-29T20:51:00", "severity": "INFO", "message": "Transaction verified", "trace": "..."}
+{"log_id": "89313", "timestamp": "2026-07-29T20:51:01", "severity": "WARN", "message": "Memory threshold 80%", "trace": "..."}
+{"log_id": "89314", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89315", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89316", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+{"log_id": "89317", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
+... (10,000+ lines omitted) ...
+<span style="color: #ff4444; font-size: 14px; font-weight: bold;">[ERROR] Maximum Context Length Exceeded (32K tokens)</span>
+            </div>
+          </div>
+          <div style="flex: 1; padding: 10px;">
+            <p style="font-size: 18px; line-height: 1.6;">
+              VWP留앹쓽 濡쒓렇 ?뚯씪?대굹 DB ?덉퐫??荑쇰━ ?? ?꾪꽣留곷릺吏 ?딆? ?먮낯 ?곗씠??Raw Data)媛 ??踰덉뿉 ?잛븘???ㅼ뼱?듬땲??<br><br>
+              ?대줈 ?명빐 LLM??而⑦뀓?ㅽ듃 ?덈룄?곌? 利됱떆 媛??李④쾶 ?섎ŉ, ?댁쟾 ????댁슜(Memory)留덉? 吏?뚯??????李몄궗媛 諛쒖깮?⑸땲??
+            </p>
+          </div>
+        </div>
+      </section>
+
+<section>
+        <h2>Mitigation & Next Steps</h2>
+        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+          
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Schema Auto-Retry</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+              Harness 怨꾩링?먯꽌 ?꾧꺽?섍쾶 JSON???뚯떛?섍퀬, ?섎せ???몄텧? LLM?먭쾶 利됯컖 ?ъ떆??吏??            </p>
+          </div>
+          
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Payload Compression</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+              API Server?⑥뿉??遺덊븘?뷀븳 濡쒓렇 ?꾨뱶瑜??섎씪?닿퀬 ?붿빟?섏뿬 而⑦뀓?ㅽ듃 蹂댄샇
+            </p>
+          </div>
+          
+          <div class="hud-box" style="width: 250px; text-align: center;">
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Safe Whitelisting</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+              VWP留앹쓽 ?곗씠???먯긽??留됯린 ?꾪빐 MCP Server?먯꽌 Read-only 湲곕뒫留??몄텧
+            </p>
+          </div>
+          
+        </div>
+      </section>
+
+<section style="position: relative; height: 100%;">
+        <h2 class="thank-you-neon">THANK YOU</h2>
+        <a href="../../index.html" class="btn-return">
+          RETURN TO LANDING PAGE
+        </a>
+        
+        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
+          <svg viewBox="0 0 800 400" width="800" height="400">
+            <!-- ?됱꽦 ?쒕㈃ 諛쒓킅 諛?踰좎씠??-->
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
+            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
+          </svg>
+        </div>
+        
+        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <div class="spaceship-container">
+          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
+            <!-- ?좉컻 -->
+            <polygon points="20,10 0,50 10,50" fill="#dedede" />
+            <polygon points="20,10 40,50 30,50" fill="#dedede" />
+            <!-- ?숈껜 -->
+            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
+            <!-- ?붿쭊 ?몄쫹 -->
+            <rect x="15" y="40" width="10" height="8" fill="#888" />
+            <!-- 李쎈Ц -->
+            <circle cx="20" cy="25" r="4" fill="#00ffff" />
+          </svg>
+          <div class="spaceship-exhaust"></div>
+        </div>
+      </section>
+</div>
+</div>
+
+  <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: "fade",
+      // ?꾩슜 ?몄뇙 二쇱냼(?view=print)?먯꽌 fragment ?④퀎留덈떎 履쎌씠 蹂듭젣?섎뒗 寃껋쓣
+      // 留됰뒗?????λ떦 1履?紐⑤뱺 ?④퀎 ?쒖떆)?쇰줈 怨좎젙. ?쇰컲 ?몄뇙(Ctrl+P)??臾닿?.
+      pdfSeparateFragments: false
+    });
+  </script>
+
+
+  <script src="../../vendor/three.js/three.min.js"></script>
+  <script src="../../scripts/galaxy3d.js"></script>
+</body>
+</html>
