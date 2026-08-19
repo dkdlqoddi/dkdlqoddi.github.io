@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 세미나 진행 스크립트</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 세미나 진행 스크립트</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>세미나 진행용 발표 대본 문서를 하나 만들었습니다. 두 자료 41장 각각에 말할 멘트, 화살표 키를 누르는 시점과 횟수 표기([→ n]), 장별 시간 배분이 붙어 있습니다. 키 횟수는 자료 실물에서 추출해 41장 전부 대조 검증했습니다. "동작 보기" 열 장은 화면의 줄이 그 자체로 대본이라, 문서에는 줄을 복제하지 않고 "한 줄 공개할 때마다 화면 그대로 읽기" 지침과 도입·촌평만 적었습니다 — 자료를 고칠 때 두 곳이 어긋나는 것을 막기 위해서입니다. 발표 전 체크리스트에는 컴퓨터의 "동작 줄이기" 설정이 켜져 있으면 애니메이션이 멈춘 채 나온다는 점(고장이 아니라 접근성 동작), 유인물은 자료마다 따로 내보내 1부 14쪽 + 2부 27쪽이 된다는 점을 적었습니다. 압축 진행 경로는 실측 합산에 맞춰 약 37분과 약 33분으로 표기했고, 그보다 줄여야 하면 본편이 아니라 질의응답을 줄이라고 권고했습니다. 앞으로 발표 자료를 고치면 대본의 키 횟수와 인용 문구가 어긋날 수 있어 함께 갱신해야 합니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "대본에 붙어 있는 [→ n] 표기는 무엇을 뜻합니까?",
+    options: ["그 장의 예상 소요 분", "그 장의 순서 번호", "그 장에서 화살표 키를 누르는 횟수", "그 장에서 읽을 문장 수"], answer: 2,
+    explain: "누를 때마다 그림 조각이나 터미널 줄이 하나씩 나타나므로, 발표자가 미리 알아야 하는 것은 누르는 횟수입니다. 41장 전부 자료 실물과 대조해 맞춰 두었습니다." },
+  { q: "'동작 보기' 열 장의 대사는 대본 문서에 어떻게 적혀 있습니까?",
+    options: ["줄 전체가 문서에 복사되어 있다", "도입·촌평만 있고 줄은 화면 그대로 읽는다", "대사 없이 시간만 적혀 있다", "발표자가 즉흥으로 말하도록 비워 두었다"], answer: 1,
+    explain: "화면의 줄이 그 자체로 대본이라 문서에 복제하지 않았습니다. 복제하면 자료를 고칠 때 두 곳이 어긋나기 때문에, 문서에는 도입 한 문장과 마무리 촌평만 있습니다." },
+  { q: "발표장 컴퓨터에서 흐르는 점과 점선 애니메이션이 멈춘 채 나온다면 무엇을 확인해야 합니까?",
+    options: ["인터넷 연결", "브라우저 버전", "화면 해상도", "컴퓨터의 '동작 줄이기' 설정"], answer: 3,
+    explain: "동작 줄이기(reduce motion)가 켜져 있으면 애니메이션이 일부러 정지됩니다. 고장이 아니라 접근성 동작이므로, 발표 전 체크리스트에서 이 설정을 끄도록 안내했습니다." },
+  { q: "유인물 PDF를 만들려면 어떻게 해야 합니까?",
+    options: ["자료마다 따로 내보내 14쪽과 27쪽을 만든다", "한 번에 41쪽짜리 합본이 나온다", "인쇄는 지원되지 않는다", "흑백 인쇄만 가능하다"], answer: 0,
+    explain: "두 자료는 별개 문서라 합본 주소가 없습니다. 각각 내보내면 1부 14쪽, 2부 27쪽이 됩니다. 내용이 긴 장은 두 쪽으로 나뉘어 조금 늘 수 있습니다." },
+  { q: "앞으로 발표 자료(슬라이드)를 고치면 대본에는 어떤 일이 생길 수 있습니까?",
+    options: ["아무 영향 없다", "키 횟수·인용 문구가 어긋날 수 있어 함께 갱신해야 한다", "대본이 자동으로 갱신된다", "대본을 처음부터 다시 써야만 한다"], answer: 1,
+    explain: "대본의 키 횟수와 따옴표 인용은 자료 실물과 맞춰 둔 값이라, 자료가 바뀌면 어긋날 수 있습니다. 자동 동기화 장치는 없으므로 자료 수정 시 대본도 함께 봐야 합니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
