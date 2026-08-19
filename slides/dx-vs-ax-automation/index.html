@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Python Automation: DX vs AX</title>
-  <meta name="description" content="Python 자동화의 진화: 규칙 기반(DX)에서 LLM 기반(AX)으로 — 파이프라인의 진화와 사내 LLM 연동 4가지 방법">
+  <meta name="description" content="팀 세미나 1부 — LLM 자동화는 무엇을 바꾸는가: 파이프라인의 진화, 긴 꼬리 효과, 사내 LLM 연동 4가지 방법">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0e0e0e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
@@ -20,6 +20,65 @@
   <style>
     /* 공통 규칙은 ../shared/deck-base.css에 있다. 여기는 이 덱 고유 스타일만. */
     html { background: #0e0e0e; color-scheme: dark; }
+
+    /* HTML 텍스트용 위계 유틸 (SVG용은 deck-base가 제공) */
+    .reveal .dim { color: var(--dim); }
+    .reveal .bright { color: var(--primary); }
+
+    /* 은하 중심부 위 가독성: 글자를 담는 컨테이너 도형(fill="none")에
+       반투명 어두운 배경을 깔아 별빛과 분리한다. 인쇄(흰 종이)에서는 해제.
+       진짜로 투명해야 할 도형에는 fill="transparent"를 쓸 것 — 이 선택자를 비켜 간다. */
+    .reveal svg rect[fill="none"], .reveal svg circle[fill="none"], .reveal svg .panel-fill { fill: rgba(14, 14, 14, 0.85); }
+
+    /* 추상화 미터 — 방법 1~4 슬라이드의 위치 표시기 (2부 자율성 미터와 같은 관용구) */
+    .reveal .meter { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 12px; font-family: var(--font-mono); font-size: 0.42em; color: var(--dim); }
+    .reveal .meter .m-step { border: 1px solid var(--hairline); border-radius: 5px; padding: 1px 9px; }
+    .reveal .meter .m-step.on { color: var(--accent); border-color: var(--accent); }
+    .reveal .meter .m-label { margin-left: 8px; letter-spacing: 0.12em; }
+
+    /* ── 움직임 (전부 CSS 키프레임 — SMIL 금지: deck-base의 동작 축소 방어가 CSS만 정지시킨다) ──
+       기본 상태는 항상 "안 보임/정지"이고, 동작 선호 사용자에게만 애니메이션을 건다.
+       인쇄에서는 아래 @media print 블록이 장식을 걷어낸다. */
+    .travel-dot { opacity: 0; }
+    @media (prefers-reduced-motion: no-preference) {
+      /* 파이프라인 위를 흐르는 입력 1건 — 상자 1 중심(115)에서 상자 4 중심(785)까지 */
+      .travel-dot { animation: travel-pipe 5s linear infinite; }
+      @keyframes travel-pipe {
+        0%        { transform: translateX(0); opacity: 0; }
+        6%        { opacity: 1; }
+        84%       { transform: translateX(670px); opacity: 1; }
+        92%, 100% { transform: translateX(670px); opacity: 0; }
+      }
+      /* 점선 행진 — 루프 화살표(dasharray 4,3 → 주기 7의 배수만큼 이동) */
+      .march { animation: dash-march 1.6s linear infinite; }
+      @keyframes dash-march { to { stroke-dashoffset: -14; } }
+      /* 점선 상자 테두리 행진(dasharray 7,4 → 주기 11) — 자율 영역 표시 */
+      .march-border { animation: dash-march-border 2.2s linear infinite; }
+      @keyframes dash-march-border { to { stroke-dashoffset: -22; } }
+    }
+
+    /* fragment 공개 때 선이 그려지는 효과 — 곡선 길이보다 넉넉한 dasharray */
+    .draw-on-visible { stroke-dasharray: 1100; stroke-dashoffset: 1100; transition: stroke-dashoffset 1.2s ease-out; }
+    .fragment.visible .draw-on-visible { stroke-dashoffset: 0; }
+
+    @media print {
+      /* 흐르는 점은 장식 — 종이에서 제거. 그리기 선은 완성 상태로 복구. */
+      .travel-dot { display: none !important; }
+      .draw-on-visible { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+      html:not(.print-pdf) .reveal .meter,
+      html:not(.print-pdf) .reveal .meter .m-step { color: #000 !important; border-color: #000 !important; }
+      /* 흑백 인쇄에서 현재 칸은 색이 아니라 반전으로 살린다 — 색만으로 정보를 나르지 않기 */
+      html:not(.print-pdf) .reveal .meter .m-step.on { background: #000 !important; color: #fff !important; }
+      /* 흰 종이에서는 어두운 상자 배경을 걷어낸다 */
+      html:not(.print-pdf) .reveal svg rect[fill="none"],
+      html:not(.print-pdf) .reveal svg circle[fill="none"],
+      html:not(.print-pdf) .reveal svg .panel-fill { fill: none !important; }
+    }
+    html.reveal-print .travel-dot { display: none !important; }
+    html.reveal-print .draw-on-visible { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+    /* PDF 내보내기(?print-pdf)는 fade-out 이전 상태(✗)와 최종 상태(✓)를 한 쪽에 겹쳐 그린다 —
+       사라지는 쪽(fade-out)을 숨겨 최종 상태만 내보낸다. */
+    html.reveal-print .reveal .fragment.fade-out { display: none !important; }
   </style>
 </head>
 <body>
@@ -37,13 +96,41 @@
 
       <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
       <section>
-        <p class="eyebrow">DKDLQODDI · PYTHON AUTOMATION</p>
+        <p class="eyebrow">TEAM SEMINAR · PART 1 / 2</p>
         <h2>DX vs AX</h2>
-        <p class="small">Python 자동화의 진화:<br>규칙 기반에서 LLM 기반으로<br><br>
-        <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
+        <p class="small">LLM 자동화는 무엇을 바꾸는가<br>— 파이프라인의 진화와 사내 LLM 연동 4가지 방법</p>
+        <p class="small dim"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
       </section>
 
-      <!-- ═══════════════════ 2. 용어 정립 ═══════════════════ -->
+      <!-- ═══════════════════ 2. 오늘의 여정 ═══════════════════ -->
+      <section>
+        <h3>오늘의 여정</h3>
+        <p class="visually-hidden">그림 설명: 세미나 두 부의 지도. 왼쪽 강조 상자가 지금 진행하는 1부(자동화의 효과)로 세 가지 소주제를 담고, 화살표 건너 오른쪽 상자가 2부(하네스)입니다.</p>
+        <svg class="diag" viewBox="0 0 900 270" role="img" aria-label="세미나 1부와 2부의 구성을 나란히 놓은 여정 지도" xmlns="http://www.w3.org/2000/svg">
+          <g class="accent">
+            <text x="52" y="30" font-size="13" font-weight="600" fill="currentColor" style="font-family: var(--font-mono);">▶ 지금 여기</text>
+            <rect x="40" y="42" width="380" height="186" rx="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="230" y="82" text-anchor="middle" font-size="21" font-weight="700" fill="currentColor">1부 — 자동화의 효과</text>
+          </g>
+          <text x="72" y="122" font-size="15" fill="currentColor">· DX → AX : 같은 파이프라인의 진화</text>
+          <text x="72" y="154" font-size="15" fill="currentColor">· 효과 : 규칙이 못 덮는 긴 꼬리</text>
+          <text x="72" y="186" font-size="15" fill="currentColor">· 연결 : 사내 LLM 연동 4가지 방법</text>
+
+          <line x1="430" y1="135" x2="466" y2="135" stroke="currentColor" stroke-width="2" class="dim"/>
+          <polygon points="476,135 466,129 466,141" fill="currentColor" class="dim"/>
+
+          <g class="dim">
+            <rect x="486" y="42" width="374" height="186" rx="12" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="673" y="82" text-anchor="middle" font-size="21" font-weight="700" fill="currentColor">2부 — 하네스</text>
+            <text x="516" y="122" font-size="15" fill="currentColor">· 결과의 폭을 조이는 원리</text>
+            <text x="516" y="154" font-size="15" fill="currentColor">· 층을 조이는 스킬 다섯</text>
+            <text x="516" y="186" font-size="15" fill="currentColor">· 하네스를 담은 제품 다섯</text>
+          </g>
+          <text x="450" y="258" text-anchor="middle" font-size="14" fill="currentColor" class="dim">1부의 마지막 질문이 2부의 첫 그림이 됩니다</text>
+        </svg>
+      </section>
+
+      <!-- ═══════════════════ 3. 용어 정립 ═══════════════════ -->
       <section>
         <h3>DX와 AX</h3>
         <p class="visually-hidden">그림 설명: 왼쪽에 디지털 전환(DX)의 특성 3가지, 오른쪽에 AI 전환(AX)의 특성 3가지가 상자로 나열되고, 가운데 화살표가 진화 방향을 표시합니다.</p>
@@ -77,10 +164,10 @@
         </svg>
       </section>
 
-      <!-- ═══════════════════ 3. DX 파이프라인 (짝 전환 1/2) ═══════════════════ -->
+      <!-- ═══════════════════ 4. DX 파이프라인 (짝 전환 1/2) ═══════════════════ -->
       <section data-auto-animate data-auto-animate-unmatched="false">
         <h3>DX 자동화 파이프라인</h3>
-        <p class="visually-hidden">그림 설명: 데이터 수집, 규칙 분기, 고정 처리, 결과 출력 네 상자가 화살표로 일렬로 이어집니다. 클릭하면 규칙 분기 아래로 "규칙에 없는 입력은 실패"라는 약점 표시가 붉은색으로 나타납니다.</p>
+        <p class="visually-hidden">그림 설명: 데이터 수집, 규칙 분기, 고정 처리, 결과 출력 네 상자가 화살표로 일렬로 이어지고, 입력 1건을 뜻하는 점이 파이프라인 위를 흘러갑니다. 클릭하면 규칙 분기 아래로 "규칙에 없는 입력은 실패"라는 약점 표시가 붉은색으로 나타납니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 자동화 선형 파이프라인과 예외 입력에 취약한 지점" xmlns="http://www.w3.org/2000/svg">
           <g data-id="pipe-n1">
             <rect x="30" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -115,6 +202,9 @@
             <text x="785" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">고정 형식</text>
           </g>
 
+          <!-- 흐르는 입력 1건 (장식 — 동작 축소·인쇄에서 사라진다) -->
+          <circle class="travel-dot bright" cx="115" cy="105" r="6" fill="currentColor" aria-hidden="true"/>
+
           <!-- 약점: 예외 입력 (fragment) -->
           <g class="fragment fade-up danger">
             <line x1="340" y1="145" x2="340" y2="195" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4"/>
@@ -127,10 +217,10 @@
         </svg>
       </section>
 
-      <!-- ═══════════════════ 4. AX로 진화 (짝 전환 2/2) ═══════════════════ -->
+      <!-- ═══════════════════ 5. AX로 진화 (짝 전환 2/2) ═══════════════════ -->
       <section data-auto-animate data-auto-animate-unmatched="false">
         <h3>같은 파이프라인, AX로 진화</h3>
-        <p class="visually-hidden">그림 설명: 앞 장과 같은 네 상자 파이프라인에서 규칙 분기가 LLM 판단으로, 고정 처리가 동적 처리로 바뀝니다. 클릭하면 자연어 이해, 맥락 기억, 자기 치유 확장 상자가 아래에 나타나고, 한 번 더 클릭하면 결과에서 LLM 판단으로 되돌아가는 피드백 루프가 나타납니다.</p>
+        <p class="visually-hidden">그림 설명: 앞 장과 같은 네 상자 파이프라인에서 규칙 분기가 LLM 판단으로, 고정 처리가 동적 처리로 바뀌고, 입력 점이 여전히 파이프라인 위를 흘러갑니다. 클릭하면 자연어 이해, 맥락 기억, 자기 치유 확장 상자가 아래에 나타나고, 한 번 더 클릭하면 결과에서 LLM 판단으로 되돌아가는 피드백 루프가 점선 행진 애니메이션과 함께 나타납니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 파이프라인이 AX로 진화한 모습과 AX 전용 확장 요소" xmlns="http://www.w3.org/2000/svg">
           <g data-id="pipe-n1" class="accent">
             <rect x="30" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
@@ -165,6 +255,9 @@
             <text x="785" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">유연한 형식</text>
           </g>
 
+          <!-- 흐르는 입력 1건 — 이번엔 비정형 입력도 통과한다는 뜻으로 accent -->
+          <circle class="travel-dot accent" cx="115" cy="105" r="6" fill="currentColor" aria-hidden="true"/>
+
           <!-- 확장 요소 (fragment 1) -->
           <g class="fragment fade-up accent">
             <line x1="115" y1="140" x2="115" y2="168" stroke="currentColor" stroke-width="1.5"/>
@@ -183,56 +276,117 @@
             <text x="565" y="207" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">자기 치유</text>
           </g>
 
-          <!-- 피드백 루프 (fragment 2) -->
+          <!-- 피드백 루프 (fragment 2) — 점선 행진으로 "살아 있는 루프"를 표현 -->
           <g class="fragment fade-up accent">
-            <path d="M 785 140 L 785 262 L 340 262 L 340 232" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <path class="march" d="M 785 140 L 785 262 L 340 262 L 340 232" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3"/>
             <polygon points="340,226 334,236 346,236" fill="currentColor"/>
             <text x="562" y="280" text-anchor="middle" font-size="13" fill="currentColor">피드백 루프 — 결과를 보고 판단을 보정</text>
           </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 5. 로드맵: 연동 4가지 방법 ═══════════════════ -->
+      <!-- ═══════════════════ 6. 효과: 긴 꼬리 ═══════════════════ -->
+      <section>
+        <h3>효과 — 규칙이 못 덮는 긴 꼬리</h3>
+        <p class="visually-hidden">그림 설명: 가로축은 입력의 다양성(정형에서 비정형·예외 순), 세로축은 빈도인 분포 곡선입니다. 자주 오는 정형 입력이 왼쪽 머리에 몰려 있고 규칙 기반은 이 머리 부분만 덮습니다. 규칙의 한계선 오른쪽 긴 꼬리 입력들은 실패 표시가 붙어 있습니다. 클릭하면 LLM 기반의 덮는 범위가 꼬리 끝까지 그려지며 실패 표시가 처리됨 표시로 바뀝니다.</p>
+        <svg class="diag" viewBox="0 0 900 380" role="img" aria-label="입력 다양성 분포에서 규칙 기반이 덮는 머리 부분과 LLM이 덮는 긴 꼬리의 비교" xmlns="http://www.w3.org/2000/svg">
+          <!-- 축 -->
+          <line x1="60" y1="320" x2="866" y2="320" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="876,320 864,314 864,326" fill="currentColor" class="dim"/>
+          <line x1="60" y1="320" x2="60" y2="54" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="60,44 54,56 66,56" fill="currentColor" class="dim"/>
+          <text x="42" y="185" text-anchor="middle" font-size="13" fill="currentColor" class="dim" transform="rotate(-90 42 185)">빈도</text>
+          <text x="140" y="348" text-anchor="middle" font-size="13" fill="currentColor" class="dim">정형 · 반복</text>
+          <text x="740" y="348" text-anchor="middle" font-size="13" fill="currentColor" class="dim">비정형 · 예외 (긴 꼬리)</text>
+          <text x="463" y="374" text-anchor="middle" font-size="14" fill="currentColor" class="dim">입력의 다양성 →</text>
+
+          <!-- 분포 곡선 -->
+          <path d="M 60 90 C 160 95, 250 215, 340 255 C 430 295, 640 306, 860 312" fill="none" stroke="currentColor" stroke-width="2.5" class="bright"/>
+
+          <!-- 규칙 기반 커버 영역 (머리) -->
+          <path d="M 60 320 L 60 90 C 160 95, 250 215, 340 255 L 340 320 Z" fill="currentColor" opacity="0.18" class="dim"/>
+          <text x="180" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">규칙 기반</text>
+          <text x="180" y="202" text-anchor="middle" font-size="12" fill="currentColor">정형 입력까지</text>
+
+          <!-- 규칙의 한계선 -->
+          <line x1="340" y1="242" x2="340" y2="320" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,4" class="danger"/>
+          <text x="340" y="232" text-anchor="middle" font-size="13" fill="currentColor" class="danger">규칙의 한계선</text>
+
+          <!-- 꼬리의 예외 입력: 규칙 체제에서는 실패 (fragment 0에서 처리됨으로 교체) -->
+          <g class="fragment fade-out danger" data-fragment-index="0">
+            <text x="450" y="278" text-anchor="middle" font-size="17" fill="currentColor">✗</text>
+            <text x="570" y="290" text-anchor="middle" font-size="17" fill="currentColor">✗</text>
+            <text x="690" y="296" text-anchor="middle" font-size="17" fill="currentColor">✗</text>
+            <text x="800" y="300" text-anchor="middle" font-size="17" fill="currentColor">✗</text>
+          </g>
+
+          <!-- LLM 커버 (fragment 0): 영역 + 곡선 그리기 + 라벨, 실패 → 처리됨 교체 -->
+          <g class="fragment fade-in" data-fragment-index="0">
+            <g class="accent">
+              <path d="M 60 320 L 60 90 C 160 95, 250 215, 340 255 C 430 295, 640 306, 860 312 L 860 320 Z" fill="currentColor" opacity="0.14"/>
+              <path class="draw-on-visible" d="M 60 90 C 160 95, 250 215, 340 255 C 430 295, 640 306, 860 312" fill="none" stroke="currentColor" stroke-width="3"/>
+              <text x="640" y="255" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">LLM 기반 — 꼬리 끝까지</text>
+            </g>
+            <g class="accent">
+              <text x="450" y="278" text-anchor="middle" font-size="17" fill="currentColor">✓</text>
+              <text x="570" y="290" text-anchor="middle" font-size="17" fill="currentColor">✓</text>
+              <text x="690" y="296" text-anchor="middle" font-size="17" fill="currentColor">✓</text>
+              <text x="800" y="300" text-anchor="middle" font-size="17" fill="currentColor">✓</text>
+            </g>
+          </g>
+        </svg>
+        <p class="small fragment" data-fragment-index="1">예외마다 규칙을 하나씩 늘리는 대신, <span class="bright">판단 하나</span>가 꼬리 전체를 덮습니다.</p>
+      </section>
+
+      <!-- ═══════════════════ 7. 로드맵: 연동 4가지 방법 ═══════════════════ -->
       <section>
         <h3>사내 LLM에 연결하는 4가지 방법</h3>
-        <p class="visually-hidden">그림 설명: 추상화 수준이 낮은 것부터 높은 것 순서로 네 방법이 계단 모양으로 배치됩니다. HTTP 직접 호출, OpenAI SDK, LangChain을 지나 맨 위 오른쪽의 opencode 에이전트 위임에 도달합니다.</p>
+        <p class="visually-hidden">그림 설명: 추상화 수준이 낮은 것부터 높은 것 순서로 네 방법이 계단 모양으로 배치되고, 화살표 키마다 한 계단씩 나타납니다. HTTP 직접 호출, OpenAI SDK, LangChain을 지나 맨 위 오른쪽의 opencode 에이전트 위임에 도달합니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="네 가지 연동 방법을 추상화 수준 순서의 계단으로 배치한 로드맵" xmlns="http://www.w3.org/2000/svg">
           <!-- 추상화 축 -->
           <line x1="40" y1="270" x2="40" y2="40" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="40,30 34,42 46,42" fill="currentColor" class="dim"/>
           <text x="28" y="155" text-anchor="middle" font-size="13" fill="currentColor" class="dim" transform="rotate(-90 28 155)">추상화 수준</text>
 
-          <!-- 계단 -->
+          <!-- 계단 (한 칸씩 공개) -->
           <rect x="80" y="210" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <text x="170" y="234" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">① HTTP 직접</text>
           <text x="170" y="255" text-anchor="middle" font-size="12" fill="currentColor" class="dim">직접 호출</text>
 
-          <rect x="285" y="150" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="375" y="174" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">② OpenAI SDK</text>
-          <text x="375" y="195" text-anchor="middle" font-size="12" fill="currentColor" class="dim">얇은 래퍼</text>
-
-          <rect x="490" y="90" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="580" y="114" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">③ LangChain</text>
-          <text x="580" y="135" text-anchor="middle" font-size="12" fill="currentColor" class="dim">프레임워크</text>
-
-          <g class="accent">
-            <rect x="695" y="30" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
-            <text x="785" y="54" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">④ opencode</text>
-            <text x="785" y="75" text-anchor="middle" font-size="12" fill="currentColor">에이전트 위임</text>
+          <g class="fragment fade-up">
+            <line x1="260" y1="239" x2="285" y2="179" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <rect x="285" y="150" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="375" y="174" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">② OpenAI SDK</text>
+            <text x="375" y="195" text-anchor="middle" font-size="12" fill="currentColor" class="dim">얇은 래퍼</text>
           </g>
 
-          <!-- 계단 연결선 -->
-          <line x1="260" y1="239" x2="285" y2="179" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
-          <line x1="465" y1="179" x2="490" y2="119" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
-          <line x1="670" y1="119" x2="695" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+          <g class="fragment fade-up">
+            <line x1="465" y1="179" x2="490" y2="119" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <rect x="490" y="90" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="580" y="114" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">③ LangChain</text>
+            <text x="580" y="135" text-anchor="middle" font-size="12" fill="currentColor" class="dim">프레임워크</text>
+          </g>
+
+          <g class="fragment fade-up">
+            <line x1="670" y1="119" x2="695" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <g class="accent">
+              <rect x="695" y="30" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              <text x="785" y="54" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">④ opencode</text>
+              <text x="785" y="75" text-anchor="middle" font-size="12" fill="currentColor">에이전트 위임</text>
+            </g>
+          </g>
 
           <text x="480" y="290" text-anchor="middle" font-size="13" fill="currentColor" class="dim">①→③은 LLM을 "호출"하고, ④는 일을 "위임"합니다</text>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 6. 방법 1: HTTP 직접 호출 ═══════════════════ -->
+      <!-- ═══════════════════ 8. 방법 1: HTTP 직접 호출 ═══════════════════ -->
       <section>
         <h3>방법 1 — HTTP 직접 호출</h3>
+        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 1단계">
+          <span class="m-step on">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span>
+          <span class="m-label">추상화</span>
+        </p>
         <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM의 표준 주소에 HTTP 요청을 직접 보내는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="60" y="10" width="190" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -264,9 +418,13 @@ print(resp.json()["choices"][0]["message"]["content"])
         <p class="small" style="color: var(--secondary);">표준 API 규격 그대로 · 폐쇄망 최소 설치</p>
       </section>
 
-      <!-- ═══════════════════ 7. 방법 2: OpenAI SDK ═══════════════════ -->
+      <!-- ═══════════════════ 9. 방법 2: OpenAI SDK ═══════════════════ -->
       <section>
         <h3>방법 2 — OpenAI SDK</h3>
+        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 2단계">
+          <span class="m-step">①</span><span class="m-step on">②</span><span class="m-step">③</span><span class="m-step">④</span>
+          <span class="m-label">추상화</span>
+        </p>
         <p class="visually-hidden">그림 설명: Python에서 OpenAI SDK의 서버 주소 설정(base_url)을 사내 LLM으로 바꿔 연결하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 OpenAI SDK로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -303,9 +461,13 @@ print(resp.choices[0].message.content)
         <p class="small" style="color: var(--secondary);">타입 · 스트리밍 지원 · 호환 서버의 사실상 표준</p>
       </section>
 
-      <!-- ═══════════════════ 8. 방법 3: LangChain ═══════════════════ -->
+      <!-- ═══════════════════ 10. 방법 3: LangChain ═══════════════════ -->
       <section>
         <h3>방법 3 — LangChain</h3>
+        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 3단계">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step on">③</span><span class="m-step">④</span>
+          <span class="m-label">추상화</span>
+        </p>
         <p class="visually-hidden">그림 설명: Python에서 LangChain 프레임워크로 프롬프트 템플릿과 LLM을 체인으로 조립해 사내 LLM에 연결하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 LangChain으로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -342,10 +504,14 @@ print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
         <p class="small" style="color: var(--secondary);">프롬프트 · 체인 조립 · 다단계 작업에 적합</p>
       </section>
 
-      <!-- ═══════════════════ 9. 방법 4: opencode 위임 ═══════════════════ -->
+      <!-- ═══════════════════ 11. 방법 4: opencode 위임 ═══════════════════ -->
       <section>
         <h3>방법 4 — opencode, 에이전트에게 위임</h3>
-        <p class="visually-hidden">그림 설명: Python이 subprocess로 opencode 에이전트를 실행하고, 에이전트가 사내 LLM과 도구를 써서 일을 통째로 처리하는 구조입니다. 앞의 세 방법과 달리 호출이 아니라 위임입니다.</p>
+        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 4단계">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step on">④</span>
+          <span class="m-label">추상화</span>
+        </p>
+        <p class="visually-hidden">그림 설명: Python이 subprocess로 opencode 에이전트를 실행하고, 에이전트가 사내 LLM과 도구를 써서 일을 통째로 처리하는 구조입니다. 에이전트 상자의 점선 테두리가 천천히 도는 애니메이션은 스스로 판단하는 자율 영역이라는 뜻입니다. 앞의 세 방법과 달리 호출이 아니라 위임입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 subprocess로 opencode 에이전트에 작업을 위임하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
@@ -356,9 +522,9 @@ print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
           <line x1="405" y1="32" x2="458" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="466,32 456,26 456,38" fill="currentColor" class="dim"/>
           <g class="accent">
-            <rect x="470" y="6" width="200" height="53" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7,4"/>
+            <rect class="march-border" x="470" y="6" width="200" height="53" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7,4"/>
             <text x="570" y="29" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">opencode 에이전트</text>
-            <text x="570" y="49" text-anchor="middle" font-size="11" fill="currentColor">판단 · 도구 실행 · 재시도</text>
+            <text x="570" y="49" text-anchor="middle" font-size="12" fill="currentColor">판단 · 도구 실행 · 재시도</text>
             <line x1="675" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5"/>
             <polygon points="718,32 708,26 708,38" fill="currentColor"/>
             <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -379,7 +545,7 @@ print(result.stdout)
         <p class="small" style="color: var(--secondary);">호출이 아니라 위임 · 도구 사용까지 맡김</p>
       </section>
 
-      <!-- ═══════════════════ 10. 비교표 ═══════════════════ -->
+      <!-- ═══════════════════ 12. 비교표 ═══════════════════ -->
       <section>
         <h3>4가지 방법 비교</h3>
         <p class="visually-hidden">표 설명: 네 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다.</p>
@@ -403,7 +569,7 @@ print(result.stdout)
             <text x="330" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">직접 호출</text>
             <rect x="440" y="60" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
             <text x="545" y="84" text-anchor="middle" font-size="13" fill="currentColor" class="dim">requests 패키지</text>
-            <text x="545" y="102" text-anchor="middle" font-size="11" fill="currentColor" class="dim">(urllib이면 추가 설치 0개)</text>
+            <text x="545" y="102" text-anchor="middle" font-size="12" fill="currentColor" class="dim">(urllib이면 추가 설치 0개)</text>
             <rect x="660" y="60" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
             <text x="770" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">단발 호출 · 최소 설치</text>
           </g>
@@ -451,10 +617,46 @@ print(result.stdout)
         </svg>
       </section>
 
-      <!-- ═══════════════════ 11. 끝 ═══════════════════ -->
+      <!-- ═══════════════════ 13. 브리지: 위임의 대가 ═══════════════════ -->
       <section>
-        <h2>끝.</h2>
-        <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
+        <h3>위임의 대가 — 폭이 벌어진다</h3>
+        <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼지고 실행 결과 점들이 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 조인다는 예고가 표시됩니다.</p>
+        <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="위임할수록 결과의 폭이 넓어지는 모습과 하네스 예고" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="130" width="170" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
+          <text x="115" y="165" text-anchor="middle" font-size="18" fill="currentColor" class="bright">통째로 위임</text>
+
+          <g class="accent">
+            <polygon points="200,158 860,40 860,276" fill="currentColor" opacity="0.07"/>
+            <polygon points="200,158 860,86 860,230" fill="currentColor" opacity="0.10"/>
+            <polygon points="200,158 860,130 860,186" fill="currentColor" opacity="0.15"/>
+          </g>
+          <g class="bright" fill="currentColor">
+            <circle cx="360" cy="150" r="6"/>
+            <circle cx="430" cy="110" r="6"/>
+            <circle cx="500" cy="190" r="6"/>
+            <circle cx="560" cy="80" r="6"/>
+            <circle cx="620" cy="160" r="6"/>
+            <circle cx="700" cy="235" r="6"/>
+            <circle cx="760" cy="120" r="6"/>
+            <circle cx="820" cy="200" r="6"/>
+          </g>
+          <text x="850" y="26" fill="currentColor" class="dim" text-anchor="end" font-size="15">잘된 결과</text>
+          <text x="850" y="300" fill="currentColor" class="dim" text-anchor="end" font-size="15">망한 결과</text>
+
+          <g class="fragment fade-in accent">
+            <polygon points="200,158 860,140 860,176" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <rect x="330" y="106" width="400" height="36" rx="7" fill="none" stroke="none"/>
+            <text x="530" y="130" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">2부 — 하네스가 이 폭을 조입니다</text>
+          </g>
+        </svg>
+        <p class="small">호출은 폭이 좁고, 위임은 능력만큼 폭도 넓습니다.<br>넓어진 폭을 조이는 장치가 <span class="bright">하네스</span> — 2부의 주제입니다.</p>
+      </section>
+
+      <!-- ═══════════════════ 14. 끝 ═══════════════════ -->
+      <section>
+        <h2>1부 끝.</h2>
+        <p class="small"><a href="../ai-agent-skills-philosophy/">2부 — AI Agent Skills Philosophy →</a></p>
+        <p class="small"><a href="../../">← 발표 기록으로 돌아가기</a></p>
       </section>
 
     </div>

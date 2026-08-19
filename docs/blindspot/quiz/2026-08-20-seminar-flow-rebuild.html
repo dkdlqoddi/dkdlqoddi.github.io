@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 팀 세미나 흐름 재구축</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 팀 세미나 흐름 재구축</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>팀 세미나를 위해 발표 자료 두 벌을 1부와 2부의 연작으로 다시 구성했습니다. 두 자료의 마지막 장에는 서로로 이동하는 링크가 생겼습니다. 이 링크는 폴더 이름을 직접 가리키며, 목록 파일 점검으로는 확인되지 않습니다. 2부는 원래 있던 연속 장면 두 장 뒤에 이번에 한 장을 이어 붙여, 같은 그림 요소가 미끄러지며 이어지는 세 장짜리 연속 장면이 됐습니다. 이 장면은 요소마다 붙은 짝 이름으로 연결됩니다. 자료를 PDF로 내보낼 때 클릭 전의 실패 표시(✗)와 클릭 후의 처리 표시(✓)가 같은 자리에 겹쳐 찍히던 결함을 찾아, 사라지는 쪽을 숨겨 최종 상태만 나가게 고쳤습니다. 각 방법·제품 장 위의 단계 표시기는 흑백 인쇄에서도 현재 칸을 알 수 있도록 현재 칸만 반전(검은 바탕, 흰 글자)으로 인쇄되게 했습니다. 모든 자료가 함께 쓰는 공통 꾸밈 파일은 일부러 건드리지 않았고, 그 대신 움직임과 표시기 규칙 일부가 두 자료에 같은 내용으로 중복해 들어갔습니다. 좁은 화면(가로 1024)에서 첫 화면 카드 두 장이 일부 겹치는 현상은 변경 전에도 같은 겹침이 있었기에, 이번 변경 탓이 아닌 기존 한계로 판정하고 카드 설명만 짧게 줄였습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "발표 자료를 PDF로 내보내면 실패 표시와 처리 표시가 같은 자리에 겹칠 위험이 있었습니다. 이번 작업 후 PDF에는 무엇이 찍힙니까?",
+    options: ["처리 표시 하나만 찍힌다", "실패 표시 하나만 찍힌다", "두 표시가 같은 자리에 겹쳐 찍힌다", "두 표시가 모두 빠진 곡선만 찍힌다"], answer: 0,
+    explain: "사라지는 쪽인 실패 표시를 PDF 내보내기에서 숨기도록 고쳐 최종 상태만 남습니다. 겹쳐 찍히는 것은 고치기 전의 동작입니다. 화면 발표만 확인해서는 드러나지 않던 결함입니다." },
+  { q: "각 방법·제품 장 위에는 지금 몇 번째 단계인지 알려 주는 작은 칸 표시기가 있습니다. 흑백으로 인쇄하면 현재 칸을 어떻게 알아봅니까?",
+    options: ["알아볼 방법이 없다", "현재 칸만 반전되어 검게 칠해진다", "현재 칸이 두 배 크기로 인쇄된다", "현재 칸에 별표가 함께 인쇄된다"], answer: 1,
+    explain: "흑백 인쇄에서는 강조 색이 사라지므로, 현재 칸을 반전(검은 바탕에 흰 글자)으로 표시하게 고쳤습니다. 색에만 의존하면 종이 배포본에서 현재 위치 정보가 사라지기 때문입니다." },
+  { q: "이번에 두 자료의 마지막 장에 서로를 여는 링크가 생겼습니다. 나중에 한쪽 자료의 폴더 이름을 바꾸면 어떤 일이 생깁니까?",
+    options: ["목록 점검에서 자동으로 발견된다", "아무 영향이 없다", "다른 자료의 이동 링크가 조용히 깨진다", "두 자료가 모두 열리지 않게 된다"], answer: 2,
+    explain: "링크는 폴더 이름을 직접 가리키므로 이름이 바뀌면 없는 주소가 되어 조용히 깨집니다. 목록 파일 점검은 이 링크까지 확인하지 못합니다. 폴더 이름은 이미 공유된 주소이기도 하므로 바꾸지 않는 것이 원칙입니다." },
+  { q: "좁은 화면(가로 1024)에서 첫 화면의 카드 두 장이 일부 겹치는 현상이 확인되었습니다. 이번 작업에서는 어떻게 처리했습니까?",
+    options: ["배치 계산 코드를 고쳐 완전히 해결했다", "설명만 줄이고 겹침은 기존 한계로 남겼다", "겹치는 카드 두 장을 목록에서 뺐다", "좁은 화면에서는 목록을 숨기게 했다"], answer: 1,
+    explain: "변경 전 버전으로 되돌려 재 보아도 같은 겹침이 있어, 이번 변경 탓이 아닌 기존 배치 한계로 판정했습니다. 카드 설명은 길게 늘렸던 문구를 도로 짧게 줄였고, 남은 겹침은 변경 전보다 조금 커졌지만 카드 폭에 비해 미미합니다. 배치 자체의 수정은 별도 작업으로 남겼습니다." },
+  { q: "2부 앞부분 세 장은 같은 그림 요소가 미끄러지며 이어지는 연속 장면입니다. 이 장면이 깨지는 대표적인 편집 실수는 무엇입니까?",
+    options: ["슬라이드 제목 문구를 바꾸는 것", "글자 색을 다른 색으로 바꾸는 것", "발표 순서를 한 장 뒤로 미루는 것", "장면을 잇는 짝 이름을 바꾸는 것"], answer: 3,
+    explain: "연속 장면은 세 장에 걸쳐 같은 짝 이름(data-id)을 가진 요소끼리 이어져 움직입니다. 이름이 어긋나면 미끄러짐 없이 뚝 끊깁니다. 제목이나 색을 바꾸는 것은 장면 연결과 무관합니다." },
+  { q: "이번 작업은 모든 발표 자료가 함께 쓰는 공통 꾸밈 파일을 일부러 건드리지 않았습니다. 그 대신 치른 대가는 무엇입니까?",
+    options: ["다른 자료 세 벌을 다시 검증해야 했다", "공통 파일의 주소가 바뀌었다", "같은 꾸밈 규칙이 두 자료에 중복됐다", "발표 장 수를 크게 줄여야 했다"], answer: 2,
+    explain: "움직임·표시기 규칙 약 40줄이 두 자료에 같은 내용으로 중복해 들어갔습니다. 앞으로 한쪽만 고치면 두 자료의 동작이 갈라질 수 있어 함께 고쳐야 합니다. 대신 공통 파일을 고칠 때 필요한 다른 자료들의 재검증을 피했습니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

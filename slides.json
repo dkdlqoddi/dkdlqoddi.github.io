@@ -14,13 +14,13 @@
   {
     "title": "Python Automation: DX vs AX",
     "date": "2026-08-19",
-    "description": "같은 파이프라인이 규칙 기반에서 LLM 기반으로 진화하는 과정과 사내 LLM 연동 4가지 방법",
+    "description": "팀 세미나 1부 — 파이프라인의 진화와 사내 LLM 연동 4가지 방법",
     "dir": "dx-vs-ax-automation"
   },
   {
     "title": "AI Agent Skills Philosophy",
     "date": "2026-08-19",
-    "description": "인공지능 코딩 도구들의 스킬과 철학 비교",
+    "description": "팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리와 도구 철학",
     "dir": "ai-agent-skills-philosophy"
   }
 ]

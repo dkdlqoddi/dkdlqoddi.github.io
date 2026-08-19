@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Agent Skills Philosophy</title>
+  <meta name="description" content="팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리, 층을 조이는 스킬 다섯과 하네스를 담은 제품 다섯">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0e0e0e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
@@ -24,16 +25,55 @@
     html { background: #0e0e0e; color-scheme: dark; }
 
     /* ── 이 덱 고유 스타일 ── */
-    .summary-box { background: rgba(255, 255, 255, 0.05); padding: 12px 22px; border-radius: 8px; border-left: 4px solid var(--accent); font-size: 0.7em; text-align: left; }
-    .summary-box ul { margin: 0; padding-left: 1.2em; }
-    .summary-box li { margin-bottom: 8px; }
-    .summary-box li:last-child { margin-bottom: 0; }
-    .dim { color: var(--dim); }
-    .bright { color: var(--primary); }
+    .reveal .dim { color: var(--dim); }
+    .reveal .bright { color: var(--primary); }
     svg { font-family: var(--r-main-font); font-size: 14px; }
-    /* flex 레이아웃이 인쇄에서 무너질 때 svg만이라도 유지 */
+
+    /* 은하 중심부 위 가독성: 글자를 담는 컨테이너 도형(fill="none")에
+       반투명 어두운 배경을 깔아 별빛과 분리한다. 인쇄(흰 종이)에서는 해제.
+       진짜로 투명해야 할 도형에는 fill="transparent"를 쓸 것 — 이 선택자를 비켜 간다. */
+    .reveal svg rect[fill="none"], .reveal svg circle[fill="none"], .reveal svg .panel-fill { fill: rgba(14, 14, 14, 0.85); }
+
+    .reveal .summary-box { background: rgba(255, 255, 255, 0.05); padding: 12px 22px; border-radius: 8px; border-left: 4px solid var(--accent); font-size: 0.62em; text-align: left; width: 88%; margin: 8px auto 0; }
+    .reveal .summary-box ul { margin: 0; padding-left: 1.2em; }
+    .reveal .summary-box li { margin-bottom: 7px; }
+    .reveal .summary-box li:last-child { margin-bottom: 0; }
+
+    /* 도구 배지 — 하네스 층 지도(4장)와 각 도구 장을 잇는 표지판.
+       연성 제약(①지시문·③절차)은 accent, 경성 제약(②도구·④검증)은 danger. */
+    .reveal .tool-tags { display: flex; justify-content: center; gap: 8px; margin: 6px 0 10px; font-family: var(--font-mono); font-size: 0.42em; }
+    .reveal .tag { border: 1px solid var(--hairline); border-radius: 5px; padding: 2px 10px; color: var(--dim); letter-spacing: 0.06em; }
+    .reveal .tag.t-soft { color: var(--accent); border-color: var(--accent); }
+    .reveal .tag.t-hard { color: var(--danger); border-color: var(--danger); }
+
+    /* 자율성 미터 — 제품 다섯 장의 위치 표시기 (1부 추상화 미터와 같은 관용구) */
+    .reveal .meter { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.42em; color: var(--dim); }
+    .reveal .meter .m-step { border: 1px solid var(--hairline); border-radius: 5px; padding: 1px 9px; }
+    .reveal .meter .m-step.on { color: var(--accent); border-color: var(--accent); }
+    .reveal .meter .m-label { margin-left: 8px; letter-spacing: 0.12em; }
+
+    /* ── 움직임 (전부 CSS 키프레임 — SMIL 금지: deck-base의 동작 축소 방어가 CSS만 정지시킨다) ── */
+    @media (prefers-reduced-motion: no-preference) {
+      /* 점선 행진 — 루프·반려 화살표(dasharray 6,5 → 주기 11의 배수만큼 이동) */
+      .march { animation: dash-march 1.6s linear infinite; }
+      @keyframes dash-march { to { stroke-dashoffset: -22; } }
+      /* 점선 상자 테두리 행진(dasharray 7,4) — 자율 영역 표시 */
+      .march-border { animation: dash-march-border 2.2s linear infinite; }
+      @keyframes dash-march-border { to { stroke-dashoffset: -22; } }
+    }
+
+    /* flex 레이아웃이 인쇄에서 무너질 때 svg만이라도 유지 + 배지·미터 검정 복구 */
     @media print {
       html:not(.print-pdf) svg, html:not(.print-pdf) svg * { display: block !important; }
+      html:not(.print-pdf) .reveal .tag,
+      html:not(.print-pdf) .reveal .meter,
+      html:not(.print-pdf) .reveal .meter .m-step { color: #000 !important; border-color: #000 !important; }
+      /* 흑백 인쇄에서 현재 칸은 색이 아니라 반전으로 살린다 — 색만으로 정보를 나르지 않기 */
+      html:not(.print-pdf) .reveal .meter .m-step.on { background: #000 !important; color: #fff !important; }
+      /* 흰 종이에서는 어두운 상자 배경을 걷어낸다 */
+      html:not(.print-pdf) .reveal svg rect[fill="none"],
+      html:not(.print-pdf) .reveal svg circle[fill="none"],
+      html:not(.print-pdf) .reveal svg .panel-fill { fill: none !important; }
     }
   </style>
 </head>
@@ -50,16 +90,19 @@
   <div class="reveal">
     <div class="slides">
 
-<!-- 1. 커버 슬라이드 -->
+      <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
       <section>
+        <p class="eyebrow">TEAM SEMINAR · PART 2 / 2</p>
         <h1>AI Agent Skills<br>Philosophy</h1>
-        <p class="dim">인공지능 코딩 도구들의 아키텍처와 작동 철학 비교</p>
-        <p style="font-size: 0.6em; margin-top: 2em;" class="dim">작동 구조와 핵심 원칙 중심 (사용법/명령어 제외)</p>
-      </section><!-- 2. 하네스 개념 A: 같은 요청, 벌어지는 결과 -->
+        <p class="small dim">하네스 — 결과의 폭을 조이는 장치, 그리고 도구들의 철학<br>작동 구조와 원칙 중심 (사용법 · 명령어 제외)</p>
+        <p class="small dim"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
+      </section>
+
+      <!-- ═══════════════════ 2. 하네스 개념 A: 같은 요청, 벌어지는 결과 (모프 1/3) ═══════════════════ -->
       <section data-auto-animate data-auto-animate-unmatched="false">
         <h3>같은 요청, 벌어지는 결과</h3>
         <p class="visually-hidden">그림 설명: 왼쪽의 '같은 요청' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼진다. 부채꼴 안에 한 번의 실행 결과를 뜻하는 점 12개가 흩어져 있다. 위쪽 끝 라벨은 '잘된 결과', 아래쪽 끝 라벨은 '망한 결과'이고, 오른쪽 괄호가 전체 높이를 '결과물의 폭'으로 가리킨다.</p>
-        <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 없는 언어모델의 결과물 폭">
+        <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 없는 언어모델의 결과물 폭" xmlns="http://www.w3.org/2000/svg">
           <!-- 요청 상자: 짝 슬라이드에서 위치·크기 동일 (글자 상자는 크기 변형 금지) -->
           <g data-id="req">
             <rect x="30" y="175" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -91,14 +134,16 @@
           <text x="850" y="390" fill="currentColor" class="dim" text-anchor="end" font-size="18">망한 결과</text>
           <!-- 오른쪽 폭 괄호 -->
           <path d="M 868 40 L 878 40 L 878 360 L 868 360" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text transform="rotate(-90 893 200)" x="893" y="200" fill="currentColor" class="dim" text-anchor="middle" font-size="16">결과물의 폭</text>
+          <text transform="rotate(-90 889 200)" x="889" y="200" fill="currentColor" class="dim" text-anchor="middle" font-size="16">결과물의 폭</text>
         </svg>
         <p class="small dim" style="margin-top: 10px;">점 하나 = 같은 요청을 한 번 실행한 결과 · 폭이 넓어 '잘된 결과'와 '망한 결과'가 함께 들어 있습니다</p>
-      </section><!-- 3. 하네스 개념 B: 하네스가 폭을 조인다 -->
+      </section>
+
+      <!-- ═══════════════════ 3. 하네스 개념 B: 하네스가 폭을 조인다 (모프 2/3) ═══════════════════ -->
       <section data-auto-animate data-auto-animate-unmatched="false">
         <h3>하네스가 폭을 조인다</h3>
-        <p class="visually-hidden">그림 설명: 앞 장의 넓은 부채꼴이 좁은 띠로 조여진다. 원래의 넓은 폭은 점선 윤곽으로 남아 '하네스 없을 때의 폭'이라 적혀 있다. 하네스 4층이 띠를 조인다: 지시문과 작업 절차는 점선 쐐기로 밀고, 도구 제한은 실선 막대로 자르고, 검증 루프 문은 어긋난 결과 하나를 왼쪽으로 되돌려 보낸다. 점 9개는 좁은 띠 안에 모이고, 2개는 밖에 남는다.</p>
-        <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 4층이 결과물 폭을 조이는 구조">
+        <p class="visually-hidden">그림 설명: 앞 장의 넓은 부채꼴이 좁은 띠로 조여진다. 원래의 넓은 폭은 점선 윤곽으로 남아 '하네스 없을 때의 폭'이라 적혀 있다. 하네스 4층이 띠를 조인다: 지시문과 작업 절차는 점선 쐐기로 밀고, 도구 제한은 실선 막대로 자르고, 검증 루프 문은 어긋난 결과 하나를 왼쪽으로 되돌려 보낸다. 반려 화살표는 점선 행진 애니메이션으로 살아 움직인다. 점 9개는 좁은 띠 안에 모이고, 2개는 밖에 남는다.</p>
+        <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 4층이 결과물 폭을 조이는 구조" xmlns="http://www.w3.org/2000/svg">
           <g data-id="req">
             <rect x="30" y="175" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
             <text x="105" y="207" fill="currentColor" text-anchor="middle" font-size="20">같은 요청</text>
@@ -130,24 +175,24 @@
           <!-- ① 지시문: 연성 제약 — 점선 쐐기가 위에서 민다 -->
           <g class="accent">
             <polygon points="300,90 380,90 340,160" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="340" y="72" fill="currentColor" text-anchor="middle" font-size="17">① 지시문 (프롬프트)</text>
+            <text data-id="L1" x="340" y="72" fill="currentColor" text-anchor="middle" font-size="17">① 지시문 (프롬프트)</text>
           </g>
           <!-- ③ 작업 절차: 연성 제약 — 점선 쐐기가 아래에서 민다 -->
           <g class="accent">
             <polygon points="580,330 660,330 620,265" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="620" y="352" fill="currentColor" text-anchor="middle" font-size="17">③ 작업 절차 (스킬)</text>
+            <text data-id="L3" x="620" y="352" fill="currentColor" text-anchor="middle" font-size="17">③ 작업 절차 (스킬)</text>
           </g>
           <!-- ② 도구 제한: 경성 제약 — 실선 막대가 자른다 -->
           <g class="danger">
             <line x1="440" y1="148" x2="560" y2="148" stroke="currentColor" stroke-width="4"/>
             <line x1="440" y1="256" x2="560" y2="256" stroke="currentColor" stroke-width="4"/>
-            <text x="500" y="133" fill="currentColor" text-anchor="middle" font-size="17">② 도구 제한</text>
+            <text data-id="L2" x="500" y="133" fill="currentColor" text-anchor="middle" font-size="17">② 도구 제한</text>
           </g>
-          <!-- ④ 검증 루프: 경성 제약 — 문이 어긋난 결과를 되돌린다 -->
+          <!-- ④ 검증 루프: 경성 제약 — 문이 어긋난 결과를 되돌린다 (점선 행진 = 살아 있는 루프) -->
           <g class="danger">
             <rect x="845" y="155" width="14" height="90" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="855" y="140" fill="currentColor" text-anchor="end" font-size="17">④ 검증 루프</text>
-            <path d="M 680 305 Q 450 340 230 250" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text data-id="L4" x="855" y="140" fill="currentColor" text-anchor="end" font-size="17">④ 검증 루프</text>
+            <path class="march" d="M 680 305 Q 450 340 230 250" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
             <polygon points="230,250 245.2,249.7 240.7,260.9" fill="currentColor" stroke="none"/>
             <text x="460" y="352" fill="currentColor" text-anchor="middle" font-size="16">반려되어 재실행</text>
           </g>
@@ -156,411 +201,643 @@
         <p class="small" style="margin-top: 10px;">하네스(harness): 모델을 감싸 힘의 방향을 잡는 운영 장치 — 신입사원에게 회사의 업무 환경을 갖춰 주는 것과 같습니다</p>
         <p class="small">결과를 하나로 고정하는 게 아니라, 원하는 결과가 <strong>더 자주</strong> 나오게 폭을 조입니다</p>
         <p class="small dim">단, 탐색이 필요한 작업에서는 일부러 폭을 넓게 둡니다</p>
-      </section><!-- 4. ponytail -->
+      </section>
+
+      <!-- ═══════════════════ 4. 오늘의 지도 (모프 3/3) ═══════════════════ -->
+      <section data-auto-animate data-auto-animate-unmatched="false">
+        <h3>오늘의 지도 — 조여진 띠 아래에서</h3>
+        <p class="visually-hidden">그림 설명: 앞 장의 조여진 띠가 화면 위쪽의 가는 리본으로 올라가고 결과 점들이 그 안에 정렬됩니다. 리본 아래에 하네스 4층 이름표가 남고, 그 아래 두 칸이 나타납니다. 왼쪽 칸은 층 하나를 조이는 스킬 다섯(ponytail, grill-me, superpowers, blindspot-flow, fablize)이고 각각 조이는 층 번호가 붙어 있습니다. 오른쪽 칸은 하네스를 통째로 담은 제품 다섯(Aider, Copilot Workspace, LangChain Data Agent, oh-my-opencode, Devin)입니다.</p>
+        <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="스킬 다섯과 제품 다섯을 하네스 층에 이어 붙인 세미나 지도" xmlns="http://www.w3.org/2000/svg">
+          <g data-id="req">
+            <rect x="30" y="30" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="105" y="62" fill="currentColor" text-anchor="middle" font-size="20">같은 요청</text>
+          </g>
+          <g data-id="band" class="accent">
+            <polygon points="180,55 860,38 860,72" fill="currentColor" opacity="0.07"/>
+            <polygon points="180,55 860,44 860,66" fill="currentColor" opacity="0.10"/>
+            <polygon points="180,55 860,50 860,60" fill="currentColor" opacity="0.15"/>
+          </g>
+          <g class="bright" fill="currentColor">
+            <circle data-id="d1" cx="300" cy="55" r="4"/>
+            <circle data-id="d2" cx="350" cy="53" r="4"/>
+            <circle data-id="d3" cx="400" cy="57" r="4"/>
+            <circle data-id="d4" cx="450" cy="54" r="4"/>
+            <circle data-id="d5" cx="500" cy="56" r="4"/>
+            <circle data-id="d6" cx="545" cy="59" r="4"/>
+            <circle data-id="d7" cx="590" cy="53" r="4"/>
+            <circle data-id="d8" cx="640" cy="57" r="4"/>
+            <circle data-id="d9" cx="690" cy="52" r="4"/>
+            <circle data-id="d10" cx="740" cy="56" r="4"/>
+            <circle data-id="d11" cx="790" cy="54" r="4"/>
+            <circle data-id="d12" cx="835" cy="55" r="4"/>
+          </g>
+          <!-- 하네스 4층 이름표 (앞 장에서 내려온 표지판) -->
+          <rect x="185" y="93" width="690" height="28" rx="6" fill="none" stroke="none"/>
+          <text data-id="L1" x="270" y="112" fill="currentColor" class="accent" text-anchor="middle" font-size="14">① 지시문 (프롬프트)</text>
+          <text data-id="L2" x="435" y="112" fill="currentColor" class="danger" text-anchor="middle" font-size="14">② 도구 제한</text>
+          <text data-id="L3" x="600" y="112" fill="currentColor" class="accent" text-anchor="middle" font-size="14">③ 작업 절차 (스킬)</text>
+          <text data-id="L4" x="775" y="112" fill="currentColor" class="danger" text-anchor="middle" font-size="14">④ 검증 루프</text>
+
+          <!-- 왼쪽: 스킬 다섯 -->
+          <g class="fragment fade-up">
+            <rect x="50" y="140" width="390" height="222" rx="10" fill="none" stroke="currentColor" stroke-width="1.5" class="accent"/>
+            <text x="245" y="172" fill="currentColor" class="accent" text-anchor="middle" font-size="17" font-weight="700">스킬 — 층 하나를 조인다</text>
+            <text x="85" y="208" fill="currentColor" class="bright" font-size="15">ponytail</text>
+            <text x="360" y="208" fill="currentColor" class="accent" font-size="13" text-anchor="end">①</text>
+            <text x="400" y="208" fill="currentColor" class="accent" font-size="13" text-anchor="end">③</text>
+            <text x="85" y="240" fill="currentColor" class="bright" font-size="15">grill-me</text>
+            <text x="360" y="240" fill="currentColor" class="accent" font-size="13" text-anchor="end">①</text>
+            <text x="85" y="272" fill="currentColor" class="bright" font-size="15">superpowers</text>
+            <text x="400" y="272" fill="currentColor" class="accent" font-size="13" text-anchor="end">③</text>
+            <text x="85" y="304" fill="currentColor" class="bright" font-size="15">blindspot-flow</text>
+            <text x="360" y="304" fill="currentColor" class="accent" font-size="13" text-anchor="end">③</text>
+            <text x="400" y="304" fill="currentColor" class="danger" font-size="13" text-anchor="end">④</text>
+            <text x="85" y="336" fill="currentColor" class="bright" font-size="15">fablize</text>
+            <text x="400" y="336" fill="currentColor" class="danger" font-size="13" text-anchor="end">④</text>
+          </g>
+
+          <!-- 오른쪽: 제품 다섯 -->
+          <g class="fragment fade-up">
+            <rect x="470" y="140" width="390" height="222" rx="10" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <text x="665" y="172" fill="currentColor" class="bright" text-anchor="middle" font-size="17" font-weight="700">제품 — 하네스를 통째로</text>
+            <text x="505" y="208" fill="currentColor" class="bright" font-size="15">Aider</text>
+            <text x="830" y="208" fill="currentColor" class="dim" font-size="12" text-anchor="end">터미널 루프</text>
+            <text x="505" y="240" fill="currentColor" class="bright" font-size="15">Copilot Workspace</text>
+            <text x="830" y="240" fill="currentColor" class="dim" font-size="12" text-anchor="end">명세 파이프라인</text>
+            <text x="505" y="272" fill="currentColor" class="bright" font-size="15">LangChain Data Agent</text>
+            <text x="830" y="272" fill="currentColor" class="dim" font-size="12" text-anchor="end">도구 라우팅</text>
+            <text x="505" y="304" fill="currentColor" class="bright" font-size="15">oh-my-opencode</text>
+            <text x="830" y="304" fill="currentColor" class="dim" font-size="12" text-anchor="end">멀티에이전트</text>
+            <text x="505" y="336" fill="currentColor" class="bright" font-size="15">Devin</text>
+            <text x="830" y="336" fill="currentColor" class="dim" font-size="12" text-anchor="end">완전 자율</text>
+          </g>
+
+          <text x="455" y="392" fill="currentColor" class="dim" text-anchor="middle" font-size="13">스킬 다섯 → 제품 다섯 — 각 장의 배지가 이 지도를 가리킵니다</text>
+        </svg>
+      </section>
+
+      <!-- ═══════════════════ 5. ponytail ═══════════════════ -->
       <section>
         <h2 style="margin-bottom: 0;">ponytail</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 마름모 세 개(YAGNI?, Native?, 1-Liner?)를 왼쪽부터 차례로 통과해 'Write Minimal Code' 상자에 도달하는 의사결정 사다리. 앞의 두 마름모에서 탈락하면 아래의 'Drop it'과 'Use Native'로 빠진다.</p>
-            <svg width="700" height="220" viewBox="0 0 700 220" role="img" aria-label="ponytail Decision Ladder">
-              <polygon points="50,110 90,60 130,110 90,160" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="90" y="115" fill="currentColor" text-anchor="middle" font-size="0.75em">YAGNI?</text>
-              
-              <polygon points="190,110 230,60 270,110 230,160" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="230" y="115" fill="currentColor" text-anchor="middle" font-size="0.75em">Native?</text>
-              
-              <polygon points="330,110 370,60 410,110 370,160" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="370" y="115" fill="currentColor" text-anchor="middle" font-size="0.75em">1-Liner?</text>
-              
-              <rect x="470" y="85" width="160" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="550" y="115" fill="currentColor" class="accent" text-anchor="middle" font-weight="bold">Write Minimal Code</text>
+        <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">① 지시문</span><span class="tag t-soft">③ 작업 절차</span></p>
+        <p class="visually-hidden">그림 설명: 마름모 세 개(정말 필요한가, 내장 기능인가, 한 줄로 되는가)를 왼쪽부터 차례로 통과해 '최소 코드만 작성' 상자에 도달하는 의사결정 사다리. 앞의 두 마름모에서 탈락하면 아래의 '만들지 않는다'와 '내장 기능 사용'으로 빠집니다.</p>
+        <svg class="diag" viewBox="0 0 900 230" role="img" aria-label="ponytail의 방어적 의사결정 사다리" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="panel-fill" points="65,100 120,55 175,100 120,145" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="120" y="93" fill="currentColor" text-anchor="middle" font-size="14">YAGNI?</text>
+          <text x="120" y="115" fill="currentColor" class="dim" text-anchor="middle" font-size="12">정말 필요한가</text>
 
-              <!-- 방어 게이트 실패 시 빠지는 경로 -->
-              <text x="90" y="190" fill="currentColor" class="danger" text-anchor="middle" font-size="0.75em">Drop it</text>
-              <text x="230" y="190" fill="currentColor" class="danger" text-anchor="middle" font-size="0.75em">Use Native</text>
+          <polygon class="panel-fill" points="245,100 300,55 355,100 300,145" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="300" y="93" fill="currentColor" text-anchor="middle" font-size="14">Native?</text>
+          <text x="300" y="115" fill="currentColor" class="dim" text-anchor="middle" font-size="12">내장 기능인가</text>
 
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="130" y1="110" x2="190" y2="110"/>
-                <line x1="270" y1="110" x2="330" y2="110"/>
-                <line x1="410" y1="110" x2="470" y2="110"/>
-                <line x1="90" y1="160" x2="90" y2="175"/>
-                <line x1="230" y1="160" x2="230" y2="175"/>
-                <polygon points="190,110 176,104 176,116" fill="currentColor" stroke="none"/>
-                <polygon points="330,110 316,104 316,116" fill="currentColor" stroke="none"/>
-                <polygon points="470,110 456,104 456,116" fill="currentColor" stroke="none"/>
-                <polygon points="90,175 84,161 96,161" fill="currentColor" stroke="none"/>
-                <polygon points="230,175 224,161 236,161" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>게으른 시니어 개발자:</strong> "불필요한 코드는 작성하지 않는다"는 원칙(YAGNI)을 AI에게 주입하는 스킬 플러그인입니다.</li>
-              <li><strong>방어적 의사결정 사다리:</strong> 코드를 짜기 전 [정말 필요한가? ➔ 브라우저 내장 기능인가? ➔ 표준 라이브러리로 되나?]를 먼저 따지게 합니다.</li>
-              <li><strong>철학:</strong> 무분별한 의존성(npm 패키지 등) 추가를 막고 생성 토큰을 최소화하여, 코드베이스를 가볍고 유지보수하기 쉽게 지킵니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 5. fablize -->
-      <section>
-        <h2 style="margin-bottom: 0;">fablize</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: Claude가 "I'm done!"이라고 선언하면 가운데의 검증 게이트(fablize)가 가로채 "Show proof first"라며 증거를 요구한다. 증거가 있으면 오른쪽 Task Checked로 통과하고, 없으면 왼쪽 Claude에게 반려된다.</p>
-            <svg width="700" height="200" viewBox="0 0 700 200" role="img" aria-label="fablize Verification Gate">
-              <rect x="50" y="75" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="110" y="105" fill="currentColor" text-anchor="middle">Claude</text>
-              <text x="220" y="65" fill="currentColor" class="accent" font-size="0.8em" font-style="italic">"I'm done!"</text>
+          <polygon class="panel-fill" points="425,100 480,55 535,100 480,145" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="480" y="93" fill="currentColor" text-anchor="middle" font-size="14">1-Liner?</text>
+          <text x="480" y="115" fill="currentColor" class="dim" text-anchor="middle" font-size="12">한 줄로 되는가</text>
 
-              <rect x="280" y="50" width="140" height="100" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="350" y="80" fill="currentColor" class="accent" text-anchor="middle" font-weight="bold">Verification Gate</text>
-              <text x="350" y="105" fill="currentColor" class="accent" text-anchor="middle" font-size="0.8em">(fablize harness)</text>
-              <text x="350" y="130" fill="currentColor" class="accent" text-anchor="middle" font-size="0.8em">"Show proof first"</text>
+          <g class="accent">
+            <rect x="605" y="72" width="250" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="730" y="107" fill="currentColor" text-anchor="middle" font-size="17" font-weight="700">최소 코드만 작성</text>
+          </g>
 
-              <rect x="520" y="75" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="585" y="105" fill="currentColor" text-anchor="middle">Task Checked</text>
-
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="170" y1="100" x2="280" y2="100"/>
-                <line x1="420" y1="100" x2="520" y2="100"/>
-                <polygon points="280,100 266,94 266,106" fill="currentColor" stroke="none"/>
-                <polygon points="520,100 506,94 506,106" fill="currentColor" stroke="none"/>
-              </g>
-              <g class="danger">
-                <path d="M 280 120 Q 220 160 170 120" fill="none" stroke="currentColor" stroke-width="2"/>
-                <polygon points="170,120 184.7,124.1 177.2,133.4" fill="currentColor" stroke="none"/>
-                <text x="220" y="150" fill="currentColor" font-size="0.8em">Rejected (No Proof)</text>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>증명 요구 (Proof):</strong> AI가 대충 작업하고 "완료했습니다"라고 선언하는 것을 중간에 가로채는 검증 하네스(Harness)입니다.</li>
-              <li><strong>완수 강제:</strong> 작업이 끝났다면 실제 테스트를 통과한 결과물이나 검증 로그(증거)를 제시해야만 게이트를 통과할 수 있습니다.</li>
-              <li><strong>철학:</strong> AI의 '착각'이나 '운'에 의존하지 않고, 신뢰할 수 있는 Task-completion(작업 완수)을 보장하는 규율 도구입니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 6. grill-me -->
-      <section>
-        <h2 style="margin-bottom: 0;">grill-me</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 왼쪽의 모호한 아이디어(Vague Idea)가 가운데 질문 루프(Decision Tree)를 거쳐 오른쪽의 정제된 명세(Refined Spec)가 된다. 루프 위로 곡선 화살표가 질문을 반복하며 아이디어 쪽으로 되돌아간다.</p>
-            <svg width="700" height="200" viewBox="0 0 700 200" role="img" aria-label="grill-me 인터뷰 루프">
-              <rect x="50" y="75" width="140" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="120" y="105" fill="currentColor" text-anchor="middle">Vague Idea</text>
-
-              <rect x="270" y="50" width="160" height="100" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2" stroke-dasharray="5,5"/>
-              <text x="350" y="80" fill="currentColor" class="accent" text-anchor="middle">Decision Tree</text>
-              <text x="350" y="105" fill="currentColor" class="accent" text-anchor="middle" font-size="0.85em">(Question Loop)</text>
-              <text x="350" y="130" fill="currentColor" class="accent" text-anchor="middle" font-size="0.85em">"Are we sure about X?"</text>
-
-              <rect x="510" y="75" width="140" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="580" y="105" fill="currentColor" text-anchor="middle" font-weight="bold">Refined Spec</text>
-
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="190" y1="100" x2="270" y2="100"/>
-                <line x1="430" y1="100" x2="510" y2="100"/>
-                <polygon points="270,100 256,94 256,106" fill="currentColor" stroke="none"/>
-                <polygon points="510,100 496,94 496,106" fill="currentColor" stroke="none"/>
-              </g>
-              <g class="accent">
-                <path d="M 350 50 Q 350 10 270 10 Q 190 10 190 75" fill="none" stroke="currentColor" stroke-width="2"/>
-                <polygon points="190,75 184,61 196,61" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>역질문 인터뷰:</strong> 모호한 지시를 그대로 실행하지 않고, AI가 사용자에게 질문(인터뷰)을 던져 모호성을 제거하는 도구입니다.</li>
-              <li><strong>의도적 마찰 (Friction):</strong> AI가 스스로 추측해서 발생시키는 '자신감 있는 헛소리'를 차단하기 위해 의도적으로 진행을 늦춥니다.</li>
-              <li><strong>철학:</strong> 구현 전에 의사결정 트리의 모든 브랜치를 함께 해소하여, 코딩 전 완벽한 합의(Shared Understanding)를 이룹니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 7. blindspot-flow -->
-      <section>
-        <h2 style="margin-bottom: 0;">blindspot-flow</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: Interview, Unknowns, Explainer, Report &amp; Quiz 네 상자가 왼쪽부터 차례로 이어지는 파이프라인. 아래에 Report &amp; Quiz에서 Explainer로 되돌아오는 점선 구현 루프(Implementation Loop)가 있다.</p>
-            <svg width="700" height="200" viewBox="0 0 700 200" role="img" aria-label="blindspot-flow 파이프라인">
-              <rect x="20" y="75" width="130" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="85" y="105" fill="currentColor" class="accent" text-anchor="middle">Interview</text>
-
-              <rect x="190" y="75" width="130" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="255" y="105" fill="currentColor" class="accent" text-anchor="middle">Unknowns</text>
-
-              <rect x="360" y="75" width="130" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="425" y="105" fill="currentColor" class="accent" text-anchor="middle">Explainer</text>
-
-              <rect x="530" y="75" width="150" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="605" y="105" fill="currentColor" class="accent" text-anchor="middle">Report &amp; Quiz</text>
-
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="150" y1="100" x2="190" y2="100"/>
-                <line x1="320" y1="100" x2="360" y2="100"/>
-                <line x1="490" y1="100" x2="530" y2="100"/>
-                <polygon points="190,100 176,94 176,106" fill="currentColor" stroke="none"/>
-                <polygon points="360,100 346,94 346,106" fill="currentColor" stroke="none"/>
-                <polygon points="530,100 516,94 516,106" fill="currentColor" stroke="none"/>
-              </g>
-              <!-- Implement Loop: Report & Quiz에서 Explainer로 되돌아오는 방향 (기존 방향 결함 수정) -->
-              <g class="dim">
-                <path d="M 605 125 L 605 160 L 425 160 L 425 125" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,4"/>
-                <polygon points="425,125 419,139 431,139" fill="currentColor" stroke="none"/>
-                <text x="515" y="150" fill="currentColor" text-anchor="middle" font-size="0.8em">Implementation Loop</text>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>사전 안전망:</strong> 코드를 쓰기 전, 개발자가 간과한 '맹점(Blindspot)'을 선제적으로 발굴하고 문서화하는 필수 프로세스입니다.</li>
-              <li><strong>체계적 흐름:</strong> 인터뷰 ➔ 미지 영역(Unknowns) 분석 ➔ 명세화(Explainer) ➔ 병합 전 퀴즈(Quiz)로 이어지는 4단계 규칙입니다.</li>
-              <li><strong>철학:</strong> AI가 작성한 결과물에 끌려가지 않고, 비개발자 리뷰어조차 변화를 정확히 통제하고 이해할 수 있도록 보장합니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 8. superpower -->
-      <section>
-        <h2 style="margin-bottom: 0;">superpower</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: Brainstorm, Write Plan, Execute Plan, TDD &amp; Review 네 상자가 왼쪽부터 한 줄로 이어지는 파이프라인.</p>
-            <svg width="700" height="150" viewBox="0 0 700 150" role="img" aria-label="superpower 파이프라인">
-              <!-- 노드들 -->
-              <rect x="20" y="50" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="85" y="80" fill="currentColor" text-anchor="middle">Brainstorm</text>
-
-              <rect x="200" y="50" width="130" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="265" y="80" fill="currentColor" class="accent" text-anchor="middle">Write Plan</text>
-
-              <rect x="380" y="50" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="445" y="80" fill="currentColor" text-anchor="middle">Execute Plan</text>
-
-              <rect x="560" y="50" width="120" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="620" y="80" fill="currentColor" class="accent" text-anchor="middle">TDD &amp; Review</text>
-
-              <!-- 화살표 -->
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="150" y1="75" x2="200" y2="75"/>
-                <line x1="330" y1="75" x2="380" y2="75"/>
-                <line x1="510" y1="75" x2="560" y2="75"/>
-                <polygon points="200,75 186,69 186,81" fill="currentColor" stroke="none"/>
-                <polygon points="380,75 366,69 366,81" fill="currentColor" stroke="none"/>
-                <polygon points="560,75 546,69 546,81" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>구조적 파이프라인:</strong> 프라임 레디언트 팀이 만든 Claude Code용 프레임워크로, [구상 ➔ 계획 ➔ 실행]의 엄격한 3단계 과정을 강제합니다.</li>
-              <li><strong>안전장치:</strong> AI가 무작정 코드를 먼저 짜는 'Vibe Coding'을 막고, 설계도 작성을 최우선으로 요구합니다.</li>
-              <li><strong>철학:</strong> TDD(테스트 주도 개발)와 체계적인 디버깅 하네스를 내장하여, 시니어 엔지니어의 규율 잡힌 작업 방식을 AI에 주입합니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 9. oh-my-opencode -->
-      <section>
-        <h2 style="margin-bottom: 0;">oh-my-opencode</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 위쪽의 Sisyphus 오케스트레이터 상자가 아래쪽의 세 서브 에이전트(Librarian Agent, LSP Server, AST-Grep Analysis)에게 각각 화살표로 작업을 분배한다.</p>
-            <svg width="700" height="250" viewBox="0 0 700 250" role="img" aria-label="oh-my-opencode 구조도">
-              <!-- Sisyphus Orchestrator -->
-              <rect x="250" y="20" width="200" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="350" y="50" fill="currentColor" class="accent" text-anchor="middle" font-weight="bold">Sisyphus (Orchestrator)</text>
-
-              <!-- 서브 에이전트들 -->
-              <rect x="50" y="150" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="130" y="180" fill="currentColor" text-anchor="middle">Librarian Agent</text>
-
-              <rect x="270" y="150" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="350" y="180" fill="currentColor" text-anchor="middle">LSP Server</text>
-
-              <rect x="490" y="150" width="160" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="570" y="180" fill="currentColor" text-anchor="middle">AST-Grep Analysis</text>
-
-              <!-- 연결 화살표 -->
-              <g stroke="currentColor" stroke-width="2">
-                <path d="M 350 70 L 350 110 L 130 110 L 130 150" fill="none"/>
-                <path d="M 350 70 L 350 150" fill="none"/>
-                <path d="M 350 70 L 350 110 L 570 110 L 570 150" fill="none"/>
-                <polygon points="130,150 124,136 136,136" fill="currentColor" stroke="none"/>
-                <polygon points="350,150 344,136 356,136" fill="currentColor" stroke="none"/>
-                <polygon points="570,150 564,136 576,136" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>역할 분담:</strong> 단일 AI 모델의 한계를 극복하기 위해 Sisyphus 오케스트레이터가 작업을 쪼개고 서브 에이전트들에게 분배합니다.</li>
-              <li><strong>팀 구성:</strong> 리서치(Librarian), 정적 분석(AST-Grep), 언어 서버(LSP) 모듈들이 하나의 팀처럼 병렬 구동됩니다.</li>
-              <li><strong>철학:</strong> AI가 모든 것을 혼자 처리하는 대신, 전문 도구들과 협력하는 '매니저' 역할을 수행하도록 강제합니다.</li>
-            </ul>
-          </div>
-        </div>
-      </section><!-- 10. LangChain Data Agent -->
-      <section>
-        <h2 style="margin-bottom: 0;">LangChain Data Agent</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 왼쪽의 User Query가 가운데 ReAct Router를 거쳐 오른쪽의 세 도구(SQL Database, Web Search, Internal API)로 갈라져 연결된다.</p>
-            <svg width="700" height="220" viewBox="0 0 700 220" role="img" aria-label="LangChain ReAct 라우터">
-              <rect x="50" y="85" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="115" y="115" fill="currentColor" text-anchor="middle">User Query</text>
-
-              <rect x="230" y="85" width="140" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="300" y="115" fill="currentColor" class="accent" text-anchor="middle">ReAct Router</text>
-              
-              <rect x="450" y="30" width="120" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="510" y="55" fill="currentColor" text-anchor="middle" font-size="0.8em">SQL Database</text>
-              
-              <rect x="450" y="90" width="120" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="510" y="115" fill="currentColor" text-anchor="middle" font-size="0.8em">Web Search</text>
-              
-              <rect x="450" y="150" width="120" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="510" y="175" fill="currentColor" text-anchor="middle" font-size="0.8em">Internal API</text>
-              
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="180" y1="110" x2="230" y2="110"/>
-                <line x1="370" y1="100" x2="450" y2="50"/>
-                <line x1="370" y1="110" x2="450" y2="110"/>
-                <line x1="370" y1="120" x2="450" y2="170"/>
-                <polygon points="230,110 216,104 216,116" fill="currentColor" stroke="none"/>
-                <polygon points="450,50 441.3,62.5 434.9,52.3" fill="currentColor" stroke="none"/>
-                <polygon points="450,110 436,104 436,116" fill="currentColor" stroke="none"/>
-                <polygon points="450,170 434.9,167.7 441.3,157.5" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>확장성:</strong> 단일 LLM의 한계를 넘기 위해 여러 외부 도구(Tools)와 데이터베이스를 AI에게 연결하는 모듈형 아키텍처입니다.</li>
-              <li><strong>ReAct 패턴:</strong> 라우터 에이전트가 "생각(Reasoning) ➔ 도구 선택 및 실행(Acting) ➔ 관찰(Observation)"의 주기를 반복하며 정답을 추론합니다.</li>
-              <li><strong>철학:</strong> AI를 단순한 텍스트 생성기가 아닌, 사내 시스템 및 복잡한 워크플로우 전반을 제어하는 오케스트레이터로 활용합니다.</li>
-            </ul>
-          </div>
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="175" y1="100" x2="237" y2="100"/>
+            <line x1="355" y1="100" x2="417" y2="100"/>
+            <line x1="535" y1="100" x2="597" y2="100"/>
+            <polygon points="245,100 231,94 231,106" fill="currentColor" stroke="none"/>
+            <polygon points="425,100 411,94 411,106" fill="currentColor" stroke="none"/>
+            <polygon points="605,100 591,94 591,106" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="danger" stroke="currentColor" stroke-width="2">
+            <line x1="120" y1="145" x2="120" y2="172"/>
+            <line x1="300" y1="145" x2="300" y2="172"/>
+            <polygon points="120,180 114,168 126,168" fill="currentColor" stroke="none"/>
+            <polygon points="300,180 294,168 306,168" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="55" y="188" width="130" height="22" rx="5" fill="none" stroke="none"/>
+          <text x="120" y="203" fill="currentColor" class="danger" text-anchor="middle" font-size="13">만들지 않는다</text>
+          <rect x="235" y="188" width="130" height="22" rx="5" fill="none" stroke="none"/>
+          <text x="300" y="203" fill="currentColor" class="danger" text-anchor="middle" font-size="13">내장 기능 사용</text>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>게으른 시니어:</strong> "필요 없는 코드는 쓰지 않는다"(YAGNI)를 AI에 주입하는 스킬입니다.</li>
+            <li><strong>의사결정 사다리:</strong> 정말 필요한가 → 내장 기능인가 → 한 줄로 되는가를 코드보다 먼저 따집니다.</li>
+            <li><strong>철학:</strong> 의존성과 생성 토큰을 줄여 코드베이스를 가볍고 유지보수하기 쉽게 지킵니다.</li>
+          </ul>
         </div>
       </section>
 
-    <!-- 11. Aider -->
+      <!-- ═══════════════════ 6. grill-me ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">grill-me</h2>
+        <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">① 지시문</span></p>
+        <p class="visually-hidden">그림 설명: 왼쪽의 모호한 요청이 가운데 질문 루프를 거쳐 오른쪽의 정제된 명세가 됩니다. 루프 위로 점선 화살표가 질문을 반복하며 요청 쪽으로 되돌아가고, 점선 행진 애니메이션으로 살아 움직입니다.</p>
+        <svg class="diag" viewBox="0 0 900 220" role="img" aria-label="grill-me의 역질문 인터뷰 루프" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="90" width="180" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="150" y="123" fill="currentColor" text-anchor="middle" font-size="16">모호한 요청</text>
+
+          <g class="accent">
+            <rect x="330" y="65" width="240" height="104" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="450" y="100" fill="currentColor" text-anchor="middle" font-size="17" font-weight="700">질문 루프</text>
+            <text x="450" y="126" fill="currentColor" text-anchor="middle" font-size="13">"X는 확실한가요?"</text>
+            <text x="450" y="150" fill="currentColor" class="dim" text-anchor="middle" font-size="12">(Decision Tree)</text>
+          </g>
+
+          <rect x="660" y="90" width="190" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
+          <text x="755" y="123" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">정제된 명세</text>
+
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="240" y1="117" x2="322" y2="117"/>
+            <line x1="570" y1="117" x2="652" y2="117"/>
+            <polygon points="330,117 316,111 316,123" fill="currentColor" stroke="none"/>
+            <polygon points="660,117 646,111 646,123" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="accent">
+            <path class="march" d="M 450 65 Q 450 14 330 14 Q 220 14 190 82" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="190,82 187.5,67.2 198.5,71.8" fill="currentColor" stroke="none"/>
+            <text x="315" y="42" fill="currentColor" text-anchor="middle" font-size="13">추측 대신 질문</text>
+          </g>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>역질문 인터뷰:</strong> 모호한 지시를 그대로 실행하지 않고 AI가 먼저 질문을 던집니다.</li>
+            <li><strong>의도적 마찰:</strong> 추측에서 나오는 '자신감 있는 헛소리'를 시작 전에 차단합니다.</li>
+            <li><strong>철학:</strong> 요청 자체를 정련해 코딩 전에 완전한 합의(Shared Understanding)를 만듭니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 7. superpowers ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">superpowers</h2>
+        <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">③ 작업 절차</span></p>
+        <p class="visually-hidden">그림 설명: 구상, 계획서 작성, 계획 실행, 테스트와 리뷰 네 상자가 왼쪽부터 한 줄로 이어지는 파이프라인입니다. 코드보다 계획이 먼저라는 원칙을 나타냅니다.</p>
+        <svg class="diag" viewBox="0 0 900 190" role="img" aria-label="superpowers의 구상-계획-실행 파이프라인" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="60" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="125" y="89" fill="currentColor" text-anchor="middle" font-size="16">Brainstorm</text>
+          <text x="125" y="111" fill="currentColor" class="dim" text-anchor="middle" font-size="12">구상</text>
+
+          <g class="accent">
+            <rect x="250" y="60" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="345" y="89" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">Write Plan</text>
+            <text x="345" y="111" fill="currentColor" text-anchor="middle" font-size="12">계획서 먼저</text>
+          </g>
+
+          <rect x="470" y="60" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="565" y="89" fill="currentColor" text-anchor="middle" font-size="16">Execute Plan</text>
+          <text x="565" y="111" fill="currentColor" class="dim" text-anchor="middle" font-size="12">계획대로 실행</text>
+
+          <g class="accent">
+            <rect x="690" y="60" width="180" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="780" y="89" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">TDD &amp; Review</text>
+            <text x="780" y="111" fill="currentColor" text-anchor="middle" font-size="12">테스트 · 리뷰</text>
+          </g>
+
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="220" y1="92" x2="242" y2="92"/>
+            <line x1="440" y1="92" x2="462" y2="92"/>
+            <line x1="660" y1="92" x2="682" y2="92"/>
+            <polygon points="250,92 236,86 236,98" fill="currentColor" stroke="none"/>
+            <polygon points="470,92 456,86 456,98" fill="currentColor" stroke="none"/>
+            <polygon points="690,92 676,86 676,98" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="290" y="155" width="320" height="21" rx="5" fill="none" stroke="none"/>
+          <text x="450" y="170" fill="currentColor" class="dim" text-anchor="middle" font-size="13">'바이브 코딩' 차단 — 코드보다 계획이 먼저</text>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>구조적 파이프라인:</strong> 구상 → 계획 → 실행의 엄격한 3단계를 강제하는 Claude Code 프레임워크입니다.</li>
+            <li><strong>안전장치:</strong> 무작정 코드부터 짜는 'Vibe Coding'을 막고 설계도 작성을 최우선으로 요구합니다.</li>
+            <li><strong>철학:</strong> TDD와 체계적 디버깅을 내장해 시니어 엔지니어의 규율을 AI에 주입합니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 8. blindspot-flow ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">blindspot-flow</h2>
+        <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">③ 작업 절차</span><span class="tag t-hard">④ 검증 루프</span></p>
+        <p class="visually-hidden">그림 설명: 인터뷰, 미지 영역, 명세, 보고서와 퀴즈 네 상자가 왼쪽부터 차례로 이어지는 파이프라인입니다. 마지막 상자는 머지 게이트로 강조되어 있고, 아래에 보고서에서 명세로 되돌아오는 점선 구현 루프가 행진 애니메이션과 함께 있습니다.</p>
+        <svg class="diag" viewBox="0 0 900 220" role="img" aria-label="blindspot-flow의 4단계 파이프라인과 구현 루프" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="55" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="125" y="84" fill="currentColor" text-anchor="middle" font-size="16">Interview</text>
+          <text x="125" y="106" fill="currentColor" class="dim" text-anchor="middle" font-size="12">인터뷰</text>
+
+          <rect x="250" y="55" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="345" y="84" fill="currentColor" text-anchor="middle" font-size="16">Unknowns</text>
+          <text x="345" y="106" fill="currentColor" class="dim" text-anchor="middle" font-size="12">미지 영역</text>
+
+          <rect x="470" y="55" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="565" y="84" fill="currentColor" text-anchor="middle" font-size="16">Explainer</text>
+          <text x="565" y="106" fill="currentColor" class="dim" text-anchor="middle" font-size="12">명세</text>
+
+          <g class="danger">
+            <rect x="690" y="55" width="180" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="780" y="84" fill="currentColor" text-anchor="middle" font-size="15" font-weight="600">Report &amp; Quiz</text>
+            <text x="780" y="106" fill="currentColor" text-anchor="middle" font-size="12">머지 게이트</text>
+          </g>
+
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="220" y1="87" x2="242" y2="87"/>
+            <line x1="440" y1="87" x2="462" y2="87"/>
+            <line x1="660" y1="87" x2="682" y2="87"/>
+            <polygon points="250,87 236,81 236,93" fill="currentColor" stroke="none"/>
+            <polygon points="470,87 456,81 456,93" fill="currentColor" stroke="none"/>
+            <polygon points="690,87 676,81 676,93" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="dim">
+            <path class="march" d="M 780 119 L 780 172 L 565 172 L 565 127" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="565,119 559,133 571,133" fill="currentColor" stroke="none"/>
+            <rect x="552" y="181" width="240" height="21" rx="5" fill="none" stroke="none"/>
+            <text x="672" y="196" fill="currentColor" text-anchor="middle" font-size="13">구현 루프 — 퀴즈를 통과할 때까지</text>
+          </g>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>사전 안전망:</strong> 코드를 쓰기 전에 개발자가 놓친 맹점(Blindspot)을 발굴해 문서로 남깁니다.</li>
+            <li><strong>4단계 규칙:</strong> 인터뷰 → 미지 영역 분석 → 명세화 → 병합 전 퀴즈로 이어집니다.</li>
+            <li><strong>철학:</strong> 비개발자 리뷰어도 변경을 정확히 이해하고 통제할 수 있도록 보장합니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 9. fablize ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">fablize</h2>
+        <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-hard">④ 검증 루프</span></p>
+        <p class="visually-hidden">그림 설명: AI가 "다 했습니다"라고 선언하면 가운데의 검증 게이트(fablize)가 가로채 증거를 요구합니다. 증거가 있으면 오른쪽 완료 확정으로 통과하고, 없으면 왼쪽 AI에게 반려됩니다. 반려 화살표는 점선 행진 애니메이션으로 살아 움직입니다.</p>
+        <svg class="diag" viewBox="0 0 900 210" role="img" aria-label="fablize의 증거 요구 검증 게이트" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="75" width="170" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="145" y="108" fill="currentColor" text-anchor="middle" font-size="16">AI</text>
+          <rect x="232" y="74" width="96" height="20" rx="5" fill="none" stroke="none"/>
+          <text x="280" y="88" fill="currentColor" class="accent" text-anchor="middle" font-size="12">"다 했습니다!"</text>
+
+          <g class="accent">
+            <rect x="330" y="45" width="240" height="114" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="450" y="80" fill="currentColor" text-anchor="middle" font-size="17" font-weight="700">검증 게이트</text>
+            <text x="450" y="104" fill="currentColor" text-anchor="middle" font-size="12">(fablize harness)</text>
+            <text x="450" y="132" fill="currentColor" text-anchor="middle" font-size="13">"증거부터 보여줘"</text>
+          </g>
+
+          <rect x="660" y="75" width="190" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
+          <text x="755" y="108" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">완료 확정</text>
+
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="230" y1="102" x2="322" y2="102"/>
+            <line x1="570" y1="102" x2="652" y2="102"/>
+            <polygon points="330,102 316,96 316,108" fill="currentColor" stroke="none"/>
+            <polygon points="660,102 646,96 646,108" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="danger">
+            <path class="march" d="M 335 145 Q 265 195 212 137" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="212,137 216.6,151.2 227.4,143.8" fill="currentColor" stroke="none"/>
+            <text x="278" y="192" fill="currentColor" text-anchor="middle" font-size="13">반려 — 증거 없음</text>
+          </g>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>증명 요구:</strong> "완료했습니다" 선언을 가로채 증거부터 요구하는 검증 하네스입니다.</li>
+            <li><strong>완수 강제:</strong> 실제 테스트 통과 결과나 검증 로그가 있어야 게이트를 통과합니다.</li>
+            <li><strong>철학:</strong> AI의 착각이나 운에 의존하지 않는, 증거 기반의 작업 완수를 보장합니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 10. 자율성 스펙트럼 ═══════════════════ -->
+      <section>
+        <h3>제품 다섯 — 자율성 스펙트럼</h3>
+        <p class="visually-hidden">그림 설명: 왼쪽 '사람이 매 단계 개입'에서 오른쪽 'AI가 통째로 자율'로 이어지는 수평 축 위에 다섯 제품이 차례로 나타납니다. Aider, Copilot Workspace, LangChain Data Agent, oh-my-opencode, Devin 순서로 오른쪽일수록 자율성이 높습니다.</p>
+        <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="다섯 제품을 자율성 순서로 배치한 스펙트럼" xmlns="http://www.w3.org/2000/svg">
+          <line x1="70" y1="150" x2="830" y2="150" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="842,150 830,144 830,156" fill="currentColor" class="dim"/>
+          <text x="100" y="232" fill="currentColor" class="dim" text-anchor="middle" font-size="13">사람이 매 단계 개입</text>
+          <text x="790" y="232" fill="currentColor" class="dim" text-anchor="middle" font-size="13">AI가 통째로 자율</text>
+
+          <g class="fragment fade-up">
+            <line x1="140" y1="150" x2="140" y2="132" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <circle cx="140" cy="150" r="7" fill="currentColor" class="accent"/>
+            <rect x="45" y="90" width="190" height="44" rx="6" fill="none" stroke="none"/>
+            <text x="140" y="105" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">Aider</text>
+            <text x="140" y="126" fill="currentColor" class="dim" text-anchor="middle" font-size="12">터미널 페어</text>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="305" y1="150" x2="305" y2="168" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <circle cx="305" cy="150" r="7" fill="currentColor" class="accent"/>
+            <rect x="210" y="175" width="190" height="44" rx="6" fill="none" stroke="none"/>
+            <text x="305" y="190" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">Copilot Workspace</text>
+            <text x="305" y="211" fill="currentColor" class="dim" text-anchor="middle" font-size="12">명세 파이프라인</text>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="470" y1="150" x2="470" y2="132" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <circle cx="470" cy="150" r="7" fill="currentColor" class="accent"/>
+            <rect x="375" y="90" width="190" height="44" rx="6" fill="none" stroke="none"/>
+            <text x="470" y="105" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">LangChain Data Agent</text>
+            <text x="470" y="126" fill="currentColor" class="dim" text-anchor="middle" font-size="12">도구 라우팅</text>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="635" y1="150" x2="635" y2="168" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <circle cx="635" cy="150" r="7" fill="currentColor" class="accent"/>
+            <rect x="540" y="175" width="190" height="44" rx="6" fill="none" stroke="none"/>
+            <text x="635" y="190" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">oh-my-opencode</text>
+            <text x="635" y="211" fill="currentColor" class="dim" text-anchor="middle" font-size="12">멀티에이전트</text>
+          </g>
+          <g class="fragment fade-up">
+            <line x1="800" y1="150" x2="800" y2="132" stroke="currentColor" stroke-width="1.5" class="dim"/>
+            <circle cx="800" cy="150" r="7" fill="currentColor" class="accent"/>
+            <rect x="705" y="90" width="190" height="44" rx="6" fill="none" stroke="none"/>
+            <text x="800" y="105" fill="currentColor" class="bright" text-anchor="middle" font-size="16" font-weight="600">Devin</text>
+            <text x="800" y="126" fill="currentColor" class="dim" text-anchor="middle" font-size="12">완전 자율</text>
+          </g>
+        </svg>
+        <p class="small">오른쪽으로 갈수록 위임 범위가 넓어지고 — 1부의 결론대로 — <span class="bright">더 무거운 하네스</span>가 함께 갑니다.</p>
+      </section>
+
+      <!-- ═══════════════════ 11. Aider ═══════════════════ -->
       <section>
         <h2 style="margin-bottom: 0;">Aider</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 왼쪽의 Aider AI와 오른쪽의 터미널(Terminal / Git) 상자를 두 화살표가 잇는다. 위 화살표는 파일 수정과 커밋을 보내고, 아래 화살표는 테스트 실패(Test Failures)를 Aider AI에게 되돌려 보내 루프를 이룬다.</p>
-            <svg width="700" height="200" viewBox="0 0 700 200" role="img" aria-label="Aider 터미널 루프">
-              <rect x="100" y="75" width="150" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="175" y="105" fill="currentColor" class="accent" text-anchor="middle">Aider AI</text>
+        <p class="meter" role="img" aria-label="자율성 5단계 중 1단계">
+          <span class="m-step on">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step">5</span>
+          <span class="m-label">자율성</span>
+        </p>
+        <p class="visually-hidden">그림 설명: 왼쪽의 Aider AI와 오른쪽의 터미널·Git 상자를 두 화살표가 잇습니다. 위 화살표는 파일 수정과 자동 커밋을 보내고, 아래 점선 화살표는 테스트 실패 로그를 Aider에게 되돌려 보내 루프를 이룹니다. 되돌아오는 화살표는 점선 행진 애니메이션으로 살아 움직입니다.</p>
+        <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="Aider의 터미널 피드백 루프" xmlns="http://www.w3.org/2000/svg">
+          <g class="accent">
+            <rect x="80" y="70" width="180" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="170" y="103" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">Aider AI</text>
+          </g>
 
-              <rect x="400" y="50" width="180" height="100" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,4"/>
-              <text x="490" y="75" fill="currentColor" text-anchor="middle">Terminal / Git</text>
-              <text x="490" y="105" fill="currentColor" text-anchor="middle" font-size="0.85em">File Edit &amp; Commit</text>
-              <text x="490" y="130" fill="currentColor" class="danger" text-anchor="middle" font-size="0.85em">Test Failures</text>
+          <rect x="520" y="40" width="300" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,4"/>
+          <text x="670" y="70" fill="currentColor" text-anchor="middle" font-size="15">Terminal / Git</text>
+          <text x="670" y="98" fill="currentColor" class="dim" text-anchor="middle" font-size="13">파일 수정 · 자동 커밋</text>
+          <text x="670" y="126" fill="currentColor" class="danger" text-anchor="middle" font-size="13">테스트 실패 로그</text>
 
-              <g stroke="currentColor" stroke-width="2">
-                <path d="M 250 85 L 400 85" fill="none"/>
-                <polygon points="400,85 386,79 386,91" fill="currentColor" stroke="none"/>
-              </g>
-              <g stroke="currentColor" class="danger" stroke-width="2">
-                <path d="M 400 115 L 250 115" fill="none"/>
-                <polygon points="250,115 264,109 264,121" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>터미널 기반:</strong> 에디터 플러그인이 아닌 CLI 환경에서 동작하며, 로컬 샌드박스의 파일과 직접 상호작용하는 페어 프로그래밍 AI입니다.</li>
-              <li><strong>Git 연동:</strong> 코드를 수정한 뒤 자동으로 변경 사항을 커밋(git commit)하여 작업 이력을 깔끔하게 분리하고 보존합니다.</li>
-              <li><strong>철학:</strong> 테스트 실패 메시지나 린트 에러를 터미널에서 즉각 피드백 받아, 반복 루프(Loop)를 돌며 스스로 오류를 고치는 신속함이 핵심입니다.</li>
-            </ul>
-          </div>
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="260" y1="85" x2="512" y2="85"/>
+            <polygon points="520,85 506,79 506,91" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="330" y="59" width="120" height="20" rx="5" fill="none" stroke="none"/>
+          <text x="390" y="73" fill="currentColor" class="dim" text-anchor="middle" font-size="12">수정 · 커밋</text>
+          <g class="danger">
+            <path class="march" d="M 520 125 L 268 125" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="260,125 274,119 274,131" fill="currentColor" stroke="none"/>
+            <rect x="300" y="136" width="180" height="20" rx="5" fill="none" stroke="none"/>
+            <text x="390" y="150" fill="currentColor" text-anchor="middle" font-size="12">실패를 먹고 다시 고친다</text>
+          </g>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>터미널 기반:</strong> CLI 환경에서 로컬 파일과 직접 상호작용하는 페어 프로그래밍 AI입니다.</li>
+            <li><strong>Git 연동:</strong> 수정할 때마다 자동 커밋해 작업 이력을 깔끔하게 분리하고 보존합니다.</li>
+            <li><strong>철학:</strong> 테스트 실패를 즉각 되먹여 루프를 돌며 스스로 고치는 신속함이 핵심입니다.</li>
+          </ul>
         </div>
-      </section><!-- 12. GitHub Copilot Workspace -->
+      </section>
+
+      <!-- ═══════════════════ 12. Copilot Workspace ═══════════════════ -->
       <section>
         <h2 style="margin-bottom: 0;">Copilot Workspace</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: GitHub Issue, Specification, Plan, Pull Request 네 상자가 왼쪽부터 한 줄로 이어지는 파이프라인.</p>
-            <svg width="700" height="200" viewBox="0 0 700 200" role="img" aria-label="Copilot Workspace 파이프라인">
-              <rect x="40" y="75" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="100" y="105" fill="currentColor" text-anchor="middle">GitHub Issue</text>
+        <p class="meter" role="img" aria-label="자율성 5단계 중 2단계">
+          <span class="m-step">1</span><span class="m-step on">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step">5</span>
+          <span class="m-label">자율성</span>
+        </p>
+        <p class="visually-hidden">그림 설명: GitHub Issue, 명세, 계획, Pull Request 네 상자가 왼쪽부터 한 줄로 이어지는 파이프라인입니다. 가운데 명세와 계획 상자 위에 사람이 다듬는 지점이라는 표시와 화살표 두 개가 있습니다.</p>
+        <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="Copilot Workspace의 이슈에서 PR까지 파이프라인" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="70" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="125" y="99" fill="currentColor" text-anchor="middle" font-size="16">GitHub Issue</text>
+          <text x="125" y="121" fill="currentColor" class="dim" text-anchor="middle" font-size="12">출발점</text>
 
-              <rect x="200" y="75" width="120" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="260" y="105" fill="currentColor" class="accent" text-anchor="middle">Specification</text>
+          <g class="accent">
+            <rect x="250" y="70" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="345" y="99" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">Specification</text>
+            <text x="345" y="121" fill="currentColor" text-anchor="middle" font-size="12">명세</text>
+          </g>
 
-              <rect x="360" y="75" width="120" height="50" rx="8" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="420" y="105" fill="currentColor" class="accent" text-anchor="middle">Plan</text>
+          <g class="accent">
+            <rect x="470" y="70" width="190" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="565" y="99" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">Plan</text>
+            <text x="565" y="121" fill="currentColor" text-anchor="middle" font-size="12">계획</text>
+          </g>
 
-              <rect x="520" y="75" width="140" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="590" y="105" fill="currentColor" text-anchor="middle">Pull Request</text>
+          <rect x="690" y="70" width="180" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="780" y="99" fill="currentColor" text-anchor="middle" font-size="16">Pull Request</text>
+          <text x="780" y="121" fill="currentColor" class="dim" text-anchor="middle" font-size="12">도착점</text>
 
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="160" y1="100" x2="200" y2="100"/>
-                <line x1="320" y1="100" x2="360" y2="100"/>
-                <line x1="480" y1="100" x2="520" y2="100"/>
-                <polygon points="200,100 186,94 186,106" fill="currentColor" stroke="none"/>
-                <polygon points="360,100 346,94 346,106" fill="currentColor" stroke="none"/>
-                <polygon points="520,100 506,94 506,106" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>플랫폼 통합:</strong> 로컬 에디터를 벗어나 GitHub Issue에서 시작하여 PR 생성으로 끝나는 클라우드 네이티브 파이프라인입니다.</li>
-              <li><strong>명세 중심:</strong> 코드를 바로 생성하는 대신, 요구사항(Spec)과 계획(Plan)을 먼저 작성하여 개발자가 개입 및 궤도 수정을 할 수 있게 합니다.</li>
-              <li><strong>철학:</strong> AI가 프로젝트 전반의 문맥을 이해하고, '이슈 기반 개발(Issue-Driven Development)'의 전 과정을 엔드투엔드로 보조합니다.</li>
-            </ul>
-          </div>
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="220" y1="102" x2="242" y2="102"/>
+            <line x1="440" y1="102" x2="462" y2="102"/>
+            <line x1="660" y1="102" x2="682" y2="102"/>
+            <polygon points="250,102 236,96 236,108" fill="currentColor" stroke="none"/>
+            <polygon points="470,102 456,96 456,108" fill="currentColor" stroke="none"/>
+            <polygon points="690,102 676,96 676,108" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="accent">
+            <text x="455" y="32" fill="currentColor" text-anchor="middle" font-size="13">✎ 사람이 다듬는 지점</text>
+            <line x1="345" y1="42" x2="345" y2="60" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="345,66 339,56 351,56" fill="currentColor" stroke="none"/>
+            <line x1="565" y1="42" x2="565" y2="60" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="565,66 559,56 571,56" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="305" y="165" width="290" height="21" rx="5" fill="none" stroke="none"/>
+          <text x="450" y="180" fill="currentColor" class="dim" text-anchor="middle" font-size="13">코드가 아니라 명세와 계획에 개입한다</text>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>플랫폼 통합:</strong> GitHub Issue에서 시작해 PR 생성으로 끝나는 클라우드 네이티브 파이프라인입니다.</li>
+            <li><strong>명세 중심:</strong> 코드 전에 명세(Spec)와 계획(Plan)을 먼저 써서 사람이 궤도를 수정하게 합니다.</li>
+            <li><strong>철학:</strong> 이슈 기반 개발(Issue-Driven Development)의 전 과정을 엔드투엔드로 보조합니다.</li>
+          </ul>
         </div>
-      </section><!-- 13. Devin -->
+      </section>
+
+      <!-- ═══════════════════ 13. LangChain Data Agent ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">LangChain Data Agent</h2>
+        <p class="meter" role="img" aria-label="자율성 5단계 중 3단계">
+          <span class="m-step">1</span><span class="m-step">2</span><span class="m-step on">3</span><span class="m-step">4</span><span class="m-step">5</span>
+          <span class="m-label">자율성</span>
+        </p>
+        <p class="visually-hidden">그림 설명: 왼쪽의 사용자 질의가 가운데 ReAct 라우터를 거쳐 오른쪽의 세 도구(SQL 데이터베이스, 웹 검색, 사내 API)로 갈라져 연결됩니다. 도구의 관찰 결과가 라우터로 되돌아오는 점선 화살표가 행진 애니메이션과 함께 ReAct 루프를 이룹니다.</p>
+        <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="LangChain Data Agent의 ReAct 라우팅 구조" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="95" width="170" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="125" y="128" fill="currentColor" text-anchor="middle" font-size="16">User Query</text>
+
+          <g class="accent">
+            <rect x="270" y="95" width="200" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="370" y="118" fill="currentColor" text-anchor="middle" font-size="16" font-weight="600">ReAct Router</text>
+            <text x="370" y="138" fill="currentColor" text-anchor="middle" font-size="12">생각 → 도구 선택</text>
+          </g>
+
+          <rect x="560" y="30" width="250" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="685" y="57" fill="currentColor" text-anchor="middle" font-size="14">SQL Database</text>
+          <rect x="560" y="98" width="250" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="685" y="125" fill="currentColor" text-anchor="middle" font-size="14">Web Search</text>
+          <rect x="560" y="166" width="250" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="685" y="193" fill="currentColor" text-anchor="middle" font-size="14">Internal API</text>
+
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="210" y1="122" x2="262" y2="122"/>
+            <line x1="470" y1="107" x2="552" y2="56"/>
+            <line x1="470" y1="122" x2="552" y2="120"/>
+            <line x1="470" y1="137" x2="552" y2="184"/>
+            <polygon points="270,122 256,116 256,128" fill="currentColor" stroke="none"/>
+            <polygon points="560,52 545.5,55.4 550.3,44.5" fill="currentColor" stroke="none"/>
+            <polygon points="560,120 546,114.3 546.3,126.3" fill="currentColor" stroke="none"/>
+            <polygon points="560,188 550.2,199.6 545.3,188.6" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="dim">
+            <path class="march" d="M 685 214 Q 620 248 370 157" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="370,157 384.8,159.9 379.1,170.5" fill="currentColor" stroke="none"/>
+            <rect x="425" y="228" width="230" height="21" rx="5" fill="none" stroke="none"/>
+            <text x="540" y="243" fill="currentColor" text-anchor="middle" font-size="13">관찰 → 다음 판단 (ReAct 루프)</text>
+          </g>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>확장성:</strong> 여러 외부 도구와 데이터베이스를 LLM에 연결하는 모듈형 아키텍처입니다.</li>
+            <li><strong>ReAct 패턴:</strong> 생각(Reasoning) → 도구 실행(Acting) → 관찰(Observation) 주기를 반복해 정답에 접근합니다.</li>
+            <li><strong>철학:</strong> AI를 텍스트 생성기가 아니라 워크플로우 전체를 제어하는 오케스트레이터로 씁니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 14. oh-my-opencode ═══════════════════ -->
+      <section>
+        <h2 style="margin-bottom: 0;">oh-my-opencode</h2>
+        <p class="meter" role="img" aria-label="자율성 5단계 중 4단계">
+          <span class="m-step">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step on">4</span><span class="m-step">5</span>
+          <span class="m-label">자율성</span>
+        </p>
+        <p class="visually-hidden">그림 설명: 위쪽의 Sisyphus 오케스트레이터 상자가 아래쪽의 세 전문 요원(Librarian 리서치, LSP 코드 지능, AST-Grep 구문 검색)에게 작업을 나눠 주고, 가운데 점선 화살표로 결과를 취합합니다.</p>
+        <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="oh-my-opencode의 오케스트레이터와 전문 에이전트 구조" xmlns="http://www.w3.org/2000/svg">
+          <g class="accent">
+            <rect x="330" y="20" width="240" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="450" y="45" fill="currentColor" text-anchor="middle" font-size="16" font-weight="700">Sisyphus</text>
+            <text x="450" y="66" fill="currentColor" text-anchor="middle" font-size="12">오케스트레이터</text>
+          </g>
+
+          <rect x="60" y="160" width="220" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="170" y="189" fill="currentColor" text-anchor="middle" font-size="15">Librarian Agent</text>
+          <text x="170" y="211" fill="currentColor" class="dim" text-anchor="middle" font-size="12">문서 · 웹 리서치</text>
+
+          <rect x="340" y="160" width="220" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="450" y="189" fill="currentColor" text-anchor="middle" font-size="15">LSP Server</text>
+          <text x="450" y="211" fill="currentColor" class="dim" text-anchor="middle" font-size="12">코드 지능</text>
+
+          <rect x="620" y="160" width="220" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="730" y="189" fill="currentColor" text-anchor="middle" font-size="15">AST-Grep</text>
+          <text x="730" y="211" fill="currentColor" class="dim" text-anchor="middle" font-size="12">구문 검색</text>
+
+          <g stroke="currentColor" stroke-width="2">
+            <path d="M 450 78 L 450 112 L 170 112 L 170 152" fill="none"/>
+            <path d="M 434 78 L 434 152" fill="none"/>
+            <path d="M 450 78 L 450 112 L 730 112 L 730 152" fill="none"/>
+            <polygon points="170,160 164,146 176,146" fill="currentColor" stroke="none"/>
+            <polygon points="434,160 428,146 440,146" fill="currentColor" stroke="none"/>
+            <polygon points="730,160 724,146 736,146" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="dim">
+            <path class="march" d="M 466 160 L 466 86" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <polygon points="466,78 460,92 472,92" fill="currentColor" stroke="none"/>
+            <rect x="500" y="111" width="120" height="20" rx="5" fill="none" stroke="none"/>
+            <text x="560" y="125" fill="currentColor" text-anchor="middle" font-size="12">결과 취합</text>
+          </g>
+          <rect x="255" y="230" width="390" height="21" rx="5" fill="none" stroke="none"/>
+          <text x="450" y="245" fill="currentColor" class="dim" text-anchor="middle" font-size="13">혼자 다 하지 않는다 — 전문 에이전트에게 병렬로 나눈다</text>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>역할 분담:</strong> Sisyphus 오케스트레이터가 작업을 쪼개 서브 에이전트들에게 분배합니다.</li>
+            <li><strong>팀 구성:</strong> 리서치 · 정적 분석 · 언어 서버 모듈이 하나의 팀처럼 병렬로 구동됩니다.</li>
+            <li><strong>철학:</strong> AI가 혼자 다 하는 대신, 전문 도구들과 협력하는 '매니저'가 되게 합니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ 15. Devin ═══════════════════ -->
       <section>
         <h2 style="margin-bottom: 0;">Devin</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; margin-top: 12px;">
-          <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <p class="visually-hidden">그림 설명: 왼쪽의 AI 원과 오른쪽의 격리 샌드박스(Isolated Sandbox) 상자가 양방향 화살표로 연결된다. 샌드박스 안에는 Browser, Terminal, Code Editor 세 도구가 들어 있다.</p>
-            <svg width="700" height="220" viewBox="0 0 700 220" role="img" aria-label="Devin 자율 실행 샌드박스">
-              <!-- AI 두뇌 -->
-              <circle cx="150" cy="110" r="40" fill="none" stroke="currentColor" class="accent" stroke-width="2"/>
-              <text x="150" y="115" fill="currentColor" class="accent" text-anchor="middle" font-weight="bold">AI</text>
-              
-              <!-- 샌드박스 영역 -->
-              <rect x="300" y="30" width="250" height="160" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,4"/>
-              <text x="425" y="55" fill="currentColor" text-anchor="middle">Isolated Sandbox</text>
-              
-              <rect x="320" y="70" width="100" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/>
-              <text x="370" y="95" fill="currentColor" text-anchor="middle" font-size="0.8em">Browser</text>
-              
-              <rect x="430" y="70" width="100" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/>
-              <text x="480" y="95" fill="currentColor" text-anchor="middle" font-size="0.8em">Terminal</text>
-              
-              <rect x="320" y="125" width="210" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/>
-              <text x="425" y="150" fill="currentColor" text-anchor="middle" font-size="0.8em">Code Editor</text>
-              
-              <g stroke="currentColor" class="accent" stroke-width="2">
-                <path d="M 190 100 L 300 100" fill="none"/>
-                <polygon points="300,100 286,94 286,106" fill="currentColor" stroke="none"/>
-              </g>
-              <g stroke="currentColor" stroke-width="2">
-                <path d="M 300 120 L 190 120" fill="none"/>
-                <polygon points="190,120 204,114 204,126" fill="currentColor" stroke="none"/>
-              </g>
-            </svg>
-          </div>
-          <div class="summary-box" style="width: 90%;">
-            <ul>
-              <li><strong>완전 자율 실행:</strong> 사람의 중간 개입 없이, 부여된 고수준 목표를 달성하기 위해 샌드박스 내부에서 수백 단계의 논리적 사고를 이어갑니다.</li>
-              <li><strong>도구 사용(Tool Use):</strong> 내부 브라우저로 API 문서를 검색하고, 에디터로 코드를 작성하며, 터미널로 서버를 실행해 검증까지 모두 스스로 수행합니다.</li>
-              <li><strong>철학:</strong> AI를 단순한 코드 추천 도구(Copilot)가 아니라, 독립적으로 임무를 완수하는 '소프트웨어 엔지니어' 동료로 격상시킵니다.</li>
-            </ul>
-          </div>
+        <p class="meter" role="img" aria-label="자율성 5단계 중 5단계">
+          <span class="m-step">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step on">5</span>
+          <span class="m-label">자율성</span>
+        </p>
+        <p class="visually-hidden">그림 설명: 왼쪽의 AI 원과 오른쪽의 격리 샌드박스 상자가 목표와 결과 화살표로 연결됩니다. 샌드박스 안에는 브라우저, 터미널, 코드 에디터 세 도구가 들어 있고, 샌드박스의 점선 테두리가 천천히 도는 애니메이션은 자율 영역이라는 뜻입니다.</p>
+        <svg class="diag" viewBox="0 0 900 240" role="img" aria-label="Devin의 격리 샌드박스 자율 실행 구조" xmlns="http://www.w3.org/2000/svg">
+          <g class="accent">
+            <circle cx="140" cy="120" r="45" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="140" y="127" fill="currentColor" text-anchor="middle" font-size="17" font-weight="700">AI</text>
+          </g>
+
+          <rect class="march-border" x="330" y="30" width="470" height="180" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="7,4"/>
+          <text x="565" y="60" fill="currentColor" text-anchor="middle" font-size="15">격리 샌드박스 (Isolated Sandbox)</text>
+
+          <rect x="355" y="80" width="130" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="420" y="107" fill="currentColor" text-anchor="middle" font-size="13">Browser</text>
+          <rect x="505" y="80" width="130" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="570" y="107" fill="currentColor" text-anchor="middle" font-size="13">Terminal</text>
+          <rect x="655" y="80" width="125" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="717" y="107" fill="currentColor" text-anchor="middle" font-size="13">Editor</text>
+
+          <text x="565" y="165" fill="currentColor" class="dim" text-anchor="middle" font-size="13">수백 단계 자율 실행 · 검증까지 스스로</text>
+
+          <g class="accent" stroke="currentColor" stroke-width="2">
+            <line x1="188" y1="103" x2="322" y2="103"/>
+            <polygon points="330,103 316,97 316,109" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="195" y="78" width="120" height="20" rx="5" fill="none" stroke="none"/>
+          <text x="255" y="92" fill="currentColor" class="dim" text-anchor="middle" font-size="12">고수준 목표</text>
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="330" y1="140" x2="196" y2="140"/>
+            <polygon points="188,140 202,134 202,146" fill="currentColor" stroke="none"/>
+          </g>
+          <rect x="195" y="148" width="120" height="20" rx="5" fill="none" stroke="none"/>
+          <text x="255" y="162" fill="currentColor" class="dim" text-anchor="middle" font-size="12">완수한 결과</text>
+        </svg>
+        <div class="summary-box">
+          <ul>
+            <li><strong>완전 자율:</strong> 고수준 목표를 받아 샌드박스 안에서 수백 단계의 사고를 스스로 잇습니다.</li>
+            <li><strong>도구 사용:</strong> 브라우저로 검색하고, 에디터로 짜고, 터미널로 실행해 검증까지 수행합니다.</li>
+            <li><strong>철학:</strong> 코드 추천 도구가 아니라 임무를 완수하는 '엔지니어 동료'로 격상시킵니다.</li>
+          </ul>
         </div>
-      </section><!-- 14. 끝 -->
+      </section>
+
+      <!-- ═══════════════════ 16. 정리 ═══════════════════ -->
+      <section>
+        <h3>정리 — 위임하고, 조여라</h3>
+        <p class="visually-hidden">그림 설명: 요청 상자에서 넓게 퍼지는 점선 부채꼴이 1부에서 위임이 키운 폭을, 그 안의 좁은 강조 띠가 2부에서 하네스가 조인 폭을 나타냅니다. 띠 안에 결과 점들이 모여 있습니다.</p>
+        <svg class="diag" viewBox="0 0 900 280" role="img" aria-label="위임이 키운 폭과 하네스가 조인 폭을 겹쳐 그린 세미나 요약" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="128" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
+          <text x="90" y="160" fill="currentColor" class="bright" text-anchor="middle" font-size="16">요청</text>
+
+          <polygon points="150,153 860,40 860,266" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6,6" class="dim"/>
+          <rect x="610" y="50" width="180" height="21" rx="5" fill="none" stroke="none"/>
+          <text x="620" y="66" fill="currentColor" class="dim" font-size="14">위임이 키운 폭 — 1부</text>
+
+          <g class="accent">
+            <polygon points="150,153 860,128 860,178" fill="currentColor" opacity="0.10"/>
+            <polygon points="150,153 860,138 860,168" fill="currentColor" opacity="0.16"/>
+            <rect x="610" y="194" width="200" height="21" rx="5" fill="none" stroke="none"/>
+            <text x="620" y="210" fill="currentColor" font-size="14">하네스가 조인 폭 — 2부</text>
+          </g>
+          <g class="bright" fill="currentColor">
+            <circle cx="380" cy="150" r="5"/>
+            <circle cx="480" cy="155" r="5"/>
+            <circle cx="580" cy="148" r="5"/>
+            <circle cx="680" cy="156" r="5"/>
+            <circle cx="780" cy="151" r="5"/>
+          </g>
+        </svg>
+        <p class="small fragment"><span class="bright">① 위임</span> — 호출을 넘어, 일을 통째로 맡긴다</p>
+        <p class="small fragment"><span class="bright">② 조임</span> — 지시문 · 도구 · 절차 · 검증의 4층으로 폭을 조인다</p>
+        <p class="small fragment"><span class="bright">③ 증거</span> — 완료 선언이 아니라 검증이 일을 끝낸다</p>
+        <p class="small fragment" style="color: var(--accent);">자동화를 한 층 키울 때마다, 하네스도 한 층.</p>
+      </section>
+
+      <!-- ═══════════════════ 17. 끝 ═══════════════════ -->
       <section>
         <h2>끝.</h2>
-        <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
+        <p class="small"><a href="../dx-vs-ax-automation/">← 1부 — DX vs AX 다시 보기</a></p>
+        <p class="small"><a href="../../">← 발표 기록으로 돌아가기</a></p>
       </section>
 
     </div>
