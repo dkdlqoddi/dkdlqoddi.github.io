@@ -11,9 +11,10 @@
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
   <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href="../../slides/shared/code-copy.css">
 
   <style>
     html { background: #0e0e0e; color-scheme: dark; }
@@ -443,7 +444,7 @@
 
       <!-- ═══════════════════ 5. subprocess + opencode ═══════════════════ -->
       <section>
-        <h3>방법 1: subprocess + opencode</h3>
+        <h3>방법 1 (난이도 하): subprocess + opencode</h3>
         <p class="visually-hidden">그림 설명: Python 스크립트가 subprocess를 통해 opencode CLI를 호출하고, opencode가 사내 LLM에 요청을 전달하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 subprocess로 opencode CLI를 호출하여 사내 LLM에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -461,51 +462,65 @@
           <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
           <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
         </svg>
-        <pre><code>import subprocess
+        <pre><code class="python">import subprocess
+
+# 터미널에 opencode가 설치되어 있어야 합니다 (pip install opencode)
+prompt = "현재 디렉토리의 파일 개수를 세어줘"
 
 result = subprocess.run(
-    ["opencode", "--headless",
-     "-p", "이 로그를 분석해줘"],
-    capture_output=True, text=True)
+    ["opencode", "--headless", "-p", prompt],
+    capture_output=True, 
+    text=True
+)
 
-print(result.stdout)</code></pre>
-        <p class="small" style="color:#9aa0a6;">외부 도구 의존 · 설정 간단 · 텍스트 입출력</p>
+print(result.stdout)
+# 출력 예시: 
+# "현재 디렉토리에는 총 15개의 파일이 있습니다."</code></pre>
+        <p class="small" style="color:#9aa0a6;">외부 도구 의존 · 설정 직관적 · 순수 텍스트 입출력</p>
       </section>
 
-      <!-- ═══════════════════ 6. Langchain + 사내 LLM ═══════════════════ -->
+      <!-- ═══════════════════ 6. HTTP 직접 호출 ═══════════════════ -->
       <section>
-        <h3>방법 2: Langchain + 사내 LLM</h3>
-        <p class="visually-hidden">그림 설명: Python에서 Langchain 라이브러리를 통해 HTTP API로 사내 LLM에 연결하는 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 Langchain으로 사내 LLM API에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
-          <line x1="175" y1="32" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="238,32 228,26 228,38" fill="currentColor" class="dim"/>
-          <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">Langchain</text>
-          <line x1="422" y1="32" x2="478" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="486,32 476,26 476,38" fill="#00dddd"/>
-          <rect x="490" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="570" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="dim">HTTP API</text>
-          <line x1="655" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="718,32 708,26 708,38" fill="currentColor" class="dim"/>
-          <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
+        <h3>방법 2 (난이도 중하): HTTP 직접 호출</h3>
+        <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM API를 직접 호출하는 가장 단순한 구조입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="10" width="180" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="150" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python (requests)</text>
+          <line x1="245" y1="32" x2="420" y2="32" stroke="#00dddd" stroke-width="2"/>
+          <polygon points="428,32 418,26 418,38" fill="#00dddd"/>
+          <text x="330" y="22" text-anchor="middle" font-size="13" fill="#00dddd">HTTP POST</text>
+          <rect x="432" y="10" width="210" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
+          <text x="537" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">/v1/chat/completions</text>
+          <line x1="647" y1="32" x2="680" y2="32" stroke="#00dddd" stroke-width="1.5"/>
+          <polygon points="688,32 678,26 678,38" fill="#00dddd"/>
+          <rect x="692" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
+          <text x="770" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
         </svg>
-        <pre><code>from langchain_openai import ChatOpenAI
+        <pre><code class="python">import os, requests
 
-llm = ChatOpenAI(
-    base_url="http://내부-llm/v1",
-    api_key="사내토큰",
-    model="사내모델")
+# 사전 준비: pip install requests
+base_url = os.getenv("LLM_BASE_URL", "http://internal-llm/v1")
+api_key = os.getenv("LLM_API_KEY", "사내토큰")
 
-print(llm.invoke("데이터를 요약해줘"))</code></pre>
-        <p class="small" style="color:#9aa0a6;">체인 · 메모리 · 출력 파서 등 고급 기능 활용 가능</p>
+resp = requests.post(
+    f"{base_url}/chat/completions",
+    headers={"Authorization": f"Bearer {api_key}"},
+    json={
+        "model": "사내모델-v1",
+        "messages": [{"role": "user", "content": "REST API가 뭐야?"}]
+    }
+)
+
+# JSON 파싱하여 실제 응답 텍스트만 추출
+content = resp.json()["choices"][0]["message"]["content"]
+print(content)
+# 출력 예시: "REST API는 웹 서비스 아키텍처 스타일입니다..."</code></pre>
+        <p class="small" style="color:#9aa0a6;">외부 의존성 거의 없음 · 프로그래밍 기본 · 폐쇄망에 최적</p>
       </section>
 
       <!-- ═══════════════════ 7. OpenAI SDK 직접 사용 ═══════════════════ -->
       <section>
-        <h3>방법 3: OpenAI SDK 직접 사용</h3>
+        <h3>방법 3 (난이도 중): OpenAI SDK 직접 사용</h3>
         <p class="visually-hidden">그림 설명: Python에서 OpenAI SDK의 base_url을 사내 LLM 주소로 지정하여 직접 연결하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 OpenAI SDK로 사내 LLM에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -523,54 +538,72 @@ print(llm.invoke("데이터를 요약해줘"))</code></pre>
           <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
           <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
         </svg>
-        <pre><code>from openai import OpenAI
+        <pre><code class="python">import os
+from openai import OpenAI
 
+# 사전 준비: pip install openai
 client = OpenAI(
-    base_url="http://내부-llm/v1",
-    api_key="사내토큰")
+    base_url=os.getenv("LLM_BASE_URL", "http://internal-llm/v1"),
+    api_key=os.getenv("LLM_API_KEY", "사내토큰")
+)
 
 resp = client.chat.completions.create(
-    model="사내모델",
-    messages=[{"role": "user",
-               "content": "분석해줘"}])
-print(resp.choices[0].message.content)</code></pre>
-        <p class="small" style="color:#9aa0a6;">가볍고 타입 힌트 완벽 · 비동기 지원</p>
+    model="사내모델-v1",
+    messages=[
+        {"role": "user", "content": "Python의 장점을 하나만 말해줘"}
+    ]
+)
+
+print(resp.choices[0].message.content)
+# 출력 예시: "가독성이 뛰어난 간결한 문법입니다."</code></pre>
+        <p class="small" style="color:#9aa0a6;">가볍고 타입 힌트 완벽 · 비동기/스트리밍 완벽 지원</p>
       </section>
 
-      <!-- ═══════════════════ 8. HTTP 직접 호출 ═══════════════════ -->
+      <!-- ═══════════════════ 8. Langchain + 사내 LLM ═══════════════════ -->
       <section>
-        <h3>방법 4: HTTP 직접 호출</h3>
-        <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM API를 직접 호출하는 가장 단순한 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
-          <rect x="60" y="10" width="180" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="150" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python (requests)</text>
-          <line x1="245" y1="32" x2="420" y2="32" stroke="#00dddd" stroke-width="2"/>
-          <polygon points="428,32 418,26 418,38" fill="#00dddd"/>
-          <text x="330" y="22" text-anchor="middle" font-size="13" fill="#00dddd">HTTP POST</text>
-          <rect x="432" y="10" width="210" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="537" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">/v1/chat/completions</text>
-          <line x1="647" y1="32" x2="680" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="688,32 678,26 678,38" fill="#00dddd"/>
-          <rect x="692" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="770" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
+        <h3>방법 4 (난이도 상): Langchain + 사내 LLM</h3>
+        <p class="visually-hidden">그림 설명: Python에서 Langchain 라이브러리를 통해 HTTP API로 사내 LLM에 연결하는 구조입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 Langchain으로 사내 LLM API에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
+          <line x1="175" y1="32" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="238,32 228,26 228,38" fill="currentColor" class="dim"/>
+          <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
+          <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">Langchain</text>
+          <line x1="422" y1="32" x2="478" y2="32" stroke="#00dddd" stroke-width="1.5"/>
+          <polygon points="486,32 476,26 476,38" fill="#00dddd"/>
+          <rect x="490" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="570" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="dim">HTTP API</text>
+          <line x1="655" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="718,32 708,26 708,38" fill="currentColor" class="dim"/>
+          <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
+          <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
         </svg>
-        <pre><code>import requests
+        <pre><code class="python">import os
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
 
-resp = requests.post(
-    "http://내부-llm/v1/chat/completions",
-    headers={"Authorization":"Bearer 토큰"},
-    json={"model": "사내모델",
-          "messages": [{"role": "user",
-           "content": "요약해줘"}]})
-print(resp.json()
-     ["choices"][0]["message"]["content"])</code></pre>
-        <p class="small" style="color:#9aa0a6;">외부 의존성 제로 · 폐쇄망에 최적</p>
+# 사전 준비: pip install langchain-openai
+llm = ChatOpenAI(
+    base_url=os.getenv("LLM_BASE_URL", "http://internal-llm/v1"),
+    api_key=os.getenv("LLM_API_KEY", "사내토큰"),
+    model="사내모델-v1"
+)
+
+# 프롬프트 템플릿과 LLM을 연결 (체인 구성)
+prompt = ChatPromptTemplate.from_template("{topic}에 대해 1줄로 요약해줘")
+chain = prompt | llm
+
+result = chain.invoke({"topic": "Langchain"})
+print(result.content)
+# 출력 예시: "LLM 애플리케이션 개발을 돕는 강력한 프레임워크입니다."</code></pre>
+        <p class="small" style="color:#9aa0a6;">가장 높은 추상화 · 체인 및 프롬프트 템플릿 등 강력한 기능</p>
       </section>
 
       <!-- ═══════════════════ 9. 방법 비교 요약 ═══════════════════ -->
       <section>
         <h3>4가지 방법 비교</h3>
-        <p class="visually-hidden">그림 설명: subprocess, Langchain, OpenAI SDK, HTTP 직접 호출 네 가지 방법을 설정 난이도, 기능 범위, 외부 의존성 세 축으로 비교하는 표입니다.</p>
+        <p class="visually-hidden">그림 설명: subprocess, HTTP 직접 호출, OpenAI SDK, Langchain 네 가지 방법을 설정 난이도, 기능 범위, 외부 의존성 세 축으로 비교하는 표입니다.</p>
         <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="사내 LLM 연동 4가지 방법의 설정 난이도, 기능, 의존성 비교표" xmlns="http://www.w3.org/2000/svg">
           <!-- 헤더 행 -->
           <rect x="20" y="10" width="180" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
@@ -582,60 +615,60 @@ print(resp.json()
           <rect x="630" y="10" width="250" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <text x="755" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">외부 의존성</text>
 
-          <!-- Row 1: subprocess -->
+          <!-- Row 1: subprocess (y: 60) -->
           <g class="fragment fade-up">
             <rect x="20" y="60" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
             <text x="110" y="91" text-anchor="middle" font-size="15" fill="currentColor" class="bright">subprocess</text>
             <rect x="210" y="60" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="75" width="40" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
-            <text x="310" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">낮음</text>
+            <rect x="218" y="75" width="20" height="20" rx="3" fill="#00dddd" opacity="0.8"/>
+            <text x="310" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">최하</text>
             <rect x="420" y="60" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="75" width="80" height="20" rx="3" fill="#00dddd" opacity="0.5"/>
+            <rect x="428" y="75" width="60" height="20" rx="3" fill="#00dddd" opacity="0.4"/>
             <text x="520" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">텍스트 입출력</text>
             <rect x="630" y="60" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
             <text x="755" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">opencode CLI 설치</text>
           </g>
 
-          <!-- Row 2: Langchain -->
+          <!-- Row 2: HTTP 직접 (y: 120) -->
           <g class="fragment fade-up">
-            <rect x="20" y="120" width="180" height="50" rx="6" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="110" y="151" text-anchor="middle" font-size="15" font-weight="600" fill="#00dddd">Langchain</text>
+            <rect x="20" y="120" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="110" y="151" text-anchor="middle" font-size="15" fill="currentColor" class="bright">HTTP 직접</text>
             <rect x="210" y="120" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="135" width="120" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
-            <text x="310" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">중간</text>
+            <rect x="218" y="135" width="40" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
+            <text x="310" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">중하</text>
             <rect x="420" y="120" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="135" width="180" height="20" rx="3" fill="#00dddd" opacity="0.5"/>
-            <text x="520" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">체인·메모리·파서</text>
+            <rect x="428" y="135" width="60" height="20" rx="3" fill="#00dddd" opacity="0.4"/>
+            <text x="520" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">기본 호출만</text>
             <rect x="630" y="120" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">langchain 패키지</text>
+            <text x="755" y="151" text-anchor="middle" font-size="13" fill="#00dddd" font-weight="600">없음 (순수 Python)</text>
           </g>
 
-          <!-- Row 3: OpenAI SDK -->
+          <!-- Row 3: OpenAI SDK (y: 180) -->
           <g class="fragment fade-up">
             <rect x="20" y="180" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
             <text x="110" y="211" text-anchor="middle" font-size="15" fill="currentColor" class="bright">OpenAI SDK</text>
             <rect x="210" y="180" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="195" width="80" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
-            <text x="310" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">낮음</text>
+            <rect x="218" y="195" width="80" height="20" rx="3" fill="#00dddd" opacity="0.6"/>
+            <text x="310" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">중</text>
             <rect x="420" y="180" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="195" width="140" height="20" rx="3" fill="#00dddd" opacity="0.5"/>
+            <rect x="428" y="195" width="140" height="20" rx="3" fill="#00dddd" opacity="0.6"/>
             <text x="520" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">타입 · 비동기 · 스트림</text>
             <rect x="630" y="180" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
             <text x="755" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">openai 패키지</text>
           </g>
 
-          <!-- Row 4: HTTP 직접 -->
+          <!-- Row 4: Langchain (y: 240) -->
           <g class="fragment fade-up">
-            <rect x="20" y="240" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="110" y="271" text-anchor="middle" font-size="15" fill="currentColor" class="bright">HTTP 직접</text>
+            <rect x="20" y="240" width="180" height="50" rx="6" fill="none" stroke="#00dddd" stroke-width="2"/>
+            <text x="110" y="271" text-anchor="middle" font-size="15" font-weight="600" fill="#00dddd">Langchain</text>
             <rect x="210" y="240" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="255" width="40" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
-            <text x="310" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">낮음</text>
+            <rect x="218" y="255" width="160" height="20" rx="3" fill="#00dddd" opacity="0.9"/>
+            <text x="310" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">상 (가장 어려움)</text>
             <rect x="420" y="240" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="255" width="60" height="20" rx="3" fill="#00dddd" opacity="0.5"/>
-            <text x="520" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">기본 호출만</text>
+            <rect x="428" y="255" width="180" height="20" rx="3" fill="#00dddd" opacity="0.8"/>
+            <text x="520" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">체인·메모리·파서</text>
             <rect x="630" y="240" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="271" text-anchor="middle" font-size="13" fill="#00dddd" font-weight="600">없음 (순수 Python)</text>
+            <text x="755" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">langchain 패키지</text>
           </g>
         </svg>
       </section>
@@ -650,6 +683,7 @@ print(resp.json()
   </div>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script src="../../slides/shared/code-copy.js"></script>
   <script>
     Reveal.initialize({
       hash: true,

@@ -1,0 +1,42 @@
+/* Code Copy Button Styles */
+pre {
+  position: relative; /* Ensure pre acts as an anchor for the absolute button */
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #dedede;
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, background 0.2s ease, color 0.2s ease;
+  z-index: 10;
+}
+
+pre:hover .copy-code-btn {
+  opacity: 1;
+}
+
+.copy-code-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.copy-code-btn.copied {
+  background: #00dddd;
+  color: #0e0e0e;
+  border-color: #00dddd;
+}
+
+@media print {
+  .copy-code-btn {
+    display: none !important;
+  }
+}
