@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: philosophy 덱 리뷰 + 하네스 시각화</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: philosophy 덱 리뷰 + 하네스 시각화</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<ul>
+  <li>발표 자료 표지 바로 다음에 개념 설명 슬라이드 2장이 추가되었습니다. 총 11장에서 14장이 되었습니다(마무리 장 포함).</li>
+  <li>첫 장은 하네스(모델을 감싸는 운영 장치)가 없는 인공지능의 결과를 보여줍니다. 같은 요청을 여러 번 실행한 결과를 넓은 부채꼴 안의 점 12개로 표현합니다.</li>
+  <li>다음 장으로 넘기면 넓은 부채꼴이 좁은 띠로 부드럽게 조여지는 애니메이션이 나옵니다. 4겹의 하네스(지시문, 도구 제한, 작업 절차, 검증 루프)가 함께 표시됩니다.</li>
+  <li>슬라이드의 메시지: 하네스는 결과를 하나로 고정하지 않습니다. 원하는 결과가 <b>더 자주</b> 나오게 폭을 조입니다. 탐색이 필요한 작업에서는 일부러 폭을 넓게 둡니다.</li>
+  <li>그림 색을 공통 규칙으로 바꿨습니다. 이제 브라우저 인쇄(Ctrl+P)를 하면 도형과 글자가 검정으로 또렷하게 나옵니다. 전에는 흰 종이에 연한 청록이 그대로 남았습니다.</li>
+  <li>빨간 표시 색은 어두운 배경에서 잘 읽히도록 밝은 빨강으로 <b>일부러</b> 바꿨습니다.</li>
+  <li>화살촉을 그림마다 직접 그려, 슬라이드끼리 화살촉 정의를 몰래 나눠 쓰던 구조를 없앴습니다. 방향이 뒤집혀 있던 화살표 1개도 바로잡았습니다.</li>
+  <li>낭독기(화면을 읽어 주는 프로그램)용 그림 설명 12개를 추가했습니다.</li>
+  <li>슬라이드 2장이 앞에 끼면서 뒷장들이 밀렸습니다. 과거에 공유한 장 번호 주소를 열면, 기대한 장보다 <b>두 장 앞</b>의 내용이 나옵니다. 이 밀림은 사전에 수용하기로 결정했습니다.</li>
+  <li>추가로 고친 문제: 기존 도구 소개 10장의 요약 상자 마지막 항목이 원래부터 화면 밖으로 잘리고 있었습니다. 작성자에게 확인을 받아 이번에 함께 고쳤습니다. 고정 높이를 없애고 요약 글자를 조금 줄여, 이제 14장 모두 화면 안에 온전히 들어옵니다.</li>
+</ul>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "발표자가 새 첫 개념 장에서 다음 장으로 넘깁니다. 화면에서 무슨 일이 일어나나요?",
+    options: ["넓은 부채꼴이 좁은 띠로 부드럽게 조여진다", "화면이 하얗게 깜빡인 뒤 글만 바뀐다", "아무 변화 없이 제목만 바뀐다"],
+    answer: 0,
+    explain: "두 장은 이어지는 애니메이션으로 연결되어 있습니다. 부채꼴이 조여지는 모습 자체가 하네스의 효과를 보여주는 핵심 연출입니다." },
+  { q: "새 슬라이드가 전하는 하네스의 효과 설명으로 옳은 것은 무엇인가요?",
+    options: ["인공지능의 실수를 완전히 없애 준다", "원하는 결과가 더 자주 나오게 폭을 조인다", "같은 요청에는 항상 똑같은 답이 나오게 한다"],
+    answer: 1,
+    explain: "하네스는 결과를 하나로 고정하지 못하고, 확률을 유리하게 기울일 뿐입니다. 그래서 조여진 띠에도 폭이 남고 밖에 점 두 개가 남아 있습니다. '실수를 없앤다'나 '항상 똑같다'는 과장이라 일부러 피한 표현입니다." },
+  { q: "수정된 발표 자료를 브라우저에서 인쇄(Ctrl+P)하면 그림은 어떻게 나오나요?",
+    options: ["전처럼 흰 종이에 연한 청록으로 나온다", "그림이 인쇄에서 통째로 빠진다", "도형과 글자가 검정으로 바뀌어 또렷하게 나온다"],
+    answer: 2,
+    explain: "색을 직접 박는 대신 공통 규칙을 따르게 바꿔서, 인쇄 시 검정 복구 규칙이 작동하게 되었습니다. 예전에는 직접 지정한 색이라 복구가 되지 않아 흰 종이에 연한 청록이 남았습니다." },
+  { q: "동료가 예전에 받아 둔 특정 장 번호 주소를 엽니다. 무엇을 보게 되나요?",
+    options: ["예전과 똑같은 내용의 장", "기대한 장보다 두 장 앞의 내용", "주소가 깨져서 오류 화면"],
+    answer: 1,
+    explain: "새 슬라이드 2장이 앞에 끼면서 뒷장들이 두 칸씩 밀렸습니다. 번호 주소는 순서를 가리키므로, 같은 번호를 열면 밀리기 전 기준으로 두 장 앞 내용이 나옵니다. 오류가 나는 것은 아니며, 이 밀림은 사전에 수용하기로 결정했습니다." },
+  { q: "도구 소개 10장의 요약 상자 마지막 항목이 잘리던 문제는 이번에 어떻게 처리되었나요?",
+    options: ["발견만 하고 기록으로만 남겼다", "원래 있던 문제로 확인하고, 승인을 받아 이번에 고쳤다", "이번 작업이 만든 문제라 원래대로 되돌렸다"],
+    answer: 1,
+    explain: "수정 전 자료에서도 같은 수치로 잘리는 것을 확인한, 원래부터 있던 문제입니다. 작성자 확인을 거쳐 범위를 넓혀 고쳤습니다. 고정 높이를 없애고 요약 글자를 조금 줄여 14장 모두 화면 안에 들어옵니다." },
+  { q: "빨간 표시의 색이 예전과 달라졌습니다. 이유는 무엇인가요?",
+    options: ["어두운 배경에서 잘 읽히도록 일부러 바꿨다", "공통 규칙을 적용하다 실수로 바뀌었다", "인쇄할 때만 다르게 보이게 하려고 바꿨다"],
+    answer: 0,
+    explain: "예전 빨강은 어두운 배경에서 글자 대비 기준에 미달했습니다. 공통 팔레트의 밝은 빨강으로 바꿔 가독성을 높인 의도된 변경이며, 보고서에도 기록되어 있습니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
