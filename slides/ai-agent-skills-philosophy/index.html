@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent Skills Philosophy</title>
+  <meta name="description" content="유명한 인공지능 코딩 에이전트들의 스킬과 철학">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0e0e0e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css">
+  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+
+  <style>
+    html { background: #0e0e0e; color-scheme: dark; }
+
+    html:root {
+      --primary: #fcfcfb;
+      --secondary: #9aa0a6;
+      --r-background: #0e0e0e;
+      --r-background-color: #0e0e0e;
+      --r-main-color: #dedede;
+      --r-heading-color: #fcfcfb;
+      --r-heading-font-weight: 600;
+      --r-heading-letter-spacing: -0.025em;
+      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, sans-serif;
+      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, sans-serif;
+      --r-link-color: var(--primary);
+      --r-link-color-hover: var(--secondary);
+    }
+
+    .reveal {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+    .reveal .small { font-size: 0.6em; }
+    .reveal .eyebrow {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.58em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9aa0a6;
+    }
+
+    #galaxy-3d-bg {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 0;
+    }
+
+    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
+    .reveal .diag .dim { color: #9aa0a6; }
+    .reveal .diag .bright { color: #fcfcfb; }
+    .reveal .diag .llm-node { color: #00dddd; } /* 시안색: LLM/에이전트 모듈 */
+    .reveal .diag .user-node { color: #fcfcfb; } /* 밝은색: 사용자 입력/요청 */
+    
+    .reveal .diag text { font-family: inherit; }
+    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
+    .reveal .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #galaxy-3d-bg { display: none; }
+    }
+
+    @media print {
+      html:not(.print-pdf) .reveal svg,
+      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
+      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
+      #galaxy-3d-bg { display: none; }
+    }
+  
+    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    
+    :root {
+      --hud-inset: 2em;
+      --hairline: #2a2b2a;
+      --font-mono: ui-monospace, Menlo, Consolas, monospace;
+      --dim: #9aa0a6;
+      --bg: #0e0e0e;
+    }
+    .hud {
+      position: fixed; inset: var(--hud-inset); border: 2px solid var(--hairline); pointer-events: none; z-index: 1000;
+    }
+    .hud::before, .hud::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 5px;
+      background-image: repeating-linear-gradient(to right, var(--hairline) 0, var(--hairline) 1px, transparent 1px, transparent 48px);
+    }
+    .hud::before { top: 0; } .hud::after { bottom: 0; }
+    
+    .hud-corner {
+      position: absolute; font-family: var(--font-mono); font-size: 0.5625rem; font-weight: 500;
+      letter-spacing: 0.12em; color: var(--dim); background: var(--bg); padding: 0 6px;
+    }
+    .hud-tl { top: -0.5em; left: 14px; } .hud-tr { top: -0.5em; right: 14px; }
+    .hud-bl { bottom: -0.5em; left: 14px; } .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
+    
+    @media (max-width: 640px) { :root { --hud-inset: 10px; } .hud-bl { display: none; } }
+
+    .reveal .slides > section:first-of-type h1 {
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
+    }
+    .reveal .slides > section:first-of-type .eyebrow {
+      color: rgba(0, 255, 255, 0.85) !important; letter-spacing: 0.15em !important; font-weight: 500 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="hud" aria-hidden="true">
+    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
+    <span class="hud-corner hud-tr">EST 2026</span>
+    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
+    <span class="hud-corner hud-br">+</span>
+  </div>
+
+  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1. 표지 -->
+      <section>
+        <p class="eyebrow">AI AGENT SKILLS</p>
+        <h1>Philosophy</h1>
+        <p>유명 코딩 에이전트들의 철학과 작동 방식</p>
+        <p class="small">화살표 키로 진행하세요.</p>
+      </section>
+
+      <!-- 2. oh-my-opencode -->
+      <section>
+        <h3>oh-my-opencode</h3>
+        <p class="visually-hidden">사용자가 자연어로 요청하면 oh-my-opencode가 이를 분석해 복잡한 터미널 명령어로 변환합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="oh-my-opencode 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="50" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">자연어 요청</text>
+          </g>
+          <g class="dim">
+            <line x1="260" y1="150" x2="340" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="340,150 326,143 326,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="350" y="110" width="220" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="460" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">oh-my-opencode</text>
+          </g>
+          <g class="dim">
+            <line x1="580" y1="150" x2="660" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="660,150 646,143 646,157" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="670" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="770" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Opencode CLI</text>
+          </g>
+        </svg>
+        <p class="small">복잡한 파라미터를 LLM이 래핑하여 터미널 파이프라인을 단순화하는 <strong>추상화 철학</strong>.</p>
+      </section>
+
+      <!-- 3. superpower -->
+      <section>
+        <h3>superpower (Claude Code)</h3>
+        <p class="visually-hidden">클로드 코드가 운영체제 터미널과 직접 연결되어 파일 시스템을 제어합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="superpower 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="llm-node">
+            <rect x="50" y="110" width="220" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="160" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Claude Code</text>
+          </g>
+          <g class="dim">
+            <line x1="280" y1="150" x2="360" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="360,150 346,143 346,157" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="370" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="470" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">OS Terminal</text>
+          </g>
+          <g class="dim">
+            <line x1="580" y1="150" x2="660" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="660,150 646,143 646,157" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="670" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="770" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">File System</text>
+          </g>
+        </svg>
+        <p class="small">단순 자동완성을 넘어 운영체제와 직접 상호작용하는 <strong>심층 시스템 제어 철학</strong>.</p>
+      </section>
+
+      <!-- 4. grill-me -->
+      <section>
+        <h3>grill-me (Claude Code)</h3>
+        <p class="visually-hidden">사용자와 그릴미 에이전트가 문답을 주고받은 후 확고한 설계도를 도출합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="grill-me 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="50" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">개발자 (불확실성)</text>
+          </g>
+          <g class="dim">
+            <!-- 양방향 화살표 -->
+            <line x1="260" y1="135" x2="340" y2="135" stroke="currentColor" stroke-width="2"/>
+            <polygon points="260,135 274,128 274,142" fill="currentColor"/>
+            <line x1="260" y1="165" x2="340" y2="165" stroke="currentColor" stroke-width="2"/>
+            <polygon points="340,165 326,158 326,172" fill="currentColor"/>
+            <text x="300" y="125" text-anchor="middle" font-size="14" fill="currentColor">역질문 & 응답</text>
+          </g>
+          <g class="llm-node">
+            <rect x="350" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">grill-me</text>
+          </g>
+          <g class="dim">
+            <line x1="560" y1="150" x2="640" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="640,150 626,143 626,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <rect x="650" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="750" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">확고한 설계도</text>
+          </g>
+        </svg>
+        <p class="small">개발자의 불확실성을 역질문(Interview)으로 좁혀 요구사항을 굳히는 <strong>대화형 검증 철학</strong>.</p>
+      </section>
+
+      <!-- 5. ponytail -->
+      <section>
+        <h3>ponytail (Claude Code)</h3>
+        <p class="visually-hidden">오케스트레이터가 서브에이전트 3개에게 작업을 분배합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="ponytail 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="llm-node">
+            <rect x="350" y="40" width="200" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="78" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Orchestrator</text>
+          </g>
+          <g class="dim">
+            <!-- 선분들 -->
+            <path d="M 450 100 L 450 140 M 450 120 L 200 120 L 200 180 M 450 120 L 700 120 L 700 180 M 450 180" fill="none" stroke="currentColor" stroke-width="2"/>
+            <polygon points="200,180 193,166 207,166" fill="currentColor"/>
+            <polygon points="450,180 443,166 457,166" fill="currentColor"/>
+            <polygon points="700,180 693,166 707,166" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="100" y="180" width="200" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="200" y="218" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Subagent A</text>
+          </g>
+          <g class="dim">
+            <rect x="350" y="180" width="200" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="218" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Subagent B</text>
+          </g>
+          <g class="dim">
+            <rect x="600" y="180" width="200" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="700" y="218" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Subagent C</text>
+          </g>
+        </svg>
+        <p class="small">여러 소규모 전문 에이전트들의 워크플로우를 조율하는 <strong>오케스트레이션 철학</strong>.</p>
+      </section>
+
+      <!-- 6. fablize -->
+      <section>
+        <h3>fablize (Claude Code)</h3>
+        <p class="visually-hidden">복잡한 로데이터를 패블라이즈가 가공하여 시각적 문서로 만듭니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="fablize 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="dim">
+            <rect x="50" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">복잡한 데이터</text>
+          </g>
+          <g class="dim">
+            <line x1="260" y1="150" x2="340" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="340,150 326,143 326,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="350" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">fablize</text>
+          </g>
+          <g class="dim">
+            <line x1="560" y1="150" x2="640" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="640,150 626,143 626,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <rect x="650" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="750" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">시각적 다이어그램</text>
+          </g>
+        </svg>
+        <p class="small">복잡한 데이터나 코드를 다이어그램 등 문서 구조로 추상화하여 인지 부하를 줄이는 <strong>시각화 철학</strong>.</p>
+      </section>
+
+      <!-- 7. blindspot-flow -->
+      <section>
+        <h3>blindspot-flow (Claude Code)</h3>
+        <p class="visually-hidden">작업을 시작하기 전 여러 대의 스캐너가 문서를 만들어 Unknown Unknowns를 찾아냅니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="blindspot-flow 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="30" y="110" width="180" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="120" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">새로운 목표</text>
+          </g>
+          <g class="dim">
+            <line x1="220" y1="150" x2="280" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="280,150 266,143 266,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="290" y="70" width="180" height="160" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="380" y="110" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor">병렬 스캐너</text>
+            <text x="380" y="140" text-anchor="middle" font-size="16" fill="currentColor">conventions</text>
+            <text x="380" y="170" text-anchor="middle" font-size="16" fill="currentColor">edge-cases</text>
+            <text x="380" y="200" text-anchor="middle" font-size="16" fill="currentColor">domain</text>
+          </g>
+          <g class="dim">
+            <line x1="480" y1="150" x2="540" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="540,150 526,143 526,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <rect x="550" y="110" width="180" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="640" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Unknowns 명세</text>
+          </g>
+          <g class="dim">
+            <line x1="740" y1="150" x2="800" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="800,150 786,143 786,157" fill="currentColor"/>
+          </g>
+          <g class="user-node">
+            <circle cx="840" cy="150" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="840" y="156" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">합의</text>
+          </g>
+        </svg>
+        <p class="small">설계 전 미지 영역(Unknown Unknowns)을 강제로 드러내어 실패를 예방하는 <strong>안전성 확보 철학</strong>.</p>
+      </section>
+
+      <!-- 8. Copilot Workspace -->
+      <section>
+        <h3>Copilot Workspace (Codex)</h3>
+        <p class="visually-hidden">깃허브 이슈에서 시작하여 코파일럿이 PR까지 통합 생성합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="Copilot Workspace 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="dim">
+            <rect x="50" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">GitHub Issue</text>
+          </g>
+          <g class="dim">
+            <line x1="260" y1="150" x2="340" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="340,150 326,143 326,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="350" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Copilot Agent</text>
+          </g>
+          <g class="dim">
+            <line x1="560" y1="150" x2="640" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="640,150 626,143 626,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <rect x="650" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="750" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Pull Request 생성</text>
+          </g>
+        </svg>
+        <p class="small">이슈부터 PR까지 기존 에디터 및 개발 생태계의 맥락(Context)을 끊김 없이 통합하는 철학.</p>
+      </section>
+
+      <!-- 9. Aider -->
+      <section>
+        <h3>Aider (Pair Programming)</h3>
+        <p class="visually-hidden">터미널의 사용자와 에이더가 깃 저장소를 실시간으로 변경하며 상호작용합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="Aider 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="50" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="150" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">터미널 채팅</text>
+          </g>
+          <g class="dim">
+            <line x1="260" y1="135" x2="340" y2="135" stroke="currentColor" stroke-width="2"/>
+            <polygon points="260,135 274,128 274,142" fill="currentColor"/>
+            <line x1="260" y1="165" x2="340" y2="165" stroke="currentColor" stroke-width="2"/>
+            <polygon points="340,165 326,158 326,172" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="350" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="450" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Aider (LLM)</text>
+          </g>
+          <g class="dim">
+            <line x1="560" y1="135" x2="640" y2="135" stroke="currentColor" stroke-width="2"/>
+            <polygon points="560,135 574,128 574,142" fill="currentColor"/>
+            <line x1="560" y1="165" x2="640" y2="165" stroke="currentColor" stroke-width="2"/>
+            <polygon points="640,165 626,158 626,172" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="650" y="110" width="200" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="750" y="158" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor">Git 저장소 반영</text>
+          </g>
+        </svg>
+        <p class="small">터미널 안에서 개발자와 실시간 피드백 루프를 도는 <strong>즉각적 페어 프로그래밍 철학</strong>.</p>
+      </section>
+
+      <!-- 10. Devin -->
+      <section>
+        <h3>Devin (Autonomous Agent)</h3>
+        <p class="visually-hidden">사용자가 목표를 주면 데빈이 샌드박스에서 자율적으로 계획하고 실행하여 완성합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="Devin 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="40" y="110" width="160" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="120" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">상위 목표 제시</text>
+          </g>
+          <g class="dim">
+            <line x1="210" y1="150" x2="270" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="270,150 256,143 256,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="280" y="90" width="360" height="120" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="460" y="130" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">Devin Sandbox</text>
+            <text x="360" y="170" text-anchor="middle" font-size="16" fill="currentColor">Plan</text>
+            <text x="460" y="170" text-anchor="middle" font-size="16" fill="currentColor">Code</text>
+            <text x="560" y="170" text-anchor="middle" font-size="16" fill="currentColor">Test</text>
+            <!-- 내부 순환 화살표 -->
+            <path d="M 390 165 L 430 165 M 490 165 L 530 165" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="430,165 423,161 423,169" fill="currentColor"/>
+            <polygon points="530,165 523,161 523,169" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <line x1="650" y1="150" x2="710" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="710,150 696,143 696,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <rect x="720" y="110" width="140" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="790" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">결과물 완성</text>
+          </g>
+        </svg>
+        <p class="small">상위 목표만 주면 독립 샌드박스에서 계획-실행-검증을 스스로 반복하는 <strong>완전 자율성 철학</strong>.</p>
+      </section>
+
+      <!-- 11. LangChain Data Agent -->
+      <section>
+        <h3>LangChain Data Agent</h3>
+        <p class="visually-hidden">질문이 라우터로 전달되면 적절한 외부 API나 데이터베이스 도구를 선택해 결과를 반환합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="LangChain Data Agent 아키텍처" xmlns="http://www.w3.org/2000/svg">
+          <g class="user-node">
+            <rect x="30" y="110" width="160" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="110" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">복합 도메인 질의</text>
+          </g>
+          <g class="dim">
+            <line x1="200" y1="150" x2="260" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="260,150 246,143 246,157" fill="currentColor"/>
+          </g>
+          <g class="llm-node">
+            <rect x="270" y="110" width="180" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="360" y="158" text-anchor="middle" font-size="22" font-weight="600" fill="currentColor">LLM Router</text>
+          </g>
+          <g class="dim">
+            <!-- 3갈래 도구 분기 -->
+            <path d="M 460 150 L 510 150 L 510 70 L 560 70 M 510 150 L 560 150 M 510 150 L 510 230 L 560 230" fill="none" stroke="currentColor" stroke-width="2"/>
+            <polygon points="560,70 546,63 546,77" fill="currentColor"/>
+            <polygon points="560,150 546,143 546,157" fill="currentColor"/>
+            <polygon points="560,230 546,223 546,237" fill="currentColor"/>
+          </g>
+          <g class="dim">
+            <rect x="570" y="40" width="140" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="640" y="78" text-anchor="middle" font-size="20" font-weight="600" fill="currentColor">Database</text>
+          </g>
+          <g class="dim">
+            <rect x="570" y="120" width="140" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="640" y="158" text-anchor="middle" font-size="20" font-weight="600" fill="currentColor">Web Search</text>
+          </g>
+          <g class="dim">
+            <rect x="570" y="200" width="140" height="60" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="640" y="238" text-anchor="middle" font-size="20" font-weight="600" fill="currentColor">External API</text>
+          </g>
+          <g class="dim">
+            <line x1="720" y1="150" x2="780" y2="150" stroke="currentColor" stroke-width="2"/>
+            <polygon points="780,150 766,143 766,157" fill="currentColor"/>
+          </g>
+          <g class="bright">
+            <circle cx="820" cy="150" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="820" y="156" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">종합</text>
+          </g>
+        </svg>
+        <p class="small">단일 모델의 한계를 넘어 다양한 도구와 외부 시스템을 동적으로 결합하는 <strong>모듈형 확장 철학</strong>.</p>
+      </section>
+
+      <!-- 12. 끝 -->
+      <section>
+        <h2>끝.</h2>
+        <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: "fade",
+      pdfSeparateFragments: false
+    });
+  </script>
+  <script src="../../vendor/three.js/three.min.js"></script>
+  <script src="../../scripts/galaxy3d.js"></script>
+</body>
+</html>

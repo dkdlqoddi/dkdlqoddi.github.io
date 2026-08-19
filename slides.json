@@ -10,5 +10,17 @@
     "date": "2026-08-03",
     "description": "망 연동 보안 아키텍처 및 AI 파이프라인 작동 구조",
     "dir": "integrated-architecture"
+  },
+  {
+    "title": "Python Automation: DX vs AX",
+    "date": "2026-08-19",
+    "description": "규칙 기반 자동화에서 LLM 기반 자동화로의 전환 및 사내 LLM 연동 패턴",
+    "dir": "dx-vs-ax-automation"
+  },
+  {
+    "title": "AI Agent Skills Philosophy",
+    "date": "2026-08-19",
+    "description": "인공지능 코딩 도구들의 스킬과 철학 비교",
+    "dir": "ai-agent-skills-philosophy"
   }
 ]

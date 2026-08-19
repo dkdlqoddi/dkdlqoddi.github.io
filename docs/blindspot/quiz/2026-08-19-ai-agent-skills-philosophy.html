@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>머지 전 퀴즈: AI Agent Skills Philosophy</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>머지 전 퀴즈: AI Agent Skills Philosophy</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<ul>
+  <li>인공지능 코딩 도구들의 철학을 소개하는 11장의 슬라이드를 만들었습니다.</li>
+  <li>글 대신 내부 작동을 보여주는 그림을 활용하여 직관적으로 도구를 이해하게 했습니다.</li>
+  <li>복잡함을 막기 위해 한 페이지에 하나의 도구와 그림만 배치했습니다.</li>
+  <li>외부 프로그램을 쓸 수 없는 환경이므로 도형 도구(SVG)와 글씨 색상으로만 그림을 그렸습니다.</li>
+  <li>도구의 철학을 비교하는 것이 목적이므로 복잡한 명령어 예시나 상세 설정 방법은 의도적으로 제외했습니다.</li>
+</ul>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { 
+    q: "이번 발표 자료에서 각 도구를 설명할 때 가장 중심이 되는 표현 방식은 무엇인가요?", 
+    options: [
+      "실제 코드가 구동되는 영상을 녹화하여 첨부했습니다.", 
+      "상세한 글 설명으로 기능 명세서를 작성했습니다.", 
+      "시스템 내부의 작동을 보여주는 그림을 활용했습니다.", 
+      "단축키와 명령어 예시 위주로 설명했습니다."
+    ], 
+    answer: 2,
+    explain: "글 대신 내부 작동을 보여주는 그림(다이어그램)을 활용하여 비개발자도 직관적으로 도구를 이해하게 만들었기 때문입니다." 
+  },
+  { 
+    q: "정보가 너무 많아지는 것을 막기 위해 슬라이드를 어떻게 구성했나요?", 
+    options: [
+      "한 페이지에 세 가지 도구를 표로 요약했습니다.", 
+      "부록 슬라이드에 모든 설명을 몰아서 넣었습니다.", 
+      "한 페이지에 단 하나의 도구와 그림만 배치했습니다.", 
+      "글씨 크기를 줄여서 모든 설명을 한 장에 담았습니다."
+    ], 
+    answer: 2,
+    explain: "복잡함을 막고 가독성을 높이기 위해 1페이지당 1개의 도구만 배치했습니다." 
+  },
+  { 
+    q: "다양한 색상이나 화려한 그림 대신 기본 도형과 글씨 색상으로만 그림을 그린 이유는 무엇인가요?", 
+    options: [
+      "화려한 그림은 파일 크기가 너무 커지기 때문입니다.", 
+      "외부 프로그램을 쓸 수 없는 환경이기 때문입니다.", 
+      "흰색 배경에서 그림이 안 보이는 문제를 막기 위해서입니다.", 
+      "시간이 부족하여 대충 그렸기 때문입니다."
+    ], 
+    answer: 1,
+    explain: "외부 플러그인을 쓸 수 없는 제약을 지키고, 어두운 화면과 인쇄용 화면 모두에서 잘 보이게 하려고 순수 도형과 글씨 색상(currentColor)만 사용했습니다." 
+  },
+  { 
+    q: "이번 발표에서 스킬과 관련하여 의도적으로 제외한 내용은 무엇인가요?", 
+    options: [
+      "인공지능 코딩 도구들의 최신 버전 공개 날짜.", 
+      "복잡한 터미널 명령어 예시나 상세 플러그인 설정 방법.", 
+      "각 도구를 이용할 때 내야 하는 매달 사용료 비교.", 
+      "가장 유명한 도구가 무엇인지 추천하는 내용."
+    ], 
+    answer: 1,
+    explain: "발표의 목적이 구체적인 도구 사용법을 교육하는 것이 아니라 철학과 작동 방식을 비교하는 것이기 때문에 상세 명령어는 의도적으로 제외했습니다." 
+  }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

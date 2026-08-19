@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>머지 전 퀴즈: Python Automation: DX vs AX</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>머지 전 퀴즈: Python Automation: DX vs AX</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>규칙 기반 자동화와 언어 모델 기반 자동화의 차이점을 설명하는 발표자료가 추가되었습니다.</p>
+<p>새 발표자료는 기존 흐름과 새 흐름을 상하로 나란히 배치하여 확장의 의미를 시각적으로 잘 보여줍니다.</p>
+<p>사내 환경에 맞춰 언어 모델을 연동하는 파이썬 코드 예시도 네 가지 방법으로 포함되어 있습니다.</p>
+<p>언어 모델 자체의 구동 원리나 기존 명령줄 도구의 상세 사용법 설명은 제외되었습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  {
+    q: "새 발표자료에서 가장 직관적으로 보여주려는 내용은 무엇인가요?",
+    options: ["기존 도구의 설치 방법", "두 자동화 방식의 흐름 비교", "파이썬 언어의 기초 문법", "언어 모델 자체의 구동 원리"],
+    answer: 1,
+    explain: "기존 흐름과 새 흐름을 상하로 배치하여 확장의 의미를 시각적으로 쉽게 비교할 수 있게 구성했습니다. 언어 모델 구동 원리는 범위에서 제외되었습니다."
+  },
+  {
+    q: "새 발표자료의 코드 예시는 어떤 상황을 가정하고 있나요?",
+    options: ["클라우드 웹 서버 배포", "데이터베이스 성능 튜닝", "사내 환경 언어 모델 연동", "모바일 앱 사용자 인터페이스"],
+    answer: 2,
+    explain: "발표자료에는 사내 환경에 맞춰 언어 모델을 연동하는 파이썬 코드 예시가 네 가지 방법으로 포함되어 있습니다."
+  },
+  {
+    q: "새 발표자료에서 설명하지 않는 내용은 무엇인가요?",
+    options: ["사내 연동 파이썬 코드", "기존 규칙 기반 자동화 흐름", "언어 모델 기반 자동화 흐름", "기존 명령줄 도구의 상세 사용법"],
+    answer: 3,
+    explain: "청중이 이미 사전 지식을 가졌다고 가정하여 기존 도구(명령줄 도구)의 상세 사용법 설명은 의도적으로 제외했습니다."
+  },
+  {
+    q: "발표자가 두 가지 자동화 방식을 청중에게 효과적으로 설명하는 방법은 무엇인가요?",
+    options: ["수백 줄의 소스 코드를 읽게 한다", "상하로 나란히 배치된 시각 자료를 본다", "모든 용어를 영어로만 작성하여 읽는다", "기존 도구 사용법부터 다시 배운다"],
+    answer: 1,
+    explain: "발표자료는 두 방식의 흐름을 상하로 나란히 배치하여 확장의 의미를 시각적으로 잘 보여줍니다. 긴 코드 열람이나 상세 도구 사용법 설명은 의도에 맞지 않습니다."
+  }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
