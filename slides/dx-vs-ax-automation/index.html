@@ -534,7 +534,7 @@ print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
         <pre><code class="python">import subprocess
 # 설치: curl -fsSL https://opencode.ai/install | bash
 #       (또는 npm i -g opencode-ai)
-# 사내 LLM: opencode.json에 provider 주소 등록
+# 사내 LLM: opencode.json provider에 baseURL·모델 등록
 
 result = subprocess.run(
     ["opencode", "run", "파일 개수를 세어줘"],

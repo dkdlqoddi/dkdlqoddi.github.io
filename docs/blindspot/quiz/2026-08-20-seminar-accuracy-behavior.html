@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 세미나 내용 검증 + 동작 페이지</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 세미나 내용 검증 + 동작 페이지</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>세미나 두 자료의 내용을 공개 자료와 대조해 틀리거나 낡은 서술을 고쳤습니다. 이미 단종된 Copilot Workspace 소개는 후속 제품 Copilot Cloud Agent 기준으로 다시 썼고, 전신 이야기는 계보 설명 한 줄로만 남겼습니다. 새 제품에서는 작업 결과가 브랜치와 세션 기록으로 남고, PR(반영 요청)은 사람이 변경 내용을 확인한 뒤 만들지 결정합니다. oh-my-opencode가 oh-my-openagent로 개명된 사실을 반영했고, 그 안의 LSP와 ast-grep은 에이전트가 아니라 에이전트들이 쓰는 도구라는 층위도 바로잡았습니다. 공식 명칭이 아닌 "LangChain Data Agent"는 LangChain Agent로 고쳤습니다. Devin은 사람이 계획을 검토·수정해야 자율 실행이 시작된다는 현재 동작으로 고쳤습니다. 2부의 도구 열 개마다 실제 사용 장면이 한 줄씩 나타나는 "동작 보기" 페이지를 추가해 2부가 17장에서 27장이 되었고, 화살표 키를 누를 때마다 한 줄씩 진행되어 전체 진행 키 입력은 약 4배(28회 → 114회)가 되었습니다. 흑백 인쇄에서도 터미널 줄 앞의 역할 기호(❯, ⛭)까지 검정으로 인쇄되도록 고쳤습니다. 정정의 근거 출처(문서·저장소 주소, ponytail 한 건은 스킬 원문 기준)는 구현 노트에 기록했습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "발표 자료에 소개되어 있던 Copilot Workspace는 이미 단종된 제품으로 확인되었습니다. 이번 작업에서는 어떻게 처리했습니까?",
+    options: ["소개 장을 통째로 삭제했다", "후속 제품 기준으로 다시 쓰고 전신은 계보로 남겼다", "단종 사실만 각주로 달고 내용은 유지했다", "다른 회사 제품으로 교체했다"], answer: 1,
+    explain: "장을 지우는 대신 후속 제품(Copilot Cloud Agent)의 현재 동작으로 다시 쓰고, 전신 이야기는 계보 설명 한 줄로 남겼습니다. 단종된 제품을 살아 있는 것처럼 소개하면 질의응답에서 신뢰가 무너지기 때문입니다." },
+  { q: "새 Copilot Cloud Agent 장에 따르면, 에이전트가 일을 마친 뒤 PR(반영 요청)은 어떻게 만들어집니까?",
+    options: ["작업이 끝나면 항상 자동으로 만들어진다", "자동 검사(CI)가 통과하면 자동으로 만들어진다", "사람이 변경 내용을 확인한 뒤 만들지 결정한다", "PR 없이 바로 반영된다"], answer: 2,
+    explain: "결과는 브랜치와 세션 기록으로 남고, 사람이 변경 내용(diff)을 확인한 뒤 PR 생성을 결정합니다. '자동으로 PR까지'라는 옛 서술이 이번 정정의 핵심 중 하나였습니다." },
+  { q: "새로 추가된 '동작 보기' 페이지 열 장은 발표 진행 방식에 어떤 비용을 더합니까?",
+    options: ["화살표 키 입력이 약 4배로 늘어난다", "자료 파일 크기가 두 배가 된다", "인쇄 페이지 수가 두 배가 된다", "발표 중 인터넷 연결이 필요해진다"], answer: 0,
+    explain: "장면이 한 줄씩 화살표 키로 진행되므로 전체 진행 키 입력이 약 28회에서 114회로 늘었습니다. 발표자가 속도를 통제하기 위한 의도된 맞바꿈입니다. 인쇄 페이지는 줄 수가 아니라 장 수를 따라 27장이며, 늘어난 10장은 새로 추가된 장 때문입니다." },
+  { q: "이 자료를 흑백으로 인쇄하면, 터미널 화면에서 줄마다 누가 말한 것인지 어떻게 구분합니까?",
+    options: ["구분할 방법이 없다", "줄마다 배경 음영이 달라진다", "글자 크기가 역할마다 다르다", "줄 앞의 역할 기호가 검정으로 함께 인쇄된다"], answer: 3,
+    explain: "화면에서는 색과 기호(❯, ⛭)로 역할을 구분하는데, 인쇄에서 색은 사라지지만 기호까지 검정으로 인쇄되도록 고쳐 종이에서도 구분이 남습니다. 고치기 전에는 기호가 청록색 그대로 남아 흰 종이에서 보이지 않았습니다." },
+  { q: "oh-my-openagent 장에서 코드 분석 기능(LSP)과 구문 검색(ast-grep)은 무엇으로 소개됩니까?",
+    options: ["작업을 나눠 받는 전문 에이전트", "에이전트들이 사용하는 도구", "별도로 설치하는 외부 제품", "발표에서 제외된 기능"], answer: 1,
+    explain: "이전 자료는 이 둘을 에이전트와 같은 층에 그렸지만, 실제로는 librarian 같은 에이전트들이 호출해 쓰는 내장 도구입니다. 이 층위 구분이 이번 정정의 핵심 중 하나입니다." },
+  { q: "나중에 다른 사람이 '이 정정이 정말 맞나'를 재확인하려면 무엇을 보면 됩니까?",
+    options: ["발표 자료 각 장의 각주", "커밋 메시지", "구현 노트에 기록된 근거 출처 목록", "재확인할 방법이 없다"], answer: 2,
+    explain: "정정마다 근거가 된 문서·저장소 주소를 구현 노트에 기록해 두었습니다. 발표 화면에는 각주를 넣지 않기로 했으므로, 재검증 경로는 노트입니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
