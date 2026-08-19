@@ -227,7 +227,19 @@
       font-weight: 500 !important;
     }
 
-  </style>
+  
+    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
+    .reveal .slides section {
+      max-height: 700px !important;
+      box-sizing: border-box;
+      overflow-y: auto !important;
+      overflow-x: hidden;
+    }
+    .reveal pre {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+</style>
 </head>
 <body>
   <div class="hud" aria-hidden="true">

@@ -20,7 +20,19 @@
     @media (prefers-reduced-motion: no-preference) {
       @view-transition { navigation: auto; }
     }
-  </style>
+  
+    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
+    .reveal .slides section {
+      max-height: 700px !important;
+      box-sizing: border-box;
+      overflow-y: auto !important;
+      overflow-x: hidden;
+    }
+    .reveal pre {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+</style>
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
@@ -39,7 +51,19 @@
     .llm-node { color: #00dddd; font-weight: bold; }
     .user-node { color: #dedede; font-weight: bold; }
     svg { font-family: var(--r-main-font); font-size: 14px; }
-  </style>
+  
+    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
+    .reveal .slides section {
+      max-height: 700px !important;
+      box-sizing: border-box;
+      overflow-y: auto !important;
+      overflow-x: hidden;
+    }
+    .reveal pre {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+</style>
 </head>
 <body>
   <div class="reveal">

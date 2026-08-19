@@ -179,7 +179,19 @@
 
     /* 코드 슬라이드 위 아키텍처 미니 다이어그램 */
     .reveal svg.mini-diag { display: block; width: 80%; margin: 0 auto 0.3em; color: #dedede; }
-  </style>
+  
+    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
+    .reveal .slides section {
+      max-height: 700px !important;
+      box-sizing: border-box;
+      overflow-y: auto !important;
+      overflow-x: hidden;
+    }
+    .reveal pre {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+</style>
 </head>
 <body>
   <div class="hud" aria-hidden="true">
