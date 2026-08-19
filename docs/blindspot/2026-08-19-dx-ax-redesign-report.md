@@ -1,0 +1,85 @@
+# DX vs AX 발표자료 종합 개선 작업 보고서
+
+- 날짜: 2026-08-19
+- 기준: main → feat/dx-ax-redesign (작업 트리)
+- 퀴즈: docs/blindspot/quiz/2026-08-19-dx-ax-redesign.html — 통과 전 머지 금지
+- 읽는 법: 코드를 모르는 분은 '요약'과 '스크린샷/데모'까지만 읽으면 됩니다. 그 아래는 개발자와 AI를 위한 상세입니다.
+
+## Human 섹션
+
+### 요약
+
+"DX vs AX" 발표자료를 11장짜리 새 이야기 구조로 다시 만들었습니다.
+같은 작업 흐름이 규칙 기반에서 AI 기반으로 부드럽게 변신하는 장면이 발표의 중심이 됩니다.
+발표에 실려 있던 사실 오류도 바로잡았습니다. 존재하지 않는 설치 명령과 실행 옵션이 실제 공식 방법으로 교체되었습니다.
+다섯 발표자료에 제각각 복사되어 있던 공통 디자인은 공유 파일 하나로 모았습니다.
+그 덕에 숨어 있던 고장들도 함께 고쳐졌습니다. 인쇄하면 장식이 종이에 찍히던 문제, 다른 발표의 제목이 대문자로 잘못 나오던 문제가 사라졌습니다.
+가장 크게 망가져 있던 "안전한 AI 설계 자동화" 발표는 깨진 한글 70줄을 되살리고, 보이지 않던 15장을 복구해 25장 전부가 표시됩니다.
+
+### 스크린샷 / 데모
+
+- 로컬 미리보기: `python3 -m http.server 8000` → http://localhost:8000/slides/dx-vs-ax-automation/
+- 검증 캡처: 표지(글로우·은하·모서리 장식), 3→4장 변신 장면, 추상화 사다리 로드맵, 4행 비교표 — 세션 중 Playwright로 촬영·확인함
+- PDF 내보내기 경로(?print-pdf): 11쪽, 빈 페이지 0, 장식 미출력 확인함
+
+### 리뷰 포인트 (개발자용)
+
+- `slides/shared/deck-base.css` — 새 공통 디자인 파일(9블록). 링크 순서 계약(black.css 뒤, 인라인 style 앞)은 주석으로만 강제됨. `html:root` 변수만 순서 무관, 나머지 동특이성 규칙은 순서 의존.
+- `slides/shared/deck-base.css:184` 부근 — 동작 축소에서 짝 전환을 멈추는 선택자는 특이성 0-3-0이 정확히 필요. 축약 금지 주석 확인.
+- `slides/shared/deck-base.css` 인쇄 블록 — EVA VIEW 해제 2경로(@media print, html.reveal-print). reveal 업그레이드 시 max-height 처리 재확인 필요.
+- `slides/dx-vs-ax-automation/index.html:81,131` — 저장소 첫 `data-auto-animate-unmatched="false"` 사용. data-id 이름이 한쪽만 바뀌면 페이드 없이 즉시 등장하므로 짝 이름 변경 시 주의.
+- `slides/integrated-architecture/index.html` — 문맥 재구성 3줄(843/873/1171행 부근: "넘겨받아 실행", "쓰기/실행", "한도량이 … 지워지는"), 재구성 슬라이드 프레임("2차 방어: Payload Compression", 왼쪽 칼럼 소실로 단일 칼럼).
+- `slides/ai-agent-skills-philosophy/index.html` — head 전면 재구성. 기존 시스템 폰트/자체 팔레트가 공통 디자인으로 교체됨(사용자 승인 "완전 편입").
+
+## Agent 섹션 (AI 인수인계용)
+
+### 의도 (Intent)
+
+1. dx 덱: "같은 파이프라인의 진화" 서사. 3↔4장 auto-animate 짝(data-id pipe-n1..n4, pipe-a1..a3, 동일 viewBox 900×300)이 핵심 장치. 연동 방법 순서는 추상화 오름차순(HTTP→SDK→LangChain→opencode), opencode는 "호출이 아니라 위임"이라는 범주 전환 피날레.
+2. deck-base.css: 5개 덱의 공통 디자인 단일 소스. 정본은 구 dx 덱의 수리본 + 이번 사이클 보강(인쇄 .hud 숨김, EVA 인쇄 해제 2경로, 표지 글로우 h1/h2 겸용, 폰트 스택에 Pretendard 복원, --danger 토큰, 선택 색 버그 수정).
+3. integrated: 손상 도구 역공학(UTF-8 바이트를 CP949 쌍으로 오독, 무효 쌍→'?', 무효 리드→원시 통과)으로 67/70줄 바이트 정확 복원. 구조 수리로 25장 전부 렌더.
+
+### 제약 (Constraints)
+
+- reveal.js 6.0.1 고정, 플러그인 없음, 전 자산 상대 경로(file:// 자립).
+- 링크 순서 계약: reset → reveal → black → montserrat → pretendard → deck-base?v=1 → code-copy → 인라인 style. 흰 번쩍임 방지 2종(meta color-scheme, html 배경)은 각 덱 인라인 유지.
+- 코드 슬라이드 한 줄 실측 한계 약 56자(0.58em 하한 고정) → 전 코드 54자 이내로 작성됨.
+- 단계 공개 슬라이드 660px, 그 외 700px 높이 상한(실측 최대 625px).
+- deck-base 갱신 시 ?v= 번호 올릴 것(Pages 캐시 10분).
+
+### 검토한 엣지케이스
+
+| 엣지케이스 | 처리 |
+|---|---|
+| data-id 없는 짝 슬라이드의 통제 불능 페이드 | 모든 이동 요소에 data-id 명시 + unmatched="false" |
+| fragment가 짝 전환의 자동 페이드와 충돌 | unmatched="false"로 자동 페이드 차단, fragment 규칙만 적용 |
+| reveal 주입 !important가 동작 축소 방어를 무력화 | 특이성 0-3-0 선택자를 자구 그대로 이관 + 경고 주석 |
+| PDF 내보내기에서 EVA로 내용 유실·빈 페이지 | html.reveal-print 해제 규칙, 실측 11쪽/빈 페이지 0 |
+| 인쇄 메뉴에서 직접 지정 색이 복구 안 됨 | dx 덱 도형 전량 currentColor+클래스로 재작성(잔존 0) |
+| 표지 eyebrow의 고특이성 화면 규칙이 인쇄를 이김 | 동일 선택자 인쇄 복구 규칙을 deck-base에 추가 |
+| 조망 모드에서 미공개 fragment 빈칸 | overview 보정 규칙 공통화, 실측 visible 확인 |
+| 코드 블록 가로 넘침 | 실측 후 4개 블록 전부 54자 이내 재구성 |
+| 은하 배경 WebGL 미지원 | 캔버스 없거나 실패 시 조용히 종료(스크립트 기존 동작), html 배경색 유지 |
+| integrated 은하 감쇄값 소실 | 덱 고유 opacity 0.15를 인라인으로 복원 |
+| 우주선 장식 인쇄 흰 얼룩 | 덱 고유 인쇄 숨김 규칙 추가 |
+
+### 검증 결과
+
+- 정적 검사 12항목 전부 통과: slides.json 유효, 매니페스트-폴더 대응 4/4, 섹션 짝 5덱 균형, 모지바케 0, deck-base 링크 5/5(순서 포함), 필수 블록 4종 존재, 플러그인 참조 0, viewport 위반 0, 절대 경로 0, .nojekyll 유지.
+- 브라우저(Playwright) 검증: 5덱+랜딩 콘솔 오류 0(three.js 사전 경고 1건은 기존), 짝 전환 매칭 7/미매칭 0, fragment 순차·조망 표시, PDF 11쪽/빈 0/장식 숨김/EVA 해제, 랜딩 카드 4장 연결, integrated 25장·깨진 글자 0.
+- 자동화 테스트 도구는 저장소에 없음(기존과 동일).
+
+### 의도적 범위 제외
+
+- integrated(110곳)·ai-agent(43곳)·design-ax(37곳)의 직접 지정 SVG 색: 인쇄 검정 복구 불가 상태로 유지. 각 덱 콘텐츠 재작성은 별도 사이클.
+- integrated의 중복 콘텐츠(THANK YOU 4장, 방법론 시퀀스 2벌): 보존. 어느 벌이 정본인지는 저자 판단 — 아래 확인 필요 항목.
+- reveal 플러그인 도입, 랜딩(styles.css) 변경, opencode JSON 파싱 예시, 성능 수치 인용: 하지 않음.
+- pdf-page overflow:hidden(벤더)로 인한 700px 초과 슬라이드의 PDF 절단 가능성: 현 덱은 전부 상한 이내라 비발현. reveal 업그레이드 시 재확인 항목으로 기록.
+
+### 구현 노트 요약
+
+- 계획 이탈(경미) 2건: 선택 영역 글자색 버그 수정(--r-selection-color), 리뷰 지적 6건 즉시 반영(모지바케 잔존 1줄, 고아 스크린샷 삭제, 은하 감쇄 복원, 우주선 인쇄 숨김, 재구성 h2 제거, 교육 주석 2건 이관).
+- 보수적 선택 3건: 문맥 재구성 3줄(자구 확정 포기), 2차 방어 슬라이드 단일 칼럼 복원, 중복 THANK YOU 보존.
+- **사용자 확인 필요 2건 (머지 전 질문으로 제시)**:
+  1. integrated 재구성 슬라이드 제목 "2차 방어: Payload Compression"이 원제와 다를 수 있음. 왼쪽 칼럼 원 내용 기억 여부.
+  2. integrated의 중복 콘텐츠(THANK YOU 4회, 방법론 2벌) 정리 여부 — 이번엔 보존됨.

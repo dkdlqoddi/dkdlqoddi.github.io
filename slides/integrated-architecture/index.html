@@ -19,7 +19,10 @@
   <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
   <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="../../slides/shared/code-copy.css">
+  <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
+       링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
+  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
 
@@ -27,211 +30,12 @@
        JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
     html { background: #0e0e0e; color-scheme: dark; }
 
-    /* 검은 우주 팔레트 (bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a)
-       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다.
-       html:root 표기인 이유: 테마 <link>와 이 블록의 순서가 바뀌어도 항상 이기도록 특이성을 한 단계 올림 */
-    html:root {
-      --primary: #fcfcfb;
-      --secondary: #9aa0a6;
-      --r-background: #0e0e0e;
-      --r-background-color: #0e0e0e;
-      --r-main-color: #dedede;
-      --r-heading-color: #fcfcfb;
-      --r-heading-font-weight: 600;
-      --r-heading-letter-spacing: -0.025em;
-      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-link-color: var(--primary);
-      --r-link-color-hover: var(--secondary);
-      --r-link-color-dark: #9aa0a6;
-      --r-selection-background-color: var(--primary);
-      --r-selection-color: #fcfcfb;
-    }
-
-    /* 어두운 배경에서 가는 한글 획 뭉개짐 방지 + 한글 줄바꿈 */
-    .reveal {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      word-break: keep-all;
-      overflow-wrap: anywhere;
-    }
-
-    /* 링크는 색이 본문과 같으므로 밑줄로 구분한다 */
-    .reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
-
-    /* 랜딩과 이어지는 페이지 전환 (지원 브라우저 전용 장식) */
-    @media (prefers-reduced-motion: no-preference) {
-      @view-transition { navigation: auto; }
-    }
-    /* 두 테마 모두 제목을 대문자로 바꾼다 — 끄지 않으면 "Opencode"가 "OPENCODE"로 보인다 */
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
-    /* 글자 하한: 캔버스(960x700) 기준 24px = 0.58em.
-       크기는 컨테이너가 아니라 잎 클래스에서 한 번만 지정할 것 —
-       중첩되면 곱해져서 하한 아래로 떨어진다 (cds 덱에서 8.9px까지 떨어졌던 실패 사례). */
-    .reveal .kbd {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      /* 크기 미지정: 주변 글자를 그대로 물려받는다 — 0.7em을 두면 .small 안에서 곱해져 하한 미달 */
-      border: 1px solid currentColor;
-      border-radius: 6px;
-      padding: 0.05em 0.4em;
-    }
-    /* pre 크기: 테마 기본 0.55em(23.1px)이 하한 미달이라 올린다 */
-    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; font-size: 0.58em; }
-    .reveal .small { font-size: 0.6em; }
-    .reveal .eyebrow {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.58em;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9aa0a6;
-    }
-
-    /* 캔버스 은하수 배경 (장식) — 슬라이드 캔버스 밖 고정 층에 둔다 */
-    #galaxy-3d-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.15;
-    }
-     to { rotate: 360deg; } }
-
-    /* 표지의 흰 우주선 (장식) — 부유는 주기 9초, 상하 4px, 시작·끝 동일 위치 */
-
-    /* 구조 그림 (인라인 SVG) — CSS 상자(div) 대신 SVG인 이유:
-       인쇄에서 reveal이 모든 div를 display:block으로 리셋해 flex 배치가 무너지지만
-       svg는 배치가 보존된다. 좌표는 viewBox로 고정되어 글자를 키워도 폭이 안 넘친다.
-       색은 전부 currentColor — 기본 #dedede, 위계는 .dim/.bright 두 클래스로만.
-       뜻을 나르는 선·테두리는 #9aa0a6 이상만 쓸 것 (#2a2b2a는 대비 1.36:1 — 장식 전용). */
-    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
-    .reveal .diag .dim { color: #9aa0a6; }
-    .reveal .diag .bright { color: #fcfcfb; }
-    .reveal .diag text { font-family: inherit; }
-    /* SVG 내부 요소에 CSS transform(모핑·fragment 등장)이 먹으려면 필수 */
-    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
-    /* 그림마다 낭독기용 전체 설명을 이 클래스의 문단으로 바로 앞에 둘 것 (조각내지 말 것) */
-    .reveal .visually-hidden {
-      position: absolute;
-      width: 1px; height: 1px;
-      margin: -1px; padding: 0; border: 0;
-      overflow: hidden; clip-path: inset(50%);
-    }
-
-    /* 리허설 조망(Esc): 코어가 미공개 fragment의 visibility를 숨긴 채 두어
-       빈칸으로 보인다 — 조망을 넘침 검사 도구로 쓰므로 보정한다.
-       주의: 발표 중 Esc를 누르면 미공개 내용도 청중에게 보인다. */
-    .reveal.overview .slides section .fragment { visibility: visible; }
-
-    /* 움직임 줄이기: 장식·전환 전부 정지 (새 덱마다 이 블록을 유지할 것)
-       마지막 줄: 모핑(auto-animate)의 주입 스타일은 !important라 * 규칙을 이긴다 —
-       같은 !important에 더 높은 특이성으로 눌러야 실제로 멈춘다. */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        transition-delay: 0s !important;
-      }
-      #galaxy-3d-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.15;
-    }
-      .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
-    }
-
-    /* 인쇄 방어 — 별·우주선은 종이에 찍지 않는다.
-       !important인 이유: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로
-       이겨 우주선이 흰 종이에 흰 얼룩으로 찍힌다. 모핑이 남긴 주입 스타일도 !important라
-       색 되돌림 규칙에도 !important가 필요하다.
-       SVG 그림을 currentColor로만 그리면 아래 svg 한 규칙로 검정 되돌림이 끝난다.
-       직접 만든 도형(div/span)이 있는 덱은 여기에 html:not(.print-pdf) 조건으로
-       색 되돌림 규칙을 추가할 것 (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
-    @media print {
-      html:not(.print-pdf) .reveal svg,
-      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
-      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
-      #galaxy-3d-bg,
-    }
-  
-    
-    /* 로켓 랩 폰트 테마 (모든 텍스트 Montserrat 통일, 단 애니메이션 제외) */
-    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
-      font-family: 'Montserrat', sans-serif !important;
-    }
-    
-    /* HUD UI CSS 복사 */
-    :root {
-      --hud-inset: 2em;
-      --hairline: #2a2b2a;
-      --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      --dim: #9aa0a6;
-      --bg: #0e0e0e;
-    }
-    .hud {
-      position: fixed;
-      inset: var(--hud-inset);
-      border: 2px solid var(--hairline);
-      pointer-events: none;
-      z-index: 1000; /* 슬라이드 위로 올라오게 */
-    }
-    .hud::before,
-    .hud::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background-image: repeating-linear-gradient(
-        to right,
-        var(--hairline) 0,
-        var(--hairline) 1px,
-        transparent 1px,
-        transparent 48px
-      );
-    }
-    .hud::before { top: 0; }
-    .hud::after { bottom: 0; }
-    
-    .hud-corner {
-      position: absolute;
-      font-family: var(--font-mono);
-      font-size: 0.5625rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--dim);
-      background: var(--bg);
-      padding: 0 6px;
-    }
-    .hud-tl { top: -0.5em; left: 14px; }
-    .hud-tr { top: -0.5em; right: 14px; }
-    .hud-bl { bottom: -0.5em; left: 14px; }
-    .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
-    
-    @media (max-width: 640px) {
-      :root { --hud-inset: 10px; }
-      .hud-bl { display: none; }
-    }
-
-  
-    /* 로켓 랩 커버 테마 */
-    .reveal .slides > section:first-of-type h1 {
-      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
-    }
-    .reveal .slides > section:first-of-type .eyebrow {
-      color: rgba(0, 255, 255, 0.85) !important;
-      letter-spacing: 0.15em !important;
-      font-weight: 500 !important;
-    }
-
-  
 /* --- CDS STYLES --- */
+
+    /* 이 덱 고유: 은하 배경 감쇄 (공통 기본은 감쇄 없음) */
+    #galaxy-3d-bg { opacity: 0.15; }
+    /* 이 덱 고유: 우주선 장식은 종이에 흰 얼룩으로 찍히므로 인쇄 제외 */
+    @media print { .spaceship-container { display: none !important; } }
 
     html { background: #0e0e0e; color-scheme: dark; }
     
@@ -448,18 +252,7 @@
     
   
 
-    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
-    .reveal .slides section {
-      max-height: 700px !important;
-      box-sizing: border-box;
-      overflow-y: auto !important;
-      overflow-x: hidden;
-    }
-    .reveal pre {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-</style>
+    </style>
 </head>
 <body>
   <div class="hud" aria-hidden="true">
@@ -776,7 +569,7 @@
           RETURN TO LANDING PAGE
         </a>
         
-        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <!-- 행성 아크 (Cyan/Teal) -->
         <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
           <svg viewBox="0 0 800 400" width="800" height="400">
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
@@ -785,7 +578,7 @@
           </svg>
         </div>
         
-        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <!-- 우주선 & 불꽃 애니메이션 -->
         <div class="spaceship-container">
           <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
             <polygon points="20,10 0,50 10,50" fill="#dedede" />
@@ -798,14 +591,10 @@
         </div>
       </section>
 
-</div>
-</div>
-      </section>
-
       <section>
-        <h3>諛⑸쾿濡?1: MCP Server 湲곕컲 ?듭젣??/h3>
-        <p class="visually-hidden">?ㅽ뵾?ㅻ쭩??LLM??Harness瑜?嫄곗퀜 VWP留앹쓽 MCP ?쒕쾭瑜??듯빐 ?뚯씪 ?쒖뒪?쒖뿉 ?쒗븳?곸쑝濡??묎렐?섎뒗 援ъ“.</p>
-        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?1 ?ㅼ씠?닿렇??>
+        <h3>방법론 1: MCP Server 기반 통제형</h3>
+        <p class="visually-hidden">오피스망의 LLM이 Harness를 거쳐 VWP망의 MCP 서버를 통해 파일 시스템에 제한적으로 접근하는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 1 다이어그램">
           <!-- Backgrounds -->
           <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
           <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
@@ -835,13 +624,13 @@
           <path d="M 370 160 L 520 160" class="line-flow-anim" />
           <path d="M 640 160 L 720 160" class="line-flow-anim" />
         </svg>
-        <p class="small" style="color:#00ff00;">?μ젏: Harness媛 ?꾪뿕???붿껌???꾪꽣留곹븯怨??듭젣??</p>
+        <p class="small" style="color:#00ff00;">장점: Harness가 위험한 요청을 필터링하고 통제함.</p>
       </section>
 
       <section>
-        <h3>諛⑸쾿濡?2: S3 Server 湲곕컲 ?고쉶??/h3>
-        <p class="visually-hidden">?ㅽ뵾?ㅻ쭩??Docker媛 S3瑜??듯빐 VWP留앹쓽 ?뚯씪 ?쒖뒪?쒖쓣 Read-Only濡??밴꺼????ㅽ뻾?섎뒗 援ъ“.</p>
-        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?2 ?ㅼ씠?닿렇??>
+        <h3>방법론 2: S3 Server 기반 우회형</h3>
+        <p class="visually-hidden">오피스망의 Docker가 S3를 통해 VWP망의 파일 시스템을 Read-Only로 넘겨받아 실행하는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 2 다이어그램">
           <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
           <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
           
@@ -868,18 +657,18 @@
           <path d="M 370 160 L 520 160" class="line-flow-anim" />
           <path d="M 640 160 L 720 160" class="line-flow-anim" />
           
-          <text x="450" y="190" text-anchor="middle" class="node-subtext" fill="#ffbb00">Read-Only (?ㅻ툕?앺듃 留덉슫??</text>
+          <text x="450" y="190" text-anchor="middle" class="node-subtext" fill="#ffbb00">Read-Only (오브젝트 마운트)</text>
         </svg>
-        <p class="small" style="color:#ffbb00;">?μ젏: 臾쇰━?곸쑝濡?VWP留앹뿉 ????ㅽ뻾(Execute) 肄붾뱶媛 ?섏뼱媛吏 ?딆쓬.</p>
+        <p class="small" style="color:#ffbb00;">장점: 물리적으로 VWP망에 쓰기/실행(Execute) 코드가 넘어가지 않음.</p>
       </section>
 
       <section>
-        <h3>諛⑸쾿濡?3: VWP留??댁옱??(?꾩쟾 寃⑸━??</h3>
-        <p class="visually-hidden">紐⑤뱺 ?명봽??LLM, Docker)瑜?VWP留??대???諛곗튂?섏뿬 留앹쓣 ?섏뼱媛??꾩슂媛 ?녿뒗 援ъ“.</p>
-        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="諛⑸쾿濡?3 ?ㅼ씠?닿렇??>
+        <h3>방법론 3: VWP망 내재화 (완전 격리형)</h3>
+        <p class="visually-hidden">모든 인프라(LLM, Docker)를 VWP망 내부에 배치하여 망을 넘어갈 필요가 없는 구조.</p>
+        <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 3 다이어그램">
           <rect x="10" y="20" width="200" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
           <text x="110" y="50" class="node-text" fill="#00ffff">Office Network</text>
-          <text x="110" y="160" class="node-subtext" fill="#9aa0a6">(?ъ슜 ?덊븿)</text>
+          <text x="110" y="160" class="node-subtext" fill="#9aa0a6">(사용 안함)</text>
           
           <rect x="230" y="20" width="660" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
           <text x="560" y="50" class="node-text" fill="#ff4444">VWP Network</text>
@@ -899,23 +688,23 @@
           <path d="M 420 160 L 520 160" class="line-flow-anim" />
           <path d="M 640 160 L 740 160" class="line-flow-anim" />
         </svg>
-        <p class="small" style="color:#ff4444;">?μ젏: 諛⑺솕踰쎌쓣 ?듦낵?섏? ?딆쑝誘濡?留??곕룞 吏??Latency) ?쒕줈.</p>
+        <p class="small" style="color:#ff4444;">장점: 방화벽을 통과하지 않으므로 망 연동 지연(Latency) 제로.</p>
       </section>
 
       <section>
-        <h2>?ν썑 怨쇱젣: ?깅뒫 諛?蹂댁븞 ?뚯뒪??/h2>
+        <h2>향후 과제: 성능 및 보안 테스트</h2>
         <div style="display: flex; gap: 10px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">?깅뒫 痢≪젙 (Latency)</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">留앹쓣 嫄곗튂??諛⑺솕踰?寃??諛?Agentic Loop 諛섎났???곕Ⅸ ?묐떟 ?띾룄 吏?곗쑉 鍮꾧탳</p>
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">성능 측정 (Latency)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">망을 거치는 방화벽 검사 및 Agentic Loop 반복에 따른 응답 속도 지연율 비교</p>
           </div>
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">蹂댁븞??(Isolation)</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">留?遺꾨━ 洹쒖젙 以???щ? 諛??ㅽ뻾 肄붾뱶媛 ?대?留앹쑝濡?二쇱엯?????덈뒗 痍⑥빟???먭?</p>
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">보안성 (Isolation)</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">망 분리 규정 준수 여부 및 실행 코드가 내부망으로 주입될 수 있는 취약점 점검</p>
           </div>
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">AI 異붾줎 ?덉쭏</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">蹂듭옟???꾪궎?띿쿂 ?섍꼍?먯꽌??Context瑜??⑥쟾???좎??섎ŉ ?ㅺ퀎 ?뚯씪??遺꾩꽍?대궡?붿? ?뺤씤</p>
+            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">AI 추론 품질</h4>
+            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">복잡한 아키텍처 환경에서도 Context를 온전히 유지하며 설계 파일을 분석해내는지 확인</p>
           </div>
         </div>
       </section>
@@ -926,7 +715,7 @@
           RETURN TO LANDING PAGE
         </a>
         
-        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <!-- 행성 아크 (Cyan/Teal) -->
         <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
           <svg viewBox="0 0 800 400" width="800" height="400">
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
@@ -935,7 +724,7 @@
           </svg>
         </div>
         
-        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <!-- 우주선 & 불꽃 애니메이션 -->
         <div class="spaceship-container">
           <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
             <polygon points="20,10 0,50 10,50" fill="#dedede" />
@@ -948,29 +737,30 @@
         </div>
       </section>
 
-</div>
-</div>
+      <section>
+        <h3 style="color: #ffbb00; font-size: 1.2em;">2차 방어: Payload Compression</h3>
+        <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding-top: 10px;">
             <p style="font-size: 18px; line-height: 1.6;">
-              ?щ궡 紐⑤뜽? 泥섎━ 媛?ν븳 而⑦뀓?ㅽ듃 湲몄씠媛 吏㏃븘 <strong>Context Overflow</strong>??痍⑥빟?⑸땲??<br><br>
-              <strong>API Server</strong>??留??곕룞 諛⑺솕踰쎌쓣 ?듦낵???먮낯 ?곗씠?곕? 媛濡쒖콈 ?듭떖 ?먮윭留??꾪꽣留?Payload Compression)?섏뿬 ?ㅽ뵂?뚯뒪 紐⑤뜽???꾨떖?⑸땲??
+              사내 모델은 처리 가능한 컨텍스트 길이가 짧아 <strong>Context Overflow</strong>에 취약합니다.<br><br>
+              <strong>API Server</strong>는 망 연동 방화벽을 통과한 원본 데이터를 가로채 핵심 에러만 필터링(Payload Compression)하여 오픈소스 모델에 전달합니다.
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h3>3李?諛⑹뼱: 臾쇰━???뚮뱶諛뺤뒪</h3>
-        <p class="visually-hidden">洹몃┝ ?ㅻ챸: 蹂댄샇 ????붾젆?좊━??Read-Only(RO)濡??곌껐?섍퀬, ?묒뾽 ????붾젆?좊━留?Read-Write(RW)濡??곌껐?섏뿬 ?뚯씪 ?먯긽??臾쇰━?곸쑝濡?李⑤떒?⑸땲??</p>
-        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Docker 而⑦뀒?대꼫瑜??쒖슜??VWP留??대? Read-Only 留덉슫??>
+        <h3>3차 방어: 물리적 샌드박스</h3>
+        <p class="visually-hidden">그림 설명: 보호 대상 디렉토리는 Read-Only(RO)로 연결하고, 작업 대상 디렉토리만 Read-Write(RW)로 연결하여 파일 손상을 물리적으로 차단합니다.</p>
+        <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Docker 컨테이너를 활용한 VWP망 내부 Read-Only 마운트">
           <!-- Host -->
           <g>
             <text x="250" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="dim">Host (VWP Network)</text>
             <rect x="100" y="70" width="300" height="80" rx="8" fill="none" stroke="#9aa0a6" stroke-width="2"/>
-            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">蹂댄샇 ????붾젆?좊━ (DB/?뚯뒪)</text>
+            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">보호 대상 디렉토리 (DB/소스)</text>
             
             <rect x="100" y="190" width="300" height="80" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">?꾩떆 ?묒뾽 ?붾젆?좊━</text>
+            <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">임시 작업 디렉토리</text>
           </g>
 
           <!-- Arrows -->
@@ -993,21 +783,21 @@
             <text x="700" y="65" text-anchor="middle" font-size="24" font-weight="600" fill="#fcfcfb">Docker Container</text>
             
             <rect x="590" y="90" width="220" height="40" rx="4" fill="none" stroke="#9aa0a6" stroke-width="1"/>
-            <text x="700" y="117" text-anchor="middle" font-size="18" fill="#9aa0a6">?쎄린 ?꾩슜 留덉슫??/text>
+            <text x="700" y="117" text-anchor="middle" font-size="18" fill="#9aa0a6">읽기 전용 마운트</text>
             
             <rect x="590" y="210" width="220" height="40" rx="4" fill="none" stroke="#fcfcfb" stroke-width="1"/>
-            <text x="700" y="237" text-anchor="middle" font-size="18" fill="#fcfcfb">?쎄린/?곌린 留덉슫??/text>
+            <text x="700" y="237" text-anchor="middle" font-size="18" fill="#fcfcfb">읽기/쓰기 마운트</text>
           </g>
         </svg>
       </section>
 
       <section>
         <h2>Agentic Loop </h2>
-        <h3 style="color: #ffbb00; font-size: 1.2em;">?앸궡 ?듭쓣 李얠븘?대뒗 ?ㅻ룞??蹂듦뎄 怨쇱젙</h3>
+        <h3 style="color: #ffbb00; font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
           <text x="400" y="50" class="node-text" fill="#ffbb00" font-size="18">
             <animate attributeName="opacity" values="0;1;1;1;1;0" keyTimes="0;0.05;0.25;0.45;0.65;1" dur="8s" repeatCount="indefinite" />
-            <tspan>?ㅻ쪟 諛쒖깮 ??Harness 李⑤떒 ???ъ텛濡???VWP留?議고쉶 (諛섎났)</tspan>
+            <tspan>오류 발생 → Harness 차단 → 재추론 → VWP망 조회 (반복)</tspan>
           </text>
           
           <rect x="10" y="80" width="460" height="270" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
@@ -1030,29 +820,29 @@
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-1" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-ping" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
-          <text x="160" y="160" class="node-text result-multi-text" fill="#00ff00" font-size="14">理쒖쥌 寃곌낵 Output!</text>
+          <text x="160" y="160" class="node-text result-multi-text" fill="#00ff00" font-size="14">최종 결과 Output!</text>
         </svg>
       </section>
 
       <section data-auto-animate>
-        <h3>寃곕줎: ?덉쟾???ㅺ퀎 ?먮룞???뚯씠?꾨씪??/h3>
-        <p class="visually-hidden">硫띿껌???щ궡 紐⑤뜽?????꾪궎?띿쿂 ?꾩뿉?쒕뒗 ?덉쟾?섍퀬 ?먮룞?쇰줈 ?꾨Т瑜??섑뻾?⑸땲??</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="?뚯씠?꾨씪???꾩껜 援ъ“ ?붿빟">
+        <h3>결론: 안전한 설계 자동화 파이프라인</h3>
+        <p class="visually-hidden">멍청한 사내 모델도 이 아키텍처 위에서는 안전하고 자동으로 임무를 수행합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="파이프라인 전체 구조 요약">
           <g data-id="step1">
             <circle cx="150" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="150" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">1 VWP ???ㅽ뻾</text>
+            <text x="150" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">1 VWP 내 실행</text>
           </g>
           <line data-id="line1" x1="225" y1="150" x2="375" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
           
           <g data-id="step2">
             <circle cx="450" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="450" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">2 ?먮윭 ?먮룞 蹂듦뎄</text>
+            <text x="450" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">2 에러 자동 복구</text>
           </g>
           <line data-id="line2" x1="525" y1="150" x2="675" y2="150" stroke="currentColor" stroke-width="2" class="bright"/>
 
           <g data-id="step3">
             <circle cx="750" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
-            <text x="750" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">3 理쒖쥌 寃곌낵 ?꾩텧</text>
+            <text x="750" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">3 최종 결과 도출</text>
           </g>
         </svg>
       </section>
@@ -1063,7 +853,7 @@
           RETURN TO LANDING PAGE
         </a>
         
-        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <!-- 행성 아크 (Cyan/Teal) -->
         <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
           <svg viewBox="0 0 800 400" width="800" height="400">
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
@@ -1072,7 +862,7 @@
           </svg>
         </div>
         
-        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <!-- 우주선 & 불꽃 애니메이션 -->
         <div class="spaceship-container">
           <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
             <polygon points="20,10 0,50 10,50" fill="#dedede" />
@@ -1085,33 +875,28 @@
         </div>
       </section>
 
-</div>
-</div>
-        </div>
-      </section>
-
 <section>
         <h2>Issue 1: Hallucination</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em;">CodeMate LLM??移섎챸???ㅼ옉???щ?</h3>
+        <h3 style="color: #ff4444; font-size: 1.2em;">CodeMate LLM의 치명적 오작동 사례</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding: 20px;">
             <p style="font-size: 18px; line-height: 1.6;">
-              ?щ궡 ?곸슜 紐⑤뜽(CodeMate)??異붾줎 ?λ젰 遺議깆쑝濡??명빐, 議댁옱?섏? ?딅뒗 ?댁쓣 ?몄텧?섍굅???꾩닔 ?몄옄(Parameter)瑜?鍮쇰㉨??JSON ?ㅻ쪟媛 留ㅼ슦 ??뒿?덈떎.<br><br>
-              ?대줈 ?명빐 ?ъ슜?먮뒗 ?ㅻ쪟 硫붿떆吏瑜?諛섎났?댁꽌 遊먯빞 ?섎뒗 遺덊렪?⑥쓣 寃り쾶 ?섎ŉ, Harness??JSON ?뚯떛(Auto-Retry) 遺?댁씠 洹밸룄濡?媛以묐맗?덈떎.
+              사내 적용 모델(CodeMate)는 추론 능력 부족으로 인해, 존재하지 않는 툴을 호출하거나 필수 인자(Parameter)를 빼먹는 JSON 오류가 매우 잦습니다.<br><br>
+              이로 인해 사용자는 오류 메시지를 반복해서 봐야 하는 불편함을 겪게 되며, Harness의 JSON 파싱(Auto-Retry) 부담이 극도로 가중됩니다.
             </p>
           </div>
           <div style="flex: 1;">
             <div class="code-snippet">
-<span class="code-green">// ?덉긽?섎뒗 ?щ컮瑜?MCP ???몄텧</span>
+<span class="code-green">// 예상하는 올바른 MCP 툴 호출</span>
 {
   <span class="code-blue">"tool"</span>: <span class="code-yellow">"vwp_search_logs"</span>,
   <span class="code-blue">"args"</span>: { <span class="code-blue">"query"</span>: <span class="code-yellow">"error"</span> }
 }
 
-<span class="code-red">// ?ㅼ젣 CodeMate媛 諭됱뼱?대뒗 ?좊（?쒕꽕?댁뀡 ?덉떆</span>
+<span class="code-red">// 실제 CodeMate가 뱉어내는 할루시네이션 예시</span>
 {
   <span class="code-blue">"tool"</span>: <span class="code-yellow">"search_db_which_doesnt_exist"</span>,
-  <span class="code-blue">"arguments"</span>: <span class="code-yellow">"error"</span> <span class="code-green">// Object媛 ?꾨땶 String 諛섑솚</span>
+  <span class="code-blue">"arguments"</span>: <span class="code-yellow">"error"</span> <span class="code-green">// Object가 아닌 String 반환</span>
 }
             </div>
           </div>
@@ -1120,9 +905,9 @@
 
 <section>
         <h2>Issue 2: Latency</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em; margin-bottom: 5px;">留?遺꾨━? 諛섎났 ?몄텧????/h3>
+        <h3 style="color: #ff4444; font-size: 1.2em; margin-bottom: 5px;">망 분리와 반복 호출의 늪</h3>
         <div style="margin-top: 10px; text-align: center;">
-          <p style="font-size: 16px; color: #dedede; margin-bottom: 5px;">Agentic Loop 1???숈옉 ???뚯슂?섎뒗 ??꾨씪??(?뺣났)</p>
+          <p style="font-size: 16px; color: #dedede; margin-bottom: 5px;">Agentic Loop 1회 동작 시 소요되는 타임라인 (왕복)</p>
           <div style="margin: 10px auto; width: 90%; background: #222; border-radius: 10px; padding: 15px; box-shadow: inset 0 0 10px #000;">
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
               <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ff00; font-size: 14px;">LLM 異붾줎</div>
@@ -1130,28 +915,28 @@
               <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(2,000ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ffbb00; font-size: 14px;">API Server 由대젅??/div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ffbb00; font-size: 14px;">API Server 릴레이</div>
               <div style="width: 10%; height: 15px; background: #ffbb00; border-radius: 4px;"></div>
               <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(500ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ff0055; font-size: 14px;">留??곕룞 諛⑺솕踰?/div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ff0055; font-size: 14px;">망 연동 방화벽</div>
               <div style="width: 15%; height: 15px; background: #ff0055; border-radius: 4px;"></div>
               <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(800ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ffff; font-size: 14px;">MCP Server 泥섎━</div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ffff; font-size: 14px;">MCP Server 처리</div>
               <div style="width: 40%; height: 15px; background: #00ffff; border-radius: 4px;"></div>
               <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(3,000ms)</div>
             </div>
           </div>
-          <p style="font-size: 16px; color: #ff4444; font-weight: bold; margin-top: 10px;">珥?6.3珥??뚯슂. 留뚯빟 5踰덉쓽 Loop瑜??뚮㈃ 30珥??댁긽???쒕젅??諛쒖깮!</p>
+          <p style="font-size: 16px; color: #ff4444; font-weight: bold; margin-top: 10px;">총 6.3초 소요. 만약 5번의 Loop를 돌면 30초 이상의 딜레이 발생!</p>
         </div>
       </section>
 
 <section>
         <h2>Issue 3: Context Overflow</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em;">諛⑸???VWP留??곗씠???먮낯 ??꺽</h3>
+        <h3 style="color: #ff4444; font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1;">
             <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: #888;">
@@ -1167,8 +952,8 @@
           </div>
           <div style="flex: 1; padding: 10px;">
             <p style="font-size: 18px; line-height: 1.6;">
-              VWP留앹쓽 濡쒓렇 ?뚯씪?대굹 DB ?덉퐫??荑쇰━ ?? ?꾪꽣留곷릺吏 ?딆? ?먮낯 ?곗씠??Raw Data)媛 ??踰덉뿉 ?잛븘???ㅼ뼱?듬땲??<br><br>
-              ?대줈 ?명빐 LLM??而⑦뀓?ㅽ듃 ?덈룄?곌? 利됱떆 媛??李④쾶 ?섎ŉ, ?댁쟾 ????댁슜(Memory)留덉? 吏?뚯??????李몄궗媛 諛쒖깮?⑸땲??
+              VWP망의 로그 파일이나 DB 레코드 쿼리 시, 필터링되지 않은 원본 데이터(Raw Data)가 한 번에 쏟아져 들어옵니다.<br><br>
+              이로 인해 LLM의 컨텍스트 한도량이 즉시 가득 차게 되며, 이전 대화 내용(Memory)마저 지워지는 참사가 발생합니다.
             </p>
           </div>
         </div>
@@ -1181,20 +966,20 @@
           <div class="hud-box" style="width: 250px; text-align: center;">
             <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Schema Auto-Retry</h4>
             <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
-              Harness 怨꾩링?먯꽌 ?꾧꺽?섍쾶 JSON???뚯떛?섍퀬, ?섎せ???몄텧? LLM?먭쾶 利됯컖 ?ъ떆??吏??            </p>
+              Harness 계층에서 엄격하게 JSON을 파싱하고, 잘못된 호출은 LLM에게 즉각 재시도 지시             </p>
           </div>
           
           <div class="hud-box" style="width: 250px; text-align: center;">
             <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Payload Compression</h4>
             <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
-              API Server?⑥뿉??遺덊븘?뷀븳 濡쒓렇 ?꾨뱶瑜??섎씪?닿퀬 ?붿빟?섏뿬 而⑦뀓?ㅽ듃 蹂댄샇
+              API Server단에서 불필요한 로그 필드를 잘라내고 요약하여 컨텍스트 보호
             </p>
           </div>
           
           <div class="hud-box" style="width: 250px; text-align: center;">
             <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Safe Whitelisting</h4>
             <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
-              VWP留앹쓽 ?곗씠???먯긽??留됯린 ?꾪빐 MCP Server?먯꽌 Read-only 湲곕뒫留??몄텧
+              VWP망의 데이터 손상을 막기 위해 MCP Server에서 Read-only 기능만 호출
             </p>
           </div>
           
@@ -1207,25 +992,25 @@
           RETURN TO LANDING PAGE
         </a>
         
-        <!-- ?됱꽦 ?꾪겕 (Cyan/Teal) -->
+        <!-- 행성 아크 (Cyan/Teal) -->
         <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
           <svg viewBox="0 0 800 400" width="800" height="400">
-            <!-- ?됱꽦 ?쒕㈃ 諛쒓킅 諛?踰좎씠??-->
+            <!-- 행성 표면 발광 및 베이스 -->
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
             <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
           </svg>
         </div>
         
-        <!-- ?곗＜??& 遺덇퐙 ?좊땲硫붿씠??-->
+        <!-- 우주선 & 불꽃 애니메이션 -->
         <div class="spaceship-container">
           <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
-            <!-- ?좉컻 -->
+            <!-- 날개 -->
             <polygon points="20,10 0,50 10,50" fill="#dedede" />
             <polygon points="20,10 40,50 30,50" fill="#dedede" />
-            <!-- ?숈껜 -->
+            <!-- 동체 -->
             <polygon points="20,0 10,40 30,40" fill="#ffffff" />
-            <!-- ?붿쭊 ?몄쫹 -->
+            <!-- 엔진 노즐 -->
             <rect x="15" y="40" width="10" height="8" fill="#888" />
             <!-- 李쎈Ц -->
             <circle cx="20" cy="25" r="4" fill="#00ffff" />
@@ -1237,13 +1022,13 @@
   </div>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
-  <script src="../../slides/shared/code-copy.js"></script>
+  <script src="../shared/code-copy.js"></script>
   <script>
     Reveal.initialize({
       hash: true,
       transition: "fade",
-      // ?꾩슜 ?몄뇙 二쇱냼(?view=print)?먯꽌 fragment ?④퀎留덈떎 履쎌씠 蹂듭젣?섎뒗 寃껋쓣
-      // 留됰뒗?????λ떦 1履?紐⑤뱺 ?④퀎 ?쒖떆)?쇰줈 怨좎젙. ?쇰컲 ?몄뇙(Ctrl+P)??臾닿?.
+      // 전용 인쇄 주소(?view=print)에서 fragment 단계마다 쪽이 복제되는 것을
+      // 막는다 — 장당 1쪽(모든 단계 표시)으로 고정. 일반 인쇄(Ctrl+P)는 무관.
       pdfSeparateFragments: false
     });
   </script>

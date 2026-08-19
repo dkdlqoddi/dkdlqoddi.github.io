@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Python Automation: DX vs AX</title>
-  <meta name="description" content="Python 자동화의 진화: 규칙 기반 DX에서 LLM 기반 AX로의 전환 및 사내 LLM 연동 패턴">
+  <meta name="description" content="Python 자동화의 진화: 규칙 기반(DX)에서 LLM 기반(AX)으로 — 파이프라인의 진화와 사내 LLM 연동 4가지 방법">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0e0e0e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
@@ -14,184 +14,13 @@
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
   <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="../../slides/shared/code-copy.css">
+  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
+    /* 공통 규칙은 ../shared/deck-base.css에 있다. 여기는 이 덱 고유 스타일만. */
     html { background: #0e0e0e; color-scheme: dark; }
-
-    html:root {
-      --primary: #fcfcfb;
-      --secondary: #9aa0a6;
-      --accent: #00dddd;
-      --r-background: #0e0e0e;
-      --r-background-color: #0e0e0e;
-      --r-main-color: #dedede;
-      --r-heading-color: #fcfcfb;
-      --r-heading-font-weight: 600;
-      --r-heading-letter-spacing: -0.025em;
-      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-link-color: var(--primary);
-      --r-link-color-hover: var(--secondary);
-      --r-link-color-dark: #9aa0a6;
-      --r-selection-background-color: var(--primary);
-      --r-selection-color: #fcfcfb;
-    }
-
-    .reveal {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      word-break: keep-all;
-      overflow-wrap: anywhere;
-    }
-
-    .reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
-
-    @media (prefers-reduced-motion: no-preference) {
-      @view-transition { navigation: auto; }
-    }
-
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
-
-    .reveal .kbd {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      border: 1px solid currentColor;
-      border-radius: 6px;
-      padding: 0.05em 0.4em;
-    }
-    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; font-size: 0.58em; }
-    .reveal pre code { background: rgba(20, 20, 20, 0.6); padding: 0.8em 1em; display: block; border-radius: 4px; }
-    .reveal .small { font-size: 0.6em; }
-    .reveal .eyebrow {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.58em;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9aa0a6;
-    }
-
-    #galaxy-3d-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
-    .reveal .diag .dim { color: #9aa0a6; }
-    .reveal .diag .bright { color: #fcfcfb; }
-    .reveal .diag text { font-family: inherit; }
-    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
-    .reveal .visually-hidden {
-      position: absolute;
-      width: 1px; height: 1px;
-      margin: -1px; padding: 0; border: 0;
-      overflow: hidden; clip-path: inset(50%);
-    }
-
-    .reveal.overview .slides section .fragment { visibility: visible; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        transition-delay: 0s !important;
-      }
-      #galaxy-3d-bg { opacity: 0.05; }
-      .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
-    }
-
-    @media print {
-      html:not(.print-pdf) .reveal svg,
-      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
-      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
-      #galaxy-3d-bg { display: none !important; }
-    }
-
-    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
-      font-family: 'Montserrat', sans-serif !important;
-    }
-
-    :root {
-      --hud-inset: 2em;
-      --hairline: #2a2b2a;
-      --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      --dim: #9aa0a6;
-      --bg: #0e0e0e;
-    }
-    .hud {
-      position: fixed;
-      inset: var(--hud-inset);
-      border: 2px solid var(--hairline);
-      pointer-events: none;
-      z-index: 1000;
-    }
-    .hud::before,
-    .hud::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background-image: repeating-linear-gradient(
-        to right,
-        var(--hairline) 0,
-        var(--hairline) 1px,
-        transparent 1px,
-        transparent 48px
-      );
-    }
-    .hud::before { top: 0; }
-    .hud::after { bottom: 0; }
-
-    .hud-corner {
-      position: absolute;
-      font-family: var(--font-mono);
-      font-size: 0.5625rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--dim);
-      background: var(--bg);
-      padding: 0 6px;
-    }
-    .hud-tl { top: -0.5em; left: 14px; }
-    .hud-tr { top: -0.5em; right: 14px; }
-    .hud-bl { bottom: -0.5em; left: 14px; }
-    .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
-
-    @media (max-width: 640px) {
-      :root { --hud-inset: 10px; }
-      .hud-bl { display: none; }
-    }
-
-    .reveal .slides > section:first-of-type h2 {
-      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
-    }
-    .reveal .slides > section:first-of-type .eyebrow {
-      color: rgba(0, 255, 255, 0.85) !important;
-      letter-spacing: 0.15em !important;
-      font-weight: 500 !important;
-    }
-
-    /* 코드 슬라이드 위 아키텍처 미니 다이어그램 */
-    .reveal svg.mini-diag { display: block; width: 80%; margin: 0 auto 0.3em; color: #dedede; }
-  
-    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
-    .reveal .slides section {
-      max-height: 700px !important;
-      box-sizing: border-box;
-      overflow-y: auto !important;
-      overflow-x: hidden;
-    }
-    .reveal pre {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-</style>
+  </style>
 </head>
 <body>
   <div class="hud" aria-hidden="true">
@@ -206,7 +35,7 @@
   <div class="reveal">
     <div class="slides">
 
-      <!-- ═══════════════════ 표지 ═══════════════════ -->
+      <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
       <section>
         <p class="eyebrow">DKDLQODDI · PYTHON AUTOMATION</p>
         <h2>DX vs AX</h2>
@@ -214,478 +43,415 @@
         <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
       </section>
 
-      <!-- ═══════════════════ 1. DX / AX 개념 정의 ═══════════════════ -->
+      <!-- ═══════════════════ 2. 용어 정립 ═══════════════════ -->
       <section>
-        <h3>DX와 AX: 무엇이 다른가</h3>
-        <p class="visually-hidden">그림 설명: 왼쪽에 DX(디지털 전환)의 4가지 특성, 오른쪽에 AX(AI 전환)의 4가지 특성이 나열되고, 가운데 화살표로 진화 방향을 표시합니다.</p>
-        <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="DX 특성 4가지와 AX 특성 4가지를 진화 화살표로 연결한 비교 그림" xmlns="http://www.w3.org/2000/svg">
+        <h3>DX와 AX</h3>
+        <p class="visually-hidden">그림 설명: 왼쪽에 디지털 전환(DX)의 특성 3가지, 오른쪽에 AI 전환(AX)의 특성 3가지가 상자로 나열되고, 가운데 화살표가 진화 방향을 표시합니다.</p>
+        <svg class="diag" viewBox="0 0 900 260" role="img" aria-label="DX 특성 3가지와 AX 특성 3가지를 진화 화살표로 연결한 비교 그림" xmlns="http://www.w3.org/2000/svg">
           <!-- DX 열 -->
-          <text x="165" y="28" text-anchor="middle" font-size="24" font-weight="700" fill="currentColor" class="bright">DX</text>
-          <text x="165" y="48" text-anchor="middle" font-size="13" fill="currentColor" class="dim">Digital Transformation</text>
-          <rect x="40" y="60" width="250" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="165" y="90" text-anchor="middle" font-size="17" fill="currentColor">규칙 기반 자동화</text>
-          <rect x="40" y="118" width="250" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="165" y="148" text-anchor="middle" font-size="17" fill="currentColor">결정론적 · 고정 로직</text>
-          <rect x="40" y="176" width="250" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="165" y="206" text-anchor="middle" font-size="17" fill="currentColor">정형 데이터 처리</text>
-          <rect x="40" y="234" width="250" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="165" y="264" text-anchor="middle" font-size="17" fill="currentColor">if/else 조건 분기</text>
+          <text x="165" y="30" text-anchor="middle" font-size="26" font-weight="700" fill="currentColor" class="bright">DX</text>
+          <text x="165" y="52" text-anchor="middle" font-size="13" fill="currentColor" class="dim">Digital Transformation · 디지털 전환</text>
+          <rect x="40" y="68" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="165" y="98" text-anchor="middle" font-size="17" fill="currentColor">규칙 기반 자동화</text>
+          <rect x="40" y="128" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="165" y="158" text-anchor="middle" font-size="17" fill="currentColor">결정론적 · 고정 로직</text>
+          <rect x="40" y="188" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="165" y="218" text-anchor="middle" font-size="17" fill="currentColor">정형 데이터 처리</text>
 
           <!-- 중앙 진화 화살표 -->
-          <line x1="340" y1="165" x2="540" y2="165" stroke="currentColor" stroke-width="2.5" class="dim"/>
-          <polygon points="555,165 540,157 540,173" fill="currentColor" class="dim"/>
-          <text x="450" y="150" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="dim">진화</text>
+          <line x1="340" y1="152" x2="540" y2="152" stroke="currentColor" stroke-width="2.5" class="dim"/>
+          <polygon points="555,152 540,144 540,160" fill="currentColor" class="dim"/>
+          <text x="450" y="137" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="dim">진화</text>
 
           <!-- AX 열 (fragment) -->
-          <g class="fragment fade-left">
-            <text x="735" y="28" text-anchor="middle" font-size="24" font-weight="700" fill="#00dddd">AX</text>
-            <text x="735" y="48" text-anchor="middle" font-size="13" fill="currentColor" class="dim">AI Transformation</text>
-            <rect x="610" y="60" width="250" height="46" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="735" y="90" text-anchor="middle" font-size="17" fill="#00dddd">LLM 추론 기반</text>
-            <rect x="610" y="118" width="250" height="46" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="735" y="148" text-anchor="middle" font-size="17" fill="#00dddd">적응형 · 동적 판단</text>
-            <rect x="610" y="176" width="250" height="46" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="735" y="206" text-anchor="middle" font-size="17" fill="#00dddd">비정형 데이터 처리</text>
-            <rect x="610" y="234" width="250" height="46" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="735" y="264" text-anchor="middle" font-size="17" fill="#00dddd">맥락 이해 · 자연어</text>
+          <g class="fragment fade-left accent">
+            <text x="735" y="30" text-anchor="middle" font-size="26" font-weight="700" fill="currentColor">AX</text>
+            <text x="735" y="52" text-anchor="middle" font-size="13" fill="currentColor" class="dim">AI Transformation · AI 전환</text>
+            <rect x="610" y="68" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="735" y="98" text-anchor="middle" font-size="17" fill="currentColor">LLM 추론 기반</text>
+            <rect x="610" y="128" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="735" y="158" text-anchor="middle" font-size="17" fill="currentColor">적응형 · 동적 판단</text>
+            <rect x="610" y="188" width="250" height="48" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="735" y="218" text-anchor="middle" font-size="17" fill="currentColor">비정형 · 자연어</text>
           </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 2. 일반 Automation vs LLM Automation ═══════════════════ -->
-      <section>
-        <h3>규칙 기반 vs LLM 기반 자동화</h3>
-        <p class="visually-hidden">그림 설명: 상단은 규칙 기반 자동화로 입력에서 조건 분기를 거쳐 처리하는 고정 흐름이고, 하단은 LLM 기반으로 입력을 LLM이 판단하여 유연하게 처리하는 흐름입니다.</p>
-        <svg class="diag" viewBox="0 0 900 340" role="img" aria-label="규칙 기반 자동화의 고정 분기 흐름과 LLM 기반 자동화의 유연한 판단 흐름을 비교하는 그림" xmlns="http://www.w3.org/2000/svg">
-          <!-- 상단: 규칙 기반 (DX) -->
-          <text x="40" y="25" font-size="15" font-weight="600" fill="currentColor" class="dim">규칙 기반 자동화</text>
-          <rect x="30" y="35" width="840" height="120" rx="10" fill="none" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="4,4"/>
+      <!-- ═══════════════════ 3. DX 파이프라인 (짝 전환 1/2) ═══════════════════ -->
+      <section data-auto-animate data-auto-animate-unmatched="false">
+        <h3>DX 자동화 파이프라인</h3>
+        <p class="visually-hidden">그림 설명: 데이터 수집, 규칙 분기, 고정 처리, 결과 출력 네 상자가 화살표로 일렬로 이어집니다. 클릭하면 규칙 분기 아래로 "규칙에 없는 입력은 실패"라는 약점 표시가 붉은색으로 나타납니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 자동화 선형 파이프라인과 예외 입력에 취약한 지점" xmlns="http://www.w3.org/2000/svg">
+          <g data-id="pipe-n1">
+            <rect x="30" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="115" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">데이터 수집</text>
+            <text x="115" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">정형 데이터</text>
+          </g>
+          <g data-id="pipe-a1">
+            <line x1="205" y1="105" x2="240" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="250,105 240,99 240,111" fill="currentColor" class="dim"/>
+          </g>
+          <g data-id="pipe-n2">
+            <rect x="255" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="340" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">규칙 분기</text>
+            <text x="340" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">if / else</text>
+          </g>
+          <g data-id="pipe-a2">
+            <line x1="430" y1="105" x2="465" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="475,105 465,99 465,111" fill="currentColor" class="dim"/>
+          </g>
+          <g data-id="pipe-n3">
+            <rect x="480" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="565" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">고정 처리</text>
+            <text x="565" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">하드코딩</text>
+          </g>
+          <g data-id="pipe-a3">
+            <line x1="655" y1="105" x2="690" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
+            <polygon points="700,105 690,99 690,111" fill="currentColor" class="dim"/>
+          </g>
+          <g data-id="pipe-n4">
+            <rect x="705" y="70" width="160" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="785" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">결과 출력</text>
+            <text x="785" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">고정 형식</text>
+          </g>
 
-          <rect x="50" y="60" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="110" y="92" text-anchor="middle" font-size="16" fill="currentColor">입력</text>
-          <line x1="175" y1="85" x2="215" y2="85" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="225,85 215,79 215,91" fill="currentColor" class="dim"/>
-
-          <!-- 다이아몬드 (조건) -->
-          <polygon points="300,55 370,85 300,115 230,85" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="300" y="90" text-anchor="middle" font-size="14" fill="currentColor">조건A?</text>
-
-          <line x1="370" y1="85" x2="410" y2="85" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="390" y="75" text-anchor="middle" font-size="12" fill="currentColor" class="dim">예</text>
-          <polygon points="420,85 410,79 410,91" fill="currentColor" class="dim"/>
-          <rect x="425" y="60" width="110" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="480" y="92" text-anchor="middle" font-size="16" fill="currentColor">처리A</text>
-
-          <line x1="300" y1="115" x2="300" y2="130" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="315" y="128" font-size="12" fill="currentColor" class="dim">아니오</text>
-
-          <line x1="540" y1="85" x2="580" y2="85" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="590,85 580,79 580,91" fill="currentColor" class="dim"/>
-          <rect x="595" y="60" width="110" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="650" y="92" text-anchor="middle" font-size="16" fill="currentColor" class="bright">결과</text>
-
-          <line x1="710" y1="85" x2="810" y2="85" stroke="#f05050" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <text x="770" y="75" font-size="12" fill="#f05050">예외 시 실패</text>
-          <line x1="800" y1="75" x2="820" y2="95" stroke="#f05050" stroke-width="2"/>
-          <line x1="820" y1="75" x2="800" y2="95" stroke="#f05050" stroke-width="2"/>
-
-          <!-- 하단: LLM 기반 (AX) — fragment -->
-          <g class="fragment fade-up">
-            <text x="40" y="195" font-size="15" font-weight="600" fill="#00dddd">LLM 기반 자동화</text>
-            <rect x="30" y="205" width="840" height="120" rx="10" fill="none" stroke="#00dddd" stroke-width="1.5"/>
-
-            <rect x="50" y="230" width="130" height="50" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="115" y="262" text-anchor="middle" font-size="16" fill="#00dddd">입력 (다양)</text>
-            <line x1="185" y1="255" x2="240" y2="255" stroke="#00dddd" stroke-width="2"/>
-            <polygon points="250,255 240,249 240,261" fill="#00dddd"/>
-
-            <rect x="255" y="225" width="170" height="60" rx="10" fill="none" stroke="#00dddd" stroke-width="2.5"/>
-            <text x="340" y="253" text-anchor="middle" font-size="18" font-weight="600" fill="#00dddd">LLM 판단</text>
-            <text x="340" y="273" text-anchor="middle" font-size="12" fill="currentColor" class="dim">맥락 이해 · 추론</text>
-
-            <line x1="430" y1="255" x2="490" y2="255" stroke="#00dddd" stroke-width="2"/>
-            <polygon points="500,255 490,249 490,261" fill="#00dddd"/>
-
-            <rect x="505" y="230" width="140" height="50" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="575" y="262" text-anchor="middle" font-size="16" fill="#00dddd">적절한 처리</text>
-
-            <line x1="650" y1="255" x2="710" y2="255" stroke="#00dddd" stroke-width="2"/>
-            <polygon points="720,255 710,249 710,261" fill="#00dddd"/>
-
-            <rect x="725" y="230" width="110" height="50" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="780" y="262" text-anchor="middle" font-size="16" fill="currentColor" class="bright">결과</text>
-
-            <!-- 피드백 루프 -->
-            <path d="M 780 280 L 780 310 L 340 310 L 340 290" fill="none" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <polygon points="340,285 334,295 346,295" fill="#00dddd"/>
-            <text x="560" y="306" text-anchor="middle" font-size="12" fill="currentColor" class="dim">피드백 · 자기 치유</text>
+          <!-- 약점: 예외 입력 (fragment) -->
+          <g class="fragment fade-up danger">
+            <line x1="340" y1="145" x2="340" y2="195" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <polygon points="340,203 334,193 346,193" fill="currentColor"/>
+            <rect x="230" y="208" width="220" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="340" y="230" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">규칙에 없는 입력?</text>
+            <text x="340" y="250" text-anchor="middle" font-size="14" fill="currentColor">✗ 실패</text>
+            <text x="640" y="238" text-anchor="middle" font-size="14" fill="currentColor">고정된 규칙은 예외에 취약</text>
           </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 3. DX Flow Chart ═══════════════════ -->
-      <section>
-        <h3>DX 자동화 흐름</h3>
-        <p class="visually-hidden">그림 설명: DX 자동화의 선형 파이프라인으로 데이터 수집, 규칙 분기, 고정 처리, 결과 출력 네 단계가 화살표로 이어집니다.</p>
-        <svg class="diag" viewBox="0 0 900 240" role="img" aria-label="DX 자동화 선형 파이프라인: 데이터 수집에서 결과 출력까지" xmlns="http://www.w3.org/2000/svg">
-          <rect x="30" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <text x="115" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">데이터 수집</text>
-          <text x="115" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">정형 데이터</text>
-          <line x1="205" y1="105" x2="240" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="250,105 240,99 240,111" fill="currentColor" class="dim"/>
-          <rect x="255" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <text x="340" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">규칙 분기</text>
-          <text x="340" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">if/else</text>
-          <line x1="430" y1="105" x2="465" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="475,105 465,99 465,111" fill="currentColor" class="dim"/>
-          <rect x="480" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <text x="565" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">고정 처리</text>
-          <text x="565" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">하드코딩</text>
-          <line x1="655" y1="105" x2="690" y2="105" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="700,105 690,99 690,111" fill="currentColor" class="dim"/>
-          <rect x="705" y="70" width="160" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <text x="785" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">결과 출력</text>
-          <text x="785" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">고정 형식</text>
-          <!-- 하단 범위 표시 -->
-          <line x1="30" y1="170" x2="865" y2="170" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="4,4"/>
-          <text x="450" y="195" text-anchor="middle" font-size="15" fill="currentColor" class="dim">DX 자동화 범위</text>
-        </svg>
-        <p class="small" style="color:#9aa0a6;">선형적 · 고정된 규칙 · 예외에 취약</p>
-      </section>
+      <!-- ═══════════════════ 4. AX로 진화 (짝 전환 2/2) ═══════════════════ -->
+      <section data-auto-animate data-auto-animate-unmatched="false">
+        <h3>같은 파이프라인, AX로 진화</h3>
+        <p class="visually-hidden">그림 설명: 앞 장과 같은 네 상자 파이프라인에서 규칙 분기가 LLM 판단으로, 고정 처리가 동적 처리로 바뀝니다. 클릭하면 자연어 이해, 맥락 기억, 자기 치유 확장 상자가 아래에 나타나고, 한 번 더 클릭하면 결과에서 LLM 판단으로 되돌아가는 피드백 루프가 나타납니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 파이프라인이 AX로 진화한 모습과 AX 전용 확장 요소" xmlns="http://www.w3.org/2000/svg">
+          <g data-id="pipe-n1" class="accent">
+            <rect x="30" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="115" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor">데이터 수집</text>
+            <text x="115" y="122" text-anchor="middle" font-size="13" fill="currentColor">정형 + 비정형</text>
+          </g>
+          <g data-id="pipe-a1" class="accent">
+            <line x1="205" y1="105" x2="240" y2="105" stroke="currentColor" stroke-width="2"/>
+            <polygon points="250,105 240,99 240,111" fill="currentColor"/>
+          </g>
+          <g data-id="pipe-n2" class="accent">
+            <rect x="255" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="340" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor">LLM 판단</text>
+            <text x="340" y="122" text-anchor="middle" font-size="13" fill="currentColor">맥락 추론</text>
+          </g>
+          <g data-id="pipe-a2" class="accent">
+            <line x1="430" y1="105" x2="465" y2="105" stroke="currentColor" stroke-width="2"/>
+            <polygon points="475,105 465,99 465,111" fill="currentColor"/>
+          </g>
+          <g data-id="pipe-n3" class="accent">
+            <rect x="480" y="70" width="170" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="565" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor">동적 처리</text>
+            <text x="565" y="122" text-anchor="middle" font-size="13" fill="currentColor">자동 선택</text>
+          </g>
+          <g data-id="pipe-a3" class="accent">
+            <line x1="655" y1="105" x2="690" y2="105" stroke="currentColor" stroke-width="2"/>
+            <polygon points="700,105 690,99 690,111" fill="currentColor"/>
+          </g>
+          <g data-id="pipe-n4">
+            <rect x="705" y="70" width="160" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="785" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="currentColor" class="bright">결과 출력</text>
+            <text x="785" y="122" text-anchor="middle" font-size="13" fill="currentColor" class="dim">유연한 형식</text>
+          </g>
 
-      <!-- ═══════════════════ 4. AX Flow Chart (DX 대비 비교) ═══════════════════ -->
-      <section>
-        <h3>AX 자동화 흐름 — DX 대비 확장</h3>
-        <p class="visually-hidden">그림 설명: 상단에 DX 흐름이 흐리게 표시되고, 하단에 AX 흐름이 시안색으로 강조됩니다. 각 단계별로 무엇이 바뀌었는지 수직 화살표와 라벨로 연결합니다. AX에서 새로 추가된 자연어 이해, 맥락 기억, 자기 치유, 피드백 루프가 시안 점선 상자로 표시됩니다.</p>
-        <svg class="diag" viewBox="0 0 900 380" role="img" aria-label="DX 흐름과 AX 흐름을 상하로 비교하여 변경점을 화살표로 연결한 그림" xmlns="http://www.w3.org/2000/svg">
+          <!-- 확장 요소 (fragment 1) -->
+          <g class="fragment fade-up accent">
+            <line x1="115" y1="140" x2="115" y2="168" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="115,176 109,166 121,166" fill="currentColor"/>
+            <rect x="52" y="180" width="126" height="44" rx="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="115" y="207" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">자연어 이해</text>
 
-          <!-- ── 상단: DX 흐름 (ghost, 흐리게) ── -->
-          <text x="20" y="18" font-size="13" font-weight="600" fill="currentColor" class="dim">DX</text>
-          <rect x="15" y="25" width="870" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3" opacity="0.5"/>
+            <line x1="340" y1="140" x2="340" y2="168" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="340,176 334,166 346,166" fill="currentColor"/>
+            <rect x="277" y="180" width="126" height="44" rx="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="340" y="207" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">맥락 기억</text>
 
-          <rect x="30" y="32" width="150" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-          <text x="105" y="62" text-anchor="middle" font-size="15" fill="currentColor" opacity="0.4">데이터 수집</text>
-          <line x1="185" y1="55" x2="230" y2="55" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-          <polygon points="238,55 230,50 230,60" fill="currentColor" opacity="0.3"/>
-          <rect x="245" y="32" width="150" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-          <text x="320" y="62" text-anchor="middle" font-size="15" fill="currentColor" opacity="0.4">규칙 분기</text>
-          <line x1="400" y1="55" x2="445" y2="55" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-          <polygon points="453,55 445,50 445,60" fill="currentColor" opacity="0.3"/>
-          <rect x="460" y="32" width="150" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-          <text x="535" y="62" text-anchor="middle" font-size="15" fill="currentColor" opacity="0.4">고정 처리</text>
-          <line x1="615" y1="55" x2="660" y2="55" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-          <polygon points="668,55 660,50 660,60" fill="currentColor" opacity="0.3"/>
-          <rect x="675" y="32" width="150" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-          <text x="750" y="62" text-anchor="middle" font-size="15" fill="currentColor" opacity="0.4">결과 출력</text>
+            <line x1="565" y1="140" x2="565" y2="168" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="565,176 559,166 571,166" fill="currentColor"/>
+            <rect x="502" y="180" width="126" height="44" rx="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="565" y="207" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">자기 치유</text>
+          </g>
 
-          <!-- ── 변경점 화살표 + 라벨 ── -->
-          <line x1="105" y1="82" x2="105" y2="128" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="3,2"/>
-          <polygon points="105,134 99,124 111,124" fill="#00dddd"/>
-          <text x="105" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#00dddd">+ 비정형</text>
-
-          <line x1="320" y1="82" x2="320" y2="128" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="3,2"/>
-          <polygon points="320,134 314,124 326,124" fill="#00dddd"/>
-          <text x="320" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#00dddd">LLM 전환</text>
-
-          <line x1="535" y1="82" x2="535" y2="128" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="3,2"/>
-          <polygon points="535,134 529,124 541,124" fill="#00dddd"/>
-          <text x="535" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#00dddd">동적 전환</text>
-
-          <line x1="750" y1="82" x2="750" y2="128" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,2"/>
-          <polygon points="750,134 744,124 756,124" fill="currentColor" class="dim"/>
-          <text x="750" y="107" text-anchor="middle" font-size="11" fill="currentColor" class="dim">유지</text>
-
-          <!-- ── 하단: AX 흐름 (밝고 강조) ── -->
-          <text x="20" y="147" font-size="13" font-weight="600" fill="#00dddd">AX</text>
-          <rect x="15" y="130" width="870" height="240" rx="10" fill="none" stroke="#00dddd" stroke-width="2"/>
-
-          <!-- AX 메인 파이프라인 -->
-          <rect x="30" y="155" width="150" height="55" rx="10" fill="none" stroke="#00dddd" stroke-width="2.5"/>
-          <text x="105" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">데이터 수집</text>
-          <text x="105" y="198" text-anchor="middle" font-size="12" fill="#00dddd">정형 + 비정형</text>
-
-          <line x1="185" y1="182" x2="230" y2="182" stroke="#00dddd" stroke-width="2"/>
-          <polygon points="238,182 228,176 228,188" fill="#00dddd"/>
-
-          <rect x="245" y="155" width="150" height="55" rx="10" fill="none" stroke="#00dddd" stroke-width="2.5"/>
-          <text x="320" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">LLM 판단</text>
-          <text x="320" y="198" text-anchor="middle" font-size="12" fill="#00dddd">맥락 추론</text>
-
-          <line x1="400" y1="182" x2="445" y2="182" stroke="#00dddd" stroke-width="2"/>
-          <polygon points="453,182 443,176 443,188" fill="#00dddd"/>
-
-          <rect x="460" y="155" width="150" height="55" rx="10" fill="none" stroke="#00dddd" stroke-width="2.5"/>
-          <text x="535" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">동적 처리</text>
-          <text x="535" y="198" text-anchor="middle" font-size="12" fill="#00dddd">자동 선택</text>
-
-          <line x1="615" y1="182" x2="660" y2="182" stroke="#00dddd" stroke-width="2"/>
-          <polygon points="668,182 658,176 658,188" fill="#00dddd"/>
-
-          <rect x="675" y="155" width="150" height="55" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <text x="750" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">결과 출력</text>
-          <text x="750" y="198" text-anchor="middle" font-size="12" fill="currentColor" class="dim">유연한 형식</text>
-
-          <!-- AX 추가 확장 노드 (fragment 등장) -->
-          <g class="fragment fade-up">
-            <!-- 추가 노드들 -->
-            <rect x="42" y="230" width="126" height="42" rx="7" fill="none" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <text x="105" y="257" text-anchor="middle" font-size="14" font-weight="600" fill="#00dddd">자연어 이해</text>
-            <line x1="105" y1="210" x2="105" y2="230" stroke="#00dddd" stroke-width="1.5"/>
-            <polygon points="105,228 99,220 111,220" fill="#00dddd"/>
-
-            <rect x="257" y="230" width="126" height="42" rx="7" fill="none" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <text x="320" y="257" text-anchor="middle" font-size="14" font-weight="600" fill="#00dddd">맥락 기억</text>
-            <line x1="320" y1="210" x2="320" y2="230" stroke="#00dddd" stroke-width="1.5"/>
-            <polygon points="320,228 314,220 326,220" fill="#00dddd"/>
-
-            <rect x="472" y="230" width="126" height="42" rx="7" fill="none" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <text x="535" y="257" text-anchor="middle" font-size="14" font-weight="600" fill="#00dddd">자기 치유</text>
-            <line x1="535" y1="210" x2="535" y2="230" stroke="#00dddd" stroke-width="1.5"/>
-            <polygon points="535,228 529,220 541,220" fill="#00dddd"/>
-
-            <!-- 피드백 루프 -->
-            <path d="M 750 210 L 750 300 L 320 300 L 320 278" fill="none" stroke="#00dddd" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <polygon points="320,275 314,285 326,285" fill="#00dddd"/>
-            <text x="535" y="315" text-anchor="middle" font-size="12" fill="#00dddd">피드백 루프 (학습 · 보정)</text>
-
-            <!-- DX에는 없음 라벨 -->
-            <text x="450" y="350" text-anchor="middle" font-size="13" font-weight="600" fill="#00dddd">▲ DX에 없는 AX 전용 확장 영역</text>
+          <!-- 피드백 루프 (fragment 2) -->
+          <g class="fragment fade-up accent">
+            <path d="M 785 140 L 785 262 L 340 262 L 340 232" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <polygon points="340,226 334,236 346,236" fill="currentColor"/>
+            <text x="562" y="280" text-anchor="middle" font-size="13" fill="currentColor">피드백 루프 — 결과를 보고 판단을 보정</text>
           </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 5. subprocess + opencode ═══════════════════ -->
+      <!-- ═══════════════════ 5. 로드맵: 연동 4가지 방법 ═══════════════════ -->
       <section>
-        <h3>방법 1 (난이도 하): subprocess + opencode</h3>
-        <p class="visually-hidden">그림 설명: Python 스크립트가 subprocess를 통해 opencode CLI를 호출하고, opencode가 사내 LLM에 요청을 전달하는 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 subprocess로 opencode CLI를 호출하여 사내 LLM에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
+        <h3>사내 LLM에 연결하는 4가지 방법</h3>
+        <p class="visually-hidden">그림 설명: 추상화 수준이 낮은 것부터 높은 것 순서로 네 방법이 계단 모양으로 배치됩니다. HTTP 직접 호출, OpenAI SDK, LangChain을 지나 맨 위 오른쪽의 opencode 에이전트 위임에 도달합니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="네 가지 연동 방법을 추상화 수준 순서의 계단으로 배치한 로드맵" xmlns="http://www.w3.org/2000/svg">
+          <!-- 추상화 축 -->
+          <line x1="40" y1="270" x2="40" y2="40" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="40,30 34,42 46,42" fill="currentColor" class="dim"/>
+          <text x="28" y="155" text-anchor="middle" font-size="13" fill="currentColor" class="dim" transform="rotate(-90 28 155)">추상화 수준</text>
+
+          <!-- 계단 -->
+          <rect x="80" y="210" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="170" y="234" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">① HTTP 직접</text>
+          <text x="170" y="255" text-anchor="middle" font-size="12" fill="currentColor" class="dim">직접 호출</text>
+
+          <rect x="285" y="150" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="375" y="174" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">② OpenAI SDK</text>
+          <text x="375" y="195" text-anchor="middle" font-size="12" fill="currentColor" class="dim">얇은 래퍼</text>
+
+          <rect x="490" y="90" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="580" y="114" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">③ LangChain</text>
+          <text x="580" y="135" text-anchor="middle" font-size="12" fill="currentColor" class="dim">프레임워크</text>
+
+          <g class="accent">
+            <rect x="695" y="30" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="785" y="54" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">④ opencode</text>
+            <text x="785" y="75" text-anchor="middle" font-size="12" fill="currentColor">에이전트 위임</text>
+          </g>
+
+          <!-- 계단 연결선 -->
+          <line x1="260" y1="239" x2="285" y2="179" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+          <line x1="465" y1="179" x2="490" y2="119" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+          <line x1="670" y1="119" x2="695" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+
+          <text x="480" y="290" text-anchor="middle" font-size="13" fill="currentColor" class="dim">①→③은 LLM을 "호출"하고, ④는 일을 "위임"합니다</text>
+        </svg>
+      </section>
+
+      <!-- ═══════════════════ 6. 방법 1: HTTP 직접 호출 ═══════════════════ -->
+      <section>
+        <h3>방법 1 — HTTP 직접 호출</h3>
+        <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM의 표준 주소에 HTTP 요청을 직접 보내는 구조입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 구조" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="10" width="190" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="155" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python (requests)</text>
+          <g class="accent">
+            <line x1="255" y1="32" x2="420" y2="32" stroke="currentColor" stroke-width="2"/>
+            <polygon points="428,32 418,26 418,38" fill="currentColor"/>
+            <text x="335" y="22" text-anchor="middle" font-size="13" fill="currentColor">HTTP POST</text>
+            <rect x="432" y="10" width="215" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="540" y="40" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">/v1/chat/completions</text>
+            <line x1="652" y1="32" x2="685" y2="32" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="693,32 683,26 683,38" fill="currentColor"/>
+            <rect x="697" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="772" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
+        </svg>
+        <pre><code class="python">import os, requests        # 설치: pip install requests
+
+url = os.environ["LLM_BASE_URL"] + "/chat/completions"
+headers = {"Authorization":
+           "Bearer " + os.environ["LLM_API_KEY"]}
+body = {"model": "사내모델-v1",
+        "messages": [{"role": "user",
+                      "content": "REST API가 뭐야?"}]}
+resp = requests.post(url, headers=headers, json=body)
+print(resp.json()["choices"][0]["message"]["content"])
+# 출력: "REST API는 자원 중심의 웹 통신 방식입니다."
+# 참고: 표준 라이브러리 urllib만으로도 가능 (설치 0개)</code></pre>
+        <p class="small" style="color: var(--secondary);">표준 API 규격 그대로 · 폐쇄망 최소 설치</p>
+      </section>
+
+      <!-- ═══════════════════ 7. 방법 2: OpenAI SDK ═══════════════════ -->
+      <section>
+        <h3>방법 2 — OpenAI SDK</h3>
+        <p class="visually-hidden">그림 설명: Python에서 OpenAI SDK의 서버 주소 설정(base_url)을 사내 LLM으로 바꿔 연결하는 구조입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 OpenAI SDK로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
           <line x1="175" y1="32" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="238,32 228,26 228,38" fill="currentColor" class="dim"/>
-          <rect x="242" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="322" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">subprocess</text>
-          <line x1="407" y1="32" x2="460" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="468,32 458,26 458,38" fill="currentColor" class="dim"/>
-          <rect x="472" y="10" width="180" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="562" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">opencode CLI</text>
-          <line x1="657" y1="32" x2="710" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="718,32 708,26 708,38" fill="#00dddd"/>
-          <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
-        </svg>
-        <pre><code class="python">import subprocess
-
-# 터미널에 opencode가 설치되어 있어야 합니다 (pip install opencode)
-prompt = "현재 디렉토리의 파일 개수를 세어줘"
-
-result = subprocess.run(
-    ["opencode", "--headless", "-p", prompt],
-    capture_output=True, 
-    text=True
-)
-
-print(result.stdout)
-# 출력 예시: 
-# "현재 디렉토리에는 총 15개의 파일이 있습니다."</code></pre>
-        <p class="small" style="color:#9aa0a6;">외부 도구 의존 · 설정 직관적 · 순수 텍스트 입출력</p>
-      </section>
-
-      <!-- ═══════════════════ 6. HTTP 직접 호출 ═══════════════════ -->
-      <section>
-        <h3>방법 2 (난이도 중하): HTTP 직접 호출</h3>
-        <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM API를 직접 호출하는 가장 단순한 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
-          <rect x="60" y="10" width="180" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="150" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python (requests)</text>
-          <line x1="245" y1="32" x2="420" y2="32" stroke="#00dddd" stroke-width="2"/>
-          <polygon points="428,32 418,26 418,38" fill="#00dddd"/>
-          <text x="330" y="22" text-anchor="middle" font-size="13" fill="#00dddd">HTTP POST</text>
-          <rect x="432" y="10" width="210" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="537" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">/v1/chat/completions</text>
-          <line x1="647" y1="32" x2="680" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="688,32 678,26 678,38" fill="#00dddd"/>
-          <rect x="692" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="770" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
-        </svg>
-        <pre><code class="python">import os, requests
-
-# 사전 준비: pip install requests
-base_url = os.getenv("LLM_BASE_URL", "http://internal-llm/v1")
-api_key = os.getenv("LLM_API_KEY", "사내토큰")
-
-resp = requests.post(
-    f"{base_url}/chat/completions",
-    headers={"Authorization": f"Bearer {api_key}"},
-    json={
-        "model": "사내모델-v1",
-        "messages": [{"role": "user", "content": "REST API가 뭐야?"}]
-    }
-)
-
-# JSON 파싱하여 실제 응답 텍스트만 추출
-content = resp.json()["choices"][0]["message"]["content"]
-print(content)
-# 출력 예시: "REST API는 웹 서비스 아키텍처 스타일입니다..."</code></pre>
-        <p class="small" style="color:#9aa0a6;">외부 의존성 거의 없음 · 프로그래밍 기본 · 폐쇄망에 최적</p>
-      </section>
-
-      <!-- ═══════════════════ 7. OpenAI SDK 직접 사용 ═══════════════════ -->
-      <section>
-        <h3>방법 3 (난이도 중): OpenAI SDK 직접 사용</h3>
-        <p class="visually-hidden">그림 설명: Python에서 OpenAI SDK의 base_url을 사내 LLM 주소로 지정하여 직접 연결하는 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 OpenAI SDK로 사내 LLM에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
-          <line x1="175" y1="32" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <polygon points="238,32 228,26 228,38" fill="currentColor" class="dim"/>
-          <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">OpenAI SDK</text>
-          <line x1="422" y1="32" x2="478" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="486,32 476,26 476,38" fill="#00dddd"/>
+          <g class="accent">
+            <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">OpenAI SDK</text>
+          </g>
+          <line x1="422" y1="32" x2="478" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="486,32 476,26 476,38" fill="currentColor" class="dim"/>
           <rect x="490" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <text x="570" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="dim">HTTP API</text>
           <line x1="655" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="718,32 708,26 708,38" fill="currentColor" class="dim"/>
-          <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
+          <g class="accent">
+            <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
         </svg>
         <pre><code class="python">import os
-from openai import OpenAI
+from openai import OpenAI    # 설치: pip install openai
 
-# 사전 준비: pip install openai
-client = OpenAI(
-    base_url=os.getenv("LLM_BASE_URL", "http://internal-llm/v1"),
-    api_key=os.getenv("LLM_API_KEY", "사내토큰")
-)
-
-resp = client.chat.completions.create(
+client = OpenAI(base_url=os.environ["LLM_BASE_URL"],
+                api_key=os.environ["LLM_API_KEY"])
+resp = client.chat.completions.create(   # 표준 API
     model="사내모델-v1",
-    messages=[
-        {"role": "user", "content": "Python의 장점을 하나만 말해줘"}
-    ]
+    messages=[{"role": "user",
+               "content": "Python의 장점 하나만"}],
 )
-
 print(resp.choices[0].message.content)
-# 출력 예시: "가독성이 뛰어난 간결한 문법입니다."</code></pre>
-        <p class="small" style="color:#9aa0a6;">가볍고 타입 힌트 완벽 · 비동기/스트리밍 완벽 지원</p>
+# 출력: "간결하고 읽기 쉬운 문법입니다."</code></pre>
+        <p class="small" style="color: var(--secondary);">타입 · 스트리밍 지원 · 호환 서버의 사실상 표준</p>
       </section>
 
-      <!-- ═══════════════════ 8. Langchain + 사내 LLM ═══════════════════ -->
+      <!-- ═══════════════════ 8. 방법 3: LangChain ═══════════════════ -->
       <section>
-        <h3>방법 4 (난이도 상): Langchain + 사내 LLM</h3>
-        <p class="visually-hidden">그림 설명: Python에서 Langchain 라이브러리를 통해 HTTP API로 사내 LLM에 연결하는 구조입니다.</p>
-        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 Langchain으로 사내 LLM API에 연결하는 아키텍처" xmlns="http://www.w3.org/2000/svg">
+        <h3>방법 3 — LangChain</h3>
+        <p class="visually-hidden">그림 설명: Python에서 LangChain 프레임워크로 프롬프트 템플릿과 LLM을 체인으로 조립해 사내 LLM에 연결하는 구조입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 LangChain으로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
           <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
           <line x1="175" y1="32" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="238,32 228,26 228,38" fill="currentColor" class="dim"/>
-          <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">Langchain</text>
-          <line x1="422" y1="32" x2="478" y2="32" stroke="#00dddd" stroke-width="1.5"/>
-          <polygon points="486,32 476,26 476,38" fill="#00dddd"/>
+          <g class="accent">
+            <rect x="242" y="10" width="175" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="330" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">LangChain</text>
+          </g>
+          <line x1="422" y1="32" x2="478" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="486,32 476,26 476,38" fill="currentColor" class="dim"/>
           <rect x="490" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <text x="570" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="dim">HTTP API</text>
           <line x1="655" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="718,32 708,26 708,38" fill="currentColor" class="dim"/>
-          <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="#00dddd" stroke-width="2"/>
-          <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#00dddd">사내 LLM</text>
+          <g class="accent">
+            <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
         </svg>
         <pre><code class="python">import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+# 설치: pip install langchain-openai
 
-# 사전 준비: pip install langchain-openai
-llm = ChatOpenAI(
-    base_url=os.getenv("LLM_BASE_URL", "http://internal-llm/v1"),
-    api_key=os.getenv("LLM_API_KEY", "사내토큰"),
-    model="사내모델-v1"
-)
-
-# 프롬프트 템플릿과 LLM을 연결 (체인 구성)
-prompt = ChatPromptTemplate.from_template("{topic}에 대해 1줄로 요약해줘")
-chain = prompt | llm
-
-result = chain.invoke({"topic": "Langchain"})
-print(result.content)
-# 출력 예시: "LLM 애플리케이션 개발을 돕는 강력한 프레임워크입니다."</code></pre>
-        <p class="small" style="color:#9aa0a6;">가장 높은 추상화 · 체인 및 프롬프트 템플릿 등 강력한 기능</p>
+llm = ChatOpenAI(model="사내모델-v1",
+                 base_url=os.environ["LLM_BASE_URL"],
+                 api_key=os.environ["LLM_API_KEY"])
+prompt = ChatPromptTemplate.from_template(
+    "{topic}을 한 줄로 요약해줘")
+result = (prompt | llm).invoke({"topic": "LangChain"})
+print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
+        <p class="small" style="color: var(--secondary);">프롬프트 · 체인 조립 · 다단계 작업에 적합</p>
       </section>
 
-      <!-- ═══════════════════ 9. 방법 비교 요약 ═══════════════════ -->
+      <!-- ═══════════════════ 9. 방법 4: opencode 위임 ═══════════════════ -->
+      <section>
+        <h3>방법 4 — opencode, 에이전트에게 위임</h3>
+        <p class="visually-hidden">그림 설명: Python이 subprocess로 opencode 에이전트를 실행하고, 에이전트가 사내 LLM과 도구를 써서 일을 통째로 처리하는 구조입니다. 앞의 세 방법과 달리 호출이 아니라 위임입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 subprocess로 opencode 에이전트에 작업을 위임하는 구조" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="150" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="95" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python</text>
+          <line x1="175" y1="32" x2="228" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="236,32 226,26 226,38" fill="currentColor" class="dim"/>
+          <rect x="240" y="10" width="160" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="320" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">subprocess</text>
+          <line x1="405" y1="32" x2="458" y2="32" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <polygon points="466,32 456,26 456,38" fill="currentColor" class="dim"/>
+          <g class="accent">
+            <rect x="470" y="6" width="200" height="53" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7,4"/>
+            <text x="570" y="29" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">opencode 에이전트</text>
+            <text x="570" y="49" text-anchor="middle" font-size="11" fill="currentColor">판단 · 도구 실행 · 재시도</text>
+            <line x1="675" y1="32" x2="710" y2="32" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="718,32 708,26 708,38" fill="currentColor"/>
+            <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
+        </svg>
+        <pre><code class="python">import subprocess
+# 설치: curl -fsSL https://opencode.ai/install | bash
+#       (또는 npm i -g opencode-ai)
+# 사내 LLM: opencode.json에 provider 주소 등록
+
+result = subprocess.run(
+    ["opencode", "run", "파일 개수를 세어줘"],
+    capture_output=True, text=True,   # 비대화식 1회
+)
+print(result.stdout)
+# 출력: "현재 디렉토리에는 15개의 파일이 있습니다."</code></pre>
+        <p class="small" style="color: var(--secondary);">호출이 아니라 위임 · 도구 사용까지 맡김</p>
+      </section>
+
+      <!-- ═══════════════════ 10. 비교표 ═══════════════════ -->
       <section>
         <h3>4가지 방법 비교</h3>
-        <p class="visually-hidden">그림 설명: subprocess, HTTP 직접 호출, OpenAI SDK, Langchain 네 가지 방법을 설정 난이도, 기능 범위, 외부 의존성 세 축으로 비교하는 표입니다.</p>
-        <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="사내 LLM 연동 4가지 방법의 설정 난이도, 기능, 의존성 비교표" xmlns="http://www.w3.org/2000/svg">
-          <!-- 헤더 행 -->
-          <rect x="20" y="10" width="180" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="110" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">방법</text>
-          <rect x="210" y="10" width="200" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="310" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">설정 난이도</text>
-          <rect x="420" y="10" width="200" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="520" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">기능 범위</text>
-          <rect x="630" y="10" width="250" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-          <text x="755" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">외부 의존성</text>
+        <p class="visually-hidden">표 설명: 네 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다.</p>
+        <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="네 가지 연동 방법의 추상화 수준, 설치, 적합 상황 비교표" xmlns="http://www.w3.org/2000/svg">
+          <!-- 헤더 -->
+          <rect x="20" y="10" width="190" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="115" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">방법</text>
+          <rect x="220" y="10" width="210" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="325" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">추상화 수준</text>
+          <rect x="440" y="10" width="210" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="545" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">설치 (폐쇄망)</text>
+          <rect x="660" y="10" width="220" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="770" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">잘 맞는 곳</text>
 
-          <!-- Row 1: subprocess (y: 60) -->
+          <!-- Row 1: HTTP -->
           <g class="fragment fade-up">
-            <rect x="20" y="60" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="110" y="91" text-anchor="middle" font-size="15" fill="currentColor" class="bright">subprocess</text>
-            <rect x="210" y="60" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="75" width="20" height="20" rx="3" fill="#00dddd" opacity="0.8"/>
-            <text x="310" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">최하</text>
-            <rect x="420" y="60" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="75" width="60" height="20" rx="3" fill="#00dddd" opacity="0.4"/>
-            <text x="520" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">텍스트 입출력</text>
-            <rect x="630" y="60" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">opencode CLI 설치</text>
+            <rect x="20" y="60" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="115" y="92" text-anchor="middle" font-size="15" fill="currentColor" class="bright">HTTP 직접</text>
+            <rect x="220" y="60" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="96" width="45" height="6" rx="3" fill="currentColor" class="accent" opacity="0.8"/>
+            <text x="330" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">직접 호출</text>
+            <rect x="440" y="60" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="84" text-anchor="middle" font-size="13" fill="currentColor" class="dim">requests 패키지</text>
+            <text x="545" y="102" text-anchor="middle" font-size="11" fill="currentColor" class="dim">(urllib이면 추가 설치 0개)</text>
+            <rect x="660" y="60" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="91" text-anchor="middle" font-size="13" fill="currentColor" class="dim">단발 호출 · 최소 설치</text>
           </g>
 
-          <!-- Row 2: HTTP 직접 (y: 120) -->
+          <!-- Row 2: OpenAI SDK -->
           <g class="fragment fade-up">
-            <rect x="20" y="120" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="110" y="151" text-anchor="middle" font-size="15" fill="currentColor" class="bright">HTTP 직접</text>
-            <rect x="210" y="120" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="135" width="40" height="20" rx="3" fill="#00dddd" opacity="0.7"/>
-            <text x="310" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">중하</text>
-            <rect x="420" y="120" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="135" width="60" height="20" rx="3" fill="#00dddd" opacity="0.4"/>
-            <text x="520" y="151" text-anchor="middle" font-size="13" fill="currentColor" class="dim">기본 호출만</text>
-            <rect x="630" y="120" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="151" text-anchor="middle" font-size="13" fill="#00dddd" font-weight="600">없음 (순수 Python)</text>
+            <rect x="20" y="122" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="115" y="154" text-anchor="middle" font-size="15" fill="currentColor" class="bright">OpenAI SDK</text>
+            <rect x="220" y="122" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="158" width="90" height="6" rx="3" fill="currentColor" class="accent" opacity="0.7"/>
+            <text x="330" y="153" text-anchor="middle" font-size="13" fill="currentColor" class="dim">얇은 래퍼</text>
+            <rect x="440" y="122" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="153" text-anchor="middle" font-size="13" fill="currentColor" class="dim">openai 패키지</text>
+            <rect x="660" y="122" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="153" text-anchor="middle" font-size="13" fill="currentColor" class="dim">타입 · 스트리밍 필요할 때</text>
           </g>
 
-          <!-- Row 3: OpenAI SDK (y: 180) -->
+          <!-- Row 3: LangChain -->
           <g class="fragment fade-up">
-            <rect x="20" y="180" width="180" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="110" y="211" text-anchor="middle" font-size="15" fill="currentColor" class="bright">OpenAI SDK</text>
-            <rect x="210" y="180" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="195" width="80" height="20" rx="3" fill="#00dddd" opacity="0.6"/>
-            <text x="310" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">중</text>
-            <rect x="420" y="180" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="195" width="140" height="20" rx="3" fill="#00dddd" opacity="0.6"/>
-            <text x="520" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">타입 · 비동기 · 스트림</text>
-            <rect x="630" y="180" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="211" text-anchor="middle" font-size="13" fill="currentColor" class="dim">openai 패키지</text>
+            <rect x="20" y="184" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="115" y="216" text-anchor="middle" font-size="15" fill="currentColor" class="bright">LangChain</text>
+            <rect x="220" y="184" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="220" width="135" height="6" rx="3" fill="currentColor" class="accent" opacity="0.6"/>
+            <text x="330" y="215" text-anchor="middle" font-size="13" fill="currentColor" class="dim">프레임워크</text>
+            <rect x="440" y="184" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="215" text-anchor="middle" font-size="13" fill="currentColor" class="dim">langchain-openai 패키지</text>
+            <rect x="660" y="184" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="215" text-anchor="middle" font-size="13" fill="currentColor" class="dim">다단계 체인 조립</text>
           </g>
 
-          <!-- Row 4: Langchain (y: 240) -->
+          <!-- Row 4: opencode -->
           <g class="fragment fade-up">
-            <rect x="20" y="240" width="180" height="50" rx="6" fill="none" stroke="#00dddd" stroke-width="2"/>
-            <text x="110" y="271" text-anchor="middle" font-size="15" font-weight="600" fill="#00dddd">Langchain</text>
-            <rect x="210" y="240" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="218" y="255" width="160" height="20" rx="3" fill="#00dddd" opacity="0.9"/>
-            <text x="310" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">상 (가장 어려움)</text>
-            <rect x="420" y="240" width="200" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="428" y="255" width="180" height="20" rx="3" fill="#00dddd" opacity="0.8"/>
-            <text x="520" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">체인·메모리·파서</text>
-            <rect x="630" y="240" width="250" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <text x="755" y="271" text-anchor="middle" font-size="13" fill="currentColor" class="dim">langchain 패키지</text>
+            <g class="accent">
+              <rect x="20" y="246" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="115" y="278" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">opencode</text>
+            </g>
+            <rect x="220" y="246" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="282" width="180" height="6" rx="3" fill="currentColor" class="accent" opacity="0.5"/>
+            <text x="330" y="277" text-anchor="middle" font-size="13" fill="currentColor" class="dim">에이전트 위임</text>
+            <rect x="440" y="246" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="277" text-anchor="middle" font-size="13" fill="currentColor" class="dim">opencode CLI (별도 설치)</text>
+            <rect x="660" y="246" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="277" text-anchor="middle" font-size="13" fill="currentColor" class="dim">도구 실행까지 통째로 위임</text>
           </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 끝 ═══════════════════ -->
+      <!-- ═══════════════════ 11. 끝 ═══════════════════ -->
       <section>
         <h2>끝.</h2>
         <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
@@ -695,7 +461,7 @@ print(result.content)
   </div>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
-  <script src="../../slides/shared/code-copy.js"></script>
+  <script src="../shared/code-copy.js"></script>
   <script>
     Reveal.initialize({
       hash: true,

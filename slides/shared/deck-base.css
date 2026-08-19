@@ -1,0 +1,215 @@
+/* ═══════════════════════════════════════════════════════════════
+   deck-base.css — 전 덱 공통 디자인 (v1)
+
+   링크 위치 계약 (지키지 않으면 화면이 뒤집힌다):
+     black.css(테마) 뒤 · 각 덱 인라인 <style> 앞.
+     예) <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+   덱 고유 스타일은 각 덱의 인라인 <style>에서 이 파일을 덮어쓴다.
+   흰 화면 번쩍임 방지 2종(meta color-scheme, html 배경색)은
+   이 파일이 아니라 각 덱 <head>에 남긴다 (CLAUDE.md 규칙).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. 색·글꼴 변수 ──
+   html:root(특이성 0-1-1): black.css의 :root(0-1-0)를
+   링크 순서와 무관하게 이기기 위한 표기. :root로 줄이지 말 것. */
+html:root {
+  --primary: #fcfcfb;
+  --secondary: #9aa0a6;
+  --accent: #00dddd;
+  --danger: #f05050;
+  --hud-inset: 2em;
+  --hairline: #2a2b2a;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --dim: #9aa0a6;
+  --bg: #0e0e0e;
+  --r-background: #0e0e0e;
+  --r-background-color: #0e0e0e;
+  --r-main-color: #dedede;
+  --r-heading-color: #fcfcfb;
+  --r-heading-font-weight: 600;
+  --r-heading-letter-spacing: -0.025em;
+  --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --r-link-color: var(--primary);
+  --r-link-color-hover: var(--secondary);
+  --r-link-color-dark: #9aa0a6;
+  --r-selection-background-color: var(--primary);
+  --r-selection-color: #0e0e0e;
+}
+
+/* ── 2. 기본 타이포그래피 ── */
+.reveal {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+.reveal .kbd {
+  font-family: var(--font-mono);
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  padding: 0.05em 0.4em;
+}
+/* 글자 하한: 캔버스(960x700) 기준 24px = 0.58em.
+   크기는 컨테이너가 아니라 잎 클래스에서 한 번만 지정할 것 —
+   중첩되면 곱해져서 하한 아래로 떨어진다 (cds 덱에서 8.9px까지 떨어졌던 실패 사례).
+   pre 0.58em: 테마 기본 0.55em(23.1px)이 하한 미달이라 올린 값. */
+.reveal pre { box-shadow: none; border: 1px solid var(--hairline); font-size: 0.58em; }
+.reveal pre code { background: rgba(20, 20, 20, 0.6); padding: 0.8em 1em; display: block; border-radius: 4px; }
+.reveal .small { font-size: 0.6em; }
+.reveal .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.58em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+/* 폰트 스택 수리본: Montserrat 뒤에 Pretendard를 반드시 유지 —
+   빼면 한글이 OS 기본 글꼴로 떨어진다 (Montserrat에는 한글 글리프가 없다) */
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
+  font-family: "Montserrat", "Pretendard Variable", Pretendard, sans-serif !important;
+}
+
+/* ── 3. 랜딩↔덱 페이지 전환 (양쪽 문서 모두 선언해야 동작) ── */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
+/* ── 4. 도형(SVG) 공통 ──
+   색은 전부 currentColor — 기본 #dedede, 위계는 .dim/.bright(+.accent/.danger)로만.
+   뜻을 나르는 선·테두리는 #9aa0a6 이상만 쓸 것 (#2a2b2a는 대비 1.36:1 — 장식 전용). */
+.reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
+.reveal svg.mini-diag { display: block; width: 80%; margin: 0 auto 0.3em; color: #dedede; }
+.reveal svg .dim { color: var(--dim); }
+.reveal svg .bright { color: var(--primary); }
+.reveal svg .accent { color: var(--accent); }
+.reveal svg .danger { color: var(--danger); }
+/* fragment/data-id가 붙은 SVG 그룹의 변환 기준점 보정 */
+.reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
+.reveal .visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%);
+}
+/* 조망 모드(Esc)에서 미공개 fragment가 빈칸으로 보이는 것 방지 */
+.reveal.overview .slides section .fragment { visibility: visible; }
+
+/* ── 5. 모서리 장식(HUD)·은하 배경 — 해당 마크업이 없는 덱에서는 무해 ── */
+#galaxy-3d-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+.hud {
+  position: fixed;
+  inset: var(--hud-inset);
+  border: 2px solid var(--hairline);
+  pointer-events: none;
+  z-index: 1000;
+}
+.hud::before,
+.hud::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--hairline) 0,
+    var(--hairline) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+}
+.hud::before { top: 0; }
+.hud::after { bottom: 0; }
+.hud-corner {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  background: var(--bg);
+  padding: 0 6px;
+}
+.hud-tl { top: -0.5em; left: 14px; }
+.hud-tr { top: -0.5em; right: 14px; }
+.hud-bl { bottom: -0.5em; left: 14px; }
+.hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
+@media (max-width: 640px) {
+  html:root { --hud-inset: 10px; }
+  .hud-bl { display: none; }
+}
+
+/* ── 6. 표지 강조(글로우) — 표지 제목이 h1이든 h2든 동작 ── */
+.reveal .slides > section:first-of-type h1,
+.reveal .slides > section:first-of-type h2 {
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
+}
+.reveal .slides > section:first-of-type .eyebrow {
+  color: rgba(0, 255, 255, 0.85) !important;
+  letter-spacing: 0.15em !important;
+  font-weight: 500 !important;
+}
+
+/* ── 7. 화면 넘침 방지 (EVA VIEW) — 넘치면 슬라이드 안쪽 스크롤로 대피 ── */
+.reveal .slides section {
+  max-height: 700px !important;
+  box-sizing: border-box;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+.reveal pre {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ── 8. 동작 축소 방어 (reveal 6.0.1에는 자체 대응이 전혀 없다 — 전적으로 덱 책임) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  /* 은하는 스크립트가 회전·혜성·카메라를 이미 정지시킨다 — 여기서는 감쇄만 */
+  #galaxy-3d-bg { opacity: 0.05; }
+  /* 경고: 아래 선택자를 축약하지 말 것.
+     reveal이 head 말미에 주입하는 !important 스타일(특이성 0-2-0)을
+     이기려면 정확히 이 형태(0-3-0)가 필요하다. */
+  .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
+}
+
+/* ── 9. 인쇄 방어 ──
+   경로 1: 브라우저 인쇄 메뉴(Ctrl+P) — html에 print-pdf 클래스 없음 → 색 복구 동작
+   경로 2: PDF 내보내기(?print-pdf) — 어두운 화면 그대로 내보내는 것이 의도 → 색 복구 제외 */
+@media print {
+  /* currentColor 체계 도형을 검정으로 복구 (fill/stroke를 직접 적은 색은 복구되지 않는다) */
+  html:not(.print-pdf) .reveal svg,
+  html:not(.print-pdf) .reveal svg * { color: #000 !important; }
+  html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
+  /* 표지 규칙은 화면 특이성이 높아 별도 복구 필요 */
+  html:not(.print-pdf) .reveal .slides > section:first-of-type .eyebrow { color: #000 !important; }
+  html:not(.print-pdf) .reveal .slides > section:first-of-type h1,
+  html:not(.print-pdf) .reveal .slides > section:first-of-type h2 { text-shadow: none !important; }
+  /* 장식은 종이에서 숨김 */
+  #galaxy-3d-bg { display: none !important; }
+  .hud { display: none !important; }
+  /* EVA VIEW 해제 — 넘친 슬라이드도 끝까지 인쇄 */
+  .reveal .slides section { max-height: none !important; overflow: visible !important; }
+  .reveal pre { max-height: none; overflow: visible; }
+}
+/* EVA VIEW 해제 + 장식 숨김 (PDF 내보내기 화면 경로) */
+html.reveal-print .reveal .slides section { max-height: none !important; overflow: visible !important; }
+html.reveal-print .reveal pre { max-height: none !important; overflow: visible !important; }
+html.reveal-print .hud,
+html.reveal-print #galaxy-3d-bg { display: none !important; }

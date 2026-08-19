@@ -20,227 +20,16 @@
   <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="../../slides/shared/code-copy.css">
+  <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
+       링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
+  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
     /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
        JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
     html { background: #0e0e0e; color-scheme: dark; }
-
-    /* 검은 우주 팔레트 (bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a)
-       black 테마의 파란 링크·화살표·진행 막대를 무채색으로 덮는다.
-       html:root 표기인 이유: 테마 <link>와 이 블록의 순서가 바뀌어도 항상 이기도록 특이성을 한 단계 올림 */
-    html:root {
-      --primary: #fcfcfb;
-      --secondary: #9aa0a6;
-      --r-background: #0e0e0e;
-      --r-background-color: #0e0e0e;
-      --r-main-color: #dedede;
-      --r-heading-color: #fcfcfb;
-      --r-heading-font-weight: 600;
-      --r-heading-letter-spacing: -0.025em;
-      --r-main-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-heading-font: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --r-link-color: var(--primary);
-      --r-link-color-hover: var(--secondary);
-      --r-link-color-dark: #9aa0a6;
-      --r-selection-background-color: var(--primary);
-      --r-selection-color: #fcfcfb;
-    }
-
-    /* 어두운 배경에서 가는 한글 획 뭉개짐 방지 + 한글 줄바꿈 */
-    .reveal {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      word-break: keep-all;
-      overflow-wrap: anywhere;
-    }
-
-    /* 링크는 색이 본문과 같으므로 밑줄로 구분한다 */
-    .reveal a { text-decoration: underline; text-underline-offset: 0.15em; }
-
-    /* 랜딩과 이어지는 페이지 전환 (지원 브라우저 전용 장식) */
-    @media (prefers-reduced-motion: no-preference) {
-      @view-transition { navigation: auto; }
-    }
-    /* 두 테마 모두 제목을 대문자로 바꾼다 — 끄지 않으면 "Opencode"가 "OPENCODE"로 보인다 */
-    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
-    /* 글자 하한: 캔버스(960x700) 기준 24px = 0.58em.
-       크기는 컨테이너가 아니라 잎 클래스에서 한 번만 지정할 것 —
-       중첩되면 곱해져서 하한 아래로 떨어진다 (cds 덱에서 8.9px까지 떨어졌던 실패 사례). */
-    .reveal .kbd {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      /* 크기 미지정: 주변 글자를 그대로 물려받는다 — 0.7em을 두면 .small 안에서 곱해져 하한 미달 */
-      border: 1px solid currentColor;
-      border-radius: 6px;
-      padding: 0.05em 0.4em;
-    }
-    /* pre 크기: 테마 기본 0.55em(23.1px)이 하한 미달이라 올린다 */
-    .reveal pre { box-shadow: none; border: 1px solid #2a2b2a; font-size: 0.58em; }
-    .reveal .small { font-size: 0.6em; }
-    .reveal .eyebrow {
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.58em;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9aa0a6;
-    }
-
-    /* 캔버스 은하수 배경 (장식) — 슬라이드 캔버스 밖 고정 층에 둔다 */
-    #galaxy-3d-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-     to { rotate: 360deg; } }
-
-    /* 표지의 흰 우주선 (장식) — 부유는 주기 9초, 상하 4px, 시작·끝 동일 위치 */
-
-    /* 구조 그림 (인라인 SVG) — CSS 상자(div) 대신 SVG인 이유:
-       인쇄에서 reveal이 모든 div를 display:block으로 리셋해 flex 배치가 무너지지만
-       svg는 배치가 보존된다. 좌표는 viewBox로 고정되어 글자를 키워도 폭이 안 넘친다.
-       색은 전부 currentColor — 기본 #dedede, 위계는 .dim/.bright 두 클래스로만.
-       뜻을 나르는 선·테두리는 #9aa0a6 이상만 쓸 것 (#2a2b2a는 대비 1.36:1 — 장식 전용). */
-    .reveal svg.diag { display: block; width: 92%; margin: 0.2em auto; color: #dedede; }
-    .reveal .diag .dim { color: #9aa0a6; }
-    .reveal .diag .bright { color: #fcfcfb; }
-    .reveal .diag text { font-family: inherit; }
-    /* SVG 내부 요소에 CSS transform(모핑·fragment 등장)이 먹으려면 필수 */
-    .reveal svg [data-id], .reveal svg .fragment { transform-box: fill-box; transform-origin: center; }
-    /* 그림마다 낭독기용 전체 설명을 이 클래스의 문단으로 바로 앞에 둘 것 (조각내지 말 것) */
-    .reveal .visually-hidden {
-      position: absolute;
-      width: 1px; height: 1px;
-      margin: -1px; padding: 0; border: 0;
-      overflow: hidden; clip-path: inset(50%);
-    }
-
-    /* 리허설 조망(Esc): 코어가 미공개 fragment의 visibility를 숨긴 채 두어
-       빈칸으로 보인다 — 조망을 넘침 검사 도구로 쓰므로 보정한다.
-       주의: 발표 중 Esc를 누르면 미공개 내용도 청중에게 보인다. */
-    .reveal.overview .slides section .fragment { visibility: visible; }
-
-    /* 움직임 줄이기: 장식·전환 전부 정지 (새 덱마다 이 블록을 유지할 것)
-       마지막 줄: 모핑(auto-animate)의 주입 스타일은 !important라 * 규칙을 이긴다 —
-       같은 !important에 더 높은 특이성으로 눌러야 실제로 멈춘다. */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        transition-delay: 0s !important;
-      }
-      #galaxy-3d-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-      .reveal [data-auto-animate="running"] [data-auto-animate-target] { transition-duration: 0.01ms !important; }
-    }
-
-    /* 인쇄 방어 — 별·우주선은 종이에 찍지 않는다.
-       !important인 이유: reveal 인쇄 규칙(.reveal div { display:block })이 특이성으로
-       이겨 우주선이 흰 종이에 흰 얼룩으로 찍힌다. 모핑이 남긴 주입 스타일도 !important라
-       색 되돌림 규칙에도 !important가 필요하다.
-       SVG 그림을 currentColor로만 그리면 아래 svg 한 규칙로 검정 되돌림이 끝난다.
-       직접 만든 도형(div/span)이 있는 덱은 여기에 html:not(.print-pdf) 조건으로
-       색 되돌림 규칙을 추가할 것 (?view=print 경로는 print-pdf 클래스가 붙어 제외된다). */
-    @media print {
-      html:not(.print-pdf) .reveal svg,
-      html:not(.print-pdf) .reveal svg * { color: #000 !important; }
-      html:not(.print-pdf) .reveal .eyebrow { color: #000 !important; }
-      #galaxy-3d-bg,
-    }
-  
-    
-    /* 로켓 랩 폰트 테마 (모든 텍스트 Montserrat 통일, 단 애니메이션 제외) */
-    .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
-      font-family: 'Montserrat', sans-serif !important;
-    }
-    
-    /* HUD UI CSS 복사 */
-    :root {
-      --hud-inset: 2em;
-      --hairline: #2a2b2a;
-      --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      --dim: #9aa0a6;
-      --bg: #0e0e0e;
-    }
-    .hud {
-      position: fixed;
-      inset: var(--hud-inset);
-      border: 2px solid var(--hairline);
-      pointer-events: none;
-      z-index: 1000; /* 슬라이드 위로 올라오게 */
-    }
-    .hud::before,
-    .hud::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background-image: repeating-linear-gradient(
-        to right,
-        var(--hairline) 0,
-        var(--hairline) 1px,
-        transparent 1px,
-        transparent 48px
-      );
-    }
-    .hud::before { top: 0; }
-    .hud::after { bottom: 0; }
-    
-    .hud-corner {
-      position: absolute;
-      font-family: var(--font-mono);
-      font-size: 0.5625rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--dim);
-      background: var(--bg);
-      padding: 0 6px;
-    }
-    .hud-tl { top: -0.5em; left: 14px; }
-    .hud-tr { top: -0.5em; right: 14px; }
-    .hud-bl { bottom: -0.5em; left: 14px; }
-    .hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
-    
-    @media (max-width: 640px) {
-      :root { --hud-inset: 10px; }
-      .hud-bl { display: none; }
-    }
-
-  
-    /* 로켓 랩 커버 테마 */
-    .reveal .slides > section:first-of-type h1 {
-      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3) !important;
-    }
-    .reveal .slides > section:first-of-type .eyebrow {
-      color: rgba(0, 255, 255, 0.85) !important;
-      letter-spacing: 0.15em !important;
-      font-weight: 500 !important;
-    }
-
-  
-    /* --- EVA VIEW Overflow 방지 공통 룰 --- */
-    .reveal .slides section {
-      max-height: 700px !important;
-      box-sizing: border-box;
-      overflow-y: auto !important;
-      overflow-x: hidden;
-    }
-    .reveal pre {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-</style>
+  </style>
 </head>
 <body>
   <div class="hud" aria-hidden="true">
@@ -403,7 +192,7 @@
   </div>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
-  <script src="../../slides/shared/code-copy.js"></script>
+  <script src="../shared/code-copy.js"></script>
   <script>
     Reveal.initialize({
       hash: true,

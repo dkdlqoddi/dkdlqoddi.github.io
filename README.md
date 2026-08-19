@@ -28,8 +28,12 @@ python3 -m http.server 8000
 index.html, styles.css, main.js   랜딩(발표 목록)
 slides.json                       발표 목록 데이터 — 여기에만 등록하면 랜딩에 반영
 slides/<slug>/                    발표자료 (발표당 폴더 1개, reveal.js)
+slides/shared/                    발표자료 공통 자산 — deck-base.css(공통 디자인), code-copy(코드 복사 버튼)
+scripts/galaxy3d.js               공유 3D 은하 배경 (vendor/three.js와 한 쌍)
 vendor/reveal.js/                 reveal.js 6.0.1 공유 사본 (오프라인 발표 대비, MIT — LICENSE 동봉)
+vendor/three.js/                  three.js 사본 — 은하 배경 렌더러
 vendor/pretendard/                한글 글꼴 Pretendard v1.3.9 — CSS에 base64 내장 (OFL — LICENSE 동봉)
+vendor/montserrat/                영문 글꼴 Montserrat — CSS에 base64 내장
 404.html                          잘못된 주소 안내
 .nojekyll                         Jekyll 빌드 비활성화 — 삭제 금지
 docs/blindspot/                   내부 작업 문서 (사이트 기능 아님)
