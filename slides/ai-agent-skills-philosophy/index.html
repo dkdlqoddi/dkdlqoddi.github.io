@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
   <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
        링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
-  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
@@ -46,8 +46,10 @@
     .reveal .tag.t-soft { color: var(--accent); border-color: var(--accent); }
     .reveal .tag.t-hard { color: var(--danger); border-color: var(--danger); }
 
-    /* 자율성 미터 — 제품 다섯 장의 위치 표시기 (1부 추상화 미터와 같은 관용구) */
+    /* 자율성 미터 — 제품 다섯 장의 위치 표시기 (1부 연동 방법 미터와 같은 관용구) */
     .reveal .meter { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.42em; color: var(--dim); }
+    /* deck-base가 .reveal p에 Montserrat를 !important로 강제 — 고정폭이 필요한 미터만 되받는다 (1부와 같은 우회) */
+    .reveal p.meter { font-family: var(--font-mono) !important; }
     .reveal .meter .m-step { border: 1px solid var(--hairline); border-radius: 5px; padding: 1px 9px; }
     .reveal .meter .m-step.on { color: var(--accent); border-color: var(--accent); }
     .reveal .meter .m-label { margin-left: 8px; letter-spacing: 0.12em; }
@@ -732,7 +734,7 @@
         <div class="term">
           <p class="term-bar">aider · 버그 수정 루프 한 바퀴</p>
           <div class="term-body">
-            <p class="t-line t-user fragment">$ aider --auto-test payment.py</p>
+            <p class="t-line t-user fragment">aider --auto-test payment.py</p>
             <p class="t-line t-user fragment">환불 금액이 음수로 나오는 버그 고쳐줘</p>
             <p class="t-line t-ai fragment">payment.py 수정 → 자동 커밋 "fix: 환불 부호 처리"</p>
             <p class="t-line t-fail fragment">✗ pytest 자동 실행 — 1 failed (부분 환불 경로)</p>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: opencode serve 방법 5·6 승격 + 전체 리뷰</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: opencode serve 방법 5·6 승격 + 전체 리뷰</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>1부 발표자료에 새 장 두 개가 들어가 "사내 LLM 연결 방법"이 4가지에서 6가지가 됐습니다. 방법 5는 opencode를 서버로 띄워 두고 터미널에서 부르는 예시입니다. 방법 6은 같은 서버를 파이썬으로 부르는 예시입니다. 새 방법 5는 방법 4(통째로 위임)보다 추상화가 낮아, 진행 표시의 축 이름을 "추상화"에서 "연동 방법"(진행 순서)으로 바꿨습니다. 화면의 코드는 실제 서버(opencode 1.17.18)를 띄워 그대로 실행해 확인했고, 파이썬 예시의 출력 "2"는 실제로 받은 응답입니다. 공식 파이썬 라이브러리는 존재하지만 1년 가까이 시험판(알파)에서 멈춰 있고, 실측에서 응답을 읽지 못해 예시는 requests를 씁니다 — 이 사실은 슬라이드가 아니라 발표 대본의 예상 질문에 적었습니다. 서버는 기본이 무인증이라 슬라이드에 "로컬 전용" 경고 한 줄을 넣었고, 비밀번호 설정법 같은 상세는 대본으로 옮겼습니다. 자료 전체 점검 결과도 함께 고쳤습니다 — 흰 종이 인쇄에서 코드 글자와 두 자료(설계 AX 전환, 안전한 AI 아키텍처)의 네온 도형이 사실상 안 보이던 문제를 인쇄 전용 색 규칙으로 복구했고(화면 색은 그대로), 복사 단추가 키보드 사용자에게 안 보이던 문제와 랜딩 인쇄 시 우주 배경이 종이에 찍히던 문제도 고쳤습니다. 다만 두 파일은 캐시 표식을 올리지 않아 재방문자에게 최대 10분간 이전 버전이 보일 수 있습니다. 두 자료의 색 지정 방식을 근본부터 다시 쓰는 일은 이번에 하지 않고 후속 과제로 남겼습니다. 발표 대본은 16장 기준으로 갱신했고, 장별 시간 합계는 실측 45분 45초입니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "새 방법 5는 방법 4보다 추상화가 낮습니다. 이 때문에 진행 표시는 어떻게 바뀌었나요?",
+    options: ["축 이름 \"추상화\"를 유지하고 순서만 바꿨다", "축 이름을 \"연동 방법\"으로 바꿨다", "진행 표시 자체를 없앴다"], answer: 1,
+    explain: "추상화 축을 유지하면 사다리가 계속 오르지 않아 이름이 거짓이 됩니다. 그래서 진행 순서를 뜻하는 \"연동 방법\"으로 바꿨습니다(slides/dx-vs-ax-automation의 미터). 순서 재배치는 기존 4개 방법의 번호가 전부 바뀌는 더 큰 수술이라 택하지 않았습니다." },
+  { q: "파이썬 예시 끝에 적힌 출력 \"2\"는 어디서 온 값인가요?",
+    options: ["실제 서버에 그 코드를 실행해 받은 응답", "공식 문서의 예시를 옮겨 적은 값", "그럴듯하게 지어낸 예시 값"], answer: 0,
+    explain: "슬라이드의 코드를 원문 그대로 실제 서버(opencode 1.17.18)에 실행해 받은 응답입니다. 문서 예시를 옮기는 쪽이 그럴듯해 보이지만, 이 저장소는 검증 없이 지어낸 출력을 화면에 싣지 않는 것이 규칙입니다." },
+  { q: "공식 파이썬 라이브러리가 있는데도 예시가 requests를 쓰는 이유와, 그 사실이 적힌 곳은 어디인가요?",
+    options: ["회사 보안 규정 때문 — 보고서에만 기록", "라이브러리가 유료라서 — 슬라이드에 명시", "알파에서 멈춰 응답을 못 읽어서 — 대본 예상 질문에 기록"], answer: 2,
+    explain: "공식 라이브러리는 1년 가까이 시험판(알파)에서 갱신이 멈췄고, 실측에서 응답 내용을 읽지 못했습니다. 슬라이드는 깔끔하게 두고, 청중이 물을 만한 이 사실은 발표 대본의 예상 질문에 근거와 함께 적었습니다." },
+  { q: "이번 점검 뒤 흰 종이 인쇄는 어떻게 달라졌나요?",
+    options: ["코드는 검정 글자로, 네온 도형은 어두운 색으로 나온다", "인쇄 기능이 아예 꺼졌다", "화면과 종이가 모두 밝은 색으로 바뀌었다"], answer: 0,
+    explain: "코드 글자는 흰 종이 위 밝은 회색이라 사실상 안 보였고, 두 자료의 네온 도형도 판독이 안 됐습니다. 인쇄할 때만 적용되는 색 규칙으로 복구했고, 화면에서 보는 색은 하나도 바뀌지 않았습니다." },
+  { q: "복사 단추 접근성 수정과 랜딩 인쇄 수정은 게시 직후 모든 방문자에게 바로 보일까요?",
+    options: ["즉시 모든 방문자에게 반영된다", "재방문자에게는 최대 10분간 이전 버전이 보일 수 있다", "다음 정기 배포 때까지 반영되지 않는다"], answer: 1,
+    explain: "이 사이트는 파일을 최대 10분 동안 저장해 두고 다시 씁니다(캐시). 이 두 파일은 캐시 표식을 올리지 않아, 최근 방문자는 만료 전까지 이전 파일을 볼 수 있습니다. 처음 방문자는 바로 새 버전을 받습니다." },
+  { q: "이번 작업에서 일부러 하지 않고 후속 과제로 남긴 것은 무엇인가요?",
+    options: ["발표 대본의 장 번호 갱신", "새 슬라이드 코드의 실제 서버 검증", "두 자료 색 지정 방식의 전면 재작성"], answer: 2,
+    explain: "인쇄 문제는 인쇄 전용 덮어쓰기 규칙으로 이미 해결되어, 색 체계를 근본부터 다시 쓰는 것은 결과가 같고 비용만 커서 후속 과제로 남겼습니다. 대본 갱신과 실서버 검증은 이번에 완료된 항목입니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>

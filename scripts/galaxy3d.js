@@ -284,7 +284,9 @@ if (!prefersReducedMotion) {
       const isHovered = (hoveredCardIndex === idx);
       const targetScale = isHovered ? 3.5 : 1.0;
       anchor.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
-      anchor.mesh.rotation.y += 0.01;
+      if (!prefersReducedMotion) {
+        anchor.mesh.rotation.y += 0.01;
+      }
       
       // Shader uniform uHover and uOpacity lerp
       if (anchor.mesh.material && anchor.mesh.material.uniforms) {
@@ -293,7 +295,9 @@ if (!prefersReducedMotion) {
           const targetOpacity = isScrolled ? 1.0 : 0.0;
           anchor.mesh.material.uniforms.uHover.value += (targetHover - anchor.mesh.material.uniforms.uHover.value) * 0.1;
           anchor.mesh.material.uniforms.uOpacity.value += (targetOpacity - anchor.mesh.material.uniforms.uOpacity.value) * 0.1;
-          anchor.mesh.material.uniforms.uTime.value = elapsedTime;
+          if (!prefersReducedMotion) {
+            anchor.mesh.material.uniforms.uTime.value = elapsedTime;
+          }
       }
       
       // 행성도 은하수와 함께 공전해야 하므로 위치 업데이트

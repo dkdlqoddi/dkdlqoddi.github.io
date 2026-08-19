@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Python Automation: DX vs AX</title>
-  <meta name="description" content="팀 세미나 1부 — LLM 자동화는 무엇을 바꾸는가: 파이프라인의 진화, 긴 꼬리 효과, 사내 LLM 연동 4가지 방법">
+  <meta name="description" content="팀 세미나 1부 — LLM 자동화는 무엇을 바꾸는가: 파이프라인의 진화, 긴 꼬리 효과, 사내 LLM 연동 6가지 방법">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0e0e0e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
   <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
@@ -30,8 +30,11 @@
        진짜로 투명해야 할 도형에는 fill="transparent"를 쓸 것 — 이 선택자를 비켜 간다. */
     .reveal svg rect[fill="none"], .reveal svg circle[fill="none"], .reveal svg .panel-fill { fill: rgba(14, 14, 14, 0.85); }
 
-    /* 추상화 미터 — 방법 1~4 슬라이드의 위치 표시기 (2부 자율성 미터와 같은 관용구) */
+    /* 연동 방법 미터 — 방법 1~6 슬라이드의 위치 표시기 (2부 자율성 미터와 같은 관용구).
+       축은 "추상화"가 아니라 진행 순서 — ⑤(HTTP 직접)는 ④(위임)보다 추상화가 낮아 사다리가 아니다. */
     .reveal .meter { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 12px; font-family: var(--font-mono); font-size: 0.42em; color: var(--dim); }
+    /* deck-base가 .reveal p에 Montserrat를 !important로 강제하므로, 고정폭이 필요한 곳은 여기서 되받는다 (2부와 같은 우회) */
+    .reveal p.meter, .reveal p.eyebrow { font-family: var(--font-mono) !important; }
     .reveal .meter .m-step { border: 1px solid var(--hairline); border-radius: 5px; padding: 1px 9px; }
     .reveal .meter .m-step.on { color: var(--accent); border-color: var(--accent); }
     .reveal .meter .m-label { margin-left: 8px; letter-spacing: 0.12em; }
@@ -98,7 +101,7 @@
       <section>
         <p class="eyebrow">TEAM SEMINAR · PART 1 / 2</p>
         <h2>DX vs AX</h2>
-        <p class="small">LLM 자동화는 무엇을 바꾸는가<br>— 파이프라인의 진화와 사내 LLM 연동 4가지 방법</p>
+        <p class="small">LLM 자동화는 무엇을 바꾸는가<br>— 파이프라인의 진화와 사내 LLM 연동 6가지 방법</p>
         <p class="small dim"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
       </section>
 
@@ -108,13 +111,13 @@
         <p class="visually-hidden">그림 설명: 세미나 두 부의 지도. 왼쪽 강조 상자가 지금 진행하는 1부(자동화의 효과)로 세 가지 소주제를 담고, 화살표 건너 오른쪽 상자가 2부(하네스)입니다.</p>
         <svg class="diag" viewBox="0 0 900 270" role="img" aria-label="세미나 1부와 2부의 구성을 나란히 놓은 여정 지도" xmlns="http://www.w3.org/2000/svg">
           <g class="accent">
-            <text x="52" y="30" font-size="13" font-weight="600" fill="currentColor" style="font-family: var(--font-mono);">▶ 지금 여기</text>
+            <text x="52" y="30" font-size="13" font-weight="600" fill="currentColor" style="font-family: var(--font-mono) !important;">▶ 지금 여기</text>
             <rect x="40" y="42" width="380" height="186" rx="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
             <text x="230" y="82" text-anchor="middle" font-size="21" font-weight="700" fill="currentColor">1부 — 자동화의 효과</text>
           </g>
           <text x="72" y="122" font-size="15" fill="currentColor">· DX → AX : 같은 파이프라인의 진화</text>
           <text x="72" y="154" font-size="15" fill="currentColor">· 효과 : 규칙이 못 덮는 긴 꼬리</text>
-          <text x="72" y="186" font-size="15" fill="currentColor">· 연결 : 사내 LLM 연동 4가지 방법</text>
+          <text x="72" y="186" font-size="15" fill="currentColor">· 연결 : 사내 LLM 연동 6가지 방법</text>
 
           <line x1="430" y1="135" x2="466" y2="135" stroke="currentColor" stroke-width="2" class="dim"/>
           <polygon points="476,135 466,129 466,141" fill="currentColor" class="dim"/>
@@ -338,54 +341,79 @@
         <p class="small fragment" data-fragment-index="1">예외마다 규칙을 하나씩 늘리는 대신, <span class="bright">판단 하나</span>가 꼬리 전체를 덮습니다.</p>
       </section>
 
-      <!-- ═══════════════════ 7. 로드맵: 연동 4가지 방법 ═══════════════════ -->
+      <!-- ═══════════════════ 7. 로드맵: 연동 6가지 방법 ═══════════════════ -->
       <section>
-        <h3>사내 LLM에 연결하는 4가지 방법</h3>
-        <p class="visually-hidden">그림 설명: 추상화 수준이 낮은 것부터 높은 것 순서로 네 방법이 계단 모양으로 배치되고, 화살표 키마다 한 계단씩 나타납니다. HTTP 직접 호출, OpenAI SDK, LangChain을 지나 맨 위 오른쪽의 opencode 에이전트 위임에 도달합니다.</p>
-        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="네 가지 연동 방법을 추상화 수준 순서의 계단으로 배치한 로드맵" xmlns="http://www.w3.org/2000/svg">
+        <h3>사내 LLM에 연결하는 6가지 방법</h3>
+        <p class="visually-hidden">그림 설명: 여섯 방법의 로드맵. 왼쪽 아래에서 HTTP 직접 호출, OpenAI SDK, LangChain이 추상화 계단으로 올라가 opencode 위임이 계단 꼭대기입니다. 같은 높이 오른쪽으로 serve API 호출과 Python 연동이 이어지고, 셋을 묶는 "위임 구간" 표시가 붙습니다. 화살표 키마다 한 칸씩 나타납니다.</p>
+        <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="여섯 가지 연동 방법 로드맵 — 추상화 계단 네 칸과 같은 높이의 위임 구간 두 칸" xmlns="http://www.w3.org/2000/svg">
           <!-- 추상화 축 -->
           <line x1="40" y1="270" x2="40" y2="40" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <polygon points="40,30 34,42 46,42" fill="currentColor" class="dim"/>
           <text x="28" y="155" text-anchor="middle" font-size="13" fill="currentColor" class="dim" transform="rotate(-90 28 155)">추상화 수준</text>
 
-          <!-- 계단 (한 칸씩 공개) -->
-          <rect x="80" y="210" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-          <text x="170" y="234" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">① HTTP 직접</text>
-          <text x="170" y="255" text-anchor="middle" font-size="12" fill="currentColor" class="dim">직접 호출</text>
+          <!-- 계단 ①~④ (한 칸씩 공개) -->
+          <rect x="45" y="210" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="107" y="234" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">① HTTP 직접</text>
+          <text x="107" y="255" text-anchor="middle" font-size="12" fill="currentColor" class="dim">직접 호출</text>
 
           <g class="fragment fade-up">
-            <line x1="260" y1="239" x2="285" y2="179" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
-            <rect x="285" y="150" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="375" y="174" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">② OpenAI SDK</text>
-            <text x="375" y="195" text-anchor="middle" font-size="12" fill="currentColor" class="dim">얇은 래퍼</text>
+            <line x1="170" y1="239" x2="185" y2="179" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <rect x="185" y="150" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="247" y="174" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">② OpenAI SDK</text>
+            <text x="247" y="195" text-anchor="middle" font-size="12" fill="currentColor" class="dim">얇은 래퍼</text>
           </g>
 
           <g class="fragment fade-up">
-            <line x1="465" y1="179" x2="490" y2="119" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
-            <rect x="490" y="90" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <text x="580" y="114" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">③ LangChain</text>
-            <text x="580" y="135" text-anchor="middle" font-size="12" fill="currentColor" class="dim">프레임워크</text>
+            <line x1="310" y1="179" x2="325" y2="119" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <rect x="325" y="90" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="387" y="114" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">③ LangChain</text>
+            <text x="387" y="135" text-anchor="middle" font-size="12" fill="currentColor" class="dim">프레임워크</text>
           </g>
 
           <g class="fragment fade-up">
-            <line x1="670" y1="119" x2="695" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <line x1="450" y1="119" x2="465" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
             <g class="accent">
-              <rect x="695" y="30" width="180" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
-              <text x="785" y="54" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">④ opencode</text>
-              <text x="785" y="75" text-anchor="middle" font-size="12" fill="currentColor">에이전트 위임</text>
+              <rect x="465" y="30" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              <text x="527" y="54" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">④ opencode</text>
+              <text x="527" y="75" text-anchor="middle" font-size="12" fill="currentColor">에이전트 위임</text>
             </g>
           </g>
 
-          <text x="480" y="290" text-anchor="middle" font-size="13" fill="currentColor" class="dim">①→③은 LLM을 "호출"하고, ④는 일을 "위임"합니다</text>
+          <!-- 위임 구간 확장 ⑤⑥ — ④와 같은 높이 (추상화가 더 높아서가 아니라 같은 위임 가족이라는 뜻) -->
+          <g class="fragment fade-up">
+            <line x1="592" y1="59" x2="603" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <g class="accent">
+              <rect x="605" y="30" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="667" y="54" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">⑤ serve API</text>
+              <text x="667" y="75" text-anchor="middle" font-size="12" fill="currentColor">상주 서버 호출</text>
+            </g>
+          </g>
+
+          <g class="fragment fade-up">
+            <line x1="732" y1="59" x2="743" y2="59" stroke="currentColor" stroke-width="1" class="dim" stroke-dasharray="3,3"/>
+            <g class="accent">
+              <rect x="745" y="30" width="125" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="807" y="54" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">⑥ Python 연동</text>
+              <text x="807" y="75" text-anchor="middle" font-size="12" fill="currentColor">requests로 통합</text>
+            </g>
+            <g class="dim">
+              <line x1="470" y1="100" x2="865" y2="100" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="470" y1="100" x2="470" y2="94" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="865" y1="100" x2="865" y2="94" stroke="currentColor" stroke-width="1.5"/>
+              <text x="667" y="120" text-anchor="middle" font-size="13" fill="currentColor">위임 구간 — 설치는 한 번, 부리는 법 셋</text>
+            </g>
+          </g>
+
+          <text x="480" y="290" text-anchor="middle" font-size="13" fill="currentColor" class="dim">①→③은 LLM을 "호출"하고, ④→⑥은 일을 "위임"합니다</text>
         </svg>
       </section>
 
       <!-- ═══════════════════ 8. 방법 1: HTTP 직접 호출 ═══════════════════ -->
       <section>
         <h3>방법 1 — HTTP 직접 호출</h3>
-        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 1단계">
-          <span class="m-step on">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span>
-          <span class="m-label">추상화</span>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 1번째">
+          <span class="m-step on">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
+          <span class="m-label">연동 방법</span>
         </p>
         <p class="visually-hidden">그림 설명: Python에서 requests 라이브러리로 사내 LLM의 표준 주소에 HTTP 요청을 직접 보내는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 HTTP 요청으로 사내 LLM을 직접 호출하는 구조" xmlns="http://www.w3.org/2000/svg">
@@ -421,9 +449,9 @@ print(resp.json()["choices"][0]["message"]["content"])
       <!-- ═══════════════════ 9. 방법 2: OpenAI SDK ═══════════════════ -->
       <section>
         <h3>방법 2 — OpenAI SDK</h3>
-        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 2단계">
-          <span class="m-step">①</span><span class="m-step on">②</span><span class="m-step">③</span><span class="m-step">④</span>
-          <span class="m-label">추상화</span>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 2번째">
+          <span class="m-step">①</span><span class="m-step on">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
+          <span class="m-label">연동 방법</span>
         </p>
         <p class="visually-hidden">그림 설명: Python에서 OpenAI SDK의 서버 주소 설정(base_url)을 사내 LLM으로 바꿔 연결하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 OpenAI SDK로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
@@ -464,9 +492,9 @@ print(resp.choices[0].message.content)
       <!-- ═══════════════════ 10. 방법 3: LangChain ═══════════════════ -->
       <section>
         <h3>방법 3 — LangChain</h3>
-        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 3단계">
-          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step on">③</span><span class="m-step">④</span>
-          <span class="m-label">추상화</span>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 3번째">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step on">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
+          <span class="m-label">연동 방법</span>
         </p>
         <p class="visually-hidden">그림 설명: Python에서 LangChain 프레임워크로 프롬프트 템플릿과 LLM을 체인으로 조립해 사내 LLM에 연결하는 구조입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 LangChain으로 사내 LLM에 연결하는 구조" xmlns="http://www.w3.org/2000/svg">
@@ -507,9 +535,9 @@ print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
       <!-- ═══════════════════ 11. 방법 4: opencode 위임 ═══════════════════ -->
       <section>
         <h3>방법 4 — opencode, 에이전트에게 위임</h3>
-        <p class="meter" role="img" aria-label="추상화 사다리 4단계 중 4단계">
-          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step on">④</span>
-          <span class="m-label">추상화</span>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 4번째">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step on">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
+          <span class="m-label">연동 방법</span>
         </p>
         <p class="visually-hidden">그림 설명: Python이 subprocess로 opencode 에이전트를 실행하고, 에이전트가 사내 LLM과 도구를 써서 일을 통째로 처리하는 구조입니다. 에이전트 상자의 점선 테두리가 천천히 도는 애니메이션은 스스로 판단하는 자율 영역이라는 뜻입니다. 앞의 세 방법과 달리 호출이 아니라 위임입니다.</p>
         <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 subprocess로 opencode 에이전트에 작업을 위임하는 구조" xmlns="http://www.w3.org/2000/svg">
@@ -545,11 +573,89 @@ print(result.stdout)
         <p class="small" style="color: var(--secondary);">호출이 아니라 위임 · 도구 사용까지 맡김</p>
       </section>
 
-      <!-- ═══════════════════ 12. 비교표 ═══════════════════ -->
+      <!-- ═══════════════════ 12. 방법 5: opencode serve + HTTP ═══════════════════ -->
       <section>
-        <h3>4가지 방법 비교</h3>
-        <p class="visually-hidden">표 설명: 네 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다.</p>
-        <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="네 가지 연동 방법의 추상화 수준, 설치, 적합 상황 비교표" xmlns="http://www.w3.org/2000/svg">
+        <h3>방법 5 — opencode serve 호출</h3>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 5번째">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step on">⑤</span><span class="m-step">⑥</span>
+          <span class="m-label">연동 방법</span>
+        </p>
+        <p class="visually-hidden">그림 설명: 터미널의 curl 명령이 상주 중인 opencode serve 서버에 HTTP 요청을 보내고, 서버 속 에이전트가 사내 LLM으로 일을 처리해 JSON으로 답하는 구조입니다. 서버 상자의 점선 테두리가 도는 애니메이션은 스스로 판단하는 자율 영역이라는 뜻입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="터미널에서 HTTP로 상주 opencode serve 서버에 위임하는 구조" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="170" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="105" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">터미널 (curl)</text>
+          <g class="accent">
+            <line x1="195" y1="32" x2="242" y2="32" stroke="currentColor" stroke-width="2"/>
+            <polygon points="250,32 240,26 240,38" fill="currentColor"/>
+            <text x="222" y="22" text-anchor="middle" font-size="13" fill="currentColor">HTTP</text>
+            <rect class="march-border" x="255" y="6" width="260" height="53" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7,4"/>
+            <text x="385" y="29" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">opencode serve</text>
+            <text x="385" y="49" text-anchor="middle" font-size="12" fill="currentColor">:4096 상주 · 판단 · 도구 실행</text>
+            <line x1="520" y1="32" x2="704" y2="32" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="712,32 702,26 702,38" fill="currentColor"/>
+            <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
+        </svg>
+        <pre><code class="bash"># 준비: 방법 4의 opencode 그대로 (설치 1회면 끝)
+# 서버 켜기: opencode serve --port 4096  (기본 무인증)
+
+U=http://127.0.0.1:4096            # 상주 서버 주소
+
+SID=$(curl -sX POST $U/session | jq -r .id)
+
+curl -sX POST $U/session/$SID/message \
+  -H "Content-Type: application/json" \
+  -d '{"parts":[{"type":"text","text":"1+1은?"}]}'
+# 응답: info(모델·비용) + parts[] — 답변은 type "text"
+# 모델 지정 생략 시 opencode.json의 기본 모델 사용</code></pre>
+        <p class="small" style="color: var(--secondary);">상주 서버로 위임 · 기본 무인증 — 로컬 전용 (v1.17.18 검증)</p>
+      </section>
+
+      <!-- ═══════════════════ 13. 방법 6: opencode serve + Python ═══════════════════ -->
+      <section>
+        <h3>방법 6 — serve를 Python으로</h3>
+        <p class="meter" role="img" aria-label="연동 방법 6가지 중 6번째">
+          <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step on">⑥</span>
+          <span class="m-label">연동 방법</span>
+        </p>
+        <p class="visually-hidden">그림 설명: Python이 requests 라이브러리로 상주 중인 opencode serve 서버에 세션을 만들고 메시지를 보내, 서버 속 에이전트가 사내 LLM으로 처리한 답변을 JSON에서 꺼내는 구조입니다. 서버 상자의 점선 테두리가 도는 애니메이션은 스스로 판단하는 자율 영역이라는 뜻입니다.</p>
+        <svg class="mini-diag" viewBox="0 0 900 65" role="img" aria-label="Python에서 requests로 상주 opencode serve 서버에 위임하는 구조" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="190" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <text x="115" y="40" text-anchor="middle" font-size="16" fill="currentColor" class="bright">Python (requests)</text>
+          <g class="accent">
+            <line x1="215" y1="32" x2="262" y2="32" stroke="currentColor" stroke-width="2"/>
+            <polygon points="270,32 260,26 260,38" fill="currentColor"/>
+            <text x="242" y="22" text-anchor="middle" font-size="13" fill="currentColor">HTTP</text>
+            <rect class="march-border" x="275" y="6" width="240" height="53" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="7,4"/>
+            <text x="395" y="29" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">opencode serve</text>
+            <text x="395" y="49" text-anchor="middle" font-size="12" fill="currentColor">세션 유지 · 판단 · 도구 실행</text>
+            <line x1="520" y1="32" x2="704" y2="32" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="712,32 702,26 702,38" fill="currentColor"/>
+            <rect x="722" y="10" width="155" height="45" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="800" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+          </g>
+        </svg>
+        <pre><code class="python">import requests        # 설치: pip install requests
+
+BASE = "http://127.0.0.1:4096"    # 떠 있는 serve 주소
+sid = requests.post(BASE + "/session").json()["id"]
+r = requests.post(
+    BASE + f"/session/{sid}/message",
+    json={"parts": [{"type": "text",
+                     "text": "1+1은?"}]},
+)
+texts = [p["text"] for p in r.json()["parts"]
+         if p["type"] == "text"]      # 답변 추출
+print(texts[0])                       # 출력: "2"</code></pre>
+        <p class="small" style="color: var(--secondary);">프로그램에 통합 · 응답 파싱 — requests 재사용</p>
+      </section>
+
+      <!-- ═══════════════════ 14. 비교표 ═══════════════════ -->
+      <section>
+        <h3>6가지 방법 비교</h3>
+        <p class="visually-hidden">표 설명: 여섯 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다. serve API는 위임 서버에 보내는 직접 호출이며 방법 4의 설치를 그대로 쓰고 상주 서비스와 반복 호출에 맞습니다. Python 연동은 위임 서버를 requests로 부르며 requests 패키지만 필요하고 프로그램에 위임을 통합할 때 맞습니다.</p>
+        <svg class="diag" viewBox="0 0 900 434" role="img" aria-label="여섯 가지 연동 방법의 추상화 수준, 설치, 적합 상황 비교표" xmlns="http://www.w3.org/2000/svg">
           <!-- 헤더 -->
           <rect x="20" y="10" width="190" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
           <text x="115" y="36" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor" class="bright">방법</text>
@@ -614,10 +720,40 @@ print(result.stdout)
             <rect x="660" y="246" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
             <text x="770" y="277" text-anchor="middle" font-size="13" fill="currentColor" class="dim">도구 실행까지 통째로 위임</text>
           </g>
+
+          <!-- Row 5: serve API — 막대는 "호출 코드의 추상화"라 방법 1과 같은 길이 (위임 대상이 다를 뿐) -->
+          <g class="fragment fade-up">
+            <g class="accent">
+              <rect x="20" y="308" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="115" y="340" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">serve API</text>
+            </g>
+            <rect x="220" y="308" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="344" width="45" height="6" rx="3" fill="currentColor" class="accent" opacity="0.8"/>
+            <text x="330" y="339" text-anchor="middle" font-size="13" fill="currentColor" class="dim">위임 서버에 직접 호출</text>
+            <rect x="440" y="308" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="339" text-anchor="middle" font-size="13" fill="currentColor" class="dim">방법 4와 동일 (추가 0개)</text>
+            <rect x="660" y="308" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="339" text-anchor="middle" font-size="13" fill="currentColor" class="dim">상주 서비스 · 반복 호출</text>
+          </g>
+
+          <!-- Row 6: serve + Python -->
+          <g class="fragment fade-up">
+            <g class="accent">
+              <rect x="20" y="370" width="190" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="115" y="402" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">Python 연동</text>
+            </g>
+            <rect x="220" y="370" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="230" y="406" width="90" height="6" rx="3" fill="currentColor" class="accent" opacity="0.7"/>
+            <text x="330" y="401" text-anchor="middle" font-size="13" fill="currentColor" class="dim">위임 서버에 requests</text>
+            <rect x="440" y="370" width="210" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="545" y="401" text-anchor="middle" font-size="13" fill="currentColor" class="dim">requests 패키지</text>
+            <rect x="660" y="370" width="220" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text x="770" y="401" text-anchor="middle" font-size="13" fill="currentColor" class="dim">프로그램에 위임 통합</text>
+          </g>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 13. 브리지: 위임의 대가 ═══════════════════ -->
+      <!-- ═══════════════════ 15. 브리지: 위임의 대가 ═══════════════════ -->
       <section>
         <h3>위임의 대가 — 폭이 벌어진다</h3>
         <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼지고 실행 결과 점들이 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 조인다는 예고가 표시됩니다.</p>
@@ -652,7 +788,7 @@ print(result.stdout)
         <p class="small">호출은 폭이 좁고, 위임은 능력만큼 폭도 넓습니다.<br>넓어진 폭을 조이는 장치가 <span class="bright">하네스</span> — 2부의 주제입니다.</p>
       </section>
 
-      <!-- ═══════════════════ 14. 끝 ═══════════════════ -->
+      <!-- ═══════════════════ 16. 끝 ═══════════════════ -->
       <section>
         <h2>1부 끝.</h2>
         <p class="small"><a href="../ai-agent-skills-philosophy/">2부 — AI Agent Skills Philosophy →</a></p>

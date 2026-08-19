@@ -22,13 +22,23 @@
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
   <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
        링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
-  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
     /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
        JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
     html { background: #0e0e0e; color-scheme: dark; }
+
+    /* 인쇄 색 복구 — 이 덱 SVG는 currentColor 대신 직접 색을 쓴다.
+       화면은 그대로 두고 흰 종이(Ctrl+P)에서만 판독 가능한 색으로 되돌린다.
+       (근본 수리는 currentColor 재작성 — 후속 과제) */
+    @media print {
+      html:not(.print-pdf) svg [fill="#fcfcfb"], html:not(.print-pdf) svg [fill="#9aa0a6"] { fill: #000 !important; }
+      html:not(.print-pdf) svg [stroke="#fcfcfb"], html:not(.print-pdf) svg [stroke="#9aa0a6"] { stroke: #000 !important; }
+      html:not(.print-pdf) svg [fill="#f05050"] { fill: #8b0000 !important; }
+      html:not(.print-pdf) svg [stroke="#f05050"] { stroke: #8b0000 !important; }
+    }
   </style>
 </head>
 <body>

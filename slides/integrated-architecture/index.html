@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
   <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
        링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
-  <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
@@ -37,23 +37,8 @@
     /* 이 덱 고유: 우주선 장식은 종이에 흰 얼룩으로 찍히므로 인쇄 제외 */
     @media print { .spaceship-container { display: none !important; } }
 
-    html { background: #0e0e0e; color-scheme: dark; }
-    
-    /* 폰트 초기화 및 한글 단어 잘림 방지 */
-    :root {
-      --r-main-font: 'Pretendard Variable', -apple-system, sans-serif;
-      --r-heading-font: 'Pretendard Variable', -apple-system, sans-serif;
-      --r-heading-text-transform: none;
-    }
-    
-    .reveal {
-      font-family: var(--r-main-font);
-      word-break: keep-all;
-    }
-    
+    /* 폰트·전각 처리·대문자 취소는 deck-base가 공급 — 여기는 이 덱 고유 색만 */
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-      text-transform: none;
-      font-family: var(--r-heading-font);
       color: #00ffff;
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
     }
@@ -86,6 +71,46 @@
     
     @media print {
       html:not(.print-pdf) svg, html:not(.print-pdf) svg * { display: block !important; }
+
+      /* ── 인쇄 색 복구 — 이 덱은 currentColor 대신 직접 색을 쓴다.
+         화면은 그대로 두고 흰 종이(Ctrl+P)에서만 어두운 색으로 되돌린다.
+         (근본 수리는 currentColor 재작성 — 후속 과제) ── */
+      html:not(.print-pdf) .reveal h1, html:not(.print-pdf) .reveal h2,
+      html:not(.print-pdf) .reveal h3, html:not(.print-pdf) .reveal h4 { color: #000 !important; text-shadow: none !important; }
+      html:not(.print-pdf) .node-text, html:not(.print-pdf) .node-subtext { fill: #000 !important; }
+      html:not(.print-pdf) .line-flow, html:not(.print-pdf) .line-flow-anim { stroke: #000 !important; }
+      html:not(.print-pdf) .node-office { stroke: #006666 !important; fill: none !important; }
+      html:not(.print-pdf) .node-vwp { stroke: #8b0000 !important; fill: none !important; }
+      html:not(.print-pdf) .node-shield { stroke: #006600 !important; fill: none !important; }
+      html:not(.print-pdf) .fw-line { stroke: #8b0000 !important; }
+      html:not(.print-pdf) .fw-text { fill: #8b0000 !important; }
+      html:not(.print-pdf) .code-snippet { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; }
+      html:not(.print-pdf) .code-red, html:not(.print-pdf) .code-green,
+      html:not(.print-pdf) .code-blue, html:not(.print-pdf) .code-yellow { color: #000 !important; }
+      html:not(.print-pdf) .hud-box { background: none !important; border-color: #000 !important; }
+      html:not(.print-pdf) .hud-box-warning { background: none !important; border-color: #8b0000 !important; box-shadow: none !important; }
+      /* SVG 속성으로 적힌 밝은 색 → 검정, 네온 → 어두운 동색 */
+      html:not(.print-pdf) svg [fill="#fcfcfb"], html:not(.print-pdf) svg [fill="#fff"],
+      html:not(.print-pdf) svg [fill="#ffffff"], html:not(.print-pdf) svg [fill="#dedede"],
+      html:not(.print-pdf) svg [fill="#9aa0a6"], html:not(.print-pdf) svg [fill="#888"] { fill: #000 !important; }
+      html:not(.print-pdf) svg [stroke="#fcfcfb"], html:not(.print-pdf) svg [stroke="#fff"],
+      html:not(.print-pdf) svg [stroke="#9aa0a6"] { stroke: #000 !important; }
+      html:not(.print-pdf) svg [fill="#00ffff"] { fill: #006666 !important; }
+      html:not(.print-pdf) svg [stroke="#00ffff"] { stroke: #006666 !important; }
+      html:not(.print-pdf) svg [fill="#00ff00"] { fill: #006600 !important; }
+      html:not(.print-pdf) svg [fill="#ffbb00"], html:not(.print-pdf) svg [fill="#ffaa00"] { fill: #8a5a00 !important; }
+      html:not(.print-pdf) svg [stroke="#ffbb00"], html:not(.print-pdf) svg [stroke="#ffaa00"] { stroke: #8a5a00 !important; }
+      html:not(.print-pdf) svg [fill="#ff4444"] { fill: #8b0000 !important; }
+      html:not(.print-pdf) svg [stroke="#ff4444"] { stroke: #8b0000 !important; }
+      html:not(.print-pdf) svg [fill="#001122"] { fill: none !important; }
+      html:not(.print-pdf) .btn-return { color: #006666 !important; border-color: #006666 !important; }
+      /* 본문 인라인 색(style 속성)은 값 일치 선택자로 되돌린다 */
+      html:not(.print-pdf) [style*="color: #00ffff"] { color: #006666 !important; }
+      html:not(.print-pdf) [style*="color: #00ff00"] { color: #006600 !important; }
+      html:not(.print-pdf) [style*="color: #ffbb00"] { color: #8a5a00 !important; }
+      html:not(.print-pdf) [style*="color: #ff4444"] { color: #8b0000 !important; }
+      html:not(.print-pdf) [style*="color: #fcfcfb"], html:not(.print-pdf) [style*="color: #fff"],
+      html:not(.print-pdf) [style*="color: #9aa0a6"] { color: #000 !important; }
     }
     
     @media (prefers-reduced-motion: no-preference) {
@@ -144,26 +169,25 @@
       75% { transform: translate(110px, 220px); opacity: 1; }
       100% { opacity: 0; }
     }
-    @keyframes loopCounter {
-      0% { opacity: 0; content: "Agentic Loop: 0"; }
-      5% { opacity: 1; }
-      25% { opacity: 1; }
-      45% { opacity: 1; }
-      65% { opacity: 1; }
-      75% { opacity: 0; }
-      100% { opacity: 0; }
+    /* 흐르는 점은 기본 숨김 — 동작 축소에서 엉뚱한 위치에 고정되지 않게 (1부 travel-dot 패턴) */
+    .pulse-multi-return { fill: #00ffff; filter: drop-shadow(0 0 5px #00ffff); opacity: 0; }
+    @media (prefers-reduced-motion: no-preference) {
+      .pulse-multi-1 { animation: multiPulse1 8s linear infinite; }
+      .pulse-multi-ping { animation: multiPulsePing 8s linear infinite; }
+      .pulse-multi-return { animation: multiPulseReturn 8s linear infinite; }
+      .result-multi-text { animation: fadeInOutResult 8s linear infinite; }
+      /* SMIL 대체 — 루프 라벨 순환 (동작 축소에서는 정적으로 계속 보임) */
+      .loop-label-anim { animation: loopLabelFade 8s linear infinite; }
+      @keyframes loopLabelFade {
+        0% { opacity: 0; }
+        5%, 65% { opacity: 1; }
+        100% { opacity: 0; }
+      }
     }
 
-    .pulse-multi-1 { animation: multiPulse1 8s linear infinite; }
-    .pulse-multi-ping { animation: multiPulsePing 8s linear infinite; }
-    .pulse-multi-return { fill: #00ffff; filter: drop-shadow(0 0 5px #00ffff); animation: multiPulseReturn 8s linear infinite; }
-    
     @keyframes fadeInOutResult {
       0%, 75%, 100% { opacity: 0; }
       80%, 95% { opacity: 1; }
-    }
-    .result-multi-text {
-      animation: fadeInOutResult 8s linear infinite;
     }
     
     .code-snippet {
@@ -620,8 +644,7 @@
         <h2>Agentic Loop </h2>
         <h3 style="color: #ffbb00; font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
-          <text x="400" y="50" class="node-text" fill="#ffbb00" font-size="18">
-            <animate attributeName="opacity" values="0;1;1;1;1;0" keyTimes="0;0.05;0.25;0.45;0.65;1" dur="8s" repeatCount="indefinite" />
+          <text x="400" y="50" class="node-text loop-label-anim" fill="#ffbb00" font-size="18">
             <tspan>오류 발생 → Harness 차단 → 재추론 → VWP망 조회 (반복)</tspan>
           </text>
           
@@ -785,7 +808,7 @@
 
 <section style="position: relative; height: 100%;">
         <h2 class="thank-you-neon">THANK YOU</h2>
-        <a href="../../index.html" class="btn-return">
+        <a href="../../" class="btn-return">
           RETURN TO LANDING PAGE
         </a>
         

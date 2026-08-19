@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   deck-base.css — 전 덱 공통 디자인 (v1)
+   deck-base.css — 전 덱 공통 디자인 (v2)
 
    링크 위치 계약 (지키지 않으면 화면이 뒤집힌다):
      black.css(테마) 뒤 · 각 덱 인라인 <style> 앞.
-     예) <link rel="stylesheet" href="../shared/deck-base.css?v=1">
+     예) <link rel="stylesheet" href="../shared/deck-base.css?v=2">
    덱 고유 스타일은 각 덱의 인라인 <style>에서 이 파일을 덮어쓴다.
    흰 화면 번쩍임 방지 2종(meta color-scheme, html 배경색)은
    이 파일이 아니라 각 덱 <head>에 남긴다 (CLAUDE.md 규칙).
@@ -73,6 +73,9 @@ html:root {
 .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal text {
   font-family: "Montserrat", "Pretendard Variable", Pretendard, sans-serif !important;
 }
+/* 위 !important가 자기 파일의 .eyebrow 고정폭(:64)까지 이겨 버리므로 여기서 되받는다.
+   덱 고유 고정폭 요소(예: p.meter)는 각 덱 인라인에서 같은 방식으로 우회할 것. */
+.reveal p.eyebrow { font-family: var(--font-mono) !important; }
 
 /* ── 3. 랜딩↔덱 페이지 전환 (양쪽 문서 모두 선언해야 동작) ── */
 @media (prefers-reduced-motion: no-preference) {
@@ -201,15 +204,22 @@ html:root {
   html:not(.print-pdf) .reveal .slides > section:first-of-type .eyebrow { color: #000 !important; }
   html:not(.print-pdf) .reveal .slides > section:first-of-type h1,
   html:not(.print-pdf) .reveal .slides > section:first-of-type h2 { text-shadow: none !important; }
+  /* 코드 블록 복구 — reveal의 인쇄 CSS는 pre/code 색을 손대지 않아
+     흰 종이 위 #dedede(대비 1.35:1)로 사실상 사라진다 */
+  html:not(.print-pdf) .reveal pre,
+  html:not(.print-pdf) .reveal pre code { background: #fff !important; color: #000 !important; border-color: #000 !important; }
   /* 장식은 종이에서 숨김 */
   #galaxy-3d-bg { display: none !important; }
   .hud { display: none !important; }
-  /* EVA VIEW 해제 — 넘친 슬라이드도 끝까지 인쇄 */
+  /* EVA VIEW 해제 — 넘친 슬라이드도 끝까지 인쇄 (pre와 pre code 캡을 모두 풀 것 —
+     테마가 pre code에도 max-height 400px를 건다: 13줄부터 잘린다) */
   .reveal .slides section { max-height: none !important; overflow: visible !important; }
   .reveal pre { max-height: none; overflow: visible; }
+  .reveal pre code { max-height: none !important; overflow: visible !important; }
 }
 /* EVA VIEW 해제 + 장식 숨김 (PDF 내보내기 화면 경로) */
 html.reveal-print .reveal .slides section { max-height: none !important; overflow: visible !important; }
 html.reveal-print .reveal pre { max-height: none !important; overflow: visible !important; }
+html.reveal-print .reveal pre code { max-height: none !important; overflow: visible !important; }
 html.reveal-print .hud,
 html.reveal-print #galaxy-3d-bg { display: none !important; }

@@ -20,8 +20,15 @@ pre {
   z-index: 10;
 }
 
-pre:hover .copy-code-btn {
+pre:hover .copy-code-btn,
+pre:focus-within .copy-code-btn,
+.copy-code-btn:focus-visible {
   opacity: 1;
+}
+
+.copy-code-btn:focus-visible {
+  outline: 2px solid #00dddd;
+  outline-offset: 2px;
 }
 
 .copy-code-btn:hover {
