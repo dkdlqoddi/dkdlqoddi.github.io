@@ -408,7 +408,55 @@
         </svg>
       </section>
 
-      <!-- ═══════════════════ 8. 방법 1: HTTP 직접 호출 ═══════════════════ -->
+      <!-- ═══════════════════ 8. 공통 전제: HTTP 왕복 ═══════════════════ -->
+      <section>
+        <h3>여섯 방법의 공통 전제 — HTTP 왕복</h3>
+        <p class="visually-hidden">그림 설명: 내 명령이 키보드 입력으로 호출자에게 들어갑니다. 호출자는 내 코드일 수도 있고 opencode일 수도 있습니다. 호출자가 사내 LLM에 HTTP 요청을 보내고, 응답이 조각 스트림 점선으로 되돌아옵니다. 입력 구간에는 HTTP가 아니라는 표시가 있고, 화살표 키로 요청과 응답이 차례로 나타납니다. 그림 아래 설명: 여섯 방법 모두 이 왕복 위에 있고, 다른 것은 감싸는 두께뿐입니다.</p>
+        <svg class="diag" viewBox="0 0 900 260" role="img" aria-label="호출자가 사내 LLM에 HTTP 요청을 보내고 조각 스트림 응답을 받는 왕복 구조" xmlns="http://www.w3.org/2000/svg">
+          <!-- 출발점: 사람 입력 (HTTP 아님) -->
+          <rect x="40" y="98" width="130" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
+          <text x="105" y="122" text-anchor="middle" font-size="15" fill="currentColor" class="bright">내 명령</text>
+          <text x="105" y="143" text-anchor="middle" font-size="12" fill="currentColor" class="dim">키보드 입력</text>
+          <g class="dim">
+            <line x1="175" y1="127" x2="240" y2="127" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="248,127 238,121 238,133" fill="currentColor"/>
+            <text x="211" y="115" text-anchor="middle" font-size="12" fill="currentColor">HTTP 아님</text>
+          </g>
+
+          <!-- 호출자 -->
+          <rect x="252" y="88" width="190" height="78" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="347" y="120" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor" class="bright">호출자</text>
+          <text x="347" y="146" text-anchor="middle" font-size="12" fill="currentColor" class="dim">내 코드 · opencode</text>
+
+          <!-- 종점: 사내 LLM -->
+          <g class="accent">
+            <rect x="700" y="88" width="155" height="78" rx="8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="777" y="120" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">사내 LLM</text>
+            <text x="777" y="146" text-anchor="middle" font-size="12" fill="currentColor">LLM API</text>
+          </g>
+
+          <!-- 요청: 위쪽 실선 -->
+          <g class="accent fragment">
+            <line x1="447" y1="108" x2="690" y2="108" stroke="currentColor" stroke-width="2"/>
+            <polygon points="698,108 688,102 688,114" fill="currentColor"/>
+            <rect x="468" y="80" width="200" height="20" rx="5" fill="none" stroke="none"/>
+            <text x="568" y="95" text-anchor="middle" font-size="13" fill="currentColor">HTTP 요청 — 대화 전체를 담아</text>
+          </g>
+
+          <!-- 응답: 아래쪽 점선 행진 (1부 주기 4,3) -->
+          <g class="dim fragment">
+            <path class="march" d="M 690 148 L 455 148" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,3"/>
+            <polygon points="447,148 457,142 457,154" fill="currentColor"/>
+            <rect x="478" y="156" width="180" height="20" rx="5" fill="none" stroke="none"/>
+            <text x="568" y="171" text-anchor="middle" font-size="13" fill="currentColor">응답 — 조각 스트림으로 도착</text>
+          </g>
+
+          <text x="450" y="242" text-anchor="middle" font-size="13" fill="currentColor" class="dim">여섯 방법 모두 이 왕복 위에 있습니다 — 다른 것은 감싸는 두께뿐입니다</text>
+        </svg>
+        <p class="small dim">opencode · LLM API 공식 문서 기준 (2026-08-19 확인)</p>
+      </section>
+
+      <!-- ═══════════════════ 9. 방법 1: HTTP 직접 호출 ═══════════════════ -->
       <section>
         <h3>방법 1 — HTTP 직접 호출</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 1번째">
@@ -446,7 +494,7 @@ print(resp.json()["choices"][0]["message"]["content"])
         <p class="small" style="color: var(--secondary);">표준 API 규격 그대로 · 폐쇄망 최소 설치</p>
       </section>
 
-      <!-- ═══════════════════ 9. 방법 2: OpenAI SDK ═══════════════════ -->
+      <!-- ═══════════════════ 10. 방법 2: OpenAI SDK ═══════════════════ -->
       <section>
         <h3>방법 2 — OpenAI SDK</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 2번째">
@@ -489,7 +537,7 @@ print(resp.choices[0].message.content)
         <p class="small" style="color: var(--secondary);">타입 · 스트리밍 지원 · 호환 서버의 사실상 표준</p>
       </section>
 
-      <!-- ═══════════════════ 10. 방법 3: LangChain ═══════════════════ -->
+      <!-- ═══════════════════ 11. 방법 3: LangChain ═══════════════════ -->
       <section>
         <h3>방법 3 — LangChain</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 3번째">
@@ -532,7 +580,7 @@ print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
         <p class="small" style="color: var(--secondary);">프롬프트 · 체인 조립 · 다단계 작업에 적합</p>
       </section>
 
-      <!-- ═══════════════════ 11. 방법 4: opencode 위임 ═══════════════════ -->
+      <!-- ═══════════════════ 12. 방법 4: opencode 위임 ═══════════════════ -->
       <section>
         <h3>방법 4 — opencode, 에이전트에게 위임</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 4번째">
@@ -573,7 +621,7 @@ print(result.stdout)
         <p class="small" style="color: var(--secondary);">호출이 아니라 위임 · 도구 사용까지 맡김</p>
       </section>
 
-      <!-- ═══════════════════ 12. 방법 5: opencode serve + HTTP ═══════════════════ -->
+      <!-- ═══════════════════ 13. 방법 5: opencode serve + HTTP ═══════════════════ -->
       <section>
         <h3>방법 5 — opencode serve 호출</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 5번째">
@@ -612,7 +660,7 @@ curl -sX POST $U/session/$SID/message \
         <p class="small" style="color: var(--secondary);">상주 서버로 위임 · 기본 무인증 — 로컬 전용 (v1.17.18 검증)</p>
       </section>
 
-      <!-- ═══════════════════ 13. 방법 6: opencode serve + Python ═══════════════════ -->
+      <!-- ═══════════════════ 14. 방법 6: opencode serve + Python ═══════════════════ -->
       <section>
         <h3>방법 6 — serve를 Python으로</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 6번째">
@@ -651,7 +699,7 @@ print(texts[0])                       # 출력: "2"</code></pre>
         <p class="small" style="color: var(--secondary);">프로그램에 통합 · 응답 파싱 — requests 재사용</p>
       </section>
 
-      <!-- ═══════════════════ 14. 비교표 ═══════════════════ -->
+      <!-- ═══════════════════ 15. 비교표 ═══════════════════ -->
       <section>
         <h3>6가지 방법 비교</h3>
         <p class="visually-hidden">표 설명: 여섯 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다. serve API는 위임 서버에 보내는 직접 호출이며 방법 4의 설치를 그대로 쓰고 상주 서비스와 반복 호출에 맞습니다. Python 연동은 위임 서버를 requests로 부르며 requests 패키지만 필요하고 프로그램에 위임을 통합할 때 맞습니다.</p>
@@ -753,7 +801,7 @@ print(texts[0])                       # 출력: "2"</code></pre>
         </svg>
       </section>
 
-      <!-- ═══════════════════ 15. 브리지: 위임의 대가 ═══════════════════ -->
+      <!-- ═══════════════════ 16. 브리지: 위임의 대가 ═══════════════════ -->
       <section>
         <h3>위임의 대가 — 폭이 벌어진다</h3>
         <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼지고 실행 결과 점들이 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 조인다는 예고가 표시됩니다.</p>
@@ -788,7 +836,7 @@ print(texts[0])                       # 출력: "2"</code></pre>
         <p class="small">호출은 폭이 좁고, 위임은 능력만큼 폭도 넓습니다.<br>넓어진 폭을 조이는 장치가 <span class="bright">하네스</span> — 2부의 주제입니다.</p>
       </section>
 
-      <!-- ═══════════════════ 16. 끝 ═══════════════════ -->
+      <!-- ═══════════════════ 17. 끝 ═══════════════════ -->
       <section>
         <h2>1부 끝.</h2>
         <p class="small"><a href="../ai-agent-skills-philosophy/">2부 — AI Agent Skills Philosophy →</a></p>
