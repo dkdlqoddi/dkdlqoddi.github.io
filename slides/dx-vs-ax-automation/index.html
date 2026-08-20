@@ -804,7 +804,7 @@ print(texts[0])                       # 출력: "2"</code></pre>
       <!-- ═══════════════════ 16. 브리지: 위임의 대가 ═══════════════════ -->
       <section>
         <h3>위임의 대가 — 폭이 벌어진다</h3>
-        <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼지고 실행 결과 점들이 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 조인다는 예고가 표시됩니다.</p>
+        <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼집니다. 잘된 결과인 청록 원 5개와 망한 결과인 빨간 엑스 3개가 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 위쪽으로 치우친 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 잘된 결과 쪽으로 조인다는 예고가 표시됩니다.</p>
         <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="위임할수록 결과의 폭이 넓어지는 모습과 하네스 예고" xmlns="http://www.w3.org/2000/svg">
           <rect x="30" y="130" width="170" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
           <text x="115" y="165" text-anchor="middle" font-size="18" fill="currentColor" class="bright">통째로 위임</text>
@@ -814,23 +814,24 @@ print(texts[0])                       # 출력: "2"</code></pre>
             <polygon points="200,158 860,86 860,230" fill="currentColor" opacity="0.10"/>
             <polygon points="200,158 860,130 860,186" fill="currentColor" opacity="0.15"/>
           </g>
-          <g class="bright" fill="currentColor">
-            <circle cx="360" cy="150" r="6"/>
-            <circle cx="430" cy="110" r="6"/>
-            <circle cx="500" cy="190" r="6"/>
-            <circle cx="560" cy="80" r="6"/>
-            <circle cx="620" cy="160" r="6"/>
-            <circle cx="700" cy="235" r="6"/>
-            <circle cx="760" cy="120" r="6"/>
-            <circle cx="820" cy="200" r="6"/>
+          <!-- 기준선 y=158(부채꼴 중심): 위 ●(accent) / 아래 ✗(danger). 라벨 배경판(y74~110, x330~730) 회피 배치 -->
+          <g fill="currentColor">
+            <circle class="accent" cx="360" cy="150" r="6"/>
+            <circle class="accent" cx="430" cy="124" r="6"/>
+            <text class="danger" x="500" y="199" text-anchor="middle" font-size="22">✗</text>
+            <circle class="accent" cx="740" cy="72" r="6"/>
+            <circle class="accent" cx="620" cy="152" r="6"/>
+            <text class="danger" x="700" y="242" text-anchor="middle" font-size="22">✗</text>
+            <circle class="accent" cx="790" cy="118" r="6"/>
+            <text class="danger" x="820" y="207" text-anchor="middle" font-size="22">✗</text>
           </g>
           <text x="850" y="26" fill="currentColor" class="dim" text-anchor="end" font-size="15">잘된 결과</text>
           <text x="850" y="300" fill="currentColor" class="dim" text-anchor="end" font-size="15">망한 결과</text>
 
           <g class="fragment fade-in accent">
-            <polygon points="200,158 860,140 860,176" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
-            <rect x="330" y="106" width="400" height="36" rx="7" fill="none" stroke="none"/>
-            <text x="530" y="130" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">2부 — 하네스가 이 폭을 조입니다</text>
+            <polygon points="200,158 860,118 860,152" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,5"/>
+            <rect x="330" y="74" width="400" height="36" rx="7" fill="none" stroke="none"/>
+            <text x="530" y="98" text-anchor="middle" font-size="16" font-weight="600" fill="currentColor">2부 — 하네스가 이 폭을 조입니다</text>
           </g>
         </svg>
         <p class="small">호출은 폭이 좁고, 위임은 능력만큼 폭도 넓습니다.<br>넓어진 폭을 조이는 장치가 <span class="bright">하네스</span> — 2부의 주제입니다.</p>
