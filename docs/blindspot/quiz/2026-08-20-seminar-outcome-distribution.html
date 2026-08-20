@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 세미나 결과 분포 시각화·문구 교정</title>
+<style>
+  body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  .summary { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+  label { display: block; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 세미나 결과 분포 시각화·문구 교정</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>발표 자료 2부작의 결과 그림이 바뀌었습니다.
+전에는 하네스(모델을 감싸는 운영 장치)가 결과의 폭을 좁힌다는 것만 보였습니다.
+이제는 조여진 띠가 잘된 결과 쪽인 위로 올라가, 결과가 좋아진다는 것까지 보입니다.
+결과 점은 두 종류입니다: 잘된 결과는 청록 원, 망한 결과는 빨간 엑스입니다.
+종이로 인쇄하면 색은 모두 검정이 되고, 원과 엑스라는 모양 차이만 남습니다.</p>
+<p>장을 넘길 때 그림이 부드럽게 이어지는 기능은 같은 종류의 도형끼리만 이어 줍니다.
+그래서 엑스는 세 장 모두 같은 글자 도형, 같은 크기로 고정했습니다.
+스킬 다섯 장에는 "적용 전/적용 후" 분포를 비교하는 작은 그림이 하나씩 들어갔습니다.
+적용 후 분포가 좁아진 정도는 스킬 간 순위만 나타내며, 측정한 수치가 아닙니다.
+순위 문구는 가장 넓은 장과 가장 좁은 장, 둘에만 적었습니다.</p>
+<p>화면 한 장의 세로 상한은 700픽셀입니다.
+넘치면 오류 없이 그 장만 조용히 스크롤 상자로 바뀌어 아랫부분이 밀려납니다.
+ponytail 장은 실측 결과 여유가 6픽셀뿐인 가장 빠듯한 장입니다.
+은어 "갈굼/갈궈줘"는 "압박 질문"으로, 비문 "남은 아는데"는 "남들은 아는데"로 고쳤습니다.
+발표 시간과 장 수는 그대로입니다.</p>
+<p>설계 문서와 다르게 구현한 결정이 하나 확인을 기다립니다.
+정리 장의 "하네스가 조인 폭" 라벨을 위로 올라간 띠를 따라 함께 올렸습니다.
+설계 문서는 라벨을 그대로 두라고 했지만, 그대로 두면 라벨이 아무것도 가리키지 않게 됩니다.
+과거에 발행한 퀴즈 두 건은 옛 화면 기준 내용을 담고 있지만 고치지 않았습니다.
+발행한 기록은 사후에 수정하지 않는 원칙 때문이며, 그 사유를 이번 보고서에 남겼습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 모두 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+// QUESTIONS: 비전문가 기준 문장. explain은 정답 확인 후 표시된다.
+const QUESTIONS = [
+  { q: "하네스 그림이 이번에 바뀌었습니다. 관객이 새로 알 수 있게 된 것은 무엇인가요?",
+    options: [
+      "결과의 폭이 전보다 더 많이 좁아진다는 것",
+      "조여진 띠가 잘된 결과 쪽으로 올라간다는 것",
+      "실행 점의 개수가 열두 개라는 것"
+    ], answer: 1,
+    explain: "전에도 폭이 좁아지는 것은 보였습니다. 이번에 더해진 것은 띠가 위(잘된 결과 쪽)로 올라가는 방향입니다. 폭 축소는 수단이고, 좋은 결과가 더 자주 나온다는 효과가 새로 보이게 됐습니다." },
+  { q: "발표 도중 ponytail 장에서 요약 상자의 마지막 줄이 화면에 안 보입니다. 가장 유력한 원인은 무엇인가요?",
+    options: [
+      "한 장의 세로 상한을 넘겨 그 장이 조용히 스크롤 상자로 바뀐 것",
+      "파일이 깨져서 그 줄이 삭제된 것",
+      "발표장 인터넷이 끊겨 일부만 불러온 것"
+    ], answer: 0,
+    explain: "상한(700픽셀)을 넘으면 오류 메시지 없이 그 장만 스크롤 상자가 되어 아랫부분이 밀려납니다. ponytail 장은 여유가 6픽셀뿐이라 컴퓨터마다 글자 줄바꿈이 조금만 달라도 넘칠 수 있습니다. 이 자료는 인터넷 없이도 동작하도록 만들어져 있어 인터넷 문제는 원인이 아닙니다." },
+  { q: "이 발표 자료를 종이로 인쇄하면, 잘된 결과와 망한 결과의 구분은 어떻게 되나요?",
+    options: [
+      "색이 그대로 나와 청록과 빨강으로 구분된다",
+      "색도 모양도 사라져 구분할 수 없게 된다",
+      "색은 검정이 되고 원과 엑스라는 모양으로만 구분된다"
+    ], answer: 2,
+    explain: "인쇄에서는 그림 색이 전부 검정으로 바뀝니다. 그래서 색 하나에만 의존하지 않고 모양(원/엑스)을 함께 쓰는 이중 표시를 택했습니다. 색이 그대로 나온다는 보기가 그럴듯하지만, 이 자료의 인쇄 규칙은 색을 검정으로 되돌립니다." },
+  { q: "망한 결과 표시인 엑스는 세 장에서 같은 글자 도형, 같은 크기로 고정됐습니다. 왜 그래야 하나요?",
+    options: [
+      "엑스가 원보다 예뻐 보이게 하려고",
+      "장을 잇는 기능이 같은 종류·같은 크기 도형끼리만 부드럽게 잇기 때문에",
+      "종이 인쇄에서 크기가 큰 도형만 나오기 때문에"
+    ], answer: 1,
+    explain: "장을 넘길 때 그림이 부드럽게 이어지는 기능은 같은 종류의 도형끼리만 짝을 짓습니다. 한 장이라도 종류가 다르면 이어짐이 끊겨 도형이 툭 튀어나오고, 크기가 다르면 전환 중에 흔들립니다. 인쇄와는 무관한 이유입니다." },
+  { q: "설계 문서와 다르게 구현되어, 지금 확인을 기다리는 결정은 무엇인가요?",
+    options: [
+      "정리 장의 라벨을 위로 올라간 띠를 따라 함께 올린 것",
+      "은어를 압박 질문으로 바꾼 것",
+      "발표 시간을 줄인 것"
+    ], answer: 0,
+    explain: "설계 문서는 정리 장 라벨을 그대로 두라고 했지만, 띠만 올라가면 라벨이 아무것도 가리키지 않게 되어 함께 올렸습니다. 되돌리기 쉬운 결정이라 작업을 멈추지 않고 지금 확인을 받습니다. 압박 질문 교체는 인터뷰에서 이미 확정된 사항이고, 발표 시간은 바뀌지 않았습니다." },
+  { q: "과거에 발행한 퀴즈 두 건은 새 화면과 다른 내용을 담고 있습니다. 왜 고치지 않았나요?",
+    options: [
+      "고치는 것을 잊어서, 다음 작업에서 고칠 예정이다",
+      "새 화면이 임시라서 곧 옛 화면으로 되돌릴 것이다",
+      "발행한 기록은 사후 수정하지 않는 원칙이라, 사유만 보고서에 남겼다"
+    ], answer: 2,
+    explain: "이 저장소는 한 번 발행한 문서와 퀴즈를 사후에 고치지 않습니다. 대신 어긋나게 된 이유를 이번 보고서에 남겨 두었습니다. 잊은 것도, 되돌릴 계획이 있는 것도 아닙니다." },
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
