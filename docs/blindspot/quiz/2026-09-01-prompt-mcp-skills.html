@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 프롬프트 기반 MCP 직접 호출 개편</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 프롬프트 기반 MCP 직접 호출 개편</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>OpenCode에 <code>jedai</code>, <code>Siemens_MCP</code>, <code>SNPS_MCP</code>가 이미 연결되어 있는 환경에 맞추어, 불필요한 중간 쉘 스크립트(<code>scripts/</code>) 계층을 제거하고 <strong>프롬프트를 통해 연결된 MCP 도구를 직접 호출하는 방식</strong>으로 전체 슬라이드와 스킬 절차를 개편했습니다. 디렉터리 구조가 <code>opencode.json</code> (MCP 설정) + <code>.opencode/skills/</code> + <code>.opencode/agents/</code>로 간결해졌으며, 20개 슬라이드 전체의 No-Scroll 뷰포트 완결성이 100% 유지되었습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 '변경 요약'과 슬라이드 구현 내용에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "OpenCode에 이미 MCP가 연결되어 있을 때, 스킬(Skill)이 MCP 도구를 실행하는 올바른 방식은 무엇입니까?",
+    options: [
+      "별도 쉘 스크립트를 거치지 않고, 프롬프트/도구 호출로 연결된 MCP 도구를 직접 실행한다",
+      "반드시 복잡한 bash 스크립트를 작성하여 터미널에서 수동 실행해야 한다",
+      "외부 클라우드 API를 통해서만 호출할 수 있다",
+      "실행할 때마다 프로그램을 재설치해야 한다"
+    ], answer: 0,
+    explain: "OpenCode가 MCP를 네이티브 지원하므로 별도의 중간 스크립트 없이 프롬프트 지시문이나 도구 호출로 연결된 MCP를 즉시 실행합니다." },
+  { q: "이번 개편 후 my-dolsoe 프로젝트의 디렉터리 구조에서 제거되어 간결해진 요소는 무엇입니까?",
+    options: [
+      "중간 래퍼 스크립트 폴더(scripts/)",
+      ".opencode/skills/ 폴더",
+      ".opencode/agents/ 폴더",
+      "opencode.json 설정 파일"
+    ], answer: 0,
+    explain: "MCP 직접 호출 구조로 전환되면서 불필요한 scripts/ 폴더가 제거되고 opencode.json + skills + agents 중심으로 구조가 간소화되었습니다." },
+  { q: "대화창 세션에서 돌쇠(@dolsoe)에게 Loop(되풀이)를 시킬 때 필요한 3대 원칙은 무엇입니까?",
+    options: [
+      "멈출 조건, 시도 상한(MAX), 매 회차 보고 방식",
+      "무한 반복, 상한 없음, 무보고",
+      "스크립트 강제 실행, 웹 검색 허용, 비밀번호 공유",
+      "임의 중단, 에러 무시, 로그 삭제"
+    ], answer: 0,
+    explain: "세션 프롬프트 지시문에는 반드시 멈출 조건(예: SDC 예제 포함), 안전장치 상한(MAX=20), 매 회차 진행 상황 보고 방식이 명시되어야 합니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
