@@ -21,25 +21,25 @@
     /* 다크 배경 선언 — JS 이전 흰 번쩍임 방지 */
     html { background: #0e0e0e; color-scheme: dark; }
 
-    /* ── 전 슬라이드 700px 예산 내 No-Scroll 타이포그래피 & 여백 ── */
+    /* ── 전 슬라이드 700px 예산 내 No-Scroll 엄격 규격화 ── */
     .reveal h2 {
-      margin: 0 0 14px 0;
-      font-size: 1.75em;
+      margin: 0 0 10px 0;
+      font-size: 1.50em;
       line-height: 1.15;
     }
     .reveal h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.30em;
+      margin: 0 0 6px 0;
+      font-size: 1.15em;
       line-height: 1.15;
     }
     .reveal p.eyebrow {
-      margin: 0 0 5px 0;
-      font-size: 0.50em;
+      margin: 0 0 4px 0;
+      font-size: 0.45em;
     }
     .reveal p.small {
-      margin: 0 0 10px 0;
-      font-size: 0.54em;
-      line-height: 1.35;
+      margin: 0 0 8px 0;
+      font-size: 0.47em;
+      line-height: 1.30;
     }
 
     /* 텍스트 위계 유틸 */
@@ -48,11 +48,41 @@
     .reveal .accent-text { color: var(--accent); }
     .reveal .danger-text { color: var(--danger); }
 
+    /* 템플릿 도구 태그 배지 */
+    .reveal .tool-tags {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+      margin: 0 0 8px 0;
+      font-family: var(--font-mono);
+      font-size: 0.40em;
+    }
+    .reveal .tag {
+      border: 1px solid var(--hairline);
+      border-radius: 4px;
+      padding: 1px 7px;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+    }
+    .reveal .tag.t-soft { color: var(--accent); border-color: var(--accent); }
+    .reveal .tag.t-hard { color: var(--danger); border-color: var(--danger); }
+
+    /* 요약 박스 */
+    .reveal .summary-box {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 14px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent);
+      font-size: 0.46em;
+      text-align: left;
+      margin: 8px auto 0;
+    }
+
     /* 2열 배치 컨테이너 */
     .reveal .cols-2 {
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
-      gap: 14px;
+      gap: 12px;
       align-items: start;
       text-align: left;
     }
@@ -65,22 +95,22 @@
       background: rgba(22, 22, 22, 0.82);
       border: 1px solid var(--hairline);
       border-radius: 6px;
-      padding: 7px 12px;
-      margin-bottom: 6px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
       text-align: left;
     }
     .reveal .panel-card:last-child {
       margin-bottom: 0;
     }
     .reveal .panel-card h4 {
-      margin: 0 0 3px 0;
-      font-size: 0.66em;
+      margin: 0 0 2px 0;
+      font-size: 0.58em;
       color: var(--primary);
     }
     .reveal .panel-card p {
       margin: 0;
-      font-size: 0.49em;
-      line-height: 1.35;
+      font-size: 0.44em;
+      line-height: 1.28;
       color: var(--r-main-color);
     }
 
@@ -88,8 +118,8 @@
     .reveal .card-grid-2x2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
+      gap: 6px;
+      margin-top: 6px;
       text-align: left;
     }
 
@@ -97,14 +127,14 @@
     .reveal pre {
       margin: 0;
       width: 100%;
-      font-size: 0.51em;
+      font-size: 0.46em;
       border: 1px solid var(--hairline);
       box-shadow: none;
     }
     .reveal pre code {
-      padding: 0.55em 0.8em;
-      line-height: 1.25;
-      max-height: 380px;
+      padding: 0.45em 0.7em;
+      line-height: 1.22;
+      max-height: 320px;
       background: rgba(16, 16, 16, 0.85);
       border-radius: 4px;
     }
@@ -112,7 +142,7 @@
     /* 미니 다이어그램 컴팩트화 */
     .reveal svg.mini-diag {
       width: 100%;
-      margin: 6px auto 0;
+      margin: 4px auto 0;
     }
     .reveal svg.diag {
       width: 95%;
@@ -163,19 +193,19 @@
         <h2>나만의 돌쇠 AI 만들기</h2>
         <p class="small">OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는<br>
         반도체 지식 자동화 하네스 & 그래프 엔지니어링 실습</p>
-        <p style="margin-top: 20px;">
+        <p style="margin-top: 16px;">
           <span class="kbd">Skill (프롬프트/MCP)</span> <span class="dim">→</span>
           <span class="kbd">Agent (리서치 일꾼)</span> <span class="dim">→</span>
           <span class="kbd">Orchestrator (마름)</span>
         </p>
-        <p class="small dim" style="margin-top: 18px;"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
+        <p class="small dim" style="margin-top: 14px;"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
       </section>
 
       <!-- ═══════════════════ SLIDE 2. 왜 하필 돌쇠인가 ═══════════════════ -->
       <section>
         <p class="eyebrow">METAPHOR</p>
         <h3>왜 하필 '돌쇠'인가</h3>
-        <p class="small">에이전트 시스템의 용어는 추상적입니다. <strong>'숙련된 일꾼에게 어떻게 프롬프트로 연결된 MCP를 쥐여주고 매뉴얼을 읽어오게 할 것인가'</strong>로 바꾸면 익숙한 문제가 됩니다.</p>
+        <p class="small">에이전트 시스템의 용어는 추상적입니다. <strong>'숙련된 일꾼에게 어떻게 프롬프트로 연결된 MCP를 쥐여줄 것인가'</strong>로 바꾸면 익숙한 문제가 됩니다.</p>
         
         <div class="cols-2 equal">
           <div>
@@ -222,15 +252,13 @@
         <div class="cols-2">
           <div>
             <pre><code class="text">my-dolsoe/
-├── opencode.json             # MCP 서버 등록 (jedai, Siemens, SNPS)
+├── opencode.json        # 3대 MCP 서버 등록
 └── .opencode/
-    ├── skills/
+    ├── skills/          # fetch-*-manual
     │   ├── fetch-jedai-manual/SKILL.md
     │   ├── fetch-siemens-manual/SKILL.md
     │   └── fetch-snps-manual/SKILL.md
-    └── agents/
-        ├── dolsoe.md · gaeddong.md
-        └── maleum.md · eonnyeon.md</code></pre>
+    └── agents/          # dolsoe · maleum ...</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -257,23 +285,24 @@
       <section>
         <p class="eyebrow">SKILL · JEDAI MANUAL</p>
         <h3>1단계 · Cadence JedAI 매뉴얼 수집 Skill</h3>
-        <p class="small">"돌쇠야, 연결된 jedai mcp 도구를 프롬프트로 불러서 최신 매뉴얼 읽어와라." — 프롬프트로 MCP를 호출하는 첫 번째 스킬입니다.</p>
+        <div class="tool-tags">
+          <span class="tag t-soft">PROMPT</span>
+          <span class="tag t-hard">jedai MCP</span>
+          <span class="tag">AI/ML 수율 분석</span>
+        </div>
 
         <div class="cols-2">
           <div>
             <pre><code class="markdown"># .opencode/skills/fetch-jedai-manual/SKILL.md
 ---
 name: fetch-jedai-manual
-description: OpenCode에 연결된 jedai MCP 도구를 프롬프트로
-  직접 호출하여 Cadence JedAI의 최신 매뉴얼을 읽어온다.
-  AI/ML 분석 및 수율 가이드 필요 시 사용.
+description: jedai MCP 도구를 호출해 최신 매뉴얼 수집
 ---
 ## 절차
 1. 프롬프트로 연결된 `jedai` MCP 도구를 호출한다.
 2. 최근 30일 내 갱신된 JedAI 기능 매뉴얼을 조회한다.
 3. 수율 분석 및 레이아웃 마이닝 핵심 항목을 추출한다.
-4. `data/jedai_manual.md` 에 요약과 본문을 저장한다.
-## 완료 조건 — `data/jedai_manual.md` 생성 완료</code></pre>
+4. `data/jedai_manual.md` 에 요약과 본문을 저장한다.</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -305,23 +334,24 @@ description: OpenCode에 연결된 jedai MCP 도구를 프롬프트로
       <section>
         <p class="eyebrow">SKILL · SIEMENS MANUAL</p>
         <h3>1단계 · Siemens Calibre 매뉴얼 수집 Skill</h3>
-        <p class="small">"개똥아, 연결된 Siemens_MCP 도구를 프롬프트로 불러서 Calibre 매뉴얼 읽어와라." — 두 번째 스킬입니다.</p>
+        <div class="tool-tags">
+          <span class="tag t-soft">PROMPT</span>
+          <span class="tag t-hard">Siemens_MCP</span>
+          <span class="tag">DRC/LVS 룰덱</span>
+        </div>
 
         <div class="cols-2">
           <div>
             <pre><code class="markdown"># .opencode/skills/fetch-siemens-manual/SKILL.md
 ---
 name: fetch-siemens-manual
-description: OpenCode에 연결된 Siemens_MCP 도구를 프롬프트로
-  직접 호출하여 Calibre의 물리 검증 매뉴얼을 읽어온다.
-  최신 룰덱 문법 및 DFM 가이드 필요 시 사용.
+description: Siemens_MCP 도구를 호출해 Calibre 매뉴얼 수집
 ---
 ## 절차
 1. 프롬프트로 연결된 `Siemens_MCP` 도구를 호출한다.
 2. 최근 추가된 Calibre DRC/LVS 기술 매뉴얼을 조회한다.
 3. 파운드리 룰덱 변경 사항과 예제 코드를 추출한다.
-4. `data/siemens_manual.md` 에 요약과 본문을 저장한다.
-## 완료 조건 — `data/siemens_manual.md` 생성 완료</code></pre>
+4. `data/siemens_manual.md` 에 요약과 본문을 저장한다.</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -353,23 +383,24 @@ description: OpenCode에 연결된 Siemens_MCP 도구를 프롬프트로
       <section>
         <p class="eyebrow">SKILL · SNPS MANUAL</p>
         <h3>1단계 · Synopsys 매뉴얼 수집 Skill</h3>
-        <p class="small">"돌쇠야, 연결된 SNPS_MCP 도구를 프롬프트로 불러서 합성 매뉴얼 읽어와라." — 세 번째 스킬입니다.</p>
+        <div class="tool-tags">
+          <span class="tag t-soft">PROMPT</span>
+          <span class="tag t-hard">SNPS_MCP</span>
+          <span class="tag">합성 / STA 가이드</span>
+        </div>
 
         <div class="cols-2">
           <div>
             <pre><code class="markdown"># .opencode/skills/fetch-snps-manual/SKILL.md
 ---
 name: fetch-snps-manual
-description: OpenCode에 연결된 SNPS_MCP 도구를 프롬프트로
-  직접 호출하여 Synopsys 논리 합성/STA 매뉴얼을 읽어온다.
-  타이밍 제약(SDC) 및 PPA 옵션 가이드 필요 시 사용.
+description: SNPS_MCP 도구를 호출해 합성/STA 매뉴얼 수집
 ---
 ## 절차
 1. 프롬프트로 연결된 `SNPS_MCP` 도구를 호출한다.
 2. 최근 추가된 Design Compiler/PrimeTime 매뉴얼을 조회한다.
 3. 타이밍 슬랙 최적화 명령어와 SDC 예제를 추출한다.
-4. `data/snps_manual.md` 에 요약과 본문을 저장한다.
-## 완료 조건 — `data/snps_manual.md` 생성 완료</code></pre>
+4. `data/snps_manual.md` 에 요약과 본문을 저장한다.</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -422,10 +453,8 @@ description: OpenCode에 연결된 SNPS_MCP 도구를 프롬프트로
           </div>
         </div>
 
-        <div style="margin-top: 10px;">
-          <pre><code class="json"># opencode.json
-{ "mcpServers": { "jedai": { ... }, "Siemens_MCP": { ... }, "SNPS_MCP": { ... } } }</code></pre>
-          <p class="small dim" style="margin-top: 4px;">OpenCode에 MCP를 연결하고 권한을 통제하는 것이 돌쇠의 마당입니다.</p>
+        <div class="summary-box">
+          <code>permission: { webfetch: "deny", bash: "ask", doc_edit: "ask" }</code> — 사내 EDA 기술 자산을 보호하는 돌쇠의 담장
         </div>
       </section>
 
@@ -439,13 +468,10 @@ description: OpenCode에 연결된 SNPS_MCP 도구를 프롬프트로
           <div>
             <pre><code class="markdown"># .opencode/agents/dolsoe.md
 ---
-description: 질문에 맞춰 알맞은 EDA 매뉴얼 수집 Skill을
-  골라 프롬프트로 MCP를 호출하는 수석 리서치 일꾼 돌쇠
+description: 질문에 맞는 EDA 매뉴얼 MCP 호출 일꾼
 mode: primary
 model: codemate/CodeLLMPro
-temperature: 0.1
-permission:
-  webfetch: deny
+permission: { webfetch: "deny" }
 ---
 엔지니어의 질문과 대상 EDA 툴을 확인한다.
 - JedAI / 수율 분석 질문 → fetch-jedai-manual 호출
@@ -456,15 +482,14 @@ permission:
           <div>
             <div class="panel-card">
               <h4>실행 방법</h4>
-              <p><code>opencode</code> 실행 → <span class="kbd">Tab</span> <code>dolsoe</code> → <em>"최신 PrimeTime SDC 옵션 매뉴얼 찾아와"</em></p>
+              <p><code>opencode</code> 실행 → <span class="kbd">Tab</span> <code>dolsoe</code> → <em>"최신 PrimeTime SDC 옵션 찾아와"</em></p>
             </div>
             <div class="panel-card">
               <h4>툴별 자동 분기 로직</h4>
               <p>
                 <code>JedAI / ML</code> &rarr; <strong>fetch-jedai-manual</strong> (수율/마이닝)<br>
                 <code>Siemens / DRC</code> &rarr; <strong>fetch-siemens-manual</strong> (물리검증)<br>
-                <code>Synopsys / STA</code> &rarr; <strong>fetch-snps-manual</strong> (합성/타이밍)<br>
-                <code>그 외</code> &rarr; <strong>대기</strong>
+                <code>Synopsys / STA</code> &rarr; <strong>fetch-snps-manual</strong> (합성/타이밍)
               </p>
             </div>
             <p class="small dim" style="margin-top: 4px;">매뉴얼 탐색 판단이 사람의 수작업이 아니라 에이전트 지시문으로 자동화되었습니다.</p>
@@ -478,7 +503,7 @@ permission:
         <h3>Flow와 Loop · 한 줄기와 되풀이</h3>
         <p class="small">프롬프트로 MCP를 1회 호출하는 것이 <strong>Flow</strong>, 원하는 기술 문서가 완벽히 수집될 때까지 프롬프트를 튜닝하며 되돌아가는 구간이 <strong>Loop</strong>입니다.</p>
 
-        <div class="cols-2 equal" style="margin-top: 8px;">
+        <div class="cols-2 equal" style="margin-top: 6px;">
           <div class="panel-card">
             <h4>FLOW — 질의에서 지식 저장까지</h4>
             <p class="visually-hidden">그림 설명: 질의 입력에서 프롬프트 MCP 호출, 내용 파싱, 지식 저장으로 이어지는 단방향 Flow</p>
@@ -511,7 +536,7 @@ until grep -q "Example Code" data/snps_manual.md; do
     "SNPS_MCP로 PrimeTime STA 예제 찾아와라"
 done</code></pre>
             </div>
-            <div class="panel-card" style="margin-top: 6px;">
+            <div class="panel-card" style="margin-top: 5px;">
               <h4>종료 조건 & 상한 설정</h4>
               <p>Loop는 멈추는 조건을 먼저 정하고, 최대 시도 횟수 상한(MAX)을 반드시 둡니다.</p>
             </div>
@@ -527,22 +552,19 @@ done</code></pre>
 
         <div class="cols-2">
           <div>
-            <pre><code class="bash"># CLI 환경에서 프롬프트로 MCP 순환 호출
+            <pre><code class="bash"># 최신 SDC 예제 코드가 확보될 때까지 프롬프트로 Loop
 DOC=data/snps_manual.md; MAX=20; n=0
-
-# 최신 SDC 예제 코드가 확보될 때까지 LLM 돌쇠가 Loop
 until grep -q "Example Code" "$DOC" 2>/dev/null; do
-  n=$((n+1))
-  [ "$n" -gt "$MAX" ] && exit 1
+  n=$((n+1)); [ "$n" -gt "$MAX" ] && exit 1
   opencode run --agent dolsoe \
-    "fetch-snps-manual 스킬로 SNPS_MCP를 호출해 STA 예제를 조회해라"
+    "fetch-snps-manual 스킬로 SNPS_MCP 호출해 STA 예제 찾아라"
   echo "[$n회차] $(grep 'DOC_VERSION' "$DOC" || echo '검색 중')"
 done
 echo "완료 — Synopsys 최신 매뉴얼 확보"</code></pre>
           </div>
           <div>
             <div class="panel-card">
-              <h4>회차마다 LLM이 프롬프트 질의 판단</h4>
+              <h4>회차마다 LLM이 질의 판단</h4>
               <p><code>opencode run</code> 1회가 돌쇠를 1회 호출하며 SNPS_MCP 질의가 정밀화됩니다.</p>
             </div>
             <div class="panel-card">
@@ -569,13 +591,11 @@ echo "완료 — Synopsys 최신 매뉴얼 확보"</code></pre>
 @dolsoe
 `data/snps_manual.md` 를 읽어 현재 내용을 확인해라.
 최신 SDC 예제가 없으면 fetch-snps-manual Skill로
-연결된 SNPS_MCP 를 다시 호출해 예제를 가져오는 일을 되풀이해라.
+연결된 SNPS_MCP 를 다시 호출해 예제를 가져와라.
 
 멈출 조건: `data/snps_manual.md` 에 SDC 예제 포함
 최대 시도: 20회. 넘으면 멈추고 보고해라.
-매 회차마다 검색된 릴리즈 버전을 한 줄로 알려라.
-인터넷은 쓰지 말고 사내 MCP 도구만 써라.
-끝나면 최종 릴리즈 날짜와 시도 횟수를 정리해라.</code></pre>
+매 회차마다 검색된 릴리즈 버전을 한 줄로 알려라.</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -604,22 +624,20 @@ echo "완료 — Synopsys 최신 매뉴얼 확보"</code></pre>
           <div>
             <pre><code class="markdown"># .opencode/agents/maleum.md
 ---
-description: 3대 EDA 툴 매뉴얼 수집을 돌쇠와
-  개똥이에게 나눠 맡기고 지식을 통합하는 마름
+description: 3대 EDA 매뉴얼 수집을 배분하고 통합하는 마름
 mode: primary
 model: codemate/CodeLLMPro
 ---
 엔지니어의 종합 리서치 요청을 확인한다.
 - JedAI / SNPS 매뉴얼 수집 → @dolsoe 에게 위임
 - Siemens Calibre 매뉴얼 수집 → @gaeddong 에게 위임
-하인들이 연결된 MCP로 가져온 매뉴얼을 사내 위키에 등록한다.
-문서 누락 시 담당 일꾼에게 재수집을 지시한다.</code></pre>
+하인들이 가져온 매뉴얼을 사내 위키에 등록하고 누락 시 재수집.</code></pre>
           </div>
           <div>
             <div class="panel-card">
-              <h4>mode: subagent 로 만든 두 리서치 일꾼</h4>
+              <h4>두 리서치 일꾼 (mode: subagent)</h4>
               <p>
-                <strong>@dolsoe 돌쇠</strong> — Cadence & Synopsys (<code>fetch-jedai-manual</code> · <code>fetch-snps-manual</code>)<br>
+                <strong>@dolsoe 돌쇠</strong> — Cadence & Synopsys (<code>fetch-jedai</code> · <code>fetch-snps</code>)<br>
                 <strong>@gaeddong 개똥이</strong> — Siemens Calibre (<code>fetch-siemens-manual</code>)
               </p>
             </div>
@@ -652,16 +670,14 @@ model: codemate/CodeLLMPro
           <div>
             <pre><code class="markdown"># .opencode/agents/eonnyeon.md
 ---
-description: MCP로 수집된 매뉴얼의 최신 릴리즈 날짜와
-  필수 예제 포함 여부를 대조해 판정하는 언년이
+description: MCP 수집 매뉴얼의 최신성·완결성을 검증하는 언년이
 mode: subagent
 model: codemate/CodeLLMPro
 ---
 `data/*_manual.md` 결과 파일들을 대조한다.
 - 최근 릴리즈 일치 & 예제 코드 완비 시 PASS
 - 내용 누락이나 구버전 문서면 FAIL 및 사유 작성
-판정과 근거를 `data/manual_eval_report.md` 에 남긴다.
-스스로 고치지 않고 마름에게 되돌린다.</code></pre>
+판정과 근거를 `data/manual_eval_report.md` 에 남긴다.</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -778,7 +794,7 @@ model: codemate/CodeLLMPro
             </div>
             <div class="panel-card">
               <h4>03 .opencode/skills/</h4>
-              <p><code>fetch-jedai-manual</code> · <code>fetch-siemens-manual</code> · <code>fetch-snps-manual</code> 폴더 생성.</p>
+              <p><code>fetch-jedai-manual</code> · <code>fetch-siemens-manual</code> · <code>fetch-snps-manual</code> 생성.</p>
             </div>
           </div>
           <div>
@@ -793,7 +809,7 @@ model: codemate/CodeLLMPro
           </div>
         </div>
 
-        <p class="small dim" style="margin-top: 10px;">별도 스크립트 없이 OpenCode에 연결된 MCP를 프롬프트로 직접 호출합니다.</p>
+        <p class="small dim" style="margin-top: 8px;">별도 스크립트 없이 OpenCode에 연결된 MCP를 프롬프트로 직접 호출합니다.</p>
       </section>
 
       <!-- ═══════════════════ SLIDE 16. AI Tool 방법론 지도 ═══════════════════ -->
@@ -850,11 +866,10 @@ model: codemate/CodeLLMPro
 {
   "name": "dolsoe",
   "skills": ["fetch-jedai-manual", "fetch-snps-manual"],
-  "url": "http://localhost:4001/a2a",
-  "auth": "none"
+  "url": "http://localhost:4001/a2a"
 }</code></pre>
-            <p class="small dim" style="margin-top: 6px;">
-              <code>board/inbox/</code>에 매뉴얼 수집 요청을 붙이면 돌쇠가 가져가고,<br>
+            <p class="small dim" style="margin-top: 4px;">
+              <code>board/inbox/</code>에 수집 요청을 붙이면 돌쇠가 가져가고,<br>
               결과는 <code>board/outbox/</code>에 되돌려 붙입니다.
             </p>
           </div>
@@ -871,7 +886,7 @@ model: codemate/CodeLLMPro
               <h4>Artifact (회수)</h4>
               <p>수집된 매뉴얼 마크다운과 로그를 같은 자리에 되돌려 놓습니다.</p>
             </div>
-            <p class="small dim" style="margin-top: 4px;">표준: Google A2A · Blackboard 공유 작업판 패턴</p>
+            <p class="small dim" style="margin-top: 3px;">표준: Google A2A · Blackboard 공유 작업판 패턴</p>
           </div>
         </div>
       </section>
@@ -886,13 +901,11 @@ model: codemate/CodeLLMPro
           <div>
             <pre><code class="markdown"># AGENTS.md
 ## 실행: `@dolsoe fetch-snps-manual 실행`
-## 검증: `@gaeddong fetch-siemens-manual 실행`
 ## 규칙: data/ 원본 문서는 임의로 삭제하지 않는다
 
 # specs/001-manual-sync.md
 ## 요구사항 — 2026 Q3 최신 툴 릴리즈 매뉴얼 수집
-## 완료 조건: 필수 예제 코드 포함
-## 검수 — 언년이가 PASS 를 준다</code></pre>
+## 완료 조건: 필수 예제 코드 포함 (검수: 언년이 PASS)</code></pre>
           </div>
           <div>
             <div class="panel-card">
@@ -924,7 +937,7 @@ model: codemate/CodeLLMPro
 ├── index/     # 임베딩 · 벡터 색인 (RAG)
 ├── wiki/      # 엔지니어용 요약 가이드 (LLM Wiki)
 └── INDEX.md   # 전체 목차 한 장</code></pre>
-            <p class="small dim" style="margin-top: 6px;">
+            <p class="small dim" style="margin-top: 4px;">
               1. MCP로 최신 매뉴얼 수집 &rarr; 2. RAG 색인 / 위키 정리 &rarr;<br>
               3. Skill의 references로 필요 시 참조
             </p>
@@ -979,9 +992,9 @@ model: codemate/CodeLLMPro
           </div>
         </div>
 
-        <div style="margin-top: 14px;">
+        <div style="margin-top: 10px;">
           <p class="small dim">출처: A2A · AGENTS.md · ADR · 로컬 RAG · LLM Wiki · MCP (2026)</p>
-          <p style="margin-top: 8px;"><a href="../../">← 발표 기록으로 돌아가기</a></p>
+          <p style="margin-top: 6px;"><a href="../../">← 발표 기록으로 돌아가기</a></p>
         </div>
       </section>
 

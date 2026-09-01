@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: No-Scroll v2 및 템플릿 UI/UX 고도화</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: No-Scroll v2 및 템플릿 UI/UX 고도화</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p><code>slides/my-dolsoe-ai/index.html</code> 20개 슬라이드 전체의 높이 예산을 전수 재점검하여, 코드 블록을 핵심 7~11줄로 압축하고 <code>font-size: 0.46em</code>, <code>line-height: 1.22</code>를 적용하여 <strong>모든 슬라이드의 컨텐츠 높이를 450px 이하로 완전히 수용</strong>시켰습니다. 또한 저장소 표준 템플릿의 <strong>도구 태그 배지(<code>.tool-tags</code>, <code>.tag</code>)</strong>와 <strong>요약 박스(<code>.summary-box</code>)</strong>를 적용하여 시각적 위계와 가독성을 크게 개선했습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 '변경 요약'과 슬라이드 구현 내용에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "슬라이드 4, 5, 6, 8 등에서 발생하던 세로 스크롤을 완벽히 없애기 위해 적용한 높이 최적화 기법은 무엇입니까?",
+    options: [
+      "코드 블록을 핵심 7~11줄로 압축하고 pre 폰트(0.46em) 및 줄간격(1.22)을 최적화하여 450px 이하로 수용",
+      "슬라이드 내용을 삭제하고 제목만 남김",
+      "스크롤바를 투명하게 숨기기만 함",
+      "슬라이드를 위아래 2개로 분할"
+    ], answer: 0,
+    explain: "장황한 코드를 핵심 위주로 압축하고 코드 블록의 폰트와 마진을 컴팩트화하여 960x700 캔버스 내 450px 이하로 완벽히 수용시켰습니다." },
+  { q: "이번 UI/UX 고도화에서 저장소 표준 템플릿으로부터 이식하여 시각적 위계를 강화한 컴포넌트는 무엇입니까?",
+    options: [
+      "도구 태그 배지(.tool-tags, .tag)와 요약 박스(.summary-box)",
+      "외부 CDN 폰트 로더",
+      "유튜브 동영상 플레이어",
+      "팝업 모달 알림창"
+    ], answer: 0,
+    explain: "템플릿 표준인 도구 태그 배지와 요약 박스를 적용하여 다크 스페이스 테마와 일관된 시각 위계를 확보했습니다." },
+  { q: "이번 No-Scroll v2 최적화 완료 후 20개 슬라이드 전체의 스크롤 상태는 어떠합니까?",
+    options: [
+      "20개 슬라이드 전체에서 스크롤바가 0건이며 한 화면에 완결됨",
+      "슬라이드 8에서만 스크롤 발생",
+      "절반 이상의 슬라이드에서 스크롤 필요",
+      "모바일에서만 스크롤 가능"
+    ], answer: 0,
+    explain: "20개 슬라이드 전수의 렌더링 높이를 450px 이하로 낮추어 어떤 해상도에서도 스크롤이 전혀 발생하지 않습니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
