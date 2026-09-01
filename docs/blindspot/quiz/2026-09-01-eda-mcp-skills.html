@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: EDA 3대 MCP 스킬 전환 및 2단계 이후 워크플로우 개편</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: EDA 3대 MCP 스킬 전환 및 2단계 이후 워크플로우 개편</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p><code>slides/my-dolsoe-ai/index.html</code>의 1단계 스킬들을 실제 반도체/EDA 3대 벤더 표준인 <strong>Cadence JedAI (<code>jedai-mcp</code>)</strong>, <strong>Siemens Calibre (<code>siemens-mcp</code>)</strong>, <strong>Synopsys (<code>snps-mcp</code>)</strong>로 전면 교체했습니다. 이에 따라 2단계 이후의 전체 워크플로우(Agent 라우팅, Timing Closure/DRC 수렴 Loop, 마름의 프론트/백엔드 일꾼 배분, 언년이의 Tapeout Sign-off 판정, 전체 Graph 상태 전이 SVG, PDK RAG/Wiki, 라이선스 샌드박싱)가 반도체 칩 설계 자동화 실무 맥락으로 일관되게 개편되었으며, 20개 슬라이드 전체의 No-Scroll 뷰포트 완결성이 완벽히 유지되었습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 '변경 요약'과 슬라이드 구현 내용에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "이번에 개편된 1단계 EDA 3대 MCP 스킬의 조합으로 올바른 것은 무엇입니까?",
+    options: [
+      "jedai-mcp(Cadence), siemens-mcp(Siemens Calibre), snps-mcp(Synopsys)",
+      "draw-water, chop-wood, cook-meal",
+      "chatgpt-mcp, claude-mcp, gemini-mcp",
+      "python-mcp, bash-mcp, git-mcp"
+    ], answer: 0,
+    explain: "Cadence JedAI(빅데이터/수율 분석), Siemens Calibre(DRC/LVS 물리검증), Synopsys(합성 및 STA 타이밍 분석) 3대 벤더 MCP 스킬로 구성되었습니다." },
+  { q: "반도체 설계 흐름에서 '언년이(Sign-off Evaluator)'의 테이프아웃 PASS 합격 판정 조건은 무엇입니까?",
+    options: [
+      "설계 코드가 1,000줄 이상일 때",
+      "DRC 에러 = 0건 및 Worst Negative Slack(WNS) >= 0.0ps (Timing Met)",
+      "인터넷 웹 검색 결과가 일치할 때",
+      "마름이 승인 버튼을 누르기만 하면 무조건 PASS"
+    ], answer: 1,
+    explain: "언년이는 물리 검증 리포트(DRC Error = 0)와 타이밍 리포트(WNS >= 0.0ps)를 객관적으로 대조해 파운드리 테이프아웃 기준 충족 여부를 엄격히 판정합니다." },
+  { q: "EDA 툴 연동 루프(Loop)에서 돌쇠가 되풀이하여 수행하는 핵심 작업은 무엇입니까?",
+    options: [
+      "매회 컴퓨터를 재부팅하는 것",
+      "타이밍 슬랙(Worst Slack)이 양수가 될 때까지 버퍼링 및 클록 트리를 튜닝하는 작업",
+      "우물에서 물을 긷는 작업",
+      "외부 오픈소스 코드를 무단 다운로드하는 작업"
+    ], answer: 1,
+    explain: "Timing Met(WNS >= 0.0ps)이 달성될 때까지 LLM 돌쇠가 SNPS 합성/STA 파라미터를 점진적으로 튜닝하는 루프를 돕니다." },
+  { q: "반도체 핵심 IP 및 설계 기밀 보호를 위해 Harness 층에서 설정한 필수 담장 규칙은 무엇입니까?",
+    options: [
+      "모든 설계를 공개 클라우드에 업로드",
+      "webfetch: deny를 통한 외부 유출 차단 및 사내 폐쇄망 EDA 라이선스 연동",
+      "권한 검사 완전 해제",
+      "인터넷 검색 자동화 활성화"
+    ], answer: 1,
+    explain: "webfetch/websearch를 차단하고 사내 폐쇄망 라이선스 서버 및 로컬 모델과 연동하여 기밀 IP 유출을 0%로 통제합니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
