@@ -21,6 +21,27 @@
     /* 다크 배경 선언 — JS 이전 흰 번쩍임 방지 */
     html { background: #0e0e0e; color-scheme: dark; }
 
+    /* ── 전 슬라이드 700px 예산 내 No-Scroll 타이포그래피 & 여백 ── */
+    .reveal h2 {
+      margin: 0 0 14px 0;
+      font-size: 1.75em;
+      line-height: 1.15;
+    }
+    .reveal h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.30em;
+      line-height: 1.15;
+    }
+    .reveal p.eyebrow {
+      margin: 0 0 5px 0;
+      font-size: 0.50em;
+    }
+    .reveal p.small {
+      margin: 0 0 10px 0;
+      font-size: 0.54em;
+      line-height: 1.35;
+    }
+
     /* 텍스트 위계 유틸 */
     .reveal .dim { color: var(--dim); }
     .reveal .bright { color: var(--primary); }
@@ -30,8 +51,8 @@
     /* 2열 배치 컨테이너 */
     .reveal .cols-2 {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 20px;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 14px;
       align-items: start;
       text-align: left;
     }
@@ -41,57 +62,61 @@
 
     /* 카드 패널 */
     .reveal .panel-card {
-      background: rgba(22, 22, 22, 0.78);
+      background: rgba(22, 22, 22, 0.82);
       border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 10px;
+      border-radius: 6px;
+      padding: 7px 12px;
+      margin-bottom: 6px;
       text-align: left;
     }
+    .reveal .panel-card:last-child {
+      margin-bottom: 0;
+    }
     .reveal .panel-card h4 {
-      margin: 0 0 6px 0;
-      font-size: 0.75em;
+      margin: 0 0 3px 0;
+      font-size: 0.66em;
       color: var(--primary);
     }
     .reveal .panel-card p {
       margin: 0;
-      font-size: 0.54em;
-      line-height: 1.45;
+      font-size: 0.49em;
+      line-height: 1.35;
       color: var(--r-main-color);
     }
 
     /* 카드 그리드 */
-    .reveal .card-grid-3 {
+    .reveal .card-grid-2x2 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 15px;
-      text-align: left;
-    }
-    .reveal .card-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 15px;
-      text-align: left;
-    }
-    .reveal .card-grid-7 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
       text-align: left;
     }
 
-    /* 코드 블록 세부 보정 */
+    /* 코드 블록 컴팩트 보정 */
     .reveal pre {
-      margin: 0 0 8px 0;
+      margin: 0;
       width: 100%;
+      font-size: 0.51em;
+      border: 1px solid var(--hairline);
+      box-shadow: none;
     }
     .reveal pre code {
-      max-height: 480px;
-      font-size: 0.95em;
-      line-height: 1.35;
+      padding: 0.55em 0.8em;
+      line-height: 1.25;
+      max-height: 380px;
+      background: rgba(16, 16, 16, 0.85);
+      border-radius: 4px;
+    }
+
+    /* 미니 다이어그램 컴팩트화 */
+    .reveal svg.mini-diag {
+      width: 100%;
+      margin: 6px auto 0;
+    }
+    .reveal svg.diag {
+      width: 95%;
+      margin: 4px auto 0;
     }
 
     /* 은하 배경 위 SVG 도형 가독성 확보 */
@@ -138,48 +163,52 @@
         <h2>나만의 돌쇠 AI 만들기</h2>
         <p class="small">가장 단순한 Skill 하나에서 시작해, 시간을 판단하는 Agent를 거쳐,<br>
         여러 일꾼을 지휘하는 Orchestrator까지 — 비유로 따라가는 에이전트 설계</p>
-        <p style="margin-top: 24px;">
+        <p style="margin-top: 20px;">
           <span class="kbd">Skill</span> <span class="dim">→</span>
           <span class="kbd">Agent</span> <span class="dim">→</span>
           <span class="kbd">Orchestrator</span>
         </p>
-        <p class="small dim" style="margin-top: 20px;"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
+        <p class="small dim" style="margin-top: 18px;"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
       </section>
 
       <!-- ═══════════════════ SLIDE 2. 왜 하필 돌쇠인가 ═══════════════════ -->
       <section>
         <p class="eyebrow">METAPHOR</p>
         <h3>왜 하필 '돌쇠'인가</h3>
-        <p class="small">에이전트 시스템의 용어는 추상적입니다. 그런데 <strong>'일 잘하는 일꾼에게 어떻게 시킬 것인가'</strong>로 바꾸면 전부 익숙한 문제가 됩니다.</p>
+        <p class="small">에이전트 시스템의 용어는 추상적입니다. <strong>'일 잘하는 일꾼에게 어떻게 시킬 것인가'</strong>로 바꾸면 익숙한 문제가 됩니다.</p>
         
-        <div class="card-grid-7">
-          <div class="panel-card">
-            <h4>Skill · 한 가지 일</h4>
-            <p class="dim">돌쇠에게 시키는 정해진 절차 + 도구. 스스로 판단하지 않습니다.</p>
+        <div class="cols-2 equal">
+          <div>
+            <div class="panel-card">
+              <h4>Skill · 한 가지 일</h4>
+              <p class="dim">돌쇠에게 시키는 정해진 절차 + 도구. 스스로 판단하지 않습니다.</p>
+            </div>
+            <div class="panel-card">
+              <h4>Agent · 스스로 고르는 돌쇠</h4>
+              <p class="dim">상황과 시각을 보고 알맞은 Skill을 선택하는 관측-판단-실행 루프.</p>
+            </div>
+            <div class="panel-card">
+              <h4>Orchestrator · 마름</h4>
+              <p class="dim">하인이 둘 이상일 때 누구에게, 어떤 순서로 시킬지 결정하는 지휘역.</p>
+            </div>
+            <div class="panel-card">
+              <h4>Harness · 마당과 연장</h4>
+              <p class="dim">돌쇠가 일하는 판. 컨텍스트, 도구, 권한, 오프라인 가드레일.</p>
+            </div>
           </div>
-          <div class="panel-card">
-            <h4>Agent · 스스로 고르는 돌쇠</h4>
-            <p class="dim">상황과 시각을 보고 알맞은 Skill을 선택하는 관측-판단-실행 루프.</p>
-          </div>
-          <div class="panel-card">
-            <h4>Orchestrator · 마름</h4>
-            <p class="dim">하인이 둘 이상일 때 누구에게, 어떤 순서로 시킬지 결정하는 지휘역.</p>
-          </div>
-          <div class="panel-card">
-            <h4>Harness · 마당과 연장</h4>
-            <p class="dim">돌쇠가 일하는 판. 컨텍스트, 도구, 권한, 오프라인 가드레일.</p>
-          </div>
-          <div class="panel-card">
-            <h4>Flow · 작업도</h4>
-            <p class="dim">시작부터 끝까지 이어지는 한 줄기의 단방향 실행 순서.</p>
-          </div>
-          <div class="panel-card">
-            <h4>Loop · 되풀이</h4>
-            <p class="dim">조건이 충족될 때까지(예: 항아리 10/10) 되돌아가는 반복 구간.</p>
-          </div>
-          <div class="panel-card">
-            <h4>Graph · 전체 지도</h4>
-            <p class="dim">Flow와 Loop를 노드와 조건부 엣지로 엮은 종합 아키텍처.</p>
+          <div>
+            <div class="panel-card">
+              <h4>Flow · 작업도</h4>
+              <p class="dim">시작부터 끝까지 이어지는 한 줄기의 단방향 실행 순서.</p>
+            </div>
+            <div class="panel-card">
+              <h4>Loop · 되풀이</h4>
+              <p class="dim">조건이 충족될 때까지(예: 항아리 10/10) 되돌아가는 반복 구간.</p>
+            </div>
+            <div class="panel-card">
+              <h4>Graph · 전체 지도</h4>
+              <p class="dim">Flow와 Loop를 노드와 조건부 엣지로 엮은 종합 아키텍처.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -208,19 +237,19 @@
           <div>
             <div class="panel-card">
               <h4>skills/ 는 복수형</h4>
-              <p><code>.opencode/skills/&lt;name&gt;/SKILL.md</code><br>폴더 하나당 Skill 하나가 배치됩니다.</p>
+              <p><code>.opencode/skills/&lt;name&gt;/SKILL.md</code> — 폴더당 Skill 하나.</p>
             </div>
             <div class="panel-card">
               <h4>폴더명 = name</h4>
-              <p>frontmatter의 name과 폴더 이름이 정확히 같아야 올바르게 로딩됩니다.</p>
+              <p>frontmatter의 name과 폴더 이름이 일치해야 로딩됩니다.</p>
             </div>
             <div class="panel-card">
               <h4>agents/ 는 파일명이 이름</h4>
-              <p><code>dolsoe.md</code> → <code>@dolsoe</code>, <code>gaeddong.md</code> → <code>@gaeddong</code> 으로 호출됩니다.</p>
+              <p><code>dolsoe.md</code> → <code>@dolsoe</code> 로 호출됩니다.</p>
             </div>
             <div class="panel-card">
               <h4>scripts/ 는 상대경로</h4>
-              <p>SKILL.md 안의 스크립트 경로는 프로젝트 루트 기준 상대경로입니다.</p>
+              <p>SKILL.md 안의 스크립트 경로는 프로젝트 루트 기준입니다.</p>
             </div>
           </div>
         </div>
@@ -238,8 +267,7 @@
 ---
 name: draw-water
 description: 항아리가 비었을 때 우물에서 물을
-  길어 항아리를 채운다. 물·세면 준비가
-  필요할 때 사용한다.
+  길어 항아리를 채운다. 물 준비 시 사용.
 ---
 ## 절차
 1. `data/jar.txt` 의 현재 물 양을 읽는다.
@@ -250,26 +278,25 @@ description: 항아리가 비었을 때 우물에서 물을
           </div>
           <div>
             <div class="panel-card">
-              <h4>인식되는 frontmatter는 5개뿐</h4>
-              <p><code>name</code>·<code>description</code>은 필수, <code>license</code>·<code>compatibility</code>·<code>metadata</code>는 선택입니다.</p>
+              <h4>인식되는 frontmatter 5개</h4>
+              <p><code>name</code>·<code>description</code>은 필수, <code>license</code>·<code>compatibility</code>·<code>metadata</code>는 선택.</p>
             </div>
             <div class="panel-card">
-              <h4>name 규칙이 엄격하다</h4>
-              <p>소문자와 하이픈만 허용되며(1~64자), 폴더명과 완벽히 일치해야 합니다.</p>
+              <h4>name 규칙 엄격</h4>
+              <p>소문자·하이픈만 허용되며, 폴더명과 완벽히 일치해야 합니다.</p>
             </div>
             <div class="panel-card">
               <h4>실행자 — @dolsoe 돌쇠</h4>
-              <p>새벽 05~08시에 마름이 돌쇠에게 맡기면 이 Skill을 사용합니다.</p>
+              <p>새벽 05~08시에 마름이 돌쇠에게 맡기면 이 Skill을 씁니다.</p>
             </div>
-            <!-- 미니 다이어그램 -->
             <p class="visually-hidden">그림 설명: draw-water 스킬이 강조된 미니 다이어그램</p>
-            <svg class="mini-diag" viewBox="0 0 400 60" role="img" aria-label="draw-water 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
-              <text x="65" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" class="accent">draw-water</text>
-              <rect x="145" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="200" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">chop-wood</text>
-              <rect x="280" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="335" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">cook-meal</text>
+            <svg class="mini-diag" viewBox="0 0 380 44" role="img" aria-label="draw-water 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
+              <text x="62" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" class="accent">draw-water</text>
+              <rect x="132" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="189" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">chop-wood</text>
+              <rect x="259" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="316" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">cook-meal</text>
             </svg>
           </div>
         </div>
@@ -287,8 +314,7 @@ description: 항아리가 비었을 때 우물에서 물을
 ---
 name: chop-wood
 description: 장작더미가 모자랄 때 뒷산 나무를
-  패서 장작을 채운다. 낮 시간 땔감 준비가
-  필요할 때 사용한다.
+  패서 장작을 채운다. 낮 시간 땔감 준비 시 사용.
 ---
 ## 절차
 1. `data/woodpile.txt` 의 장작 개수를 읽는다.
@@ -299,25 +325,25 @@ description: 장작더미가 모자랄 때 뒷산 나무를
           </div>
           <div>
             <div class="panel-card">
-              <h4>폴더명과 name은 같아야 한다</h4>
-              <p><code>.opencode/skills/chop-wood/SKILL.md</code> 경로와 name 값이 어긋나면 인식되지 않습니다.</p>
+              <h4>폴더명 = name 일치</h4>
+              <p><code>.opencode/skills/chop-wood/SKILL.md</code> 경로와 name 불일치 시 미인식.</p>
             </div>
             <div class="panel-card">
-              <h4>경로는 프로젝트 기준 상대경로</h4>
-              <p><code>scripts/chop.sh</code> 처럼 적어야 어느 컴퓨터나 환경에서도 그대로 돕니다.</p>
+              <h4>상대경로 원칙</h4>
+              <p><code>scripts/chop.sh</code> 처럼 적어야 어느 환경에서도 돕니다.</p>
             </div>
             <div class="panel-card">
               <h4>실행자 — @dolsoe 돌쇠</h4>
-              <p>낮 09~16시에 마름이 돌쇠에게 일을 맡기면 이 Skill을 씁니다.</p>
+              <p>낮 09~16시에 마름이 돌쇠에게 맡기면 이 Skill을 씁니다.</p>
             </div>
             <p class="visually-hidden">그림 설명: chop-wood 스킬이 강조된 미니 다이어그램</p>
-            <svg class="mini-diag" viewBox="0 0 400 60" role="img" aria-label="chop-wood 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="65" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">draw-water</text>
-              <rect x="145" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
-              <text x="200" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" class="accent">chop-wood</text>
-              <rect x="280" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="335" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">cook-meal</text>
+            <svg class="mini-diag" viewBox="0 0 380 44" role="img" aria-label="chop-wood 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="62" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">draw-water</text>
+              <rect x="132" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
+              <text x="189" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" class="accent">chop-wood</text>
+              <rect x="259" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="316" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">cook-meal</text>
             </svg>
           </div>
         </div>
@@ -334,9 +360,8 @@ description: 장작더미가 모자랄 때 뒷산 나무를
             <pre><code class="markdown"># .opencode/skills/cook-meal/SKILL.md
 ---
 name: cook-meal
-description: 저녁 끼니때가 되면 항아리의 물과
-  장작을 써서 밥을 짓는다. 식사 준비가
-  필요할 때 사용한다.
+description: 저녁 끼니때 항아리의 물과
+  장작을 써서 밥을 짓는다. 식사 준비 시 사용.
 ---
 ## 절차
 1. `data/jar.txt` 와 `data/woodpile.txt` 를 읽는다.
@@ -347,25 +372,25 @@ description: 저녁 끼니때가 되면 항아리의 물과
           </div>
           <div>
             <div class="panel-card">
-              <h4>선행 조건을 먼저 확인한다</h4>
-              <p>물과 장작이 없으면 멈추게 하세요. 앞선 Skill들의 결과에 기대는 지점입니다.</p>
+              <h4>선행 조건 확인</h4>
+              <p>물과 장작이 없으면 멈추게 하여 앞선 Skill의 결과에 의존합니다.</p>
             </div>
             <div class="panel-card">
-              <h4>결과는 파일로 남긴다</h4>
-              <p><code>data/meal.log</code> 같은 기록이 있어야 다음 단계 판단의 근거가 됩니다.</p>
+              <h4>결과는 파일로 보존</h4>
+              <p><code>data/meal.log</code> 기록이 다음 판단의 객관적 근거가 됩니다.</p>
             </div>
             <div class="panel-card">
               <h4>실행자 — @gaeddong 개똥이</h4>
               <p>저녁 17~21시에 마름이 개똥이에게 맡기면 이 Skill을 씁니다.</p>
             </div>
             <p class="visually-hidden">그림 설명: cook-meal 스킬이 강조된 미니 다이어그램</p>
-            <svg class="mini-diag" viewBox="0 0 400 60" role="img" aria-label="cook-meal 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="65" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">draw-water</text>
-              <rect x="145" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <text x="200" y="35" text-anchor="middle" font-size="13" fill="currentColor" class="dim">chop-wood</text>
-              <rect x="280" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
-              <text x="335" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" class="accent">cook-meal</text>
+            <svg class="mini-diag" viewBox="0 0 380 44" role="img" aria-label="cook-meal 스킬 강조 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="62" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">draw-water</text>
+              <rect x="132" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" class="dim"/>
+              <text x="189" y="26" text-anchor="middle" font-size="12" fill="currentColor" class="dim">chop-wood</text>
+              <rect x="259" y="4" width="115" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
+              <text x="316" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" class="accent">cook-meal</text>
             </svg>
           </div>
         </div>
@@ -375,30 +400,30 @@ description: 저녁 끼니때가 되면 항아리의 물과
       <section>
         <p class="eyebrow">HARNESS</p>
         <h3>Harness Engineering · 마당 짓기</h3>
-        <p class="small">모델을 바꾸지 않고 결과를 바꾸는 층. OpenCode에서는 무엇을 보여주고, 어떤 도구를 쥐여주고, 어디서 막을지를 설정으로 정합니다.</p>
+        <p class="small">모델을 바꾸지 않고 결과를 바꾸는 층. 무엇을 보여주고, 어떤 도구를 쥐여주고, 어디서 막을지를 정합니다.</p>
 
-        <div class="card-grid-4">
+        <div class="card-grid-2x2">
           <div class="panel-card">
             <h4>컨텍스트 · 무엇을 아는가</h4>
-            <p><code>SKILL.md</code> 본문과 <code>references/</code>. 필요할 때만 읽히도록 잘게 나눕니다.</p>
+            <p><code>SKILL.md</code> 본문과 <code>references/</code>. 필요할 때만 읽히도록 분할.</p>
           </div>
           <div class="panel-card">
             <h4>도구 · 무엇을 쥐는가</h4>
-            <p><code>read</code> · <code>edit</code> · <code>bash</code>. 로컬 스크립트만 부르게 하고 <code>web</code> 계열은 뺍니다.</p>
+            <p><code>read</code> · <code>edit</code> · <code>bash</code>. 로컬 스크립트만 쥐여주고 web은 제외.</p>
           </div>
           <div class="panel-card">
             <h4>권한 · 어디서 멈추는가</h4>
-            <p><code>permission</code>으로 <code>edit: ask</code>, <code>bash: ask</code> 처럼 사람 승인 지점을 만듭니다.</p>
+            <p><code>permission</code>으로 <code>edit: ask</code>, <code>bash: ask</code> 승인 지점 생성.</p>
           </div>
           <div class="panel-card">
             <h4>오프라인 보장 · 밖으로 안 나간다</h4>
-            <p><code>webfetch</code>·<code>websearch</code> 차단 + <code>localhost</code> 모델 = 완전한 로컬 폐쇄 루프.</p>
+            <p><code>webfetch</code> 차단 + <code>localhost</code> 모델 = 완전 로컬 루프.</p>
           </div>
         </div>
 
-        <div style="margin-top: 14px;">
+        <div style="margin-top: 10px;">
           <pre><code class="yaml">permission: { webfetch: "deny", bash: "ask", edit: "ask" }</code></pre>
-          <p class="small dim">이 세 줄이 돌쇠의 담장입니다.</p>
+          <p class="small dim" style="margin-top: 4px;">이 세 줄이 돌쇠의 담장입니다.</p>
         </div>
       </section>
 
@@ -429,7 +454,7 @@ permission:
           <div>
             <div class="panel-card">
               <h4>실행 방법</h4>
-              <p><code>opencode</code> 실행 → <span class="kbd">Tab</span>으로 <code>dolsoe</code> 선택 → <em>"지금 할 일 해라"</em></p>
+              <p><code>opencode</code> 실행 → <span class="kbd">Tab</span> <code>dolsoe</code> → <em>"지금 할 일 해라"</em></p>
             </div>
             <div class="panel-card">
               <h4>시각별 분기 로직</h4>
@@ -440,7 +465,7 @@ permission:
                 <code>그 외</code> → <strong>대기</strong>
               </p>
             </div>
-            <p class="small dim">판단이 코드가 아니라 에이전트 지시문으로 옮겨졌습니다.</p>
+            <p class="small dim" style="margin-top: 4px;">판단이 코드가 아니라 에이전트 지시문으로 옮겨졌습니다.</p>
           </div>
         </div>
       </section>
@@ -451,27 +476,27 @@ permission:
         <h3>Flow와 Loop · 한 줄기와 되풀이</h3>
         <p class="small">한 번의 실행이 지나가는 한 줄기가 <strong>Flow</strong>, 조건이 찰 때까지 되돌아가는 구간이 <strong>Loop</strong>입니다.</p>
 
-        <div class="cols-2 equal" style="margin-top: 15px;">
+        <div class="cols-2 equal" style="margin-top: 8px;">
           <div class="panel-card">
             <h4>FLOW — 시각 확인에서 완료까지</h4>
             <p class="visually-hidden">그림 설명: 시각 확인에서 Skill 선택, 스크립트 실행, 결과 확인으로 이어지는 단방향 Flow</p>
-            <svg class="diag" viewBox="0 0 360 140" role="img" aria-label="단방향 Flow 다이어그램" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="15" width="150" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-              <text x="85" y="40" text-anchor="middle" font-size="13" fill="currentColor">date +%H</text>
-              <line x1="160" y1="35" x2="195" y2="35" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <polygon points="200,35 192,30 192,40" fill="currentColor" class="dim"/>
-              <rect x="200" y="15" width="150" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5" class="accent"/>
-              <text x="275" y="40" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor" class="accent">Skill 선택</text>
+            <svg class="diag" viewBox="0 0 360 115" role="img" aria-label="단방향 Flow 다이어그램" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="10" width="155" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <text x="85" y="33" text-anchor="middle" font-size="12" fill="currentColor">date +%H</text>
+              <line x1="163" y1="28" x2="192" y2="28" stroke="currentColor" stroke-width="1.3" class="dim"/>
+              <polygon points="198,28 190,23 190,33" fill="currentColor" class="dim"/>
+              <rect x="198" y="10" width="155" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.5" class="accent"/>
+              <text x="275" y="33" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" class="accent">Skill 선택</text>
               
-              <line x1="275" y1="55" x2="275" y2="80" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <polygon points="275,85 270,77 280,77" fill="currentColor" class="dim"/>
+              <line x1="275" y1="46" x2="275" y2="68" stroke="currentColor" stroke-width="1.3" class="dim"/>
+              <polygon points="275,74 270,66 280,66" fill="currentColor" class="dim"/>
               
-              <rect x="200" y="85" width="150" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-              <text x="275" y="110" text-anchor="middle" font-size="13" fill="currentColor">scripts 실행</text>
-              <line x1="200" y1="105" x2="165" y2="105" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <polygon points="160,105 168,100 168,110" fill="currentColor" class="dim"/>
-              <rect x="10" y="85" width="150" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-              <text x="85" y="110" text-anchor="middle" font-size="13" fill="currentColor">결과 확인</text>
+              <rect x="198" y="74" width="155" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <text x="275" y="97" text-anchor="middle" font-size="12" fill="currentColor">scripts 실행</text>
+              <line x1="198" y1="92" x2="169" y2="92" stroke="currentColor" stroke-width="1.3" class="dim"/>
+              <polygon points="163,92 171,87 171,97" fill="currentColor" class="dim"/>
+              <rect x="8" y="74" width="155" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <text x="85" y="97" text-anchor="middle" font-size="12" fill="currentColor">결과 확인</text>
             </svg>
           </div>
 
@@ -484,9 +509,9 @@ until [ "$(cat data/jar.txt)" = "10/10" ]; do
   echo "$(cat data/jar.txt) 채움"
 done</code></pre>
             </div>
-            <div class="panel-card">
+            <div class="panel-card" style="margin-top: 6px;">
               <h4>종료 조건 & 상한 설정</h4>
-              <p>Loop는 멈추는 조건을 먼저 정하고, 무한 반복을 막기 위한 최대 시도 횟수를 반드시 둡니다.</p>
+              <p>Loop는 멈추는 조건을 먼저 정하고, 최대 시도 횟수 상한을 반드시 둡니다.</p>
             </div>
           </div>
         </div>
@@ -519,15 +544,15 @@ echo "완료 — 항아리 가득"</code></pre>
           <div>
             <div class="panel-card">
               <h4>회차마다 LLM이 판단한다</h4>
-              <p><code>opencode run</code> 한 번이 돌쇠를 한 번 부르는 것 — 그 안에서 Skill이 실행됩니다.</p>
+              <p><code>opencode run</code> 1회가 돌쇠를 1회 호출하며 Skill이 선택됩니다.</p>
             </div>
             <div class="panel-card">
               <h4>상한이 곧 안전장치</h4>
-              <p>MAX가 없으면 모델 호출이 끝없이 이어질 수 있습니다. 20회 초과 시 실패로 종료합니다.</p>
+              <p>MAX가 없으면 모델 호출이 끝없이 이어집니다. 20회 초과 시 실패 종료.</p>
             </div>
             <div class="panel-card">
               <h4>로컬 모델로 오프라인 실행</h4>
-              <p><code>codemate/CodeLLMPro</code>를 localhost 엔드포인트에 두면 인터넷 없이 돕니다.</p>
+              <p><code>codemate/CodeLLMPro</code>를 localhost에 두면 인터넷 없이 돕니다.</p>
             </div>
           </div>
         </div>
@@ -556,15 +581,15 @@ echo "완료 — 항아리 가득"</code></pre>
           <div>
             <div class="panel-card">
               <h4>조건 · 상한 · 보고 3대 원칙</h4>
-              <p>되풀이 지시는 <strong>멈출 조건</strong>, <strong>시도 상한</strong>, <strong>보고 방식</strong>이 있어야 안전합니다.</p>
+              <p>되풀이 지시는 <strong>멈출 조건</strong>, <strong>시도 상한</strong>, <strong>보고 방식</strong>이 필수입니다.</p>
             </div>
             <div class="panel-card">
               <h4>판단은 Agent, 절차는 Skill</h4>
-              <p>프롬프트는 언제 멈출지만 정하고, 실제 세부 절차는 Skill이 수행합니다.</p>
+              <p>프롬프트는 멈출 조건만 정하고, 실제 세부 절차는 Skill이 수행합니다.</p>
             </div>
             <div class="panel-card">
               <h4>스크립트와 결과는 동일</h4>
-              <p>자연어 지시문과 <code>scripts/draw.sh</code>는 같은 Loop를 말과 코드로 적은 것입니다.</p>
+              <p>자연어 지시문과 <code>scripts/draw.sh</code>는 같은 Loop의 말과 코드 버전입니다.</p>
             </div>
           </div>
         </div>
@@ -604,15 +629,15 @@ model: codemate/CodeLLMPro
               <p><strong>위임</strong> · <strong>순서 결정</strong> · <strong>결과 병합</strong> · <strong>실패 시 재배정</strong></p>
             </div>
             <p class="visually-hidden">그림 설명: 마름 오케스트레이터 미니 다이어그램</p>
-            <svg class="mini-diag" viewBox="0 0 400 60" role="img" aria-label="마름 오케스트레이터 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="110" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
-              <text x="65" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" class="accent">마름 (총괄)</text>
-              <line x1="120" y1="30" x2="160" y2="30" stroke="currentColor" stroke-width="1.5" class="dim"/>
-              <polygon points="165,30 157,25 157,35" fill="currentColor" class="dim"/>
-              <rect x="170" y="10" width="105" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-              <text x="222" y="35" text-anchor="middle" font-size="13" fill="currentColor">돌쇠 (05~16)</text>
-              <rect x="285" y="10" width="105" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-              <text x="337" y="35" text-anchor="middle" font-size="13" fill="currentColor">개똥이 (17~21)</text>
+            <svg class="mini-diag" viewBox="0 0 380 44" role="img" aria-label="마름 오케스트레이터 미니 다이어그램" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="4" width="110" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2" class="accent"/>
+              <text x="60" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" class="accent">마름 (총괄)</text>
+              <line x1="115" y1="21" x2="148" y2="21" stroke="currentColor" stroke-width="1.3" class="dim"/>
+              <polygon points="153,21 145,17 145,25" fill="currentColor" class="dim"/>
+              <rect x="156" y="4" width="105" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <text x="208" y="26" text-anchor="middle" font-size="12" fill="currentColor">돌쇠 (05~16)</text>
+              <rect x="268" y="4" width="105" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <text x="320" y="26" text-anchor="middle" font-size="12" fill="currentColor">개똥이 (17~21)</text>
             </svg>
           </div>
         </div>
@@ -651,7 +676,7 @@ FAIL이면 빠진 항목을 목록으로 적는다.
               <h4>검사역의 4대 책임</h4>
               <p><strong>기준 해석</strong> · <strong>증거 확인</strong> · <strong>판정</strong> · <strong>재작업 요청</strong></p>
             </div>
-            <p class="small dim">검사역은 스스로 수정하지 않고 마름에게 되돌려 피드백 루프를 완성합니다.</p>
+            <p class="small dim" style="margin-top: 4px;">검사역은 스스로 수정하지 않고 마름에게 되돌립니다.</p>
           </div>
         </div>
       </section>
@@ -663,76 +688,76 @@ FAIL이면 빠진 항목을 목록으로 적는다.
         <p class="small">노드는 책임 하나, 엣지는 조건. 되돌아오는 엣지가 순환(Loop)을 만듭니다.</p>
         <p class="visually-hidden">그림 설명: 마름, 돌쇠, 개똥이, 언년이가 유기적으로 연결된 완성형 상태 전이 그래프</p>
 
-        <svg class="diag" viewBox="0 0 900 320" role="img" aria-label="마름, 돌쇠, 개똥이, 언년이가 연결된 완성형 상태 전이 그래프" xmlns="http://www.w3.org/2000/svg">
+        <svg class="diag" viewBox="0 0 900 260" role="img" aria-label="마름, 돌쇠, 개똥이, 언년이가 연결된 완성형 상태 전이 그래프" xmlns="http://www.w3.org/2000/svg">
           <!-- 시작 노드 -->
           <g>
-            <rect x="30" y="130" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" class="dim"/>
-            <text x="95" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor">시작</text>
-            <text x="95" y="170" text-anchor="middle" font-size="11" fill="currentColor" class="dim">`date +%H`</text>
+            <rect x="25" y="105" width="120" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.3" class="dim"/>
+            <text x="85" y="127" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">시작</text>
+            <text x="85" y="141" text-anchor="middle" font-size="10" fill="currentColor" class="dim">`date +%H`</text>
           </g>
 
-          <line x1="160" y1="155" x2="200" y2="155" stroke="currentColor" stroke-width="2"/>
-          <polygon points="210,155 198,149 198,161" fill="currentColor"/>
+          <line x1="145" y1="128" x2="185" y2="128" stroke="currentColor" stroke-width="1.8"/>
+          <polygon points="193,128 183,123 183,133" fill="currentColor"/>
 
           <!-- 마름 노드 -->
           <g>
-            <rect x="210" y="115" width="140" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" class="accent"/>
-            <text x="280" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor" class="accent">마름</text>
-            <text x="280" y="172" text-anchor="middle" font-size="12" fill="currentColor" class="dim">@maleum (조율)</text>
+            <rect x="195" y="93" width="135" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="2.2" class="accent"/>
+            <text x="262" y="124" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor" class="accent">마름</text>
+            <text x="262" y="144" text-anchor="middle" font-size="11" fill="currentColor" class="dim">@maleum (조율)</text>
           </g>
 
           <!-- 분기 엣지 위: 돌쇠 -->
-          <path d="M 350 140 Q 390 70 430 70" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="435,70 423,64 423,76" fill="currentColor" class="dim"/>
-          <text x="390" y="88" font-size="11" fill="currentColor" class="dim">05~16</text>
+          <path d="M 330 115 Q 365 55 405 55" fill="none" stroke="currentColor" stroke-width="1.8" class="dim"/>
+          <polygon points="410,55 400,50 400,60" fill="currentColor" class="dim"/>
+          <text x="368" y="70" font-size="10" fill="currentColor" class="dim">05~16</text>
 
           <!-- 분기 엣지 아래: 개똥이 -->
-          <path d="M 350 170 Q 390 240 430 240" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="435,240 423,234 423,246" fill="currentColor" class="dim"/>
-          <text x="390" y="222" font-size="11" fill="currentColor" class="dim">17~21</text>
+          <path d="M 330 142 Q 365 200 405 200" fill="none" stroke="currentColor" stroke-width="1.8" class="dim"/>
+          <polygon points="410,200 400,195 400,205" fill="currentColor" class="dim"/>
+          <text x="368" y="185" font-size="10" fill="currentColor" class="dim">17~21</text>
 
           <!-- 돌쇠 노드 & 스킬 -->
           <g>
-            <rect x="435" y="40" width="160" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="515" y="65" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">돌쇠 @dolsoe</text>
-            <text x="515" y="85" text-anchor="middle" font-size="11" fill="currentColor" class="dim">draw-water · chop-wood</text>
+            <rect x="410" y="30" width="165" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <text x="492" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">돌쇠 @dolsoe</text>
+            <text x="492" y="70" text-anchor="middle" font-size="10" fill="currentColor" class="dim">draw-water · chop-wood</text>
           </g>
 
           <!-- 개똥이 노드 & 스킬 -->
           <g>
-            <rect x="435" y="210" width="160" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
-            <text x="515" y="235" text-anchor="middle" font-size="15" font-weight="600" fill="currentColor">개똥이 @gaeddong</text>
-            <text x="515" y="255" text-anchor="middle" font-size="11" fill="currentColor" class="dim">cook-meal</text>
+            <rect x="410" y="175" width="165" height="52" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <text x="492" y="197" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">개똥이 @gaeddong</text>
+            <text x="492" y="215" text-anchor="middle" font-size="10" fill="currentColor" class="dim">cook-meal</text>
           </g>
 
           <!-- 언년이로 수렴 엣지 -->
-          <path d="M 595 70 Q 635 70 665 130" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="670,135 660,126 669,121" fill="currentColor" class="dim"/>
+          <path d="M 575 55 Q 615 55 645 105" fill="none" stroke="currentColor" stroke-width="1.8" class="dim"/>
+          <polygon points="649,111 641,102 649,98" fill="currentColor" class="dim"/>
 
-          <path d="M 595 240 Q 635 240 665 180" fill="none" stroke="currentColor" stroke-width="2" class="dim"/>
-          <polygon points="670,175 669,189 660,184" fill="currentColor" class="dim"/>
+          <path d="M 575 200 Q 615 200 645 150" fill="none" stroke="currentColor" stroke-width="1.8" class="dim"/>
+          <polygon points="649,144 649,157 641,152" fill="currentColor" class="dim"/>
 
           <!-- 언년이 검사역 노드 -->
           <g>
-            <rect x="670" y="115" width="140" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2.5" class="bright"/>
-            <text x="740" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor" class="bright">언년이</text>
-            <text x="740" y="172" text-anchor="middle" font-size="12" fill="currentColor" class="dim">@eonnyeon (검사)</text>
+            <rect x="650" y="93" width="135" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="2.2" class="bright"/>
+            <text x="717" y="124" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor" class="bright">언년이</text>
+            <text x="717" y="144" text-anchor="middle" font-size="11" fill="currentColor" class="dim">@eonnyeon (검사)</text>
           </g>
 
           <!-- PASS 완료 엣지 -->
-          <line x1="810" y1="155" x2="850" y2="155" stroke="currentColor" stroke-width="2" class="accent"/>
-          <polygon points="860,155 848,149 848,161" fill="currentColor" class="accent"/>
-          <text x="830" y="145" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" class="accent">PASS</text>
-          <text x="880" y="160" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor">완료</text>
+          <line x1="785" y1="128" x2="825" y2="128" stroke="currentColor" stroke-width="1.8" class="accent"/>
+          <polygon points="833,128 823,123 823,133" fill="currentColor" class="accent"/>
+          <text x="805" y="119" text-anchor="middle" font-size="10" font-weight="700" fill="currentColor" class="accent">PASS</text>
+          <text x="855" y="132" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">완료</text>
 
           <!-- FAIL 되돌림 Loop 엣지 -->
-          <path d="M 740 115 L 740 10 Q 500 5 280 10 L 280 115" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6,4" class="danger"/>
-          <polygon points="280,115 274,103 286,103" fill="currentColor" class="danger"/>
-          <text x="510" y="24" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" class="danger">FAIL — 마름에게 재배정 (↻ 조건 충족까지 Loop)</text>
+          <path d="M 717 93 L 717 12 Q 490 6 262 12 L 262 93" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="5,3" class="danger"/>
+          <polygon points="262,93 257,83 267,83" fill="currentColor" class="danger"/>
+          <text x="490" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor" class="danger">FAIL — 마름에게 재배정 (↻ 조건 충족까지 Loop)</text>
 
           <!-- 하단 공유 상태 바 -->
-          <rect x="150" y="285" width="600" height="28" rx="6" fill="none" stroke="currentColor" stroke-width="1" class="dim"/>
-          <text x="450" y="303" text-anchor="middle" font-size="12" fill="currentColor" class="dim">상태는 data/*.txt 로 공유 · 노드 = 책임 하나 · 엣지 = 조건 전이</text>
+          <rect x="180" y="235" width="540" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="1" class="dim"/>
+          <text x="450" y="250" text-anchor="middle" font-size="11" fill="currentColor" class="dim">상태는 data/*.txt 로 공유 · 노드 = 책임 하나 · 엣지 = 조건 전이</text>
         </svg>
       </section>
 
@@ -742,66 +767,74 @@ FAIL이면 빠진 항목을 목록으로 적는다.
         <h3>오늘 만든 것, 그대로 돌려보기</h3>
         <p class="small">외부 의존성 없이 로컬 환경에서 즉시 실행하는 5단계 절차</p>
 
-        <div class="card-grid-7" style="margin-top: 15px;">
-          <div class="panel-card">
-            <h4>01 로컬 모델 서버</h4>
-            <p><code>codemate/CodeLLMPro</code>를 내보내는 서버를 먼저 띄웁니다.</p>
+        <div class="cols-2 equal">
+          <div>
+            <div class="panel-card">
+              <h4>01 로컬 모델 서버</h4>
+              <p><code>codemate/CodeLLMPro</code>를 내보내는 서버를 먼저 띄웁니다.</p>
+            </div>
+            <div class="panel-card">
+              <h4>02 opencode.json</h4>
+              <p>codemate 프로바이더와 localhost baseURL을 등록합니다.</p>
+            </div>
+            <div class="panel-card">
+              <h4>03 .opencode/skills/</h4>
+              <p><code>draw-water</code> · <code>chop-wood</code> · <code>cook-meal</code> 폴더 생성.</p>
+            </div>
           </div>
-          <div class="panel-card">
-            <h4>02 opencode.json</h4>
-            <p>codemate 프로바이더와 localhost baseURL을 등록합니다.</p>
-          </div>
-          <div class="panel-card">
-            <h4>03 .opencode/skills/</h4>
-            <p><code>draw-water</code> · <code>chop-wood</code> · <code>cook-meal</code> 세 폴더 생성.</p>
-          </div>
-          <div class="panel-card">
-            <h4>04 .opencode/agents/</h4>
-            <p><code>dolsoe</code> · <code>gaeddong</code> · <code>maleum</code> · <code>eonnyeon</code> 배치.</p>
-          </div>
-          <div class="panel-card">
-            <h4>05 opencode 실행</h4>
-            <p><em>"지금 할 일 해라"</em> 한 마디로 전체 그래프가 순환합니다.</p>
+          <div>
+            <div class="panel-card">
+              <h4>04 .opencode/agents/</h4>
+              <p><code>dolsoe</code> · <code>gaeddong</code> · <code>maleum</code> · <code>eonnyeon</code> 배치.</p>
+            </div>
+            <div class="panel-card">
+              <h4>05 opencode 실행</h4>
+              <p><em>"지금 할 일 해라"</em> 한 마디로 전체 그래프가 순환합니다.</p>
+            </div>
           </div>
         </div>
 
-        <p class="small dim" style="margin-top: 20px;">바깥으로 나가는 호출은 한 건도 없습니다. 모델도, 도구도, 상태도 전부 이 컴퓨터 안에 있습니다.</p>
+        <p class="small dim" style="margin-top: 10px;">바깥으로 나가는 호출은 한 건도 없습니다. 모델도, 도구도, 상태도 전부 이 컴퓨터 안에 있습니다.</p>
       </section>
 
       <!-- ═══════════════════ SLIDE 16. AI Tool 방법론 지도 ═══════════════════ -->
       <section>
         <p class="eyebrow">BEYOND</p>
         <h3>그래프 다음 · AI Tool 방법론 지도</h3>
-        <p class="small">Skill · Agent · Flow · Loop · Graph 위에 얹는 층들입니다. 하나씩 더해도 앞의 구조는 그대로 씁니다.</p>
+        <p class="small">Skill · Agent · Flow · Loop · Graph 위에 얹는 층들입니다. 앞의 구조는 그대로 씁니다.</p>
 
-        <div class="card-grid-7">
-          <div class="panel-card">
-            <h4>Agent SNS (A2A)</h4>
-            <p class="dim">에이전트끼리 서로를 발견하고 일을 주고받는 표준 마을 게시판 통신</p>
+        <div class="cols-2 equal">
+          <div>
+            <div class="panel-card">
+              <h4>Agent SNS (A2A)</h4>
+              <p class="dim">에이전트끼리 발견하고 일 주고받는 표준 마을 게시판 통신</p>
+            </div>
+            <div class="panel-card">
+              <h4>Spec-Driven Dev</h4>
+              <p class="dim">명세를 먼저 쓰고, 그 기준으로 결과 검수 (GitHub spec-kit)</p>
+            </div>
+            <div class="panel-card">
+              <h4>ADR 기록</h4>
+              <p class="dim">결정 한 건에 문서 한 장 — 세션이 바뀌어도 남는 기억</p>
+            </div>
+            <div class="panel-card">
+              <h4>RAG · LLM Wiki</h4>
+              <p class="dim">돌쇠가 찾아 읽을 도서관 — 원문 색인 또는 위키 정리</p>
+            </div>
           </div>
-          <div class="panel-card">
-            <h4>Spec-Driven Dev</h4>
-            <p class="dim">명세를 먼저 쓰고, 그 기준으로 결과를 검수 (GitHub spec-kit)</p>
-          </div>
-          <div class="panel-card">
-            <h4>ADR 기록</h4>
-            <p class="dim">결정 한 건에 문서 한 장 — 세션이 바뀌어도 남는 아키텍처 기억</p>
-          </div>
-          <div class="panel-card">
-            <h4>RAG · LLM Wiki</h4>
-            <p class="dim">돌쇠가 찾아 읽을 도서관 — 원문을 색인하거나 위키로 정리</p>
-          </div>
-          <div class="panel-card">
-            <h4>Context Engineering</h4>
-            <p class="dim">지금 이 순간 모델이 볼 것만 남기는 정교한 입력 설계</p>
-          </div>
-          <div class="panel-card">
-            <h4>Evals</h4>
-            <p class="dim">언년이의 판정을 자동 시험으로 굳혀 기능 후퇴를 방지</p>
-          </div>
-          <div class="panel-card">
-            <h4>Sandboxing</h4>
-            <p class="dim">컨테이너·microVM 안에서만 격리된 채로 도구를 실행</p>
+          <div>
+            <div class="panel-card">
+              <h4>Context Engineering</h4>
+              <p class="dim">지금 모델이 볼 것만 남기는 정교한 입력 설계</p>
+            </div>
+            <div class="panel-card">
+              <h4>Evals</h4>
+              <p class="dim">언년이의 판정을 자동 시험으로 굳혀 회귀 방지</p>
+            </div>
+            <div class="panel-card">
+              <h4>Sandboxing</h4>
+              <p class="dim">컨테이너·microVM 안에서 격리된 채로 도구 실행</p>
+            </div>
           </div>
         </div>
       </section>
@@ -821,8 +854,8 @@ FAIL이면 빠진 항목을 목록으로 적는다.
   "url": "http://localhost:4001/a2a",
   "auth": "none"
 }</code></pre>
-            <p class="small dim" style="margin-top: 8px;">
-              <code>board/inbox/</code>에 할 일을 붙이면 담당이 집어가고,<br>
+            <p class="small dim" style="margin-top: 6px;">
+              <code>board/inbox/</code>에 할 일을 붙이면 담당이 가져가고,<br>
               결과는 <code>board/outbox/</code>에 되돌려 붙입니다.
             </p>
           </div>
@@ -833,13 +866,13 @@ FAIL이면 빠진 항목을 목록으로 적는다.
             </div>
             <div class="panel-card">
               <h4>Task (게시)</h4>
-              <p>할 일을 메시지로 붙이면 담당 에이전트가 가져갑니다.</p>
+              <p>할 일을 메시지로 붙이면 담당 에이전트가 집어갑니다.</p>
             </div>
             <div class="panel-card">
               <h4>Artifact (회수)</h4>
               <p>수행 결과와 로그를 같은 자리에 되돌려 놓습니다.</p>
             </div>
-            <p class="small dim">표준: Google A2A (Linux Foundation) · Blackboard 공유 작업판 패턴</p>
+            <p class="small dim" style="margin-top: 4px;">표준: Google A2A · Blackboard 공유 작업판 패턴</p>
           </div>
         </div>
       </section>
@@ -848,7 +881,7 @@ FAIL이면 빠진 항목을 목록으로 적는다.
       <section>
         <p class="eyebrow">SPEC-DRIVEN</p>
         <h3>6단계 · 요구사항과 과정을 문서로</h3>
-        <p class="small">말로 시키면 세션이 끝날 때 사라집니다. 명세와 결정을 파일로 남겨야 다음 돌쇠가 이어받습니다.</p>
+        <p class="small">말로 시키면 세션 종료 시 사라집니다. 명세와 결정을 파일로 남겨야 다음 돌쇠가 이어받습니다.</p>
 
         <div class="cols-2">
           <div>
@@ -865,15 +898,15 @@ FAIL이면 빠진 항목을 목록으로 적는다.
           <div>
             <div class="panel-card">
               <h4>AGENTS.md (집안 규칙)</h4>
-              <p>에이전트용 README — 명령어, 작업 경계, 관례를 정의합니다.</p>
+              <p>에이전트용 README — 명령, 작업 경계, 관례 정의.</p>
             </div>
             <div class="panel-card">
               <h4>specs/ (무엇을 · 왜)</h4>
-              <p>먼저 명세를 작성하고 그 다음에 시킵니다 (spec-kit).</p>
+              <p>먼저 명세를 쓰고 그 다음에 시킵니다 (spec-kit).</p>
             </div>
             <div class="panel-card">
               <h4>docs/adr/ (결정과 근거)</h4>
-              <p>결정 한 건에 문서 한 장 — 다음 세션으로 이어지는 기억.</p>
+              <p>결정 한 건에 문서 한 장 — 다음 세션의 기억.</p>
             </div>
           </div>
         </div>
@@ -892,24 +925,23 @@ FAIL이면 빠진 항목을 목록으로 적는다.
 ├── index/     # 임베딩 · 벡터 색인
 ├── wiki/      # 사람이 읽는 요약본
 └── INDEX.md   # 전체 목차 한 장</code></pre>
-            <p class="small dim" style="margin-top: 8px;">
-              1. 원문을 sources/에 수집<br>
-              2. 색인(RAG)하거나 요약해 위키로 정리<br>
+            <p class="small dim" style="margin-top: 6px;">
+              1. 원문 수집 → 2. RAG 색인 / 위키 정리 →<br>
               3. Skill의 references로 필요 시 참조
             </p>
           </div>
           <div>
             <div class="panel-card">
               <h4>RAG (찾아서 넣기)</h4>
-              <p>벡터로 색인해 질문마다 가장 관련 있는 조각만 꺼냅니다.</p>
+              <p>벡터 색인으로 질문마다 관련 조각만 꺼냅니다.</p>
             </div>
             <div class="panel-card">
               <h4>LLM Wiki (접어서 두기)</h4>
-              <p>에이전트가 원문을 읽고 상호 링크된 위키로 정리해 둡니다.</p>
+              <p>에이전트가 원문을 읽고 링크된 위키로 정리합니다.</p>
             </div>
             <div class="panel-card">
               <h4>INDEX.md (목차가 곧 지도)</h4>
-              <p>무엇이 어디 있는지 한 장의 지도가 있어야 빠르게 찾습니다.</p>
+              <p>무엇이 어디 있는지 한 장의 지도로 찾습니다.</p>
             </div>
           </div>
         </div>
@@ -921,32 +953,36 @@ FAIL이면 빠진 항목을 목록으로 적는다.
         <h3>더 있는 방법론들 — 조사로 덧붙임</h3>
         <p class="small">그래프 엔지니어링 다음으로 확장되는 5가지 핵심 기법</p>
 
-        <div class="card-grid-7">
-          <div class="panel-card">
-            <h4>01 MCP</h4>
-            <p class="dim">도구와 데이터 연결을 표준 인터페이스 하나로 통합</p>
+        <div class="cols-2 equal">
+          <div>
+            <div class="panel-card">
+              <h4>01 MCP</h4>
+              <p class="dim">도구와 데이터 연결을 표준 인터페이스 하나로 통합</p>
+            </div>
+            <div class="panel-card">
+              <h4>02 Context Eng.</h4>
+              <p class="dim">지금 모델이 볼 것만 남기는 프롬프트 상위 설계</p>
+            </div>
+            <div class="panel-card">
+              <h4>03 Evals</h4>
+              <p class="dim">언년이의 판정을 자동 테스트로 굳혀 회귀 방지</p>
+            </div>
           </div>
-          <div class="panel-card">
-            <h4>02 Context Eng.</h4>
-            <p class="dim">지금 모델이 볼 것만 남기는 고도화된 프롬프트 상위 설계</p>
-          </div>
-          <div class="panel-card">
-            <h4>03 Evals</h4>
-            <p class="dim">언년이의 판정을 자동 테스트로 굳혀 회귀 방지</p>
-          </div>
-          <div class="panel-card">
-            <h4>04 Human-in-Loop</h4>
-            <p class="dim">위험한 지점에서 사람의 명시적 승인 강제 (permission: ask)</p>
-          </div>
-          <div class="panel-card">
-            <h4>05 Sandboxing</h4>
-            <p class="dim">컨테이너·격리 환경 실행 및 파일 기반 영속 기억</p>
+          <div>
+            <div class="panel-card">
+              <h4>04 Human-in-Loop</h4>
+              <p class="dim">위험 지점에서 사람 승인 강제 (permission: ask)</p>
+            </div>
+            <div class="panel-card">
+              <h4>05 Sandboxing</h4>
+              <p class="dim">컨테이너 격리 환경 실행 및 파일 기반 영속 기억</p>
+            </div>
           </div>
         </div>
 
-        <div style="margin-top: 24px;">
-          <p class="small dim">조사 출처: A2A · AGENTS.md/spec-kit · ADR 가이드 · 자체 호스팅 RAG · LLM Wiki · MCP · 샌드박스 비교 (2026)</p>
-          <p style="margin-top: 15px;"><a href="../../">← 발표 기록으로 돌아가기</a></p>
+        <div style="margin-top: 14px;">
+          <p class="small dim">출처: A2A · AGENTS.md · ADR · 로컬 RAG · LLM Wiki · MCP (2026)</p>
+          <p style="margin-top: 8px;"><a href="../../">← 발표 기록으로 돌아가기</a></p>
         </div>
       </section>
 

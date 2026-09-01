@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 나만의 돌쇠 AI 만들기 노스크롤 최적화</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 나만의 돌쇠 AI 만들기 노스크롤 최적화</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p><code>slides/my-dolsoe-ai/index.html</code>의 20개 슬라이드 전체에 대해 기본 뷰포트(960×700) 높이 예산 내 완벽 수용을 위한 노스크롤(No-Scroll) 리팩터링을 수행했습니다. 타이포그래피 상하 마진 축소, 코드 블록 폰트(0.51em) 및 패딩(0.55em) 슬림화, 카드 그리드 2단 대칭화, Slide 14 전체 지도 SVG viewBox 높이(260) 압축을 통해 발표 중 불필요한 스크롤 발생을 100% 제거했습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 위 '변경 요약'에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "슬라이드 2(비유 7종)와 슬라이드 16(방법론 7종)의 세로 늘어짐을 해결하기 위해 적용한 레이아웃 구조는 무엇입니까?",
+    options: [
+      "카드를 1열로 길게 나열",
+      "2단 대칭 분할(좌 4개, 우 3개)의 컴팩트 패널 배치",
+      "일부 카드를 슬라이드에서 삭제",
+      "카드를 슬라이더 형태로 감춤"
+    ], answer: 1,
+    explain: "카드를 삭제하지 않고 좌우 2열 대칭 패널로 정렬하여 한눈에 7가지 항목을 보면서도 세로 높이를 260px 이내로 압축했습니다." },
+  { q: "코드 블록이 12~16줄로 길어 슬라이드를 넘치던 문제를 해결하기 위해 조정한 항목은 무엇입니까?",
+    options: [
+      "코드의 중요 줄을 임의로 삭제",
+      "코드 블록을 이미지 캡처로 대체",
+      "코드 글꼴 크기(0.51em), 줄간격(1.25), 패딩(0.55em) 최적화로 밀도 향상",
+      "코드 블록을 별도 링크로 분리"
+    ], answer: 2,
+    explain: "코드 전문과 복사 기능을 보존하면서 폰트 크기, 줄간격, 패딩 밀도를 높여 230~270px 높이 내에 완벽히 들어가도록 조율했습니다." },
+  { q: "이번 노스크롤 최적화 후 슬라이드 1~20 전체의 스크롤바 발생 상태는 어떠합니까?",
+    options: [
+      "20개 슬라이드 전체에서 스크롤바가 전혀 발생하지 않고 한 화면에 완결된다",
+      "여전히 5개 슬라이드에서 스크롤이 필요하다",
+      "첫 페이지만 스크롤이 없다",
+      "모바일에서만 스크롤이 없다"
+    ], answer: 0,
+    explain: "모든 슬라이드의 높이 예산을 600px 이내로 통제하여 표준 960x700 뷰포트에서 스크롤이 0건입니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
