@@ -42,6 +42,6 @@ for i, svg in enumerate(svgs):
 # Check section count
 sections = re.findall(r'<section\b', content)
 print(f'Total sections (slides): {len(sections)}')
-assert len(sections) == 20, f'Expected 20 sections, got {len(sections)}'
+assert len(sections) == 21, f'Expected 21 sections, got {len(sections)}'
 
 print('ALL SANITY CHECKS PASSED!')

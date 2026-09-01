@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: opencode.json Agent 등록 슬라이드 추가</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: opencode.json Agent 등록 슬라이드 추가</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p><code>slides/my-dolsoe-ai/index.html</code> 2단계 <code>dolsoe.md</code> 직후에 <strong>Slide 9 (<code>2단계 · opencode.json에 Agent 등록하기</code>)</strong>를 신규 추가(총 21개 슬라이드)했습니다. <code>opencode.json</code>의 <code>agent</code> 설정을 통해 모델, 모드, <code>skills</code> 바인딩을 프로젝트 전역에서 중앙 집중식으로 선언하는 방법과, <code>.md</code>(행동 프롬프트)와 <code>json</code>(시스템 인프라 설정)의 역할 분담을 설명하며, 전 슬라이드 No-Scroll 및 템플릿 UI를 완벽히 유지했습니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 '변경 요약'과 슬라이드 구현 내용에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "프로젝트 설정 파일인 `opencode.json`에 Agent를 정의할 때 얻는 주요 이점은 무엇입니까?",
+    options: [
+      "팀원 전체가 공유하는 일관된 모델/모드/스킬 바인딩을 프로젝트 전역에서 중앙 정의할 수 있다",
+      "인터넷 연결이 강제로 활성화된다",
+      "모든 .md 파일을 자동으로 삭제해 준다",
+      "파이썬 코드를 C++로 자동 변환한다"
+    ], answer: 0,
+    explain: "opencode.json의 agent 설정을 통해 팀 전체가 공유할 일관된 모델, 모드, 사용할 스킬 목록을 중앙 집중식으로 정의할 수 있습니다." },
+  { q: "`.opencode/agents/dolsoe.md`와 `opencode.json` 간의 올바른 역할 분담은 무엇입니까?",
+    options: [
+      ".md는 행동 지시문(프롬프트)을 담당하고, json은 모델·모드·스킬 목록 등 시스템 인프라 설정을 담당한다",
+      ".md는 컴파일용이고 json은 주석용이다",
+      "둘 중 하나만 존재하면 에러가 발생하므로 완전히 동일한 내용을 복사해야 한다",
+      "json에는 한글만 쓸 수 있고 .md에는 영어만 쓸 수 있다"
+    ], answer: 0,
+    explain: ".md는 에이전트의 페르소나와 작업 지시 프롬프트를 담고, opencode.json은 사용할 모델, 모드, 허용 스킬 배열 등 시스템 레벨의 인프라 구성을 담당합니다." },
+  { q: "신규 Slide 9가 추가된 후 전체 슬라이드 수와 No-Scroll 상태는 어떠합니까?",
+    options: [
+      "총 21개 슬라이드로 확장되었으며, 전 슬라이드에서 세로 스크롤 없이 한 화면에 완결된다",
+      "총 20개 슬라이드이며 스크롤이 발생한다",
+      "슬라이드가 30개로 늘어났다",
+      "마지막 슬라이드만 볼 수 있다"
+    ], answer: 0,
+    explain: "총 21개 슬라이드로 확장되었으며, 컴팩트한 레이아웃 설계로 21개 전 슬라이드에서 스크롤바가 전혀 발생하지 않습니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
