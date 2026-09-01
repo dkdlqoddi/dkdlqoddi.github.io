@@ -22,5 +22,11 @@
     "date": "2026-08-19",
     "description": "팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리와 도구 철학",
     "dir": "ai-agent-skills-philosophy"
+  },
+  {
+    "title": "나만의 돌쇠 AI 만들기",
+    "date": "2026-09-01",
+    "description": "조선시대 일꾼 비유로 배우는 OpenCode 하네스 & 그래프 엔지니어링 실습",
+    "dir": "my-dolsoe-ai"
   }
 ]

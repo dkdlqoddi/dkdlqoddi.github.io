@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-Merge Quiz: 나만의 돌쇠 AI 만들기 웹 발표자료</title>
+<style>
+  body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; background: #fafafa; color: #222; }
+  .q { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .q.correct { border-color: #2e7d32; background: #edf7ed; }
+  .q.wrong { border-color: #c62828; background: #fdecea; }
+  #result { font-size: 1.2rem; font-weight: bold; margin: 1rem 0; }
+  button { padding: .6rem 1.4rem; font-size: 1rem; cursor: pointer; background: #008080; color: #fff; border: none; border-radius: 4px; }
+  .summary { background: #f0f4f8; border-left: 4px solid #008080; border-radius: 4px; padding: 1rem 1.2rem; }
+  label { display: block; margin: 0.35rem 0; cursor: pointer; }
+  label.answer { color: #2e7d32; font-weight: bold; }
+  .explain { background: #fff8e1; border-radius: 6px; padding: .5rem .8rem; margin-top: .5rem; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<h1>Pre-Merge Quiz: 나만의 돌쇠 AI 만들기 웹 발표자료</h1>
+<div class="summary">
+<h2>변경 요약</h2>
+<p>PowerPoint 원본(<code>나만의 돌쇠 AI 만들기.pptx</code>)의 20개 슬라이드를 저장소 표준에 맞춘 웹 기반 reveal.js 6.0.1 발표자료(<code>slides/my-dolsoe-ai/index.html</code>)로 완벽히 변환하여 신설했습니다. 허브 메니페스트인 <code>slides.json</code>에 5번째 덱으로 등록되었으며, 다크 스페이스 HUD 테마, 3D 별빛 은하 배경(<code>galaxy-3d-bg</code>), 템플릿 표준 코드 복사 버튼(<code>code-copy.js/css</code>), SVG 접근성(<code>role="img"</code>, <code>aria-label</code>, <code>visually-hidden</code>)을 완전히 충족합니다.</p>
+</div>
+<h2>퀴즈 — 전부 맞혀야 머지 가능</h2>
+<p>답을 고르는 데 필요한 내용은 '변경 요약'과 슬라이드 구현 내용에 들어 있습니다.</p>
+<div id="quiz"></div>
+<button onclick="grade()">정답 확인</button>
+<div id="result"></div>
+<script>
+const QUESTIONS = [
+  { q: "OpenCode에서 Skill을 추가할 때 폴더 구조와 name 규칙에 대한 설명으로 옳은 것은 무엇입니까?",
+    options: [
+      "skills/ 폴더 밑에 임의의 파일명으로 넣으면 자동 인식된다",
+      "frontmatter의 name 값과 폴더명이 정확히 같아야 올바르게 로딩된다",
+      "대문자와 공백을 포함한 name이 권장된다",
+      "skills 폴더가 아니라 단수형 skill 폴더에 넣어야 한다"
+    ], answer: 1,
+    explain: "OpenCode의 규칙에 따라 .opencode/skills/<name>/SKILL.md 경로에서 name 값과 폴더명이 정확히 일치해야 로딩됩니다." },
+  { q: "돌쇠 AI 아키텍처에서 '마름(Orchestrator)'이 지는 핵심 책임 4가지에 해당하지 않는 것은 무엇입니까?",
+    options: [
+      "적절한 하인(돌쇠/개똥이)에게 일 위임",
+      "작업 순서 결정 및 스케줄링",
+      "하인들의 실행 결과 병합",
+      "결함이 발생했을 때 스스로 코드를 직접 수정하기"
+    ], answer: 3,
+    explain: "마름은 지휘와 조율(위임, 순서, 병합, 실패 시 재배정)을 담당하며, 결함 수정이나 재작업은 하인에게 다시 위임합니다." },
+  { q: "검사역 에이전트인 '언년이(Evaluator)'의 동작 방식으로 가장 올바른 것은 무엇입니까?",
+    options: [
+      "FAIL 시 스스로 고쳐서 즉시 완료 보고를 한다",
+      "결과 파일과 원래 지시문을 대조해 PASS/FAIL을 판정하고, FAIL 시 빠진 항목을 적어 마름에게 되돌린다",
+      "항상 인터넷 웹 검색을 통해 결과를 검증한다",
+      "마름을 통하지 않고 돌쇠에게 직접 명령을 하달한다"
+    ], answer: 1,
+    explain: "언년이는 원래 지시문과 결과 데이터를 객관적으로 대조하여 판정하고, 미달 시 근거와 누락 항목을 기록하여 마름에게 되돌려 피드백 루프를 만듭니다." },
+  { q: "Loop 실행 시 무한 루프를 방지하기 위해 필수적으로 적용된 안전장치는 무엇입니까?",
+    options: [
+      "MAX 상한 횟수(예: 20회) 설정",
+      "웹 브라우저 강제 종료",
+      "외부 API 호출 차단",
+      "매 회차마다 컴퓨터 재부팅"
+    ], answer: 0,
+    explain: "반복문(Loop)에서는 모델 호출이 영구히 지속되는 것을 방지하기 위해 종료 조건과 함께 최대 시도 횟수(MAX) 상한을 설정합니다." },
+  { q: "이번에 신규 제작된 발표자료의 공개 슬러그(디렉터리명)는 무엇입니까?",
+    options: [
+      "my-dolsoe-ai",
+      "dolsoe-sample",
+      "agent-dolsoe-v1",
+      "korean-servant-ai"
+    ], answer: 0,
+    explain: "저장소 규칙 및 slides.json에 'my-dolsoe-ai'로 등록되었습니다." }
+];
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((it, i) => {
+  const d = document.createElement("div");
+  d.className = "q"; d.id = "q" + i;
+  d.innerHTML = "<p><b>Q" + (i + 1) + ".</b> " + it.q + "</p>" +
+    it.options.map((o, j) =>
+      '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + o + "</label>"
+    ).join("") +
+    '<div class="explain" hidden><b>해설.</b> ' + it.explain + "</div>";
+  quiz.appendChild(d);
+});
+function grade() {
+  let ok = 0;
+  QUESTIONS.forEach((it, i) => {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    const el = document.getElementById("q" + i);
+    const good = sel && Number(sel.value) === it.answer;
+    el.className = "q " + (good ? "correct" : "wrong");
+    el.querySelectorAll("label")[it.answer].classList.add("answer");
+    el.querySelector(".explain").hidden = false;
+    if (good) ok++;
+  });
+  const r = document.getElementById("result");
+  r.textContent = ok === QUESTIONS.length
+    ? "통과 (" + ok + "/" + QUESTIONS.length + ") — 머지 가능"
+    : "미통과 (" + ok + "/" + QUESTIONS.length + ") — 오답 확인 후 재시도. 머지 금지";
+}
+</script>
+</body>
+</html>
