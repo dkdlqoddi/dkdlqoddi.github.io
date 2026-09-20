@@ -28,5 +28,11 @@
     "date": "2026-09-01",
     "description": "OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는 반도체 지식 자동화 하네스 & 그래프 엔지니어링",
     "dir": "my-dolsoe-ai"
+  },
+  {
+    "title": "AI, 한 걸음 더",
+    "date": "2026-09-20",
+    "description": "프롬프트에서 AI 도구로 — 큰 글씨와 그림으로 배우는 Codex·Claude Code·Antigravity 입문",
+    "dir": "agent-tools-antigravity"
   }
 ]
