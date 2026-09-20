@@ -1,1 +1,0 @@
-../shared/agents/check-runner.md

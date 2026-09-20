@@ -1,1 +1,0 @@
-../shared/agents/doc-verifier.md

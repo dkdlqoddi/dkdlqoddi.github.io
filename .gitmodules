@@ -1,3 +1,4 @@
-[submodule ".claude/shared"]
-	path = .claude/shared
+[submodule ".codex/shared"]
+	path = .codex/shared
 	url = https://github.com/dkdlqoddi/dev-env-blindspot.git
+	branch = codex
