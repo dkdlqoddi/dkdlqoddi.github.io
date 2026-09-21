@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Agent Skills Philosophy</title>
   <meta name="description" content="팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리, 층을 조이는 스킬 다섯과 하네스를 담은 제품 다섯">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0e0e0e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
-  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css" id="theme">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
   <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
-       링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
-  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
+       링크 순서 계약: white.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../shared/deck-base.css">
+  <link rel="stylesheet" href="../shared/legacy-deck.css">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
-    /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
-       JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
-    html { background: #0e0e0e; color-scheme: dark; }
+    /* 첫 화면과 읽기 화면 모두 공통 밝은 테마를 사용한다. */
+    html { background: #fff; color-scheme: light; }
 
     /* ── 이 덱 고유 스타일 ── */
     .reveal .dim { color: var(--dim); }
@@ -32,14 +32,14 @@
     /* 은하 중심부 위 가독성: 글자를 담는 컨테이너 도형(fill="none")에
        반투명 어두운 배경을 깔아 별빛과 분리한다. 인쇄(흰 종이)에서는 해제.
        진짜로 투명해야 할 도형에는 fill="transparent"를 쓸 것 — 이 선택자를 비켜 간다. */
-    .reveal svg rect[fill="none"], .reveal svg circle[fill="none"], .reveal svg .panel-fill { fill: rgba(14, 14, 14, 0.85); }
+    .reveal svg rect[fill="none"], .reveal svg circle[fill="none"], .reveal svg .panel-fill { fill: var(--green); }
 
     /* 본문(p) 안의 기호 범례 색 — deck-base의 .accent/.danger는 SVG 하위에만 정의되어
        span에는 닿지 않는다. 인쇄 시 reveal 인쇄 CSS가 본문 글자를 검정으로 되돌린다. */
     .reveal p .accent { color: var(--accent); }
     .reveal p .danger { color: var(--danger); }
 
-    .reveal .summary-box { background: rgba(255, 255, 255, 0.05); padding: 12px 22px; border-radius: 8px; border-left: 4px solid var(--accent); font-size: 0.62em; text-align: left; width: 88%; margin: 8px auto 0; }
+    .reveal .summary-box { background: var(--green); padding: 12px 22px; border-radius: 8px; border-left: 4px solid var(--accent); font-size: 0.62em; text-align: left; width: 88%; margin: 8px auto 0; }
     .reveal .summary-box ul { margin: 0; padding-left: 1.2em; }
     .reveal .summary-box li { margin-bottom: 7px; }
     .reveal .summary-box li:last-child { margin-bottom: 0; }
@@ -65,7 +65,7 @@
     /* 크기는 잎(.term-bar/.t-line)에서만 지정 — 중첩 배율로 하한(24px) 아래로 떨어지는 것 방지.
        글꼴: deck-base가 .reveal p에 본문 글꼴을 !important로 강제하므로,
        더 높은 특이성 + !important로 라틴은 고정폭, 한글은 Pretendard로 잇는 스택을 쓴다. */
-    .reveal .term { width: 88%; margin: 8px auto 0; text-align: left; border: 1px solid var(--hairline); border-radius: 10px; background: rgba(10, 10, 10, 0.92); }
+    .reveal .term { width: 88%; margin: 8px auto 0; text-align: left; border: 1px solid var(--hairline); border-radius: 10px; background: var(--green); }
     .reveal .term .term-bar, .reveal .term .t-line { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Pretendard Variable", Pretendard, monospace !important; }
     .reveal .term-bar { margin: 0; padding: 7px 14px; border-bottom: 1px solid var(--hairline); color: var(--dim); font-size: 0.58em; letter-spacing: 0.08em; }
     .reveal .term-bar::before { content: "● ● ●   "; color: var(--hairline); letter-spacing: 1px; }
@@ -73,7 +73,7 @@
     .reveal .t-line { margin: 0; line-height: 1.45; font-size: 0.58em; }
     .reveal .t-user { color: var(--primary); font-weight: 600; }
     .reveal .t-user::before { content: "❯ "; color: var(--accent); }
-    .reveal .t-ai { color: #dedede; } /* 기본색이지만 명시 — 의도된 '무표식 역할'임을 규칙으로 고정 */
+    .reveal .t-ai { color: var(--ink); } /* 기본색이지만 명시 — 의도된 '무표식 역할'임을 규칙으로 고정 */
     .reveal .t-harness { color: var(--accent); }
     .reveal .t-harness::before { content: "⛭ "; }
     .reveal .t-fail { color: var(--danger); }
@@ -113,17 +113,8 @@
     }
   </style>
 </head>
-<body>
-  <div class="hud" aria-hidden="true">
-    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
-    <span class="hud-corner hud-tr">EST 2026</span>
-    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
-    <span class="hud-corner hud-br">+</span>
-  </div>
-
-  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
-
-  <div class="reveal">
+<body class="reading legacy-deck">
+<main id="course" class="reveal">
     <div class="slides">
 
       <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
@@ -1291,22 +1282,12 @@
       </section>
 
     </div>
-  </div>
+  </main>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
   <script src="../shared/code-copy.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: 'fade',
-      controls: true,
-      progress: true,
-      center: true,
-      pdfSeparateFragments: false
-    });
-  </script>
+  <script src="../../assets/template.js"></script>
+  <script src="../shared/deck-template.js"></script>
 
-  <script src="../../vendor/three.js/three.min.js"></script>
-  <script src="../../scripts/galaxy3d.js"></script>
 </body>
 </html>

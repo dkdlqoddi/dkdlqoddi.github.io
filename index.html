@@ -4,62 +4,58 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>발표 기록 · dkdlqoddi</title>
-  <meta name="description" content="dkdlqoddi의 발표자료 모음. 카드를 선택하면 해당 슬라이드로 이동합니다.">
+  <meta name="description" content="함께 나눈 생각, 한 걸음 더. AI와 자동화에 관한 발표와 실습 자료를 모았습니다.">
   <meta property="og:title" content="발표 기록 · dkdlqoddi">
-  <meta property="og:description" content="dkdlqoddi의 발표자료 모음">
+  <meta property="og:description" content="AI와 자동화에 관한 발표와 실습 자료를 모았습니다.">
   <meta property="og:type" content="website">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0e0e0e">
-  <!-- CSS 도착 전 첫 페인트부터 어둡게 (흰 번쩍임 방지) -->
-  <style>html { background: #0e0e0e; color-scheme: dark; }</style>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
-  <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0) -->
-  <link rel="stylesheet" href="vendor/montserrat/montserrat.css">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-
-  <!-- 시그니처: 화면을 감싸는 계기판(HUD) 프레임 -->
-  <div class="hud" aria-hidden="true">
-    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
-    <span class="hud-corner hud-tr">EST 2026</span>
-    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
-    <span class="hud-corner hud-br">+</span>
-  </div>
-
-  <!-- 검은 우주의 흰 별 (장식) -->
-  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
-  <svg id="hud-lines" class="hud-lines" aria-hidden="true"></svg>
-
-  <header class="hero">
-    <p class="eyebrow mono">PRESENTATION LOG — 발표자료 모음</p>
-    <h1 class="title">발표 기록</h1>
-    <p class="tagline">아래 목록에서 발표자료를 선택하면 해당 슬라이드로 이동합니다.</p>
-  </header>
-
-  <main>
-    <section class="log" aria-labelledby="log-heading">
-      <div class="log-head">
-        <h2 id="log-heading" class="mono">SPATIAL SENSOR</h2>
-        <span class="log-rule" aria-hidden="true"></span>
-        <span id="log-count" class="mono log-count"></span>
+<body data-template="site">
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="little-dot" aria-hidden="true"></span> PRESENTATION LOG</p>
+        <h1 id="hero-title">함께 나눈 생각,<br><span class="highlight">한 걸음 더.</span></h1>
+        <p class="hero-description">AI를 이해하고, 일상과 일에 연결하는 과정.<br>배우고 나눈 이야기들을 이곳에 모았습니다.</p>
+        <a class="primary-link" href="#log">발표 둘러보기 <span aria-hidden="true">↓</span></a>
+        <p class="hero-topics">AI <span>·</span> AUTOMATION <span>·</span> TOGETHER</p>
       </div>
+      <div class="galaxy" id="galaxy" aria-label="생각이 배움과 결과물로 이어지는 은하 그림" role="img">
+        <div class="galaxy-wash" aria-hidden="true"></div>
+        <div class="galaxy-orbit orbit-outer" aria-hidden="true"><i></i></div>
+        <div class="galaxy-orbit orbit-middle" aria-hidden="true"><i></i><i></i></div>
+        <div class="galaxy-orbit orbit-inner" aria-hidden="true"><i></i></div>
+        <div class="galaxy-prompt" aria-hidden="true"><span class="prompt-icon">✳</span><span>생각에서,<br><strong>가능성으로.</strong></span></div>
+        <div class="galaxy-spark" aria-hidden="true">↗</div>
+        <div class="galaxy-document" aria-hidden="true">
+          <div class="document-top"><span class="window-dots"><i></i><i></i><i></i></span><span>LEARNING NOTE</span></div>
+          <div class="document-art"><i></i><i></i><i></i><span>✦</span></div>
+          <strong>작은 배움이<br>새로운 시작으로.</strong>
+          <div class="document-rule"></div>
+          <span class="document-caption"><span>✓</span> 함께 쌓아가는 기록</span>
+        </div>
+        <div class="galaxy-note" aria-hidden="true"><span>✧</span> 오늘보다 한 걸음 더</div>
+        <span class="galaxy-star star-one" aria-hidden="true">✧</span>
+        <span class="galaxy-star star-two" aria-hidden="true">✦</span>
+      </div>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" hidden>움직임 멈추기 <span aria-hidden="true">Ⅱ</span></button>
+    </section>
+
+    <section class="log" id="log" aria-labelledby="log-heading">
+      <div class="log-head"><div><p class="eyebrow">THE COLLECTION</p><h2 id="log-heading">차곡차곡, 발표 기록<span class="collection-dot">.</span></h2></div><span id="log-count" class="log-count" aria-live="polite"></span></div>
       <ol class="cards" id="cards"></ol>
-      <p class="status mono" id="status" hidden></p>
-      <noscript>
-        <p class="status mono">목록 표시에는 자바스크립트가 필요합니다. 주소창에 slides/발표이름/ 을 직접 입력해도 열 수 있습니다.</p>
-      </noscript>
+      <p class="status" id="status" role="status">발표 목록을 불러오는 중입니다.</p>
+      <noscript><p class="status">발표 자료를 바로 열어보세요.</p><ul class="fallback-links"><li><a href="slides/agent-tools-antigravity/">AI, 한 걸음 더</a></li><li><a href="slides/my-dolsoe-ai/">나만의 돌쇠 AI 만들기</a></li><li><a href="slides/ai-agent-skills-philosophy/">AI Agent Skills Philosophy</a></li><li><a href="slides/dx-vs-ax-automation/">Python Automation: DX vs AX</a></li><li><a href="slides/integrated-architecture/">안전한 AI 설계 자동화 아키텍처</a></li><li><a href="slides/design-ax-transition/">설계 AX 전환</a></li></ul><style>#status { display: none; }</style></noscript>
     </section>
   </main>
-
-    <footer class="site-foot mono">
-    <span class="foot-sep" aria-hidden="true">─────</span>
-    <span>SYS OK</span>
-  </footer>
-
+  <footer class="site-foot"><a class="brand" href="#main"><span class="brand-symbol" aria-hidden="true">↗</span> 발표 기록</a><p>배움은 나눌수록, 더 멀리.</p><span>DKDLQODDI · 2026</span></footer>
+  <script src="assets/template.js" defer></script>
   <script src="main.js" defer></script>
-  <script src="vendor/three.js/three.min.js"></script>
-  <script src="scripts/galaxy3d.js"></script>
+  <script src="scripts/galaxy.js" defer></script>
 </body>
 </html>

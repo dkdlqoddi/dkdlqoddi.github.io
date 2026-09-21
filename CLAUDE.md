@@ -1,51 +1,41 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Repository purpose
-
-This is `dkdlqoddi.github.io` — a **GitHub Pages user site** serving a presentation hub: a landing page ("발표 기록") that routes to reveal.js decks under `slides/`. Served from `main` at https://dkdlqoddi.github.io.
-
-Practical implication: pushing to `main` publishes the live site. There is no separate deploy step — the branch *is* the deployment. Work on a feature branch; merge to `main` only after the blindspot pre-merge quiz is passed (see MANDATE below).
+This repository is a GitHub Pages user site serving the presentation archive at https://dkdlqoddi.github.io. Pushing to `main` publishes the site. Follow `AGENTS.md` and the append-only decisions in `docs/decisions.md`; the merge gate is PR review.
 
 ## Commands
 
-No build, lint, or test tooling — plain static HTML/CSS/JS.
+The site is plain static HTML/CSS/JS, with no build step.
 
-- Local preview: `python3 -m http.server 8000` → http://localhost:8000
-- Sanity checks before merge: `python3 -m json.tool slides.json`; every `dir` in slides.json must have a matching `slides/<dir>/index.html`.
+- Preview: `python3 -m http.server 8000`.
+- Static contracts: `python3 scripts/verify_deck.py`.
+- Browser regression: with the server running, install Playwright outside the repo (`npm install --prefix /tmp/presentation-check playwright`), then `NODE_PATH=/tmp/presentation-check/node_modules node scripts/verify_theme.cjs`. `CHROME_PATH` defaults to `/usr/bin/google-chrome`; `SITE_URL` and `ARTIFACT_DIR` are configurable.
 
 ## Architecture
 
-- `slides.json` — single manifest driving the landing card grid. Entry schema: `{"title", "date": "YYYY-MM-DD", "description", "dir"}`. `main.js` skips invalid entries with a console warning instead of failing the whole list.
-- `index.html` / `styles.css` / `main.js` — landing page (dark-space HUD theme: bg `#0e0e0e`, monochrome, Korean UI). The landing never loads reveal.js; it links to decks by URL only. `styles.css` is referenced with a cache-busting query (`?v=2`) — bump it only on visual overhauls.
-- `slides/<slug>/` — one reveal.js deck per talk. Slug = lowercase letters + hyphens (it becomes the shared public URL — a published contract). New decks: copy `slides/sample/` (it doubles as the how-to guide), edit, register in slides.json. Decks are self-contained except the shared assets below.
-- `slides/shared/` — cross-deck assets, referenced as `../shared/…`: `deck-base.css?v=2` (the common design: palette tokens, typography, HUD/galaxy rules, cover glow, EVA VIEW overflow guard, print + reduced-motion defenses — bump `?v=` on changes; Pages caches up to 10 min) and `code-copy.css`/`code-copy.js` (copy button on every `pre > code`). Link order contract: deck-base.css goes **after** black.css and **before** the deck's inline `<style>` — wrong order flips heading case, link underlines, and code sizing.
-- `slides/sample/` — the copy-me template. Deliberately **not** in slides.json, so visitors don't see it, but `/slides/sample/` still resolves. Don't delete it and don't "fix" its absence from the manifest.
-- `scripts/galaxy3d.js` + `vendor/three.js/` — shared 3D galaxy background. Contract: a deck opts in with `<canvas id="galaxy-3d-bg">` plus the two script tags; no canvas → script exits silently. Honors prefers-reduced-motion by freezing all motion at init.
-- `vendor/montserrat/` — Montserrat, base64-embedded like Pretendard. deck-base.css stacks it before Pretendard: Latin renders Montserrat, Korean falls through to Pretendard — never drop Pretendard from the stack (Montserrat has no Hangul glyphs).
-- `vendor/reveal.js/` — reveal.js **6.0.1 pinned**, only `white`/`black` themes vendored (they embed fonts, so decks work fully offline) + upstream LICENSE. Decks reference it via **relative** paths (`../../vendor/…`) — keep relative so decks open via file:// without internet.
-- `vendor/pretendard/` — Pretendard Variable **v1.3.9**, base64-embedded inside `pretendard.css` (same data-URI strategy as the reveal themes — separate woff2 files get blocked on file://) + OFL LICENSE. **Never subset or modify the font data** — OFL reserves the name "Pretendard" (RFN); only the unmodified official file may keep it. Landing links it as `vendor/pretendard/pretendard.css`, decks as `../../vendor/pretendard/pretendard.css`.
-- `docs/blindspot/` — internal process docs (requirements/unknowns/explainer/reports/quizzes). Not site content, but publicly fetchable by URL. Treat them as published: whatever must not appear on a slide must not appear here either.
+- `slides.json` is the archive manifest: `title`, `date` (`YYYY-MM-DD`), `description`, `dir`. `main.js` renders an ordinary list in newest-first order and skips invalid entries. Published slugs are stable URLs.
+- `assets/theme.css` and `assets/template.js` provide the shared light theme and header. The visual reference is `slides/agent-tools-antigravity/`: white paper, forest green, lime, peach and lavender, Pretendard, rounded panels, gentle movement.
+- `index.html`, `styles.css`, `main.js` implement the archive. `scripts/galaxy.js` controls the decorative CSS Galaxy, separately from card links. Do not reintroduce global wheel/touch interception or a continuous WebGL loop.
+- `slides/shared/deck-base.css` is the presentation component library. `deck-template.js` owns the header/footer, contents, reading/presentation mode, Reveal initialization, progress, notes, keyboard handling, fullscreen and printing. Deck-specific JS only implements content interactions.
+- `slides/shared/legacy-deck.css` adapts existing 960×700 decks. The latest course uses 1280×720. Keep legacy content geometry and fragments rather than resizing every diagram to the new aspect ratio.
+- CSS order: Reveal `white.css`, `assets/theme.css`, `deck-base.css`, optional `legacy-deck.css`, then deck-specific styles. JS order: Reveal, `assets/template.js`, `deck-template.js`, then exercises. Do not separately call `Reveal.initialize()` in a deck.
+- Every deck starts with `body.reading` for no-JS fallback and uses `main#course.reveal > .slides > section`. Optional section `id`, `data-title`, and `data-chapter` customize stable links and contents; defaults are generated. Old numeric hashes still resolve.
+- `slides/sample/` is the copy-me template and authoring guide. Keep it out of `slides.json`.
+- `slides/shared/code-copy.css` and `code-copy.js` add code copy buttons. The course's exercise copy button additionally supports selecting text when opened with `file://`.
+- `404.html` uses root asset paths for deep missing URLs, with minimal inline fallback styles. The downloadable `practice-result.html` must remain readable as a standalone HTML file.
 
-## Deck authoring rules
+## Authoring and verification
 
-The common design (palette, typography, decorations, print/motion defenses) is enforced by `slides/shared/deck-base.css` — every deck links it. The rules below live only in `slides/sample/` and deck-base.css comments, so they vanish the moment someone writes a deck from scratch.
+Use the light color-scheme metadata and shared tokens (`--ink`, `--forest`, `--muted`, `--line`, `--paper`, `--green`, `--lime`, `--peach`, `--lavender`, `--danger`). Avoid fixed white diagram text or dark backgrounds. Keep SVG `role="img"` and an accessible label; purely decorative elements are hidden from assistive technology. Preserve Korean word boundaries and intentional line breaks.
 
-- **No reveal plugins exist.** `vendor/reveal.js/dist/plugin/` is absent entirely. Referencing `notes`, `highlight`, `markdown`, or `math` yields a 404 and `plugins: [...]` throws a ReferenceError. Write plain HTML. `<aside class="notes">` silently hides rather than working.
-- **Cancel heading uppercase.** Both themes set `--r-heading-text-transform: uppercase`, so `Opencode` renders as `OPENCODE`. Every deck needs `.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }`.
-- **Never add `maximum-scale` or `user-scalable=no`** to a deck's viewport meta (WCAG 1.4.4). Upstream reveal.js examples ship with them; strip them on paste. Fixed once already in `90c73d4`.
-- **Zero external resources.** No CDN fonts anywhere — the landing's old jsDelivr Pretendard load was removed in the dark-theme overhaul. Korean now renders in the vendored Pretendard (`../../vendor/pretendard/pretendard.css`, set via `--r-main-font`/`--r-heading-font`). Keep `word-break: keep-all` and control fine-grained Korean line breaks with explicit `<br>`.
-- **Declare darkness before JS.** Every deck's `<head>` needs `<meta name="color-scheme" content="dark">` plus `html { background: #0e0e0e; color-scheme: dark; }` — reveal paints its background only after `Reveal.initialize()`, so without these the deck opens with a white flash. (If JS fails outright, reveal.css hides all sections — the result is a dark blank page, not white-on-white.) The dark palette: bg `#0e0e0e`, text `#dedede`, bright `#fcfcfb`, dim `#9aa0a6`, hairline `#2a2b2a`. **Accent colors are permitted** (e.g. `--primary`, `--secondary`) for UI elements and links, provided they degrade safely under print and reduced-motion rules.
-- **Decorations stay printable-safe and motion-safe.** Star/ship layers are `aria-hidden`, hidden under `@media print`, and stopped under `@media (prefers-reduced-motion: reduce)`. Print hide/restore rules need `!important` — reveal's own print CSS (`.reveal div { display: block }`, specificity 0-2-2) beats plain deck rules; the cover ship printed as a white blob until this was fixed (cds deck 2026-07-27, sample 2026-07-28). Custom div/span shapes need a `html:not(.print-pdf)` black-restore print rule or they vanish on paper. Inline-SVG diagrams drawn entirely in `currentColor` need only the one `svg, svg *` restore rule — `sample`'s two "보너스" demo slides are the live reference for SVG diagrams, fragments, and auto-animate (theme freedom per deck still stands — dark is the default via `sample`, not a mandate).
-- **Opt into the page transition** with `@view-transition { navigation: auto; }` inside `@media (prefers-reduced-motion: no-preference)`. Both documents must declare it or the landing-to-deck transition silently does nothing.
-- **CSS-only diagrams need `role="img"` + `aria-label`**, plus a visually-hidden description. Boxes drawn from `div` borders convey nothing to a screen reader or to print.
+The shared template provides motion reduction, mobile reading, notes, dialog focus and print handling. Reveal's structure CSS must have `media="screen"` so its print rules do not override the common layout. Printing displays final fragment states, outputs one slide per page and restores the DOM/state afterward. Test HTTP and direct `file://` decks, mobile widths, contents, fragments, existing exercises and PDFs after shared changes. New reversible implementation decisions are logged at decision time.
 
 ## Hard constraints
 
-- **Never delete `.nojekyll`.** Without it Jekyll runs on deploy and its Liquid parsing (`{{ }}`) breaks reveal.js assets — deploys fail or content gets mangled.
-- **`.claude/shared` submodule must stay a public repo with an HTTPS URL.** Private or SSH breaks the entire Pages deployment at checkout.
-- Files >100MiB cannot be pushed; host talk videos externally.
-- Visitor-facing list updates can lag up to 10 minutes (Pages serves `Cache-Control: max-age=600`; `main.js` fetches the manifest with `cache: "no-cache"` to soften this).
-
-@.claude/shared/MANDATE.md
+- Keep `.nojekyll`; otherwise Jekyll may interpret Reveal's `{{ }}` content.
+- Keep submodules public and referenced via HTTPS.
+- Reveal 6.0.1 is vendored; no plugins are installed. Notes are handled by the shared shell, not a Reveal plugin.
+- All fonts/scripts/styles are local. Keep relative asset paths in decks for offline use. Never modify/subset the embedded Pretendard data or remove its license.
+- Do not add `maximum-scale` or `user-scalable=no`.
+- `vendor/three.js/` and `vendor/montserrat/` remain archived dependencies and are not loaded by the current template.
+- Files over 100 MiB cannot be pushed; host videos elsewhere.
+- GitHub Pages may cache assets for up to ten minutes. Manifest fetch uses `cache: 'no-cache'`.

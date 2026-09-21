@@ -7,15 +7,16 @@ pre {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #dedede;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--forest);
   font-family: inherit;
   font-size: 0.75rem;
-  padding: 4px 8px;
+  padding: 8px 12px;
+  min-height: 44px;
   border-radius: 4px;
   cursor: pointer;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease-in-out, background 0.2s ease, color 0.2s ease;
   z-index: 10;
 }
@@ -27,19 +28,19 @@ pre:focus-within .copy-code-btn,
 }
 
 .copy-code-btn:focus-visible {
-  outline: 2px solid #00dddd;
+  outline: 2px solid var(--forest);
   outline-offset: 2px;
 }
 
 .copy-code-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: var(--line);
+  color: var(--ink);
 }
 
 .copy-code-btn.copied {
-  background: #00dddd;
-  color: #0e0e0e;
-  border-color: #00dddd;
+  background: var(--forest);
+  color: #fff;
+  border-color: var(--forest);
 }
 
 @media print {

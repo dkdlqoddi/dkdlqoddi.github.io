@@ -12,7 +12,8 @@
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="course.css">
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../shared/deck-base.css">
 </head>
 <body class="reading">
   <svg class="symbol-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -34,17 +35,7 @@
     </defs>
   </svg>
 
-  <a class="skip-link" href="#course">본문으로 건너뛰기</a>
-  <header class="topbar">
-    <a class="brand" href="#/start" aria-label="AI, 한 걸음 더 — 첫 장"><span class="brand-symbol" aria-hidden="true">↗</span> AI, 한 걸음 더</a>
-    <span class="course-label">처음 만나는 AI 도구</span>
-    <div class="top-actions">
-      <button id="view-toggle" type="button">읽기 화면</button>
-      <button id="contents-open" type="button"><span aria-hidden="true">☷</span> 목차</button>
-    </div>
-  </header>
-
-  <main id="course" class="reveal" aria-label="AI 도구 입문 수업">
+<main id="course" class="reveal" aria-label="AI 도구 입문 수업">
     <div class="slides">
 
       <section id="start" data-title="AI에게 일을 맡기는 첫걸음" data-chapter="시작">
@@ -305,18 +296,10 @@
     </div>
   </main>
 
-  <footer class="course-nav" aria-label="슬라이드 이동">
-    <div class="nav-context"><span id="chapter-name">시작</span><button id="notes-open" type="button">진행 메모</button></div>
-    <div class="nav-center"><button id="previous" class="nav-button" type="button" aria-label="이전 장">← <span>이전</span></button><span id="slide-counter" aria-live="polite" aria-atomic="true">01 <span>/ 22</span></span><button id="next" class="nav-button next" type="button"><span>다음</span> →</button></div>
-    <button id="fullscreen" type="button" aria-label="전체 화면으로 보기">전체 화면 <span aria-hidden="true">⛶</span></button>
-    <div class="course-progress" aria-hidden="true"><span id="progress-fill"></span></div>
-  </footer>
-
-  <dialog id="contents-dialog" aria-labelledby="contents-title"><div class="dialog-heading"><h2 id="contents-title">어디부터 볼까요?</h2><button type="button" data-close-dialog aria-label="목차 닫기">닫기 ×</button></div><nav id="contents-list" aria-label="수업 목차"></nav></dialog>
-  <dialog id="notes-dialog" aria-labelledby="notes-title"><div class="dialog-heading"><h2 id="notes-title">진행 메모</h2><button type="button" data-close-dialog aria-label="진행 메모 닫기">닫기 ×</button></div><div id="notes-content"></div></dialog>
-  <div id="notification" class="notification" role="status" aria-live="polite"></div>
   <noscript><p class="no-script">자바스크립트가 꺼져 있어 읽기 화면으로 표시합니다. 아래로 내려 모든 자료를 볼 수 있습니다.</p></noscript>
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
+  <script src="../../assets/template.js"></script>
+  <script src="../shared/deck-template.js"></script>
   <script src="course.js"></script>
 </body>
 </html>

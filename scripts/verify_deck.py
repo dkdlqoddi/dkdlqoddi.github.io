@@ -1,47 +1,62 @@
+"""Validate every static page's shared-template and offline asset contracts."""
 import json
-import os
-import re
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
-# 1. Check slides.json
-with open('slides.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
-print(f'slides.json is valid JSON with {len(data)} entries.')
+ROOT = Path(__file__).resolve().parents[1]
 
-for entry in data:
-    d = entry['dir']
-    p = os.path.join('slides', d, 'index.html')
-    assert os.path.exists(p), f'Missing file for dir: {d}'
-    print(f'  [OK] {d} -> {p}')
 
-# 2. Check my-dolsoe-ai/index.html rules
-path = 'slides/my-dolsoe-ai/index.html'
-with open(path, 'r', encoding='utf-8') as f:
-    content = f.read()
+class Page(HTMLParser):
+    def __init__(self, source):
+        super().__init__()
+        self.tags = []
+        self.feed(source)
 
-assert 'user-scalable=no' not in content, 'Violates viewport rule'
-assert 'maximum-scale' not in content, 'Violates viewport rule'
-assert 'reveal.js/dist/plugin' not in content, 'Plugin reference detected'
-assert 'galaxy-3d-bg' in content, 'Missing 3D galaxy canvas'
-assert 'code-copy.js' in content, 'Missing code-copy.js'
-assert 'deck-base.css?v=2' in content, 'Missing deck-base.css?v=2'
-assert '<meta name="color-scheme" content="dark">' in content, 'Missing dark color-scheme'
-assert 'html { background: #0e0e0e; color-scheme: dark; }' in content, 'Missing inline html background'
+    def handle_starttag(self, tag, attrs):
+        self.tags.append((tag, dict(attrs)))
 
-# Check external URLs in link/script src
-external_links = re.findall(r'<(?:link|script)[^>]+(?:href|src)=["\'](https?://[^"\']+)["\']', content)
-assert len(external_links) == 0, f'Found external assets: {external_links}'
 
-# Check SVG accessibility
-svgs = re.findall(r'<svg\b[^>]*>', content)
-print(f'Found {len(svgs)} SVG elements')
-for i, svg in enumerate(svgs):
-    assert 'role="img"' in svg, f'SVG {i} missing role="img"'
-    assert 'aria-label=' in svg, f'SVG {i} missing aria-label'
-    assert 'xmlns=' in svg, f'SVG {i} missing xmlns'
+manifest = json.loads((ROOT / 'slides.json').read_text())
+assert isinstance(manifest, list) and manifest
+assert len({item['dir'] for item in manifest}) == len(manifest), 'Duplicate deck URL'
+for item in manifest:
+    assert (ROOT / 'slides' / item['dir'] / 'index.html').is_file(), item['dir']
 
-# Check section count
-sections = re.findall(r'<section\b', content)
-print(f'Total sections (slides): {len(sections)}')
-assert len(sections) == 21, f'Expected 21 sections, got {len(sections)}'
-
-print('ALL SANITY CHECKS PASSED!')
+paths = [ROOT / 'index.html', ROOT / '404.html', *sorted((ROOT / 'slides').glob('*/*.html'))]
+for path in paths:
+    source = path.read_text()
+    page = Page(source)
+    assets = [attrs.get('href') if tag == 'link' else attrs.get('src')
+              for tag, attrs in page.tags if tag in ('link', 'script')]
+    assets = [asset for asset in assets if asset]
+    assert any('assets/theme.css' in asset for asset in assets), f'{path}: missing shared theme'
+    assert any(tag == 'meta' and attrs.get('name') == 'color-scheme' and attrs.get('content') == 'light'
+               for tag, attrs in page.tags), f'{path}: light color scheme required'
+    assert 'maximum-scale' not in source and 'user-scalable=no' not in source, f'{path}: zoom is blocked'
+    for asset in assets:
+        url = urlsplit(asset)
+        assert url.scheme not in ('http', 'https'), f'{path}: external asset {asset}'
+        if url.scheme == 'data':
+            continue
+        target = ROOT / unquote(url.path.lstrip('/')) if asset.startswith('/') else path.parent / unquote(url.path)
+        assert target.is_file(), f'{path}: missing asset {asset}'
+    if path.parent.parent == ROOT / 'slides' and path.name == 'index.html':
+        assert any('deck-template.js' in asset for asset in assets), f'{path}: missing shared shell'
+        assert any('deck-base.css' in asset for asset in assets), f'{path}: missing shared components'
+        assert not any('three' in asset or 'galaxy3d' in asset for asset in assets), f'{path}: obsolete renderer'
+        assert not any(tag == 'canvas' for tag, _ in page.tags), f'{path}: obsolete background canvas'
+        assert any(tag == 'main' and attrs.get('id') == 'course' for tag, attrs in page.tags)
+        assert any(tag == 'body' and 'reading' in attrs.get('class', '') for tag, attrs in page.tags)
+        assert any(tag == 'link' and 'dist/reveal.css' in attrs.get('href', '') and attrs.get('media') == 'screen'
+                   for tag, attrs in page.tags), f'{path}: Reveal must not override print layout'
+        sections = sum(tag == 'section' for tag, _ in page.tags)
+        expected = {'agent-tools-antigravity': 22, 'my-dolsoe-ai': 21}.get(path.parent.name)
+        assert expected is None or sections == expected, f'{path}: content was lost'
+        for tag, attrs in page.tags:
+            if tag == 'svg' and attrs.get('role') == 'img':
+                assert attrs.get('aria-label') or attrs.get('aria-labelledby'), f'{path}: unlabelled diagram'
+        print(f'OK {path.relative_to(ROOT)}: {sections} slides')
+    else:
+        print(f'OK {path.relative_to(ROOT)}')
+print(f'PASS: {len(paths)} pages; {len(manifest)} published decks and the reusable sample.')

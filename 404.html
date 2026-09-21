@@ -5,69 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>404 · 발표 기록</title>
   <meta name="robots" content="noindex">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0e0e0e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Root URLs work even when GitHub Pages serves this at a deeply nested URL.
+       Inline defaults keep the error page readable if assets are unavailable. -->
   <style>
-    /* 404는 임의 깊이의 주소에서 뜨므로 상대 경로가 깨진다 — 그래서 외부 참조 없이 자기완결.
-       동봉 글꼴도 같은 이유로 적용하지 않는다(설치된 방문자에게만 Pretendard). */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { background: #0e0e0e; color-scheme: dark; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0e0e0e;
-      color: #dedede;
-      font-family: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-    .frame {
-      position: fixed;
-      inset: 16px;
-      border: 1px solid #2a2b2a;
-      pointer-events: none;
-    }
-    main { text-align: center; padding: 24px; }
-    .code {
-      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: #9aa0a6;
-      text-transform: uppercase;
-    }
-    h1 { font-size: clamp(2.4rem, 9vw, 4.4rem); font-weight: 600; letter-spacing: -0.025em; color: #fcfcfb; margin: 10px 0 6px; }
-    p { color: #9aa0a6; margin-bottom: 26px; }
-    a {
-      display: inline-block;
-      color: #fcfcfb;
-      text-decoration: none;
-      border: 1px solid #fcfcfb;
-      border-radius: 999px;
-      padding: 10px 22px;
-      font-weight: 600;
-    }
-    a:hover { background: #fcfcfb; color: #0e0e0e; }
-    a:focus-visible { outline: 2px solid #fcfcfb; outline-offset: 3px; }
-    /* 인쇄: 흰 종이용 되돌림 (배경은 기본적으로 인쇄되지 않음) */
-    @media print {
-      html, body { background: #fff; }
-      body, h1, .code, p, a { color: #000; }
-      a { border-color: #000; }
-      .frame { display: none; }
-    }
+    :root { --paper: #fff; --ink: #182320; --muted: #626a65; --forest: #285d48; --lime: #ddf59a; --line: #dce1db; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Pretendard Variable", Pretendard, system-ui, sans-serif; }
+    .error-page { min-height: 100dvh; display: grid; place-content: center; justify-items: center; padding: 110px 24px 70px; text-align: center; }
+    .error-mark { display: grid; place-items: center; width: 95px; height: 95px; background: var(--lime); border-radius: 27px; font-size: 78px; transform: rotate(-7deg); }
+    .error-code { color: var(--forest); font-size: 13px; letter-spacing: .12em; margin: 34px 0 12px; }
+    .error-page h1 { font-size: clamp(32px, 6vw, 55px); letter-spacing: -.06em; margin: 0 0 20px; }
+    .error-page p:not(.error-code) { max-width: 32em; line-height: 1.8; color: var(--muted); margin: 0 0 30px; }
+    .error-link { display: inline-block; padding: 14px 22px; color: white; background: var(--forest); border-radius: 11px; text-decoration: none; }
+    a:focus-visible { outline: 3px solid #566fc3; outline-offset: 5px; }
   </style>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href="/assets/theme.css">
 </head>
-<body>
-  <div class="frame" aria-hidden="true"></div>
-  <main>
-    <p class="code">404 — SIGNAL LOST</p>
-    <h1>페이지가 없습니다</h1>
-    <p>요청한 주소에 발표자료가 없습니다. 주소의 대소문자를 확인해 보세요.</p>
-    <a href="/">첫 화면으로 돌아가기</a>
+<body data-template="site">
+  <main id="main" class="error-page">
+    <span class="error-mark" aria-hidden="true">↗</span>
+    <p class="error-code">404 · PAGE NOT FOUND</p>
+    <h1>잠시, 길을 벗어났네요.</h1>
+    <p>요청한 주소에 발표 자료가 없습니다.<br>첫 화면에서 찾고 있던 이야기를 만나보세요.</p>
+    <a class="error-link" href="/">발표 기록으로 돌아가기 ↗</a>
   </main>
+  <script src="/assets/template.js" defer></script>
+  <script>if (location.protocol === 'file:') document.querySelector('.error-link').href = './index.html';</script>
 </body>
 </html>

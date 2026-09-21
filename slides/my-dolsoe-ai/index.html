@@ -5,21 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>나만의 돌쇠 AI 만들기 — OpenCode MCP 프롬프트 실습</title>
   <meta name="description" content="OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는 반도체 지식 자동화 하네스 & 그래프 엔지니어링 실습">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0e0e0e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
-  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css" id="theme">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../shared/deck-base.css">
+  <link rel="stylesheet" href="../shared/legacy-deck.css">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
-    /* 다크 배경 선언 — JS 이전 흰 번쩍임 방지 */
-    html { background: #0e0e0e; color-scheme: dark; }
+    /* 첫 화면부터 공통 밝은 테마 */
+    html { background: #fff; color-scheme: light; }
 
     /* ── 전 슬라이드 700px 예산 내 No-Scroll 엄격 규격화 ── */
     .reveal h2 {
@@ -69,7 +70,7 @@
 
     /* 요약 박스 */
     .reveal .summary-box {
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--green);
       padding: 8px 14px;
       border-radius: 6px;
       border-left: 3px solid var(--accent);
@@ -92,7 +93,7 @@
 
     /* 카드 패널 */
     .reveal .panel-card {
-      background: rgba(22, 22, 22, 0.82);
+      background: var(--green);
       border: 1px solid var(--hairline);
       border-radius: 6px;
       padding: 6px 10px;
@@ -135,7 +136,7 @@
       padding: 0.45em 0.7em;
       line-height: 1.22;
       max-height: 320px;
-      background: rgba(16, 16, 16, 0.85);
+      background: var(--green);
       border-radius: 4px;
     }
 
@@ -153,7 +154,7 @@
     .reveal svg rect[fill="none"],
     .reveal svg circle[fill="none"],
     .reveal svg .panel-fill {
-      fill: rgba(14, 14, 14, 0.85);
+      fill: var(--green);
     }
 
     @media print {
@@ -174,17 +175,8 @@
     }
   </style>
 </head>
-<body>
-  <div class="hud" aria-hidden="true">
-    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
-    <span class="hud-corner hud-tr">EST 2026</span>
-    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
-    <span class="hud-corner hud-br">+</span>
-  </div>
-
-  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
-
-  <div class="reveal">
+<body class="reading legacy-deck">
+<main id="course" class="reveal">
     <div class="slides">
 
       <!-- ═══════════════════ SLIDE 1. 표지 ═══════════════════ -->
@@ -1044,19 +1036,12 @@ model: codemate/CodeLLMPro
       </section>
 
     </div>
-  </div>
+  </main>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
   <script src="../shared/code-copy.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: "fade",
-      pdfSeparateFragments: false
-    });
-  </script>
+  <script src="../../assets/template.js"></script>
+  <script src="../shared/deck-template.js"></script>
 
-  <script src="../../vendor/three.js/three.min.js"></script>
-  <script src="../../scripts/galaxy3d.js"></script>
 </body>
 </html>

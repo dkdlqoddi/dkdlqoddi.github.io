@@ -1,348 +1,138 @@
-/* ──────────────────────────────────────────────────────────
-   발표 기록 — 검은 우주 계기판 테마 (2세대)
-   팔레트: bg #0e0e0e / text #dedede / bright #fcfcfb / dim #9aa0a6 / hairline #2a2b2a
-   대비(on #0e0e0e): text 14.3:1 · bright 18.8:1 · dim 7.3:1 · hairline 1.35:1(의도적 희미함)
-   ────────────────────────────────────────────────────────── */
-
-:root {
-  color-scheme: dark;
-  --bg: #0e0e0e;
-  --text: #dedede;
-  --bright: #fcfcfb;
-  --dim: #9aa0a6;
-  --hairline: #2a2b2a;
-  --primary: #fcfcfb; /* Monochrome */
-  --secondary: #9aa0a6; /* Monochrome */
-  --hud-inset: 2em;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1); /* euiyun.com 차용 expo-out */
-  --font-sans: "Montserrat", "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; background: var(--bg); overflow: hidden; touch-action: none; height: 100vh; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 500; /* 어두운 배경에서 가는 획 뭉개짐 방지 */
-  line-height: 1.6;
-  letter-spacing: -0.01em;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  overflow: hidden;
-  touch-action: none;
-}
-
-.mono {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-/* ── 페이지 간 전환 (지원 브라우저 전용 장식) ───────────── */
+/* Archive layout, built on assets/theme.css. */
+body { font-size: 17px; line-height: 1.6; }
+h1, h2, h3, p { margin: 0; }
+main { width: min(1240px, calc(100% - 96px)); margin: 74px auto 0; }
+.hero { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 36px; min-height: 680px; padding: 60px 0 70px; }
+.eyebrow { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 650; letter-spacing: .13em; color: var(--muted); }
+.little-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--forest); }
+h1 { font-size: clamp(42px, 4.6vw, 66px); line-height: 1.23; letter-spacing: -.065em; font-weight: 750; margin: 28px 0; }
+.hero-description { color: var(--muted); font-size: 19px; line-height: 1.8; }
+.primary-link { display: inline-flex; align-items: center; gap: 26px; margin-top: 30px; padding: 14px 22px; border: 1px solid var(--forest); border-radius: 11px; background: var(--forest); color: white; text-decoration: none; font-size: 17px; font-weight: 600; transition: background .2s, translate .2s; }
+.primary-link:hover { background: #173c2c; translate: 0 -2px; }
+.hero-topics { margin-top: 30px; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+.hero-topics span { color: #a4aea1; margin: 0 12px; }
+.galaxy { position: relative; width: 100%; max-width: 555px; height: 525px; justify-self: end; isolation: isolate; }
+.galaxy-wash { position: absolute; inset: 20px -12px 0; border-radius: 50%; background: radial-gradient(ellipse, #f0f5edb0, #f0f5ed00 70%); }
+.galaxy-orbit { position: absolute; border: 1px solid #dce4d5; border-radius: 50%; pointer-events: none; }
+.orbit-outer { inset: 22px 0 0; transform: rotate(-24deg); }
+.orbit-middle { inset: 73px 45px 55px; border-style: dashed; border-color: #d2ddc9; transform: rotate(20deg); }
+.orbit-inner { inset: 119px 98px 101px; border-color: #e5e9df; transform: rotate(-8deg); }
+.galaxy-orbit i { position: absolute; top: 13%; left: 13%; height: 13px; width: 13px; background: var(--lime); border: 3px solid white; border-radius: 50%; }
+.orbit-middle i { background: #b3a3d8; height: 14px; width: 14px; }
+.orbit-middle i:nth-child(2) { left: auto; top: auto; bottom: 13%; right: 13%; background: #e0b378; }
+.orbit-inner i { top: auto; bottom: 13%; background: var(--forest); }
+.galaxy-prompt { position: absolute; z-index: 2; top: 18px; left: 10px; display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 20px 20px 20px 4px; border: 1px solid #dcd5f1; background: var(--lavender); transform: rotate(-6deg); box-shadow: 0 12px 30px #30274408; font-size: 22px; line-height: 1.45; }
+.galaxy-prompt strong { font-weight: 650; }
+.prompt-icon { font-size: 46px; font-weight: 400; color: #73619c; }
+.galaxy-spark { position: absolute; z-index: 3; left: 5px; top: 236px; width: 102px; height: 102px; display: grid; place-items: center; border-radius: 28px; background: var(--lime); transform: rotate(-10deg); box-shadow: 0 10px 30px #29411d10; font-size: 77px; font-weight: 400; }
+.galaxy-document { position: absolute; top: 120px; right: 24px; width: 292px; padding: 22px 27px; background: white; border: 1px solid var(--line); border-radius: 18px; transform: rotate(7deg); box-shadow: 0 20px 55px #20312412; }
+.document-top { display: flex; align-items: center; justify-content: space-between; font-size: 8px; color: var(--muted); letter-spacing: .08em; }
+.window-dots { display: flex; gap: 4px; }
+.window-dots i { height: 5px; width: 5px; border-radius: 50%; background: #adb6a9; }
+.document-art { position: relative; height: 125px; margin: 16px 0; background: var(--green); border-radius: 9px; overflow: hidden; }
+.document-art i { position: absolute; width: 44px; height: 71px; left: 42px; top: 31px; border-radius: 4px 8px 8px 4px; background: #285d48; border-left: 6px solid #194330; transform: rotate(-14deg); }
+.document-art i:nth-child(2) { left: 95px; top: 24px; height: 78px; background: #e3ad67; border-color: #bd8747; transform: rotate(5deg); }
+.document-art i:nth-child(3) { left: 148px; top: 37px; height: 63px; background: #c5b5df; border-color: #9984b9; transform: rotate(15deg); }
+.document-art span { position: absolute; top: 4px; right: 20px; font-size: 22px; color: #94a783; }
+.galaxy-document > strong { display: block; font-size: 29px; font-weight: 750; letter-spacing: -.04em; line-height: 1.3; }
+.document-rule { margin: 20px 0 14px; border-top: 1px solid var(--line); }
+.document-caption { font-size: 13px; color: var(--muted); }
+.document-caption > span { margin-right: 8px; color: var(--forest); }
+.galaxy-note { position: absolute; bottom: 6px; left: 16px; display: flex; align-items: center; gap: 12px; padding: 13px 20px; background: var(--peach); border: 1px solid #e9ddca; border-radius: 12px; font-size: 15px; transform: rotate(-4deg); }
+.galaxy-note > span { font-size: 27px; color: var(--orange); }
+.galaxy-star { position: absolute; color: var(--forest); }
+.star-one { font-size: 43px; right: 29px; top: 33px; }
+.star-two { font-size: 23px; left: 145px; bottom: 100px; color: #a3b88b; }
+.motion-toggle { position: absolute; right: 0; bottom: 18px; padding: 8px 0 8px 12px; min-height: 44px; border: 0; background: transparent; font-size: 12px; color: var(--muted); }
+.motion-toggle span { margin-left: 5px; }
+.log { padding: 46px 0 88px; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.log-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 32px; }
+.log-head h2 { font-size: clamp(27px, 3vw, 36px); font-weight: 750; letter-spacing: -.055em; margin-top: 12px; }
+.collection-dot { color: var(--forest); }
+.log-count { font-size: 14px; color: var(--muted); white-space: nowrap; padding-bottom: 4px; }
+.cards { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 0; margin: 0; }
+.card { position: relative; display: flex; flex-direction: column; min-height: 295px; padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: white; transition: translate .25s var(--ease), border-color .25s, box-shadow .25s; }
+.card:first-child { background: #f4f8ed; border-color: #d4e0c5; }
+.card:hover, .card:focus-within { translate: 0 -5px; border-color: #80996f; box-shadow: 0 14px 32px #244a2310; }
+.card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card-index { letter-spacing: .06em; }
+.card-badge { background: var(--lime); color: var(--forest); padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 650; margin-left: auto; }
+.card-icon { display: grid; place-items: center; height: 44px; width: 44px; border-radius: 12px; margin-bottom: 18px; background: var(--card-tone, var(--green)); color: var(--ink); font-size: 27px; font-weight: 400; }
+.card-title { font-size: 23px; letter-spacing: -.045em; line-height: 1.35; font-weight: 700; margin-bottom: 12px; }
+.card-title a { text-decoration: none; color: var(--ink); }
+.card-title a::after { content: ''; position: absolute; inset: 0; border-radius: 18px; }
+.card-title a:focus-visible { outline: none; }
+.card:has(a:focus-visible) { outline: 3px solid #566fc3; outline-offset: 4px; }
+.card-desc { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+.card-open { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); color: var(--forest); font-size: 13px; font-weight: 600; }
+.card-open > span { font-size: 19px; }
+.status { padding: 30px 0; color: var(--muted); }
+.site-foot { border-top: 1px solid var(--line); width: min(1240px, calc(100% - 96px)); margin: auto; display: flex; align-items: center; gap: 28px; padding: 32px 0 40px; }
+.site-foot .brand { font-size: 17px; }
+.site-foot .brand-symbol { width: 29px; height: 29px; font-size: 25px; border-radius: 9px; }
+.site-foot p { font-size: 14px; color: var(--muted); }
+.site-foot > span { margin-left: auto; font-size: 10px; color: var(--muted); letter-spacing: .08em; }
 @media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-  ::view-transition-old(root) { animation-duration: 0.4s; }
-  ::view-transition-new(root) { animation-duration: 0.4s; }
+  .hero-copy { animation: gentle-rise .7s var(--ease) both; }
+  .galaxy-prompt, .galaxy-document, .galaxy-spark, .galaxy-note { animation: gentle-float 5s ease-in-out infinite alternate; }
+  .galaxy-document { animation-delay: -2s; }
+  .galaxy-spark { animation-delay: -3s; }
+  .galaxy-note { animation-delay: -1s; }
+  .orbit-outer { animation: orbit-turn 90s linear infinite; }
+  .orbit-middle { animation: orbit-turn 65s linear infinite reverse; }
+  .orbit-inner { animation: orbit-turn 75s linear infinite; }
+  @keyframes orbit-turn { to { rotate: 360deg; } }
 }
-
-/* ── HUD 프레임 (시그니처) ─────────────────────────────── */
-.hud {
-  position: fixed;
-  inset: var(--hud-inset);
-  border: 2px solid var(--hairline);
-  pointer-events: none;
-  z-index: 10;
+.galaxy.is-paused *, .galaxy.is-paused *::after { animation-play-state: paused !important; }
+@media (max-width: 1100px) {
+  main, .site-foot { width: calc(100% - 64px); }
+  .hero { gap: 10px; min-height: 620px; }
+  .galaxy { scale: .86; transform-origin: center right; width: 470px; margin-left: -40px; }
+  .hero-copy { position: relative; z-index: 1; }
+  h1 { font-size: 48px; }
+  .hero-description { font-size: 17px; }
+  .cards { gap: 16px; }
+  .card { padding: 22px; }
 }
-
-/* 프레임 상·하변의 눈금 */
-.hud::before,
-.hud::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--hairline) 0,
-    var(--hairline) 1px,
-    transparent 1px,
-    transparent 48px
-  );
+@media (max-width: 900px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  main { margin-top: 66px; }
+  main, .site-foot { width: calc(100% - 40px); }
+  .hero { grid-template-columns: 1fr; padding: 48px 0 56px; gap: 28px; }
+  h1 { font-size: clamp(38px, 8.7vw, 58px); margin: 23px 0; }
+  .hero-description { font-size: 17px; }
+  .hero-topics { margin-top: 24px; }
+  .galaxy { scale: none; width: min(100%, 480px); height: 445px; margin: 0; justify-self: center; }
+  .galaxy-document { width: 255px; right: 14px; top: 105px; padding: 20px; }
+  .galaxy-prompt { font-size: 19px; padding: 18px 22px; gap: 12px; top: 10px; left: 6px; }
+  .prompt-icon { font-size: 35px; }
+  .galaxy-spark { width: 80px; height: 80px; font-size: 60px; border-radius: 23px; top: 215px; }
+  .galaxy-note { font-size: 13px; bottom: 0; left: 8px; padding: 9px 15px; }
+  .document-art { height: 100px; }
+  .document-art i { top: 18px; left: 26px; scale: .85; }
+  .document-art i:nth-child(2) { left: 74px; top: 13px; }
+  .document-art i:nth-child(3) { left: 122px; top: 25px; }
+  .galaxy-document > strong { font-size: 26px; }
+  .star-one { font-size: 32px; top: 20px; right: 4px; }
+  .star-two { left: 100px; bottom: 85px; }
+  .log { padding: 32px 0 56px; }
+  .log-head { align-items: flex-end; gap: 10px; margin-bottom: 25px; }
+  .log-head h2 { font-size: 27px; }
+  .log-count { font-size: 12px; }
+  .site-foot { flex-wrap: wrap; padding: 28px 0; gap: 16px; }
+  .site-foot p { font-size: 12px; }
+  .site-foot > span { flex-basis: 100%; margin-left: 0; }
 }
-.hud::before { top: 0; }
-.hud::after { bottom: 0; }
-
-.hud-corner {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--dim);
-  background: var(--bg); /* 프레임 선을 파내는 노크아웃 */
-  padding: 0 6px;
-}
-.hud-tl { top: -0.5em; left: 14px; }
-.hud-tr { top: -0.5em; right: 14px; }
-.hud-bl { bottom: -0.5em; left: 14px; }
-.hud-br { bottom: -0.6em; right: 14px; font-size: 0.8125rem; }
-
-/* ── 별 입자: 검은 우주의 흰 점 2겹 ─────────────────────
-   좌표는 전 화면(0~100vw, 0~104vh)에 분포. 104vh까지 두는 이유:
-   drift가 위로 3vh 흐르는 동안 하단이 비지 않게 하는 여유분. */
-#galaxy-3d-bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-}
-
-#hud-lines {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-body.scrolled #hud-lines {
-  opacity: 1;
-  visibility: visible;
-}
-#hud-lines line {
-  stroke: rgba(0, 255, 255, 0.4);
-  stroke-width: 1.5;
-  transition: stroke 0.3s, stroke-width 0.3s;
-}
-#hud-lines line.hover {
-  stroke: rgba(255, 255, 255, 0.8);
-  stroke-width: 2.5;
-}
-
-/* ── 히어로 ────────────────────────────────────────────── */
-.hero {
-  position: relative;
-  z-index: 1;
-  min-height: 88vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 clamp(28px, 8vw, 120px);
-  gap: 20px;
-}
-
-.eyebrow {
-  animation: rise 0.7s 0.05s var(--ease) both;
-  color: rgba(0, 255, 255, 0.85); /* 터미널/HUD 시안 포인트 컬러 */
-  letter-spacing: 0.15em;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.title {
-  font-size: clamp(3rem, 11vw, 7rem);
-  font-weight: 600; /* 어두운 배경에서 굵은 흰 글자의 번짐 완화 */
-  letter-spacing: -0.025em;
-  line-height: 1.04;
-  color: var(--bright);
-  animation: rise 0.7s 0.16s var(--ease) both;
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3); /* 홀로그램 네온 발광 효과 */
-}
-
-.tagline {
-  max-width: 34em;
-  color: var(--dim);
-  animation: rise 0.7s 0.28s var(--ease) both;
-}
-
-@keyframes rise {
-  from { opacity: 0; translate: 0 26px; filter: blur(5px); }
-  to { opacity: 1; translate: 0 0; filter: blur(0); }
-}
-
-/* ── 목록 ──────────────────────────────────────────────── */
-main { position: relative; z-index: 1; }
-
-.log {
-  padding: 4vh clamp(28px, 8vw, 120px) 12vh;
-  max-width: 1180px;
-}
-
-.log-head {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  opacity: 0.8; /* 기존 0.6에서 가독성을 위해 살짝 상향 */
-  margin-bottom: 0.6rem;
-}
-.log-rule {
-  flex: 1;
-  border-top: 1px dashed rgba(0, 255, 255, 0.3); /* 일반 실선에서 대시드 라인으로 HUD 느낌 부여 */
-}
-.log-count {
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  color: rgba(0, 255, 255, 0.85); /* 시안 컬러 통일 */
-  font-variant-numeric: tabular-nums;
-  min-width: 140px; /* 공간 확보 */
-  text-align: right;
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
-}
-
-/* ── 카드 리스트 (3D 투영 절대 궤도) ───────────── */
-.cards {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  margin: 0;
-  padding: 0;
-  pointer-events: none; /* 클릭은 카드 내부 요소만 되도록 */
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  z-index: 10;
-}
-
-body.scrolled .cards {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ── 홀로그램 개별 카드 ───────────────────────────────── */
-.card {
-  position: absolute;
-  translate: -50% -50%;
-  pointer-events: auto; /* 카드 자체는 클릭 가능 */
-  display: block;
-  width: 140px;
-  text-decoration: none;
-  color: var(--secondary);
-  background: rgba(14, 14, 25, 0.6);
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  border-left: 3px solid rgba(0, 255, 255, 0.5);
-  border-radius: 4px;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
-  animation: card-float 4s ease-in-out infinite alternate;
-}
-
-@keyframes card-float {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-8px); }
-}
-
-.card:hover, .card:focus-visible, .card.hover-active {
-  color: var(--primary);
-  background: rgba(20, 30, 50, 0.85);
-  border-color: rgba(0, 255, 255, 0.8);
-  border-left: 5px solid rgba(0, 255, 255, 1);
-  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
-  transform: translateX(-10px);
-  outline: none;
-}
-.card:hover *, .card:focus-visible *, .card.hover-active * {
-  color: var(--primary) !important;
-}
-.card:has(a:focus-visible) {
-  outline: 2px solid var(--bright);
-  outline-offset: 3px;
-  border-color: var(--bright);
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-.card-date {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.05em;
-  opacity: 0.6;
-  margin-bottom: 0.6rem;
-}
-.card-title {
-  display: block;
-  font-size: 1.0rem;
-  font-weight: 500;
-  color: var(--primary);
-  line-height: 1.2;
-  margin-bottom: 0.4rem;
-}
-/* 카드 전체 클릭 (block link) */
-.card-title a { color: inherit; text-decoration: none; outline: none; }
-.card-title a::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
-
-.card-desc {
-  display: block;
-  font-size: 0.75rem;
-  line-height: 1.4;
-  word-break: keep-all;
-}
-.card-open {
-  align-self: flex-end;
-  transition: translate 0.18s ease;
-}
-.card:hover .card-open { translate: 4px 0; }
-
-.status { padding: 32px 0; }
-
-/* ── 사이트 푸터 ────────────────────────────────────────── */
-.site-foot {
-  padding: 40px clamp(28px, 8vw, 120px) 40px;
-  display: flex;
-  justify-content: space-between;
-  color: rgba(0, 255, 255, 0.6);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  border-top: 1px solid rgba(0, 255, 255, 0.15);
-}
-.site-foot span { display: block; }
-.foot-sep { color: rgba(0, 255, 255, 0.3); }
-
-/* ── 반응형 ────────────────────────────────────────────── */
-@media (max-width: 640px) {
-  :root { --hud-inset: 10px; }
-  .hero { min-height: 76vh; }
-  .hud-bl { display: none; }
-}
-
-/* ── 인쇄: 어두운 화면을 흰 종이용으로 되돌림 ────────── */
+@media (max-width: 520px) { .cards { grid-template-columns: 1fr; } .card { min-height: 285px; padding: 25px; } }
+@media (max-width: 360px) { .galaxy { height: 410px; } .galaxy-document { width: 222px; right: 7px; } .galaxy-document > strong { font-size: 23px; } .galaxy-spark { width: 64px; height: 64px; font-size: 49px; } .hero-description br { display: none; } .log-head h2 { font-size: 24px; } }
 @media print {
-  html, body { background: #fff; }
-  body, .title, .card-title, .tagline, .card-desc, .mono, .foot-sep { color: #000; }
-  /* 주의: 캔버스의 실제 클래스·id는 galaxy-3d-bg (옛 .galaxy-bg는 3D 도입 전 이름) */
-  #galaxy-3d-bg, .hud, #hud-lines { display: none; }
-  .card { opacity: 1; translate: 0 0; border-color: #000; }
-  .log-rule { border-top-color: #000; }
+  main { width: 100%; margin: 0; }
+  .hero { display: block; min-height: 0; padding: 20px 0 35px; }
+  .galaxy, .motion-toggle, .primary-link, .hero-topics { display: none; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .card { break-inside: avoid; min-height: 0; }
+  .site-foot { width: 100%; }
 }
-
-/* ── 움직임 줄이기 옵션 ──────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  #galaxy-3d-bg { display: none !important; }
-  .card { opacity: 1; translate: 0 0; }
-}
+.retry-button { min-height: 44px; padding: 8px 12px; background: var(--green); border: 1px solid var(--line); border-radius: 8px; color: var(--forest); }
+/* Orbit boxes may rotate beyond their drawn circle; contain that decoration locally. */
+.galaxy { overflow: clip; overflow-clip-margin: 16px; }

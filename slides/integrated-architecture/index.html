@@ -5,47 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>안전한 AI 설계 자동화 아키텍처</title>
   <meta name="description" content="VWP망 안에서 Docker를 생성하고 안전하게 Opencode를 활용하는 아키텍처">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0e0e0e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0e'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23fcfcfb' stroke-width='2'/%3E%3Ccircle cx='25' cy='7' r='1.6' fill='%23fcfcfb'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
 
   <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
        상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
 
-  <!-- 테마는 데크마다 자유. 동봉 테마: black.css(현재 기본), white.css (둘 다 오프라인 자기완결형) -->
-  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/black.css" id="theme">
+  <!-- 테마는 데크마다 자유. 동봉 테마: white.css(공통 밝은 기본), black.css (둘 다 오프라인 자기완결형) -->
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css" id="theme">
   <!-- 동봉 Pretendard (base64 내장 — 외부 요청 0, file://에서도 동작) -->
-  <link rel="stylesheet" href="../../vendor/montserrat/montserrat.css">
   <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
   <!-- 공통 디자인은 ../shared/deck-base.css 한 파일에 있다.
-       링크 순서 계약: black.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
-  <link rel="stylesheet" href="../shared/deck-base.css?v=2">
+       링크 순서 계약: white.css 뒤 · 인라인 <style> 앞. 아래 <style>에는 덱 고유 스타일만 쓴다. -->
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../shared/deck-base.css">
+  <link rel="stylesheet" href="../shared/legacy-deck.css">
   <link rel="stylesheet" href="../shared/code-copy.css">
 
   <style>
 
-    /* 어두운 배경은 reveal.js 실행 후에야 칠해진다 —
-       JS 이전·실패 시의 흰 번쩍임을 막으려면 이 두 줄이 모든 덱에 필요하다. */
-    html { background: #0e0e0e; color-scheme: dark; }
+    /* 첫 화면과 읽기 화면 모두 공통 밝은 테마를 사용한다. */
+    html { background: #fff; color-scheme: light; }
 
 /* --- CDS STYLES --- */
 
-    /* 이 덱 고유: 은하 배경 감쇄 (공통 기본은 감쇄 없음) */
-    #galaxy-3d-bg { opacity: 0.15; }
-    /* 이 덱 고유: 우주선 장식은 종이에 흰 얼룩으로 찍히므로 인쇄 제외 */
-    @media print { .spaceship-container { display: none !important; } }
 
     /* 폰트·전각 처리·대문자 취소는 deck-base가 공급 — 여기는 이 덱 고유 색만 */
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-      color: #00ffff;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      color: var(--forest);
+      text-shadow: none;
     }
     
     body {
-      background: #0e0e0e;
-      color: #dedede;
+      background: var(--paper);
+      color: var(--ink);
     }
     
     /* 다이어그램 기본 스타일 */
@@ -54,16 +50,16 @@
       height: auto;
       max-height: 500px;
     }
-    .node-office { fill: rgba(0, 255, 255, 0.1); stroke: #00ffff; stroke-width: 2; }
-    .node-vwp { fill: rgba(255, 100, 100, 0.1); stroke: #ff4444; stroke-width: 2; }
-    .node-shield { fill: rgba(0, 255, 0, 0.05); stroke: #00ff00; stroke-width: 2; stroke-dasharray: 4,4; }
-    .node-text { fill: #dedede; font-family: 'Pretendard Variable', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }
-    .node-subtext { fill: #9aa0a6; font-family: 'Pretendard Variable', monospace; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
-    .line-flow { stroke: #dedede; stroke-width: 2; fill: none; }
-    .line-flow-anim { stroke: #00ffff; stroke-width: 3; stroke-dasharray: 10,10; animation: dash 2s linear infinite; fill: none; }
+    .node-office { fill: rgba(40, 93, 72, 0.1); stroke: var(--forest); stroke-width: 2; }
+    .node-vwp { fill: rgba(163, 54, 69, 0.1); stroke: var(--danger); stroke-width: 2; }
+    .node-shield { fill: rgba(40, 93, 72, 0.05); stroke: var(--forest); stroke-width: 2; stroke-dasharray: 4,4; }
+    .node-text { fill: var(--ink); font-family: 'Pretendard Variable', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }
+    .node-subtext { fill: var(--muted); font-family: 'Pretendard Variable', monospace; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+    .line-flow { stroke: var(--ink); stroke-width: 2; fill: none; }
+    .line-flow-anim { stroke: var(--forest); stroke-width: 3; stroke-dasharray: 10,10; animation: dash 2s linear infinite; fill: none; }
     
-    .fw-line { stroke: #ff0055; stroke-width: 4; stroke-dasharray: 8,8; }
-    .fw-text { fill: #ff0055; font-family: 'Pretendard Variable', sans-serif; font-size: 14px; letter-spacing: 2px; font-weight: bold; }
+    .fw-line { stroke: var(--danger); stroke-width: 4; stroke-dasharray: 8,8; }
+    .fw-text { fill: var(--danger); font-family: 'Pretendard Variable', sans-serif; font-size: 14px; letter-spacing: 2px; font-weight: bold; }
     
     @keyframes dash {
       to { stroke-dashoffset: -20; }
@@ -76,7 +72,7 @@
          화면은 그대로 두고 흰 종이(Ctrl+P)에서만 어두운 색으로 되돌린다.
          (근본 수리는 currentColor 재작성 — 후속 과제) ── */
       html:not(.print-pdf) .reveal h1, html:not(.print-pdf) .reveal h2,
-      html:not(.print-pdf) .reveal h3, html:not(.print-pdf) .reveal h4 { color: #000 !important; text-shadow: none !important; }
+      html:not(.print-pdf) .reveal h3, html:not(.print-pdf) .reveal h4 { color: #000 !important; text-shadow: none; }
       html:not(.print-pdf) .node-text, html:not(.print-pdf) .node-subtext { fill: #000 !important; }
       html:not(.print-pdf) .line-flow, html:not(.print-pdf) .line-flow-anim { stroke: #000 !important; }
       html:not(.print-pdf) .node-office { stroke: #006666 !important; fill: none !important; }
@@ -88,29 +84,29 @@
       html:not(.print-pdf) .code-red, html:not(.print-pdf) .code-green,
       html:not(.print-pdf) .code-blue, html:not(.print-pdf) .code-yellow { color: #000 !important; }
       html:not(.print-pdf) .hud-box { background: none !important; border-color: #000 !important; }
-      html:not(.print-pdf) .hud-box-warning { background: none !important; border-color: #8b0000 !important; box-shadow: none !important; }
+      html:not(.print-pdf) .hud-box-warning { background: none !important; border-color: #8b0000 !important; box-shadow: none; }
       /* SVG 속성으로 적힌 밝은 색 → 검정, 네온 → 어두운 동색 */
-      html:not(.print-pdf) svg [fill="#fcfcfb"], html:not(.print-pdf) svg [fill="#fff"],
-      html:not(.print-pdf) svg [fill="#ffffff"], html:not(.print-pdf) svg [fill="#dedede"],
-      html:not(.print-pdf) svg [fill="#9aa0a6"], html:not(.print-pdf) svg [fill="#888"] { fill: #000 !important; }
-      html:not(.print-pdf) svg [stroke="#fcfcfb"], html:not(.print-pdf) svg [stroke="#fff"],
-      html:not(.print-pdf) svg [stroke="#9aa0a6"] { stroke: #000 !important; }
-      html:not(.print-pdf) svg [fill="#00ffff"] { fill: #006666 !important; }
-      html:not(.print-pdf) svg [stroke="#00ffff"] { stroke: #006666 !important; }
-      html:not(.print-pdf) svg [fill="#00ff00"] { fill: #006600 !important; }
-      html:not(.print-pdf) svg [fill="#ffbb00"], html:not(.print-pdf) svg [fill="#ffaa00"] { fill: #8a5a00 !important; }
-      html:not(.print-pdf) svg [stroke="#ffbb00"], html:not(.print-pdf) svg [stroke="#ffaa00"] { stroke: #8a5a00 !important; }
-      html:not(.print-pdf) svg [fill="#ff4444"] { fill: #8b0000 !important; }
-      html:not(.print-pdf) svg [stroke="#ff4444"] { stroke: #8b0000 !important; }
-      html:not(.print-pdf) svg [fill="#001122"] { fill: none !important; }
+      html:not(.print-pdf) svg [fill="var(--ink)"], html:not(.print-pdf) svg [fill="var(--ink)"],
+      html:not(.print-pdf) svg [fill="#ffffff"], html:not(.print-pdf) svg [fill="var(--ink)"],
+      html:not(.print-pdf) svg [fill="var(--muted)"], html:not(.print-pdf) svg [fill="#888"] { fill: #000 !important; }
+      html:not(.print-pdf) svg [stroke="var(--ink)"], html:not(.print-pdf) svg [stroke="var(--ink)"],
+      html:not(.print-pdf) svg [stroke="var(--muted)"] { stroke: #000 !important; }
+      html:not(.print-pdf) svg [fill="var(--forest)"] { fill: #006666 !important; }
+      html:not(.print-pdf) svg [stroke="var(--forest)"] { stroke: #006666 !important; }
+      html:not(.print-pdf) svg [fill="var(--forest)"] { fill: #006600 !important; }
+      html:not(.print-pdf) svg [fill="var(--orange)"], html:not(.print-pdf) svg [fill="var(--orange)"] { fill: #8a5a00 !important; }
+      html:not(.print-pdf) svg [stroke="var(--orange)"], html:not(.print-pdf) svg [stroke="var(--orange)"] { stroke: #8a5a00 !important; }
+      html:not(.print-pdf) svg [fill="var(--danger)"] { fill: #8b0000 !important; }
+      html:not(.print-pdf) svg [stroke="var(--danger)"] { stroke: #8b0000 !important; }
+      html:not(.print-pdf) svg [fill="var(--green)"] { fill: none !important; }
       html:not(.print-pdf) .btn-return { color: #006666 !important; border-color: #006666 !important; }
       /* 본문 인라인 색(style 속성)은 값 일치 선택자로 되돌린다 */
-      html:not(.print-pdf) [style*="color: #00ffff"] { color: #006666 !important; }
-      html:not(.print-pdf) [style*="color: #00ff00"] { color: #006600 !important; }
-      html:not(.print-pdf) [style*="color: #ffbb00"] { color: #8a5a00 !important; }
-      html:not(.print-pdf) [style*="color: #ff4444"] { color: #8b0000 !important; }
-      html:not(.print-pdf) [style*="color: #fcfcfb"], html:not(.print-pdf) [style*="color: #fff"],
-      html:not(.print-pdf) [style*="color: #9aa0a6"] { color: #000 !important; }
+      html:not(.print-pdf) [style*="color: var(--forest)"] { color: #006666 !important; }
+      html:not(.print-pdf) [style*="color: var(--forest)"] { color: #006600 !important; }
+      html:not(.print-pdf) [style*="color: var(--orange)"] { color: #8a5a00 !important; }
+      html:not(.print-pdf) [style*="color: var(--danger)"] { color: #8b0000 !important; }
+      html:not(.print-pdf) [style*="color: var(--ink)"], html:not(.print-pdf) [style*="color: #fff"],
+      html:not(.print-pdf) [style*="color: var(--muted)"] { color: #000 !important; }
     }
     
     @media (prefers-reduced-motion: no-preference) {
@@ -118,8 +114,8 @@
     }
     
     .hud-box {
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(40, 93, 72, 0.3);
+      background: var(--green);
       padding: 10px;
       margin: 10px auto;
       display: inline-block;
@@ -128,20 +124,20 @@
     }
     
     .hud-box-warning {
-      border: 1px solid rgba(255, 0, 0, 0.6);
-      background: rgba(80, 0, 0, 0.4);
+      border: 1px solid rgba(163, 54, 69, 0.6);
+      background: var(--peach);
       padding: 15px;
       margin: 10px;
       border-radius: 8px;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+      box-shadow: none;
       text-align: center;
       transition: all 0.3s;
     }
 
     /* 광자 펄스(Data Pulse) 다중 루프 애니메이션 */
     .pulse-dot {
-      fill: #00ff00;
-      filter: drop-shadow(0 0 5px #00ff00);
+      fill: var(--forest);
+      filter: none;
       opacity: 0;
     }
     
@@ -170,7 +166,7 @@
       100% { opacity: 0; }
     }
     /* 흐르는 점은 기본 숨김 — 동작 축소에서 엉뚱한 위치에 고정되지 않게 (1부 travel-dot 패턴) */
-    .pulse-multi-return { fill: #00ffff; filter: drop-shadow(0 0 5px #00ffff); opacity: 0; }
+    .pulse-multi-return { fill: var(--forest); filter: none; opacity: 0; }
     @media (prefers-reduced-motion: no-preference) {
       .pulse-multi-1 { animation: multiPulse1 8s linear infinite; }
       .pulse-multi-ping { animation: multiPulsePing 8s linear infinite; }
@@ -191,8 +187,8 @@
     }
     
     .code-snippet {
-      background: #1e1e1e;
-      color: #d4d4d4;
+      background: var(--green);
+      color: var(--ink);
       font-family: monospace;
       padding: 15px;
       border-radius: 5px;
@@ -201,29 +197,24 @@
       border: 1px solid #333;
       white-space: pre-wrap;
     }
-    .code-red { color: #f44747; }
-    .code-green { color: #6a9955; }
-    .code-blue { color: #569cd6; }
-    .code-yellow { color: #dcdcaa; }
+    .code-red { color: var(--danger); }
+    .code-green { color: var(--forest); }
+    .code-blue { color: #405a96; }
+    .code-yellow { color: var(--orange); }
 
-    /* Slide 11 Outro Animations */
-    .thank-you-neon {
-      font-size: 3em !important;
-      letter-spacing: 5px;
-      margin-top: 40px !important;
-      margin-bottom: 20px !important;
-    }
+    .thank-you-neon { font-size: 2.3em !important; letter-spacing: -.04em; margin: 40px 0 25px !important; }
+    .closing-symbol { width: 120px; height: 120px; margin: 35px auto; display: grid; place-items: center; border-radius: 30px; background: var(--lime); font-size: 95px; transform: rotate(-7deg); }
 
     .btn-return {
       display: inline-block;
       padding: 15px 30px;
       font-size: 20px;
-      color: #00ffff;
+      color: var(--forest);
       text-decoration: none;
-      border: 2px solid #00ffff;
+      border: 2px solid var(--forest);
       border-radius: 8px;
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+      background: rgba(40, 93, 72, 0.1);
+      box-shadow: none;
       transition: all 0.3s ease;
       font-family: var(--r-heading-font);
       font-weight: bold;
@@ -231,70 +222,22 @@
       position: relative;
     }
     .btn-return:hover {
-      background: rgba(0, 255, 255, 0.3);
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-      color: #fff;
+      background: rgba(40, 93, 72, 0.3);
+      box-shadow: none;
+      color: var(--ink);
     }
 
-    @keyframes shipTakeoff {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      20% { transform: translateY(10px) scale(1); opacity: 1; } /* 예열 준비 */
-      100% { transform: translateY(-800px) scale(0.5); opacity: 0; }
-    }
-    @keyframes exhaustFire {
-      0%, 20% { opacity: 0; height: 0; }
-      30% { opacity: 1; height: 100px; }
-      100% { opacity: 0.5; height: 300px; }
-    }
-    
-    .spaceship-container {
-      position: absolute;
-      bottom: 60px;
-      left: 50%;
-      margin-left: -20px;
-      width: 40px;
-      /* .present 클래스가 붙었을 때(슬라이드 활성화) 애니메이션 실행 */
-    }
-    .present .spaceship-container {
-      animation: shipTakeoff 4s cubic-bezier(0.5, 0, 0.2, 1) forwards;
-      animation-delay: 1s;
-    }
-
-    .spaceship-exhaust {
-      width: 10px;
-      height: 0;
-      background: linear-gradient(to bottom, #00ffff, transparent);
-      margin: 0 auto;
-      border-radius: 5px;
-      opacity: 0;
-      filter: drop-shadow(0 0 10px #00ffff);
-    }
-    .present .spaceship-exhaust {
-      animation: exhaustFire 4s cubic-bezier(0.5, 0, 0.2, 1) forwards;
-      animation-delay: 1s;
-    }
-    
-  
-
-    </style>
+</style>
 </head>
-<body>
-  <div class="hud" aria-hidden="true">
-    <span class="hud-corner hud-tl">DKDLQODDI · LOG</span>
-    <span class="hud-corner hud-tr">EST 2026</span>
-    <span class="hud-corner hud-bl">◦ EVA VIEW</span>
-    <span class="hud-corner hud-br">+</span>
-  </div>
+<body class="reading legacy-deck">
 
-  <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
-  <canvas id="galaxy-3d-bg" class="galaxy-3d-bg" aria-hidden="true"></canvas>
 
-  <div class="reveal">
+  <main id="course" class="reveal">
     <div class="slides">
 
       <section>
         <h1>안전한 AI 설계 자동화</h1>
-        <h3 style="color: #9aa0a6; font-size: 1.2em;">망 연동 환경에서의 2가지 아키텍처 대안</h3>
+        <h3 style="color: var(--muted); font-size: 1.2em;">망 연동 환경에서의 2가지 아키텍처 대안</h3>
       </section>
 
       <section>
@@ -302,10 +245,10 @@
         <p class="visually-hidden">망 분리 환경에서 사내 모델을 활용하여 VWP망의 데이터에 안전하게 접근하기 위한 2가지 아키텍처 방법론을 비교합니다.</p>
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px;">
           <div class="hud-box" style="width: 80%;">
-            <strong style="color: #00ffff;">방법론 1:</strong> Office망 LLM (Harness 통제) + API Server + MCP Server (통제형)
+            <strong style="color: var(--forest);">방법론 1:</strong> Office망 LLM (Harness 통제) + API Server + MCP Server (통제형)
           </div>
           <div class="hud-box" style="width: 80%;">
-            <strong style="color: #ff4444;">방법론 2:</strong> VWP망 LLM (Harness 통제) + VWP Docker (완전 격리형)
+            <strong style="color: var(--danger);">방법론 2:</strong> VWP망 LLM (Harness 통제) + VWP Docker (완전 격리형)
           </div>
         </div>
       </section>
@@ -315,29 +258,29 @@
         <p class="visually-hidden">오피스망의 LLM이 Harness에 감싸져 있고, API Server를 거쳐 VWP망의 MCP 서버를 통해 파일 시스템에 접근하는 구조.</p>
         <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 1 다이어그램">
           <!-- Backgrounds -->
-          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
-          <text x="225" y="50" class="node-text" fill="#00ffff">Office Network</text>
+          <rect x="10" y="20" width="430" height="260" rx="15" fill="rgba(40, 93, 72, 0.05)" stroke="rgba(40, 93, 72, 0.2)" />
+          <text x="225" y="50" class="node-text" fill="var(--forest)">Office Network</text>
           
-          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
-          <text x="675" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          <rect x="460" y="20" width="430" height="260" rx="15" fill="rgba(163, 54, 69, 0.05)" stroke="rgba(163, 54, 69, 0.2)" />
+          <text x="675" y="50" class="node-text" fill="var(--danger)">VWP Network</text>
           
           <line x1="450" y1="10" x2="450" y2="290" class="fw-line" />
           <text x="450" y="15" text-anchor="middle" class="fw-text">Firewall</text>
 
           <!-- Nodes -->
-          <rect x="30" y="90" width="160" height="130" rx="15" class="node-shield" style="fill: rgba(0,255,0,0.05);" />
-          <text x="110" y="110" class="node-subtext" fill="#00ff00" font-weight="bold">Harness (격리/통제)</text>
+          <rect x="30" y="90" width="160" height="130" rx="15" class="node-shield" style="fill: rgba(40, 93, 72, 0.05);" />
+          <text x="110" y="110" class="node-subtext" fill="var(--forest)" font-weight="bold">Harness (격리/통제)</text>
           <rect x="50" y="125" width="120" height="70" rx="10" class="node-office" />
           <text x="110" y="152" class="node-text">LLM +</text>
           <text x="110" y="172" class="node-subtext">Opencode</text>
 
-          <rect x="250" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #ffbb00;" />
-          <text x="310" y="160" class="node-text" fill="#ffbb00">API Server</text>
+          <rect x="250" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: var(--orange);" />
+          <text x="310" y="160" class="node-text" fill="var(--orange)">API Server</text>
 
           <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" />
           <text x="580" y="160" class="node-text">MCP Server</text>
 
-          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <rect x="720" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: var(--muted); fill: var(--green);" />
           <text x="780" y="160" class="node-text">File System</text>
 
           <!-- Links -->
@@ -345,38 +288,38 @@
           <path d="M 370 160 L 520 160" class="line-flow-anim" />
           <path d="M 640 160 L 720 160" class="line-flow-anim" />
         </svg>
-        <p class="small" style="color:#00ff00;">장점: API Server와 MCP Server가 위험한 요청을 필터링하고 통제함.</p>
+        <p class="small" style="color:var(--forest);">장점: API Server와 MCP Server가 위험한 요청을 필터링하고 통제함.</p>
       </section>
 
       <section>
         <h3>방법론 2: VWP망 내재화 (완전 격리형)</h3>
         <p class="visually-hidden">VWP망 내부에 Harness와 LLM, Docker를 모두 배치하여 망을 넘어갈 필요가 없는 구조.</p>
         <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 2 다이어그램">
-          <rect x="10" y="20" width="150" height="260" rx="15" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
-          <text x="85" y="50" class="node-text" fill="#00ffff">Office</text>
-          <text x="85" y="160" class="node-subtext" fill="#9aa0a6">(사용 안함)</text>
+          <rect x="10" y="20" width="150" height="260" rx="15" fill="rgba(40, 93, 72, 0.05)" stroke="rgba(40, 93, 72, 0.2)" />
+          <text x="85" y="50" class="node-text" fill="var(--forest)">Office</text>
+          <text x="85" y="160" class="node-subtext" fill="var(--muted)">(사용 안함)</text>
           
-          <rect x="180" y="20" width="710" height="260" rx="15" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
-          <text x="535" y="50" class="node-text" fill="#ff4444">VWP Network</text>
+          <rect x="180" y="20" width="710" height="260" rx="15" fill="rgba(163, 54, 69, 0.05)" stroke="rgba(163, 54, 69, 0.2)" />
+          <text x="535" y="50" class="node-text" fill="var(--danger)">VWP Network</text>
           
           <line x1="170" y1="10" x2="170" y2="290" class="fw-line" />
           
-          <rect x="250" y="90" width="160" height="130" rx="15" class="node-shield" style="fill: rgba(0,255,0,0.05);" />
-          <text x="330" y="110" class="node-subtext" fill="#00ff00" font-weight="bold">Harness (격리/통제)</text>
+          <rect x="250" y="90" width="160" height="130" rx="15" class="node-shield" style="fill: rgba(40, 93, 72, 0.05);" />
+          <text x="330" y="110" class="node-subtext" fill="var(--forest)" font-weight="bold">Harness (격리/통제)</text>
           <rect x="270" y="125" width="120" height="70" rx="10" class="node-vwp" />
           <text x="330" y="152" class="node-text">LLM +</text>
           <text x="330" y="172" class="node-subtext">Opencode</text>
 
-          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: #00ffff;" />
+          <rect x="520" y="120" width="120" height="80" rx="10" class="node-vwp" style="stroke: var(--forest);" />
           <text x="580" y="160" class="node-text">Docker</text>
 
-          <rect x="740" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <rect x="740" y="120" width="120" height="80" rx="10" class="node-office" style="stroke: var(--muted); fill: var(--green);" />
           <text x="800" y="160" class="node-text">File System</text>
 
           <path d="M 410 160 L 520 160" class="line-flow-anim" />
           <path d="M 640 160 L 740 160" class="line-flow-anim" />
         </svg>
-        <p class="small" style="color:#ff4444;">장점: 방화벽을 통과하지 않으므로 망 연동 지연(Latency) 제로.</p>
+        <p class="small" style="color:var(--danger);">장점: 방화벽을 통과하지 않으므로 망 연동 지연(Latency) 제로.</p>
       </section>
 
       <section>
@@ -384,63 +327,63 @@
         <p class="visually-hidden">상단은 방법론 1(방화벽 통과형), 하단은 방법론 2(완전 격리형)를 대조하는 통합 다이어그램입니다.</p>
         <svg class="svg-diagram" viewBox="0 0 900 400" role="img" aria-label="통합 대조 다이어그램" style="height: 60vh;">
           <!-- Backgrounds -->
-          <rect x="10" y="20" width="380" height="360" rx="15" fill="rgba(0, 255, 255, 0.03)" stroke="rgba(0, 255, 255, 0.1)" />
-          <text x="200" y="50" class="node-text" fill="#00ffff" text-anchor="middle">Office Network</text>
+          <rect x="10" y="20" width="380" height="360" rx="15" fill="rgba(40, 93, 72, 0.03)" stroke="rgba(40, 93, 72, 0.1)" />
+          <text x="200" y="50" class="node-text" fill="var(--forest)" text-anchor="middle">Office Network</text>
           
-          <rect x="410" y="20" width="480" height="360" rx="15" fill="rgba(255, 100, 100, 0.03)" stroke="rgba(255, 100, 100, 0.1)" />
-          <text x="650" y="50" class="node-text" fill="#ff4444" text-anchor="middle">VWP Network</text>
+          <rect x="410" y="20" width="480" height="360" rx="15" fill="rgba(163, 54, 69, 0.03)" stroke="rgba(163, 54, 69, 0.1)" />
+          <text x="650" y="50" class="node-text" fill="var(--danger)" text-anchor="middle">VWP Network</text>
           
           <line x1="400" y1="10" x2="400" y2="390" class="fw-line" />
           
           <!-- Method 1 (Top) -->
-          <text x="10" y="120" fill="#00ffff" font-weight="bold" font-size="14">방법론 1</text>
-          <rect x="70" y="80" width="100" height="70" rx="10" class="node-shield" style="fill: rgba(0,255,0,0.05);" />
-          <text x="120" y="100" class="node-subtext" fill="#00ff00" font-weight="bold" text-anchor="middle">Harness</text>
+          <text x="10" y="120" fill="var(--forest)" font-weight="bold" font-size="14">방법론 1</text>
+          <rect x="70" y="80" width="100" height="70" rx="10" class="node-shield" style="fill: rgba(40, 93, 72, 0.05);" />
+          <text x="120" y="100" class="node-subtext" fill="var(--forest)" font-weight="bold" text-anchor="middle">Harness</text>
           <rect x="80" y="105" width="80" height="35" rx="5" class="node-office" />
           <text x="120" y="127" class="node-subtext" text-anchor="middle">LLM</text>
 
-          <rect x="220" y="95" width="80" height="40" rx="5" class="node-office" style="stroke: #ffbb00;" />
-          <text x="260" y="120" class="node-subtext" fill="#ffbb00" text-anchor="middle">API Server</text>
+          <rect x="220" y="95" width="80" height="40" rx="5" class="node-office" style="stroke: var(--orange);" />
+          <text x="260" y="120" class="node-subtext" fill="var(--orange)" text-anchor="middle">API Server</text>
 
           <rect x="450" y="95" width="80" height="40" rx="5" class="node-vwp" />
           <text x="490" y="120" class="node-subtext" text-anchor="middle">MCP Server</text>
           
-          <rect x="580" y="95" width="80" height="40" rx="5" class="node-vwp" style="stroke: #00ffff;" />
+          <rect x="580" y="95" width="80" height="40" rx="5" class="node-vwp" style="stroke: var(--forest);" />
           <text x="620" y="120" class="node-subtext" text-anchor="middle">Docker</text>
 
-          <rect x="710" y="95" width="100" height="40" rx="5" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <rect x="710" y="95" width="100" height="40" rx="5" class="node-office" style="stroke: var(--muted); fill: var(--green);" />
           <text x="760" y="120" class="node-subtext" text-anchor="middle">File System</text>
 
           <path d="M 170 115 L 220 115" class="line-flow-anim" />
-          <path d="M 300 115 L 450 115" class="line-flow-anim" stroke="#ffbb00" stroke-width="2" />
+          <path d="M 300 115 L 450 115" class="line-flow-anim" stroke="var(--orange)" stroke-width="2" />
           <path d="M 530 115 L 580 115" class="line-flow-anim" />
           <path d="M 660 115 L 710 115" class="line-flow-anim" />
           
           <!-- Cross-firewall warning for Method 1 -->
-          <circle cx="400" cy="115" r="8" fill="#ffbb00" />
-          <text x="400" y="140" text-anchor="middle" font-size="10" fill="#ffbb00">방화벽 지연</text>
+          <circle cx="400" cy="115" r="8" fill="var(--orange)" />
+          <text x="400" y="140" text-anchor="middle" font-size="10" fill="var(--orange)">방화벽 지연</text>
 
           <!-- Divider -->
-          <line x1="20" y1="210" x2="880" y2="210" stroke="rgba(255,255,255,0.1)" stroke-dasharray="5,5" />
+          <line x1="20" y1="210" x2="880" y2="210" stroke="rgba(40, 93, 72, 0.1)" stroke-dasharray="5,5" />
 
           <!-- Method 2 (Bottom) -->
-          <text x="10" y="300" fill="#ff4444" font-weight="bold" font-size="14">방법론 2</text>
+          <text x="10" y="300" fill="var(--danger)" font-weight="bold" font-size="14">방법론 2</text>
           
-          <rect x="420" y="260" width="100" height="70" rx="10" class="node-shield" style="fill: rgba(0,255,0,0.05);" />
-          <text x="470" y="280" class="node-subtext" fill="#00ff00" font-weight="bold" text-anchor="middle">Harness</text>
+          <rect x="420" y="260" width="100" height="70" rx="10" class="node-shield" style="fill: rgba(40, 93, 72, 0.05);" />
+          <text x="470" y="280" class="node-subtext" fill="var(--forest)" font-weight="bold" text-anchor="middle">Harness</text>
           <rect x="430" y="285" width="80" height="35" rx="5" class="node-vwp" />
           <text x="470" y="307" class="node-subtext" text-anchor="middle">LLM</text>
 
-          <rect x="580" y="275" width="80" height="40" rx="5" class="node-vwp" style="stroke: #00ffff;" />
+          <rect x="580" y="275" width="80" height="40" rx="5" class="node-vwp" style="stroke: var(--forest);" />
           <text x="620" y="300" class="node-subtext" text-anchor="middle">Docker</text>
 
-          <rect x="710" y="275" width="100" height="40" rx="5" class="node-office" style="stroke: #9aa0a6; fill: #222;" />
+          <rect x="710" y="275" width="100" height="40" rx="5" class="node-office" style="stroke: var(--muted); fill: var(--green);" />
           <text x="760" y="300" class="node-subtext" text-anchor="middle">File System</text>
 
           <path d="M 520 295 L 580 295" class="line-flow-anim" />
           <path d="M 660 295 L 710 295" class="line-flow-anim" />
           
-          <text x="590" y="340" text-anchor="middle" font-size="12" fill="#00ff00" font-weight="bold">방화벽 통과 없음 (지연 ZERO)</text>
+          <text x="590" y="340" text-anchor="middle" font-size="12" fill="var(--forest)" font-weight="bold">방화벽 통과 없음 (지연 ZERO)</text>
         </svg>
       </section>
 
@@ -448,67 +391,67 @@
       
       <section>
         <h2>현실적인 제약사항 ①</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em;">VWP망 개발 서버 완전 고갈</h3>
+        <h3 style="color: var(--danger); font-size: 1.2em;">VWP망 개발 서버 완전 고갈</h3>
         <p class="visually-hidden">VWP망 내 가용 개발 서버 5대 중 4대는 GAIA가 점유 중이며, 남은 1대마저 GAIA 2.0과 DLQA Infra 서버 구동으로 과부하 상태입니다. 무거운 Docker를 돌릴 자원이 없습니다.</p>
         
         <svg class="svg-diagram" viewBox="0 0 900 250" role="img" aria-label="VWP망 서버 상태 다이어그램">
           <!-- Server 1 -->
-          <rect x="50" y="50" width="120" height="150" rx="10" fill="rgba(255,0,0,0.1)" stroke="#ff4444" stroke-width="2"/>
-          <text x="110" y="90" class="node-text" fill="#ff4444">서버 1</text>
+          <rect x="50" y="50" width="120" height="150" rx="10" fill="rgba(163, 54, 69, 0.1)" stroke="var(--danger)" stroke-width="2"/>
+          <text x="110" y="90" class="node-text" fill="var(--danger)">서버 1</text>
           <text x="110" y="120" class="node-subtext">GAIA 사용중</text>
           
           <!-- Server 2 -->
-          <rect x="210" y="50" width="120" height="150" rx="10" fill="rgba(255,0,0,0.1)" stroke="#ff4444" stroke-width="2"/>
-          <text x="270" y="90" class="node-text" fill="#ff4444">서버 2</text>
+          <rect x="210" y="50" width="120" height="150" rx="10" fill="rgba(163, 54, 69, 0.1)" stroke="var(--danger)" stroke-width="2"/>
+          <text x="270" y="90" class="node-text" fill="var(--danger)">서버 2</text>
           <text x="270" y="120" class="node-subtext">GAIA 사용중</text>
           
           <!-- Server 3 -->
-          <rect x="370" y="50" width="120" height="150" rx="10" fill="rgba(255,0,0,0.1)" stroke="#ff4444" stroke-width="2"/>
-          <text x="430" y="90" class="node-text" fill="#ff4444">서버 3</text>
+          <rect x="370" y="50" width="120" height="150" rx="10" fill="rgba(163, 54, 69, 0.1)" stroke="var(--danger)" stroke-width="2"/>
+          <text x="430" y="90" class="node-text" fill="var(--danger)">서버 3</text>
           <text x="430" y="120" class="node-subtext">GAIA 사용중</text>
           
           <!-- Server 4 -->
-          <rect x="530" y="50" width="120" height="150" rx="10" fill="rgba(255,0,0,0.1)" stroke="#ff4444" stroke-width="2"/>
-          <text x="590" y="90" class="node-text" fill="#ff4444">서버 4</text>
+          <rect x="530" y="50" width="120" height="150" rx="10" fill="rgba(163, 54, 69, 0.1)" stroke="var(--danger)" stroke-width="2"/>
+          <text x="590" y="90" class="node-text" fill="var(--danger)">서버 4</text>
           <text x="590" y="120" class="node-subtext">GAIA 사용중</text>
           
           <!-- Server 5 (Overloaded) -->
-          <rect x="690" y="50" width="160" height="150" rx="10" fill="rgba(255,165,0,0.1)" stroke="#ffaa00" stroke-width="2"/>
-          <text x="770" y="90" class="node-text" fill="#ffaa00">서버 5</text>
+          <rect x="690" y="50" width="160" height="150" rx="10" fill="rgba(255,165,0,0.1)" stroke="var(--orange)" stroke-width="2"/>
+          <text x="770" y="90" class="node-text" fill="var(--orange)">서버 5</text>
           <text x="770" y="115" class="node-subtext">GAIA 2.0 &amp;</text>
           <text x="770" y="135" class="node-subtext">DLQA Infra</text>
           
           <!-- Warning Badge -->
-          <rect x="710" y="170" width="120" height="24" rx="4" fill="#ffaa00" />
+          <rect x="710" y="170" width="120" height="24" rx="4" fill="var(--orange)" />
           <text x="770" y="187" text-anchor="middle" font-size="12" font-weight="bold" fill="#000">⚠️ 과부하 (리소스 부족)</text>
         </svg>
-        <p class="small" style="color:#ffaa00;">무거운 가상 OS(Docker)를 띄울 만한 유휴 컴퓨팅 자원이 없습니다.</p>
+        <p class="small" style="color:var(--orange);">무거운 가상 OS(Docker)를 띄울 만한 유휴 컴퓨팅 자원이 없습니다.</p>
       </section>
 
       <section>
         <h2>현실적인 제약사항 ②</h2>
-        <h3 style="color: #ffaa00; font-size: 1.2em;">사내 LLM API 제한 (100 RPM &amp; Timeout)</h3>
+        <h3 style="color: var(--orange); font-size: 1.2em;">사내 LLM API 제한 (100 RPM &amp; Timeout)</h3>
         <p class="visually-hidden">에이전트가 오동작을 스스로 복구하기 위해 짧은 시간에 수많은 요청을 보내면, 분당 100회 제한에 도달하여 Timeout이 발생합니다.</p>
         
         <svg class="svg-diagram" viewBox="0 0 900 350" role="img" aria-label="API 호출 한계 게이지">
           <!-- Error Badge (Moved Up) -->
-          <rect x="250" y="20" width="400" height="40" rx="5" fill="rgba(255,68,68,0.1)" stroke="#ff4444"/>
-          <text x="450" y="45" text-anchor="middle" font-size="16" fill="#ff4444">Error: Rate limit exceeded or Model timeout</text>
+          <rect x="250" y="20" width="400" height="40" rx="5" fill="rgba(163, 54, 69, 0.1)" stroke="var(--danger)"/>
+          <text x="450" y="45" text-anchor="middle" font-size="16" fill="var(--danger)">Error: Rate limit exceeded or Model timeout</text>
 
           <!-- Gauge Background (Moved Down) -->
-          <path d="M 300 260 A 150 150 0 0 1 600 260" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20" stroke-linecap="round"/>
+          <path d="M 300 260 A 150 150 0 0 1 600 260" fill="none" stroke="rgba(40, 93, 72, 0.1)" stroke-width="20" stroke-linecap="round"/>
           <!-- Gauge Fill (Red Zone) -->
-          <path d="M 300 260 A 150 150 0 0 1 580 170" fill="none" stroke="#ff4444" stroke-width="20" stroke-linecap="round"/>
+          <path d="M 300 260 A 150 150 0 0 1 580 170" fill="none" stroke="var(--danger)" stroke-width="20" stroke-linecap="round"/>
           <!-- Needle -->
-          <line x1="450" y1="260" x2="560" y2="180" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="450" cy="260" r="10" fill="#fff"/>
+          <line x1="450" y1="260" x2="560" y2="180" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="450" cy="260" r="10" fill="var(--ink)"/>
           
           <!-- Labels -->
-          <text x="300" y="290" text-anchor="middle" font-size="16" fill="#9aa0a6">0 RPM</text>
-          <text x="600" y="290" text-anchor="middle" font-size="16" fill="#ff4444">100 RPM (Max)</text>
-          <text x="450" y="220" text-anchor="middle" font-size="28" font-weight="bold" fill="#ff4444">TIMEOUT !</text>
+          <text x="300" y="290" text-anchor="middle" font-size="16" fill="var(--muted)">0 RPM</text>
+          <text x="600" y="290" text-anchor="middle" font-size="16" fill="var(--danger)">100 RPM (Max)</text>
+          <text x="450" y="220" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--danger)">TIMEOUT !</text>
         </svg>
-        <p class="small" style="color:#9aa0a6;">지속적인 Auto-Retry Loop는 현재의 100 RPM 제한 환경에서 치명적인 병목(Bottleneck)이 됩니다.</p>
+        <p class="small" style="color:var(--muted);">지속적인 Auto-Retry Loop는 현재의 100 RPM 제한 환경에서 치명적인 병목(Bottleneck)이 됩니다.</p>
       </section>
 
       <section>
@@ -517,7 +460,7 @@
         
         <table style="width: 100%; font-size: 0.6em; margin-top: 20px; border-collapse: collapse; text-align: center;">
           <thead>
-            <tr style="border-bottom: 2px solid #00ffff; color: #00ffff;">
+            <tr style="border-bottom: 2px solid var(--forest); color: var(--forest);">
               <th style="padding: 10px;">모델명</th>
               <th style="padding: 10px;">추론 성능</th>
               <th style="padding: 10px;">한글 이해도</th>
@@ -527,57 +470,57 @@
           </thead>
           <tbody>
             <tr style="border-bottom: 1px solid #2a2b2a;">
-              <td style="padding: 15px; font-weight: bold; color: #fcfcfb;">Gemma 4</td>
-              <td style="color: #9aa0a6;">75 점</td>
-              <td style="color: #9aa0a6;">60 점</td>
-              <td style="color: #ff4444;">8K (매우 부족)</td>
-              <td style="color: #00ff00;">🚀 빠름</td>
+              <td style="padding: 15px; font-weight: bold; color: var(--ink);">Gemma 4</td>
+              <td style="color: var(--muted);">75 점</td>
+              <td style="color: var(--muted);">60 점</td>
+              <td style="color: var(--danger);">8K (매우 부족)</td>
+              <td style="color: var(--forest);">🚀 빠름</td>
             </tr>
             <tr style="border-bottom: 1px solid #2a2b2a;">
-              <td style="padding: 15px; font-weight: bold; color: #fcfcfb;">GLM 5.2</td>
-              <td style="color: #fcfcfb;">80 점</td>
-              <td style="color: #fcfcfb;">85 점</td>
-              <td style="color: #ffbb00;">32K</td>
-              <td style="color: #ff4444;">🐢 느림 (Timeout)</td>
+              <td style="padding: 15px; font-weight: bold; color: var(--ink);">GLM 5.2</td>
+              <td style="color: var(--ink);">80 점</td>
+              <td style="color: var(--ink);">85 점</td>
+              <td style="color: var(--orange);">32K</td>
+              <td style="color: var(--danger);">🐢 느림 (Timeout)</td>
             </tr>
             <tr style="border-bottom: 1px solid #2a2b2a;">
-              <td style="padding: 15px; font-weight: bold; color: #fcfcfb;">Kimi V3</td>
-              <td style="color: #fcfcfb;">82 점</td>
-              <td style="color: #00ff00;">90 점</td>
-              <td style="color: #00ff00;">128K</td>
-              <td style="color: #ffbb00;">🚶 보통</td>
+              <td style="padding: 15px; font-weight: bold; color: var(--ink);">Kimi V3</td>
+              <td style="color: var(--ink);">82 점</td>
+              <td style="color: var(--forest);">90 점</td>
+              <td style="color: var(--forest);">128K</td>
+              <td style="color: var(--orange);">🚶 보통</td>
             </tr>
             <tr>
-              <td style="padding: 15px; font-weight: bold; color: #00ffff;">DeepSeek V4</td>
-              <td style="color: #00ffff;">95 점</td>
-              <td style="color: #00ffff;">88 점</td>
-              <td style="color: #00ff00;">64K</td>
-              <td style="color: #ffbb00;">🚶 보통</td>
+              <td style="padding: 15px; font-weight: bold; color: var(--forest);">DeepSeek V4</td>
+              <td style="color: var(--forest);">95 점</td>
+              <td style="color: var(--forest);">88 점</td>
+              <td style="color: var(--forest);">64K</td>
+              <td style="color: var(--orange);">🚶 보통</td>
             </tr>
           </tbody>
         </table>
-        <p class="small" style="margin-top: 15px; color: #9aa0a6; text-align: left;">
+        <p class="small" style="margin-top: 15px; color: var(--muted); text-align: left;">
           * 코드를 분석하기 위해서는 최소 32K 이상의 Context 창이 필수적이나,<br>
           안정적으로 넓은 Context를 지원하는 모델은 응답 지연(Timeout)이 자주 발생합니다.
         </p>
       </section>
 
       <section>
-        <h2 style="color: #00ffff;">결론 및 요청사항</h2>
+        <h2 style="color: var(--forest);">결론 및 요청사항</h2>
         <h3 style="font-size: 1.3em;">개발 서버 추가 구매 (증설) 필요</h3>
         
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
-          <div class="hud-box" style="flex: 1; border-color: #ff4444;">
-            <h4 style="color: #ff4444; margin-bottom: 10px;">현재의 한계</h4>
-            <ul style="font-size: 16px; color: #9aa0a6; line-height: 1.6;">
+          <div class="hud-box" style="flex: 1; border-color: var(--danger);">
+            <h4 style="color: var(--danger); margin-bottom: 10px;">현재의 한계</h4>
+            <ul style="font-size: 16px; color: var(--muted); line-height: 1.6;">
               <li>무거운 가상화(Docker 샌드박스)를 감당할 VWP 서버 여력 제로</li>
               <li>LLM 100 RPM 제한으로 인한 파이프라인(Agentic Loop) 마비</li>
               <li>대용량 코드를 소화할 수 있는 모델들의 잦은 Timeout</li>
             </ul>
           </div>
-          <div class="hud-box" style="flex: 1; border-color: #00ffff;">
-            <h4 style="color: #00ffff; margin-bottom: 10px;">해결 방안</h4>
-            <ul style="font-size: 16px; color: #fcfcfb; line-height: 1.6;">
+          <div class="hud-box" style="flex: 1; border-color: var(--forest);">
+            <h4 style="color: var(--forest); margin-bottom: 10px;">해결 방안</h4>
+            <ul style="font-size: 16px; color: var(--ink); line-height: 1.6;">
               <li><strong>독립적인 VWP망 개발 서버</strong> 추가 배치 필수</li>
               <li>안정적인 인프라 기반 위에서 2가지 아키텍처 대안을 모두 검증 가능</li>
               <li>결과적으로, 인프라 투자가 선행되어야 진정한 '안전한 설계 자동화' 완성</li>
@@ -587,7 +530,7 @@
       </section>
 
       <section>
-        <h3 style="color: #ffbb00; font-size: 1.2em;">2차 방어: Payload Compression</h3>
+        <h3 style="color: var(--orange); font-size: 1.2em;">2차 방어: Payload Compression</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding-top: 10px;">
             <p style="font-size: 18px; line-height: 1.6;">
@@ -605,8 +548,8 @@
           <!-- Host -->
           <g>
             <text x="250" y="50" text-anchor="middle" font-size="24" font-weight="600" fill="currentColor" class="dim">Host (VWP Network)</text>
-            <rect x="100" y="70" width="300" height="80" rx="8" fill="none" stroke="#9aa0a6" stroke-width="2"/>
-            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="#9aa0a6">보호 대상 디렉토리 (DB/소스)</text>
+            <rect x="100" y="70" width="300" height="80" rx="8" fill="none" stroke="var(--muted)" stroke-width="2"/>
+            <text x="250" y="115" text-anchor="middle" font-size="22" font-weight="500" fill="var(--muted)">보호 대상 디렉토리 (DB/소스)</text>
             
             <rect x="100" y="190" width="300" height="80" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
             <text x="250" y="235" text-anchor="middle" font-size="22" font-weight="500" fill="currentColor" class="bright">임시 작업 디렉토리</text>
@@ -614,48 +557,48 @@
 
           <!-- Arrows -->
           <g class="fragment fade-right">
-            <line x1="410" y1="110" x2="540" y2="110" stroke="#9aa0a6" stroke-width="3" stroke-dasharray="6,4"/>
-            <polygon points="550,110 535,103 535,117" fill="#9aa0a6"/>
-            <text x="480" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="#9aa0a6">Read-Only (RO)</text>
+            <line x1="410" y1="110" x2="540" y2="110" stroke="var(--muted)" stroke-width="3" stroke-dasharray="6,4"/>
+            <polygon points="550,110 535,103 535,117" fill="var(--muted)"/>
+            <text x="480" y="100" text-anchor="middle" font-size="18" font-weight="600" fill="var(--muted)">Read-Only (RO)</text>
           </g>
           
           <g class="fragment fade-right">
-            <line x1="410" y1="230" x2="540" y2="230" stroke="#fcfcfb" stroke-width="3"/>
-            <polygon points="550,230 535,223 535,237" fill="#fcfcfb"/>
-            <polygon points="410,230 425,223 425,237" fill="#fcfcfb"/>
-            <text x="480" y="220" text-anchor="middle" font-size="18" font-weight="600" fill="#fcfcfb">Read-Write (RW)</text>
+            <line x1="410" y1="230" x2="540" y2="230" stroke="var(--ink)" stroke-width="3"/>
+            <polygon points="550,230 535,223 535,237" fill="var(--ink)"/>
+            <polygon points="410,230 425,223 425,237" fill="var(--ink)"/>
+            <text x="480" y="220" text-anchor="middle" font-size="18" font-weight="600" fill="var(--ink)">Read-Write (RW)</text>
           </g>
 
           <!-- Docker -->
           <g>
-            <rect x="560" y="30" width="280" height="280" rx="10" fill="none" stroke="#fcfcfb" stroke-width="2"/>
-            <text x="700" y="65" text-anchor="middle" font-size="24" font-weight="600" fill="#fcfcfb">Docker Container</text>
+            <rect x="560" y="30" width="280" height="280" rx="10" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <text x="700" y="65" text-anchor="middle" font-size="24" font-weight="600" fill="var(--ink)">Docker Container</text>
             
-            <rect x="590" y="90" width="220" height="40" rx="4" fill="none" stroke="#9aa0a6" stroke-width="1"/>
-            <text x="700" y="117" text-anchor="middle" font-size="18" fill="#9aa0a6">읽기 전용 마운트</text>
+            <rect x="590" y="90" width="220" height="40" rx="4" fill="none" stroke="var(--muted)" stroke-width="1"/>
+            <text x="700" y="117" text-anchor="middle" font-size="18" fill="var(--muted)">읽기 전용 마운트</text>
             
-            <rect x="590" y="210" width="220" height="40" rx="4" fill="none" stroke="#fcfcfb" stroke-width="1"/>
-            <text x="700" y="237" text-anchor="middle" font-size="18" fill="#fcfcfb">읽기/쓰기 마운트</text>
+            <rect x="590" y="210" width="220" height="40" rx="4" fill="none" stroke="var(--ink)" stroke-width="1"/>
+            <text x="700" y="237" text-anchor="middle" font-size="18" fill="var(--ink)">읽기/쓰기 마운트</text>
           </g>
         </svg>
       </section>
 
       <section>
         <h2>Agentic Loop </h2>
-        <h3 style="color: #ffbb00; font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
+        <h3 style="color: var(--orange); font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
-          <text x="400" y="50" class="node-text loop-label-anim" fill="#ffbb00" font-size="18">
+          <text x="400" y="50" class="node-text loop-label-anim" fill="var(--orange)" font-size="18">
             <tspan>오류 발생 → Harness 차단 → 재추론 → VWP망 조회 (반복)</tspan>
           </text>
           
-          <rect x="10" y="80" width="460" height="270" fill="rgba(0, 255, 255, 0.05)" stroke="rgba(0, 255, 255, 0.2)" />
-          <rect x="530" y="80" width="260" height="270" fill="rgba(255, 100, 100, 0.05)" stroke="rgba(255, 100, 100, 0.2)" />
+          <rect x="10" y="80" width="460" height="270" fill="rgba(40, 93, 72, 0.05)" stroke="rgba(40, 93, 72, 0.2)" />
+          <rect x="530" y="80" width="260" height="270" fill="rgba(163, 54, 69, 0.05)" stroke="rgba(163, 54, 69, 0.2)" />
           <line x1="500" y1="50" x2="500" y2="380" class="fw-line" />
           
-          <text x="50" y="220" class="node-text" fill="#fff" font-size="12">User Prompt</text>
+          <text x="50" y="220" class="node-text" fill="var(--ink)" font-size="12">User Prompt</text>
           <rect x="110" y="190" width="100" height="60" rx="10" class="node-shield" />
           <text x="160" y="220" class="node-text" font-size="12">Open Source</text>
-          <rect x="250" y="190" width="100" height="60" rx="10" class="node-office" style="stroke: #ffbb00;" />
+          <rect x="250" y="190" width="100" height="60" rx="10" class="node-office" style="stroke: var(--orange);" />
           <text x="300" y="220" class="node-text" font-size="12">API Server</text>
           <rect x="570" y="190" width="100" height="60" rx="10" class="node-vwp" />
           <text x="620" y="220" class="node-text" font-size="12">Docker</text>
@@ -668,7 +611,7 @@
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-1" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-ping" />
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
-          <text x="160" y="160" class="node-text result-multi-text" fill="#00ff00" font-size="14">최종 결과 Output!</text>
+          <text x="160" y="160" class="node-text result-multi-text" fill="var(--forest)" font-size="14">최종 결과 Output!</text>
         </svg>
       </section>
 
@@ -697,7 +640,7 @@
 
 <section>
         <h2>Issue 1: Hallucination</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em;">CodeMate LLM의 치명적 오작동 사례</h3>
+        <h3 style="color: var(--danger); font-size: 1.2em;">CodeMate LLM의 치명적 오작동 사례</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding: 20px;">
             <p style="font-size: 18px; line-height: 1.6;">
@@ -725,38 +668,38 @@
 
 <section>
         <h2>Issue 2: Latency</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em; margin-bottom: 5px;">망 분리와 반복 호출의 늪</h3>
+        <h3 style="color: var(--danger); font-size: 1.2em; margin-bottom: 5px;">망 분리와 반복 호출의 늪</h3>
         <div style="margin-top: 10px; text-align: center;">
-          <p style="font-size: 16px; color: #dedede; margin-bottom: 5px;">Agentic Loop 1회 동작 시 소요되는 타임라인 (왕복)</p>
-          <div style="margin: 10px auto; width: 90%; background: #222; border-radius: 10px; padding: 15px; box-shadow: inset 0 0 10px #000;">
+          <p style="font-size: 16px; color: var(--ink); margin-bottom: 5px;">Agentic Loop 1회 동작 시 소요되는 타임라인 (왕복)</p>
+          <div style="margin: 10px auto; width: 90%; background: var(--green); border-radius: 10px; padding: 15px; box-shadow: none;">
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ff00; font-size: 14px;">LLM 異붾줎</div>
-              <div style="width: 30%; height: 15px; background: #00ff00; border-radius: 4px;"></div>
-              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(2,000ms)</div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: var(--forest); font-size: 14px;">LLM 異붾줎</div>
+              <div style="width: 30%; height: 15px; background: var(--forest); border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: var(--muted);">(2,000ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ffbb00; font-size: 14px;">API Server 릴레이</div>
-              <div style="width: 10%; height: 15px; background: #ffbb00; border-radius: 4px;"></div>
-              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(500ms)</div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: var(--orange); font-size: 14px;">API Server 릴레이</div>
+              <div style="width: 10%; height: 15px; background: var(--orange); border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: var(--muted);">(500ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #ff0055; font-size: 14px;">망 연동 방화벽</div>
-              <div style="width: 15%; height: 15px; background: #ff0055; border-radius: 4px;"></div>
-              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(800ms)</div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: var(--danger); font-size: 14px;">망 연동 방화벽</div>
+              <div style="width: 15%; height: 15px; background: var(--danger); border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: var(--muted);">(800ms)</div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <div style="width: 140px; text-align: right; padding-right: 15px; color: #00ffff; font-size: 14px;">MCP Server 처리</div>
-              <div style="width: 40%; height: 15px; background: #00ffff; border-radius: 4px;"></div>
-              <div style="margin-left: 10px; font-size: 12px; color: #9aa0a6;">(3,000ms)</div>
+              <div style="width: 140px; text-align: right; padding-right: 15px; color: var(--forest); font-size: 14px;">MCP Server 처리</div>
+              <div style="width: 40%; height: 15px; background: var(--forest); border-radius: 4px;"></div>
+              <div style="margin-left: 10px; font-size: 12px; color: var(--muted);">(3,000ms)</div>
             </div>
           </div>
-          <p style="font-size: 16px; color: #ff4444; font-weight: bold; margin-top: 10px;">총 6.3초 소요. 만약 5번의 Loop를 돌면 30초 이상의 딜레이 발생!</p>
+          <p style="font-size: 16px; color: var(--danger); font-weight: bold; margin-top: 10px;">총 6.3초 소요. 만약 5번의 Loop를 돌면 30초 이상의 딜레이 발생!</p>
         </div>
       </section>
 
 <section>
         <h2>Issue 3: Context Overflow</h2>
-        <h3 style="color: #ff4444; font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
+        <h3 style="color: var(--danger); font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1;">
             <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: #888;">
@@ -767,7 +710,7 @@
 {"log_id": "89316", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
 {"log_id": "89317", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}
 ... (10,000+ lines omitted) ...
-<span style="color: #ff4444; font-size: 14px; font-weight: bold;">[ERROR] Maximum Context Length Exceeded (32K tokens)</span>
+<span style="color: var(--danger); font-size: 14px; font-weight: bold;">[ERROR] Maximum Context Length Exceeded (32K tokens)</span>
             </div>
           </div>
           <div style="flex: 1; padding: 10px;">
@@ -784,21 +727,21 @@
         <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
           
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Schema Auto-Retry</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+            <h4 style="font-size: 18px; color: var(--ink); margin-bottom: 10px;">Schema Auto-Retry</h4>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.4;">
               Harness 계층에서 엄격하게 JSON을 파싱하고, 잘못된 호출은 LLM에게 즉각 재시도 지시             </p>
           </div>
           
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Payload Compression</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+            <h4 style="font-size: 18px; color: var(--ink); margin-bottom: 10px;">Payload Compression</h4>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.4;">
               API Server단에서 불필요한 로그 필드를 잘라내고 요약하여 컨텍스트 보호
             </p>
           </div>
           
           <div class="hud-box" style="width: 250px; text-align: center;">
-            <h4 style="font-size: 18px; color: #fff; margin-bottom: 10px;">Safe Whitelisting</h4>
-            <p style="font-size: 14px; color: #9aa0a6; line-height: 1.4;">
+            <h4 style="font-size: 18px; color: var(--ink); margin-bottom: 10px;">Safe Whitelisting</h4>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.4;">
               VWP망의 데이터 손상을 막기 위해 MCP Server에서 Read-only 기능만 호출
             </p>
           </div>
@@ -806,55 +749,22 @@
         </div>
       </section>
 
-<section style="position: relative; height: 100%;">
+<section class="closing-slide">
         <h2 class="thank-you-neon">THANK YOU</h2>
         <a href="../../" class="btn-return">
           RETURN TO LANDING PAGE
         </a>
         
-        <!-- 행성 아크 (Cyan/Teal) -->
-        <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; overflow: hidden; pointer-events: none;">
-          <svg viewBox="0 0 800 400" width="800" height="400">
-            <!-- 행성 표면 발광 및 베이스 -->
-            <ellipse cx="400" cy="400" rx="600" ry="200" fill="#001122" stroke="#00ffff" stroke-width="4" />
-            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 255, 0.5)" stroke-width="15" filter="blur(10px)" />
-            <ellipse cx="400" cy="400" rx="600" ry="200" fill="none" stroke="rgba(0, 255, 200, 0.2)" stroke-width="30" filter="blur(20px)" />
-          </svg>
-        </div>
-        
-        <!-- 우주선 & 불꽃 애니메이션 -->
-        <div class="spaceship-container">
-          <svg viewBox="0 0 40 60" width="40" height="60" style="position: relative; z-index: 2;">
-            <!-- 날개 -->
-            <polygon points="20,10 0,50 10,50" fill="#dedede" />
-            <polygon points="20,10 40,50 30,50" fill="#dedede" />
-            <!-- 동체 -->
-            <polygon points="20,0 10,40 30,40" fill="#ffffff" />
-            <!-- 엔진 노즐 -->
-            <rect x="15" y="40" width="10" height="8" fill="#888" />
-            <!-- 李쎈Ц -->
-            <circle cx="20" cy="25" r="4" fill="#00ffff" />
-          </svg>
-          <div class="spaceship-exhaust"></div>
-        </div>
+        <div class="closing-symbol" aria-hidden="true">↗</div>
       </section>
 </div>
-  </div>
+  </main>
 
   <script src="../../vendor/reveal.js/dist/reveal.js"></script>
   <script src="../shared/code-copy.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: "fade",
-      // 전용 인쇄 주소(?view=print)에서 fragment 단계마다 쪽이 복제되는 것을
-      // 막는다 — 장당 1쪽(모든 단계 표시)으로 고정. 일반 인쇄(Ctrl+P)는 무관.
-      pdfSeparateFragments: false
-    });
-  </script>
+  <script src="../../assets/template.js"></script>
+  <script src="../shared/deck-template.js"></script>
 
 
-  <script src="../../vendor/three.js/three.min.js"></script>
-  <script src="../../scripts/galaxy3d.js"></script>
 </body>
 </html>
