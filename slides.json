@@ -34,5 +34,11 @@
     "date": "2026-09-20",
     "description": "프롬프트에서 AI 도구로 — 큰 글씨와 그림으로 배우는 Codex·Claude Code·Antigravity 입문",
     "dir": "agent-tools-antigravity"
+  },
+  {
+    "title": "내 자료가 이해가 되는 순간",
+    "date": "2026-09-21",
+    "description": "NotebookLM / Gemini Notebook — 여행·독서·복습·회의, 그림으로 배우는 네 가지 활용 예시와 실습",
+    "dir": "notebooklm-examples"
   }
 ]

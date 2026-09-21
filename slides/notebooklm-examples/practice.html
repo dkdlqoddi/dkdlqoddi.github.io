@@ -1,0 +1,128 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>NotebookLM 실습 모음 — 네 가지 활용 예시</title>
+<link rel="icon" href="data:,">
+<style>
+/* Inline foundation keeps the downloaded HTML independent; the website theme refines it online. */
+:root{--ink:#182320;--muted:#626a65;--line:#dce1db;--paper:#fff;--green:#f0f5ed;--forest:#285d48;--lime:#ddf59a;--peach:#fff1df;--lavender:#eeebff;--r-main-font:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:white;color:var(--ink);font-family:var(--r-main-font);word-break:keep-all;overflow-wrap:anywhere;line-height:1.7}button,a{touch-action:manipulation}a{color:var(--forest);text-underline-offset:5px}button{font:inherit;cursor:pointer;border:1px solid #b2c3a8;border-radius:10px;padding:11px 17px;min-height:46px;background:white;color:var(--forest);font-weight:650}button:hover{background:var(--lime)}:focus-visible{outline:3px solid #566fc3;outline-offset:4px}header{padding:20px 5%;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}header a{font-size:17px;font-weight:650}header span{color:var(--muted);font-size:15px}main{max-width:1160px;margin:auto;padding:50px 30px 80px}.intro{padding-bottom:38px}.intro .eyebrow{font-size:18px;color:var(--forest);margin:0 0 12px}h1{font-size:clamp(38px,5vw,65px);letter-spacing:-.05em;line-height:1.2;margin:0 0 22px}h1 em{font-style:normal;color:var(--forest)}.intro>p{font-size:22px;margin:10px 0}.intro .subtle{font-size:17px;color:var(--muted)}.quick-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:30px 0 0}.quick-nav a{font-size:22px;font-weight:650;text-decoration:none;border-radius:15px;padding:22px;color:var(--ink)}.quick-nav a:nth-child(1){background:var(--peach)}.quick-nav a:nth-child(2){background:var(--lavender)}.quick-nav a:nth-child(3){background:var(--green)}.quick-nav a:nth-child(4){background:var(--lime)}.quick-nav a span{display:block;color:var(--muted);font-size:14px;margin-bottom:6px}.intro-actions{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:26px}.service-link{display:inline-block;background:var(--forest);color:white;padding:13px 20px;border-radius:12px;font-size:19px;font-weight:650;text-decoration:none}.practice-case{padding:42px 0;border-top:1px solid var(--line);scroll-margin-top:20px}.case-heading{display:flex;gap:21px;align-items:center;margin-bottom:30px}.case-index{font-size:45px;line-height:1;width:83px;height:83px;display:grid;place-items:center;background:var(--green);border-radius:22px;color:var(--forest)}.case-heading p{margin:0;color:var(--muted);font-size:15px}h2{margin:3px 0 0;font-size:36px;letter-spacing:-.04em;line-height:1.3}.back-top{margin-left:auto;font-size:16px}h3{font-size:21px;margin:0 0 18px;letter-spacing:-.03em;display:flex;gap:10px;align-items:center}h3>span{font-size:16px;border-radius:50%;width:29px;height:29px;display:inline-grid;place-items:center;background:var(--green);color:var(--forest);flex-shrink:0}.practice-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}.practice-grid>div,.result-row>div{min-width:0}.source-item{border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}.source-top{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between}h4{font-size:19px;margin:0}.source-top button{font-size:15px;padding:8px 13px}.source-item details{margin-top:15px}summary{cursor:pointer;color:var(--forest);font-weight:600;min-height:44px;display:list-item;padding:8px 0;font-size:17px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:18px;line-height:1.85;background:#fafbf8;padding:20px;border-radius:10px;max-height:540px;overflow:auto}.practice-prompt{background:var(--green);padding:24px;border-radius:17px}.practice-prompt p{font-size:21px;margin:0 0 20px;line-height:1.8}.result-row{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:18px;padding:23px;border-radius:17px;background:#fafbf8}.result-row p{font-size:20px;line-height:1.85;margin:0 0 12px}.result-row small{font-size:15px;color:var(--muted)}.studio-request{align-self:start}.studio-request p{margin-top:15px;font-size:19px}footer{border-top:1px solid var(--line);padding-top:30px;font-size:16px;color:var(--muted)}footer p{margin:8px 0}.notice{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:16px 24px;background:var(--ink);color:white;border-radius:12px;z-index:5;max-width:calc(100% - 24px);width:max-content;opacity:0;pointer-events:none;font-size:18px}.notice.visible{opacity:1}.no-js{padding:20px;background:var(--peach);font-size:18px}
+@media(max-width:760px){main{padding:34px 20px 60px}header{padding:16px 20px}header span{display:none}.quick-nav{grid-template-columns:1fr 1fr;gap:10px}.quick-nav a{font-size:21px;padding:19px}.practice-grid,.result-row{grid-template-columns:1fr;gap:18px}.case-heading{gap:13px}.case-index{width:61px;height:65px;font-size:33px;flex-shrink:0}h2{font-size:30px}.back-top{font-size:14px}.intro>p{font-size:21px}.source-item{padding:17px}.practice-prompt{padding:21px}.practice-prompt p{font-size:20px}.result-row{padding:21px}pre{font-size:17px;padding:15px}.intro-actions{align-items:stretch}.intro-actions>*{text-align:center}.notice{font-size:16px}.result-row p{font-size:19px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{header,.quick-nav,.intro-actions,button,.back-top,.notice{display:none}main{max-width:none;padding:0}.practice-case{break-before:page}.practice-grid,.result-row{display:block}.source-item details{display:none}.result-row{background:white}.studio-request p{display:block}.practice-prompt{border:1px solid #aaa}.practice-case{padding:20px 0}}
+</style>
+<!-- The inline foundation also works when these site assets are unavailable. -->
+<link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body id="top"><header><a href="index.html" id="deck-link">← 발표자료</a><span>NotebookLM / Gemini Notebook · 실습 모음</span></header><main><div class="intro"><p class="eyebrow">내 자료가 이해가 되는 순간</p><h1>읽고, 묻고,<br><em>직접 만들어 보세요.</em></h1><p>원문을 넣고 → 질문을 복사하고 → 결과를 비교해요.</p><p class="subtle">원문 6개는 직접 작성한 수업용 자료입니다. 여행·행사·인물은 가상이며, 결과 예시는 실제 서비스 출력이 아닙니다.</p><nav class="quick-nav" aria-label="활용 예시"><a href="#travel"><span>01</span>여행 일정 ↗</a><a href="#reading"><span>02</span>독서모임 ↗</a><a href="#study"><span>03</span>강의 복습 ↗</a><a href="#meeting"><span>04</span>회의 정리 ↗</a></nav><div class="intro-actions"><a class="service-link" href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer">Notebook 열기 ↗</a><button type="button" id="download-practice">이 실습 페이지 저장 ↓</button></div><p class="subtle">새 노트북에서 ‘소스 추가’로 TXT를 넣으세요. 실제 실습은 Google 계정과 인터넷이 필요해요.</p></div>
+<noscript><p class="no-js">원문을 펼쳐 직접 선택해 복사할 수 있어요. 파일 저장 버튼은 자바스크립트를 켜면 사용할 수 있습니다.</p></noscript>
+<section class="practice-case" id="travel" aria-labelledby="travel-title"><div class="case-heading"><span class="case-index">01</span><div><p>원문 → 질문 → 결과</p><h2 id="travel-title">여행 일정</h2></div><a href="#top" class="back-top">위로 ↑</a></div>
+ <div class="practice-grid"><div><h3><span>1</span> 이 자료를 넣으세요</h3><article class="source-item"><div class="source-top"><h4>마을 여행 안내</h4><button type="button" data-download="travel-guide.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="travel-guide.txt">산들마을 하루 여행 안내
+[수업용 가상 자료 · 실제 장소·가격·운영 정보가 아닙니다]
+
+산들마을은 작은 실내 전시관과 온실을 걸어서 둘러볼 수 있는 가상의 마을이다. 이 안내는 여행 계획을 연습하기 위해 작성했다.
+
+1. 마을전시관
+운영 시간은 오전 10시부터 오후 5시까지다. 성인 입장료는 1인 8,000원이다. 관람 권장 시간은 60분이며 전시 전체가 실내에 있다. 매주 월요일은 휴관한다.
+
+2. 들꽃식당
+운영 시간은 오전 11시부터 오후 3시까지다. 점심 정식은 1인 12,000원이다. 식사 시간은 약 60분으로 잡는다. 마을전시관에서 도보로 10분 걸린다.
+
+3. 유리온실
+운영 시간은 오전 10시부터 오후 4시까지다. 성인 입장료는 1인 5,000원이다. 관람 권장 시간은 60분이다. 실내 공간이며 들꽃식당에서 도보로 10분 걸린다.
+
+4. 여행 계획에 필요한 조건
+이번 여행은 토요일이다. 도보 이동 구간에는 지붕이 없어서 우천 시 우산이 필요하다. 별도의 예약 필요 여부나 주차 요금은 이 자료에 제공되지 않았다. 제공되지 않은 내용을 추측해서 확정하지 않는다.
+</pre><button type="button" data-copy="travel-guide.txt">원문 복사</button></details></article><article class="source-item"><div class="source-top"><h4>여행자 요청</h4><button type="button" data-download="travel-request.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="travel-request.txt">산들마을 여행자 요청
+[수업용 가상 자료 · 개인정보 없음]
+
+여행자는 성인 2명이다. 토요일 오전 10시에 마을전시관 입구에서 만나고 오후 4시 이전에 여행을 마치려 한다. 여행 총예산은 50,000원이며 이 예산에는 두 사람의 입장료와 점심 식사만 포함한다. 마을까지 오는 교통비와 간식비는 계산에서 제외한다.
+
+비가 올 예정이므로 실내 관람 장소를 중심으로 일정 세 개를 짜고 싶다. 장소 간 짧은 도보 이동은 괜찮다. 점심은 들꽃식당에서 먹고 싶다. 각 일정에는 시작 시각, 장소, 성인 2명 기준 비용을 적는다. 이동 시간과 운영 시간을 함께 확인한다.
+
+총비용은 항목별로 더해서 보여주고, 자료에 없는 예약·주차 정보는 확인 필요로 남긴다. 추천 일정을 실제 여행 정보로 쓰지 않고 실습용 결과로만 사용한다.
+</pre><button type="button" data-copy="travel-request.txt">원문 복사</button></details></article></div><div><h3><span>2</span> 이렇게 질문하세요</h3><div class="practice-prompt"><p id="travel-prompt">선택한 두 자료만 바탕으로, 비 오는 토요일 성인 2명의 실내 중심 일정을 3개 짜 주세요. 시각·장소·2인 비용을 표로 쓰고 총액을 더해 주세요. 근거를 표시하고 자료에 없는 내용은 “확인 필요”로 남겨 주세요.</p><button type="button" data-copy="travel-prompt">질문 복사</button></div></div></div>
+ <div class="result-row"><div><h3><span>3</span> 결과를 비교하세요</h3><p>10:00 마을전시관 16,000원 → 11:30 들꽃식당 24,000원 → 13:00 유리온실 10,000원. 합계 50,000원. 실내 관람 사이 도보 구간은 우산 필요. 예약·주차 정보는 확인 필요.</p><small>원문으로 직접 작성한 기대 결과입니다. 실제 AI 답변은 달라질 수 있어요.</small></div><details class="studio-request"><summary>Studio에서 더 해보기</summary><p id="travel-studio">인포그래픽: 여행 일정 3개를 가로 타임라인으로, 장소별 2인 비용과 총액을 크게 표현해 주세요. 한국어로 쓰고 가상 실습 일정이라고 표시해 주세요.</p><button type="button" data-copy="travel-studio">맞춤 요청 복사</button></details></div></section><section class="practice-case" id="reading" aria-labelledby="reading-title"><div class="case-heading"><span class="case-index">02</span><div><p>원문 → 질문 → 결과</p><h2 id="reading-title">독서모임</h2></div><a href="#top" class="back-top">위로 ↑</a></div>
+ <div class="practice-grid"><div><h3><span>1</span> 이 자료를 넣으세요</h3><article class="source-item"><div class="source-top"><h4>닫힌 정원의 열쇠</h4><button type="button" data-download="reading-story.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="reading-story.txt">닫힌 정원의 열쇠
+[발표자료 제작을 위해 직접 쓴 짧은 이야기 · 수업용 창작물]
+
+골목 끝에는 오랫동안 닫혀 있던 정원이 있었다. 은퇴한 우편배달부 도윤은 매일 그 문 앞을 지나며 마른 나무를 바라보았다. 어느 날 이웃 지수가 작은 황동 열쇠를 내밀었다. “예전 관리인이 함께 돌보는 사람에게 전해 달랬어요.” 도윤은 혼자 조용히 가꿀 생각으로 열쇠를 받았다.
+
+첫 주에는 도윤 혼자 잡초를 뽑고 화분에 물을 주었다. 정원은 깨끗해졌지만, 문밖에서 구경하는 이웃들의 발걸음은 늘 그대로 지나갔다. 도윤은 정원이 다시 어질러질까 봐 문을 열어 두지 않았다.
+
+다음 토요일, 지수가 빈 화분 세 개를 가져왔다. 도윤은 놓을 자리가 없다고 말했다. 지수는 “화분보다 사람을 놓을 자리가 필요한 것 같아요”라고 답했다. 잠시 망설이던 도윤은 벤치 옆에 작은 공간을 비웠다. 지수는 그곳에 이름표 없는 씨앗을 심었다.
+
+한 달 뒤, 아이들은 물뿌리개를 옮기고 이웃들은 자기 집에서 가져온 씨앗을 나누었다. 화분은 반듯하지 않았고 길에는 흙이 조금 흩어져 있었다. 그래도 정원에는 전보다 많은 꽃이 피었다. 도윤은 저녁마다 모든 일을 혼자 마치려던 습관을 바꾸었다.
+
+가을이 오자 도윤은 정원 입구에 열쇠를 걸었다. 그 아래에는 “마지막 사람이 문을 닫아 주세요”라는 쪽지를 붙였다. 지수는 열쇠를 보며 웃었다. 도윤에게 정원은 더 이상 혼자 관리해야 하는 소유물이 아니라 함께 가꿀 수 있는 장소가 되었다.
+
+독서모임 메모: 도윤의 태도 변화, 열쇠의 의미 변화, 혼자 관리하기와 함께 돌보기의 관계를 토론할 수 있다. 등장인물의 생각을 해석할 때는 실제 문장과 해석을 구분한다.
+</pre><button type="button" data-copy="reading-story.txt">원문 복사</button></details></article></div><div><h3><span>2</span> 이렇게 질문하세요</h3><div class="practice-prompt"><p id="reading-prompt">이 이야기에서 도윤이 어떻게 바뀌는지 3단계로 보여 주세요. 단계마다 근거 문장을 짧게 인용하고, 독서모임에서 서로 다른 생각을 나눌 질문을 3개 만들어 주세요. 원문 사실과 해석을 구분해 주세요.</p><button type="button" data-copy="reading-prompt">질문 복사</button></div></div></div>
+ <div class="result-row"><div><h3><span>3</span> 결과를 비교하세요</h3><p>혼자 관리 → 자리를 내줌 → 함께 돌봄. “정원이 어질러질까 봐 문을 열어 두지 않았다”에서 “정원 입구에 열쇠를 걸었다”로 변화한다. 토론: 열쇠의 의미는 어떻게 변했을까? 정원이 흐트러진 것은 실패일까? 내가 도윤이라면 언제 문을 열었을까?</p><small>원문으로 직접 작성한 기대 결과입니다. 실제 AI 답변은 달라질 수 있어요.</small></div><details class="studio-request"><summary>Studio에서 더 해보기</summary><p id="reading-studio">오디오 오버뷰: 한국어로, 도윤의 변화와 열쇠의 의미를 중심으로 설명해 주세요. 원문에 없는 사건을 만들지 말고 끝에 독서모임 질문 하나를 남겨 주세요.</p><button type="button" data-copy="reading-studio">맞춤 요청 복사</button></details></div></section><section class="practice-case" id="study" aria-labelledby="study-title"><div class="case-heading"><span class="case-index">03</span><div><p>원문 → 질문 → 결과</p><h2 id="study-title">강의 복습</h2></div><a href="#top" class="back-top">위로 ↑</a></div>
+ <div class="practice-grid"><div><h3><span>1</span> 이 자료를 넣으세요</h3><article class="source-item"><div class="source-top"><h4>사진 기초 노트</h4><button type="button" data-download="study-notes.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="study-notes.txt">사진 기초 수업 노트
+[수업용으로 직접 작성한 학습 자료]
+
+사진의 밝기에는 조리개, 셔터 속도, ISO 설정 등이 영향을 준다. 세 가지를 바꿀 때는 다른 조건도 함께 고려해야 한다. 이 수업에서는 나머지 조건이 같다고 가정하여 효과를 비교한다.
+
+1. 조리개
+조리개는 렌즈를 통과하는 빛의 양을 조절한다. f값이 작아지면 조리개가 더 열리며 빛이 많이 들어온다. 다른 조건이 같을 때 배경이 흐려지는 효과를 얻기 쉬워진다.
+
+2. 셔터 속도
+셔터 속도는 빛을 받아들이는 시간을 조절한다. 1/1000초는 1/60초보다 짧은 시간이다. 빠르게 움직이는 피사체를 멈춘 것처럼 담으려면 짧은 노출 시간을 사용한다. 다른 조건이 같으면 노출 시간이 짧을수록 사진은 어두워진다. 움직임 때문에 사진이 흐려지는 상황과 초점이 맞지 않는 상황은 구분해야 한다.
+
+3. ISO
+ISO 설정을 높이면 같은 조리개와 셔터 속도에서도 사진을 밝게 표현할 수 있다. 다만 노이즈가 두드러질 수 있다. 빛이 충분할 때는 낮은 ISO를 고려하고, 빛이 부족하거나 짧은 노출 시간이 필요할 때는 ISO와 다른 설정의 균형을 조절한다.
+
+연습 상황
+달리는 아이의 움직임이 길게 번져 나온다면 셔터 속도를 우선 살펴본다. 꽃 뒤 배경을 흐리게 하고 싶다면 조리개를 살펴본다. 어두운 실내에서는 셔터 속도를 지나치게 느리게 만들지 않도록 ISO 등을 함께 조절한다. 이 자료는 특정 기종이나 하나의 고정 설정값을 정답으로 제시하지 않는다.
+</pre><button type="button" data-copy="study-notes.txt">원문 복사</button></details></article></div><div><h3><span>2</span> 이렇게 질문하세요</h3><div class="practice-prompt"><p id="study-prompt">이 수업 노트로 복습용 문답 카드 3개를 만들어 주세요. 조리개·셔터 속도·ISO를 하나씩 다루고, 답은 한 문장으로 쉽게 써 주세요. 어떤 조건을 같게 두고 비교하는지도 밝혀 주세요.</p><button type="button" data-copy="study-prompt">질문 복사</button></div></div></div>
+ <div class="result-row"><div><h3><span>3</span> 결과를 비교하세요</h3><p>조리개: f값이 작아지면 더 많은 빛이 들어온다. 셔터 속도: 노출 시간을 짧게 하면 움직임을 멈춘 것처럼 담기 쉽다. ISO: 높이면 밝게 표현할 수 있지만 노이즈가 두드러질 수 있다. 모두 나머지 조건이 같다는 전제다.</p><small>원문으로 직접 작성한 기대 결과입니다. 실제 AI 답변은 달라질 수 있어요.</small></div><details class="studio-request"><summary>Studio에서 더 해보기</summary><p id="study-studio">퀴즈: 사진을 처음 배우는 사람을 위한 쉬운 문제를 만들어 주세요. 조리개·셔터 속도·ISO를 실제 촬영 상황과 연결하고, 정답 해설에 수업 노트의 근거를 밝혀 주세요.</p><button type="button" data-copy="study-studio">맞춤 요청 복사</button></details></div></section><section class="practice-case" id="meeting" aria-labelledby="meeting-title"><div class="case-heading"><span class="case-index">04</span><div><p>원문 → 질문 → 결과</p><h2 id="meeting-title">회의 정리</h2></div><a href="#top" class="back-top">위로 ↑</a></div>
+ <div class="practice-grid"><div><h3><span>1</span> 이 자료를 넣으세요</h3><article class="source-item"><div class="source-top"><h4>회의 초안 · 9/18</h4><button type="button" data-download="meeting-draft.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="meeting-draft.txt">동네 책나눔 행사 준비회의 — 초안
+[2026-09-18 작성 · 가상 행사 및 가명]
+
+참석자는 민지, 준호, 수연이다. 이 모임은 주민들에게 책을 서로 나눌 기회를 제공하기 위해 열린다. 행사 이름은 동네 책나눔이다.
+
+회의에서는 10월 3일 오후 2시, 마을회관 2층을 행사 일시와 장소의 후보로 논의했다. 아직 장소 예약이 확정되지 않았으므로 이 날짜와 장소로 홍보물을 배포하지 않기로 했다. 추후 확정 공지가 나오면 공지의 일시와 장소를 사용한다.
+
+업무 초안
+민지: 포스터 시안 작성. 기한은 9월 22일.
+준호: 행사 장소 예약 가능 여부 확인. 기한은 9월 23일.
+수연: 필요한 물품 목록 작성. 기한은 9월 24일.
+
+예산 상한은 아직 정하지 않았다. 기부 도서 접수 수량과 참가 신청 방법도 다음 공지에서 검토하기로 했다. 자료에 없는 수량이나 예산은 확정값으로 기입하지 않는다.
+</pre><button type="button" data-copy="meeting-draft.txt">원문 복사</button></details></article><article class="source-item"><div class="source-top"><h4>확정 공지 · 9/21</h4><button type="button" data-download="meeting-final.txt">TXT 내려받기 ↓</button></div><details><summary>원문 펼쳐 읽기</summary><pre id="meeting-final.txt">동네 책나눔 행사 — 확정 공지
+[2026-09-21 작성 · 9월 18일 회의 초안의 일시·장소를 대체함 · 가상 자료]
+
+행사 일시는 2026년 10월 10일 오후 2시로 확정한다. 장소는 마을회관 3층이다. 회의 초안의 10월 3일과 2층은 사용하지 않는다. 준호가 예약을 확인했으며 홍보 담당자에게 변경된 정보를 전달한다.
+
+확정된 다음 할 일
+민지: 새 날짜와 장소를 반영한 포스터 시안 작성. 기한은 9월 22일이다.
+준호: 확정 장소의 좌석 배치도 공유. 기한은 9월 23일이다. 초안의 예약 가능 여부 확인 작업을 이 작업으로 바꾼다.
+수연: 필요한 물품 목록 작성. 기한은 9월 24일이다.
+
+미정인 내용
+총예산 상한, 기부 도서 접수 수량, 참가 신청 방법은 아직 정해지지 않았다. 누군가 물으면 확인 필요로 답한다. 이 공지에 없는 담당자를 새로 지정하지 않는다.
+</pre><button type="button" data-copy="meeting-final.txt">원문 복사</button></details></article></div><div><h3><span>2</span> 이렇게 질문하세요</h3><div class="practice-prompt"><p id="meeting-prompt">회의 초안과 확정 공지를 비교해 주세요. 일시·장소·할 일은 9월 21일 확정 공지를 우선하고, 바뀐 내용은 따로 표시해 주세요. 할 일·담당자·기한을 표로 정리하고, 미정인 항목은 “확인 필요”로 남겨 주세요.</p><button type="button" data-copy="meeting-prompt">질문 복사</button></div></div></div>
+ <div class="result-row"><div><h3><span>3</span> 결과를 비교하세요</h3><p>행사: 10월 10일 14:00, 마을회관 3층. 민지 — 변경 정보를 반영한 포스터 — 9/22. 준호 — 좌석 배치도 공유 — 9/23. 수연 — 물품 목록 — 9/24. 예산·접수 수량·신청 방법은 확인 필요.</p><small>원문으로 직접 작성한 기대 결과입니다. 실제 AI 답변은 달라질 수 있어요.</small></div><details class="studio-request"><summary>Studio에서 더 해보기</summary><p id="meeting-studio">슬라이드 자료: 한국어 발표자 슬라이드로 구성해 주세요. 확정 공지를 우선하여 행사 안내, 역할 분담, 확인할 일을 시각적으로 보여 주세요. 각 장은 큰 제목 하나와 짧은 항목 3개 이내로 구성해 주세요.</p><button type="button" data-copy="meeting-studio">맞춤 요청 복사</button></details></div></section><footer><p>화면에서 ‘읽기 화면’을 선택하면 발표자료도 문서처럼 볼 수 있어요. 파일을 직접 열었을 때는 복사할 문장을 선택한 뒤 Ctrl+C / Command+C를 눌러 주세요.</p><p>Google 공식 안내 확인: 2026. 09. 21. · <a href="https://support.google.com/gemininotebook/?hl=ko" target="_blank" rel="noopener noreferrer">공식 도움말 ↗</a></p></footer></main><div class="notice" id="notice" role="status" aria-live="polite"></div>
+<script>
+(() => {
+ 'use strict';
+ const byId = id => document.getElementById(id);
+ let timer;
+ const notify = text => { clearTimeout(timer); byId('notice').textContent=text; byId('notice').classList.add('visible'); timer=setTimeout(()=>byId('notice').classList.remove('visible'),5000); };
+ const save = (filename, text, type) => { const blob=new Blob([text],{type}); const url=URL.createObjectURL(blob); const link=document.createElement('a'); link.href=url; link.download=filename; document.body.append(link); link.click(); link.remove(); setTimeout(()=>URL.revokeObjectURL(url),10000); };
+ document.querySelectorAll('[data-download]').forEach(button=>button.addEventListener('click',()=>save(button.dataset.download,byId(button.dataset.download).textContent,'text/plain;charset=utf-8')));
+ document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{
+  const target=byId(button.dataset.copy);
+  try { if(location.protocol==='file:' || !navigator.clipboard?.writeText) throw new Error('Use selection'); await navigator.clipboard.writeText(target.textContent); notify('복사했어요. NotebookLM에 붙여넣으세요.'); }
+  catch { target.closest('details')?.setAttribute('open',''); const range=document.createRange(); range.selectNodeContents(target); const selection=getSelection(); selection.removeAllRanges(); selection.addRange(range); notify('문장을 선택했어요. Ctrl+C 또는 Command+C로 복사하세요.'); }
+ }));
+ // Keep a saved copy portable: embedded source texts and all interactions travel with it.
+ byId('download-practice').addEventListener('click',()=>{
+  const copy=document.documentElement.cloneNode(true);
+  copy.querySelectorAll('link[rel="stylesheet"]').forEach(link=>link.remove());
+  copy.querySelector('#deck-link').href='https://dkdlqoddi.github.io/slides/notebooklm-examples/';
+  copy.querySelector('#notice').classList.remove('visible');
+  copy.querySelector('#notice').textContent='';
+  save('notebooklm-practice.html','<!doctype html>\n'+copy.outerHTML,'text/html;charset=utf-8');
+ });
+ if(location.protocol==='file:') byId('deck-link').href='https://dkdlqoddi.github.io/slides/notebooklm-examples/';
+})();
+</script></body></html>
