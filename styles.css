@@ -7,8 +7,11 @@ main { width: min(1240px, calc(100% - 96px)); margin: 74px auto 0; }
 .little-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--forest); }
 h1 { font-size: clamp(42px, 4.6vw, 66px); line-height: 1.23; letter-spacing: -.065em; font-weight: 750; margin: 28px 0; }
 .hero-description { color: var(--muted); font-size: 19px; line-height: 1.8; }
-.primary-link { display: inline-flex; align-items: center; gap: 26px; margin-top: 30px; padding: 14px 22px; border: 1px solid var(--forest); border-radius: 11px; background: var(--forest); color: white; text-decoration: none; font-size: 17px; font-weight: 600; transition: background .2s, translate .2s; }
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+.primary-link { display: inline-flex; align-items: center; gap: 26px; padding: 14px 22px; border: 1px solid var(--forest); border-radius: 11px; background: var(--forest); color: white; text-decoration: none; font-size: 17px; font-weight: 600; transition: background .2s, translate .2s; }
 .primary-link:hover { background: #173c2c; translate: 0 -2px; }
+.secondary-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border: 1px solid var(--line); border-radius: 11px; background: var(--paper); color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 600; transition: background .2s, border-color .2s, translate .2s; }
+.secondary-link:hover { border-color: var(--forest); background: var(--green); translate: 0 -2px; }
 .hero-topics { margin-top: 30px; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
 .hero-topics span { color: #a4aea1; margin: 0 12px; }
 .galaxy { position: relative; width: 100%; max-width: 555px; height: 525px; justify-self: end; isolation: isolate; }

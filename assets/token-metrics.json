@@ -1,0 +1,38 @@
+{
+  "calculated_at": "2026-09-22",
+  "grand_total_context_tokens": 11401278027,
+  "grand_pure_output_tokens": 72513989,
+  "grand_net_tokens": 192322898,
+  "display_total_formatted": "~11.40B+ (11,401,278,027)",
+  "display_output_formatted": "~72.5M+ (72,513,989)",
+  "tools": [
+    {
+      "name": "Claude Code",
+      "input_tokens": 2624907,
+      "output_tokens": 61540758,
+      "cached_tokens": 10039397776,
+      "cache_read": 9700791998,
+      "cache_create": 338605778,
+      "total_tokens": 10103563441,
+      "pure_tokens": 64165665
+    },
+    {
+      "name": "Codex CLI",
+      "input_tokens": 362491962,
+      "output_tokens": 2420353,
+      "cached_tokens": 345118720,
+      "reasoning_tokens": 756148,
+      "total_tokens": 364912315,
+      "pure_tokens": 19793595
+    },
+    {
+      "name": "Antigravity",
+      "input_tokens": 99810760,
+      "output_tokens": 8552878,
+      "cached_tokens": 824438633,
+      "thinking_tokens": 5637806,
+      "total_tokens": 932802271,
+      "pure_tokens": 108363638
+    }
+  ]
+}
