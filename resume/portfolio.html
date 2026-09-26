@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>포트폴리오 · 우제율 (Jae-Yul Woo)</title>
+  <meta name="description" content="우제율의 AI 활용 포트폴리오. 문제, 도구, 결과물 중심으로 정리한 에이전트 기반 개발 사례.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="resume.css">
+  <style>
+    /* Portfolio-only layout. Print-first: A4, one case per page block. */
+    .pf-cover {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 28px 30px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f7faf4 0%, #fff 60%, var(--peach) 100%);
+      margin-bottom: 28px;
+    }
+    .pf-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--forest);
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    .pf-cover h1 {
+      margin: 0 0 6px;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .pf-cover h1 span {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-left: 10px;
+    }
+    .pf-cover .pf-lead {
+      margin: 10px 0 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #2b3632;
+      max-width: 620px;
+    }
+    .pf-cover .pf-contact {
+      margin: 14px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+    }
+    .pf-cover .pf-contact a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+    .pf-toc {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 24px;
+      margin: 0 0 32px;
+      padding: 16px 20px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      font-size: 14px;
+      color: #2b3632;
+    }
+    .pf-toc div { display: flex; gap: 10px; }
+    .pf-toc b { color: var(--forest); min-width: 22px; }
+    .case {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+      background: var(--paper);
+    }
+    .case-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .case-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--forest);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .case-title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 750;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .case-title small {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 18px;
+    }
+    .case-block h4 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--forest);
+    }
+    .case-block p, .case-block ul {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2b3632;
+    }
+    .case-block ul { padding-left: 18px; }
+    .case-block li { margin-bottom: 4px; }
+    .case-block.wide { grid-column: 1 / -1; }
+    .result-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .result-chip {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--green);
+      border: 1px solid rgba(40, 93, 72, 0.15);
+    }
+    .result-chip b {
+      display: block;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--forest);
+      letter-spacing: -0.02em;
+    }
+    .result-chip span { font-size: 12px; color: #4a544f; }
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 0 0 18px;
+    }
+    .role-table th, .role-table td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      line-height: 1.5;
+    }
+    .role-table th { color: var(--forest); font-weight: 700; width: 20%; background: var(--green); }
+    .link-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 18px;
+      font-size: 14px;
+    }
+    .link-list li { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; line-height: 1.45; }
+    .link-list b { color: var(--ink); }
+    .link-list a { color: var(--forest); text-decoration: none; word-break: break-all; font-size: 13px; }
+    .link-list small { display: block; color: var(--muted); font-size: 12.5px; }
+    .compact-list { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: #2b3632; }
+    .compact-list li { margin-bottom: 5px; }
+    .page-break { break-before: page; }
+    .pf-foot { margin-top: 40px; font-size: 12px; color: var(--muted); text-align: center; }
+    @media (max-width: 680px) {
+      .pf-cover, .pf-toc, .case-grid, .result-row, .link-list { grid-template-columns: 1fr; }
+    }
+    .keep-together { break-inside: avoid; }
+    .role-table tr { break-inside: avoid; }
+    @media print {
+      .pf-cover { break-inside: avoid; background: #fff !important; border: 1px solid #999 !important; }
+      .case { break-inside: avoid; border: 1px solid #bbb !important; padding: 12px 14px; margin-bottom: 10px; }
+      .case-head { margin-bottom: 8px; }
+      .case-title { font-size: 15pt; }
+      .case-title small { font-size: 9.5pt; }
+      .case-grid { gap: 8px 14px; }
+      .case-block h4 { font-size: 9pt; margin-bottom: 3px; }
+      .case-block p, .case-block ul { font-size: 10pt; line-height: 1.45; }
+      .case-block li { margin-bottom: 2px; }
+      .result-row { margin-top: 8px; gap: 6px; }
+      .result-chip { padding: 5px 8px; }
+      .result-chip b { font-size: 11.5pt; }
+      .result-chip span { font-size: 8.5pt; }
+      .section-title { margin-bottom: 12px; padding-bottom: 8px; }
+      .highlight-card { margin-bottom: 18px !important; }
+      .pf-toc { margin-bottom: 18px; padding: 10px 14px; font-size: 10pt; }
+      .role-table th, .role-table td { padding: 6px 8px; font-size: 10pt; }
+      .link-list li { font-size: 10pt; padding: 6px 8px; }
+      .compact-list { font-size: 10pt; }
+      .result-chip { background: #f4f4f4 !important; border: 1px solid #ccc !important; }
+      .role-table th { background: #f4f4f4 !important; }
+      .link-list li { break-inside: avoid; border: 1px solid #ccc !important; }
+      .pf-toc { border: 1px dashed #999 !important; }
+      a[href^="http"]::after { content: ""; }
+    }
+  </style>
+</head>
+<body data-template="resume">
+  <div class="resume-container">
+    <nav class="resume-nav" aria-label="포트폴리오 상단 이동">
+      <a class="resume-back-link" href="./">
+        <span aria-hidden="true">←</span> 이력서로 이동
+      </a>
+      <div class="resume-actions">
+        <button type="button" class="btn-print" onclick="window.print()" aria-label="포트폴리오 PDF 저장 및 인쇄">PDF / 인쇄</button>
+      </div>
+    </nav>
+
+    <header class="pf-cover">
+      <div>
+        <p class="pf-eyebrow">Portfolio · AI 활용 경험</p>
+        <h1>우제율 <span>Jae-Yul Woo</span></h1>
+        <p class="profile-title" style="margin-bottom: 0;">Embedded &amp; Firmware · AI-Native Development · DevOps Automation</p>
+        <p class="pf-lead">
+          파운드리 설계 지원 현장에서 사내 LLM API로 EDA 툴 실행 자동화, 설계 파라미터 값 수집, 툴 로그 파싱·저장을 하는 엔지니어입니다. 모르는 도메인을 만나면 먼저 AI로 도서관과 지식 지도를 만들고, 그 위에서 프로그램을 짓습니다. Claude Code(계획·리뷰), Codex CLI(교차 검증), Antigravity(병렬 실행)를 역할을 나눠 함께 쓰며, 결과는 hook·CI·정책으로 검증합니다. 이 문서는 문제 → 도구 → 결과물 순서로 대표 사례 5가지를 정리한 것입니다.
+        </p>
+        <p class="pf-contact">
+          <a href="mailto:dkdlqoddi@gmail.com">dkdlqoddi@gmail.com</a>
+          <a href="https://github.com/dkdlqoddi">github.com/dkdlqoddi</a>
+          <a href="https://dkdlqoddi.github.io">dkdlqoddi.github.io</a>
+          <span>2026-09-26</span>
+        </p>
+      </div>
+      <picture>
+        <source srcset="../assets/images/jaeyul_woo.webp" type="image/webp">
+        <img class="profile-photo" src="../assets/images/jaeyul_woo.jpg" alt="우제율 프로필 사진" width="130" height="130" loading="eager">
+      </picture>
+    </header>
+
+    <section class="highlight-card" aria-labelledby="pf-metrics-title">
+      <div class="card-top">
+        <span class="card-badge">AI AGENT ORCHESTRATION</span>
+        <span class="card-date">2026-04 ~ 2026-09 · 2026-09-22 로컬 전수 집계 기준</span>
+      </div>
+      <h2 class="card-headline" id="pf-metrics-title">5개월간의 산출 지표</h2>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">총 컨텍스트 처리량</div>
+          <div class="stat-value">~114억 토큰</div>
+          <div class="stat-sub">Claude Code 101.0억 · Antigravity 9.3억 · Codex CLI 3.6억 (11,401,278,027)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">순수 생성 및 추론량</div>
+          <div class="stat-value">~7,251만 토큰</div>
+          <div class="stat-sub">코드 작성, 추론, 회귀 디버깅 산출물 (72,513,989)</div>
+        </div>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-stat"><span class="mini-stat-value">46개</span><span class="mini-stat-label">신규 GitHub 저장소</span></div>
+        <div class="mini-stat"><span class="mini-stat-value">1,800+</span><span class="mini-stat-label">고유 커밋 (중복 클론 제외)</span></div>
+        <div class="mini-stat"><span class="mini-stat-value">20+</span><span class="mini-stat-label">셀프호스팅 CI 러너</span></div>
+        <div class="mini-stat"><span class="mini-stat-value">7편</span><span class="mini-stat-label">팀 세미나 발표</span></div>
+      </div>
+    </section>
+
+    <div class="pf-toc" aria-label="목차">
+      <div><b>01</b><span>모르는 도메인을 도서관과 지식 지도로 만들기</span></div>
+      <div><b>02</b><span>그 지식 위에 세운 프로그램: GAIA 2.0</span></div>
+      <div><b>03</b><span>에이전트가 사내 서버를 안전하게 쓰게 하는 인프라</span></div>
+      <div><b>04</b><span>개발 방법 자체를 도구로: 하네스와 오케스트레이터</span></div>
+      <div><b>05</b><span>확산: 팀 세미나 7편과 발표 사이트</span></div>
+      <div><b>06</b><span>도구별 역할, 운영 방식, 공개 산출물, 경력 요약</span></div>
+    </div>
+
+    <section class="section" aria-labelledby="cases-title">
+      <div class="keep-together">
+      <h2 class="section-title" id="cases-title">사례: 문제 → 도구 → 결과물 <span class="section-title-en">Case Studies</span></h2>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="case-num">01</span>
+          <h3 class="case-title">모르는 도메인을 도서관과 지식 지도로 만들기<small>사내 LLM 위키 · 논문 지식 베이스 · 사내 의미 검색 · 3계층 문서와 결정 기록</small></h3>
+        </div>
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>문제</h4>
+            <p>반도체 설계 사인오프 흐름, EDA 도구, 팀의 SOP처럼 제가 모르는 도메인 지식이 코드보다 먼저 필요했습니다. 자료는 흩어져 있고, 에이전트에게 매번 다시 설명하면 컨텍스트가 낭비됩니다.</p>
+          </div>
+          <div class="case-block">
+            <h4>도구와 접근</h4>
+            <p>원문(raw)은 불변으로 보존하고 Claude Code 스킬이 출처·개체·개념·주제 위키 마크다운을 유지합니다. Next.js 앱이 GraphRAG와 BM25 하이브리드 검색을 제공하고, 헤드리스 인제스트에는 권한 deny 목록을 걸어 문서 속 프롬프트 인젝션이 소스를 수정하지 못하게 했습니다. 코드베이스 쪽은 규칙·지도·명세 3계층 문서와 한 줄짜리 결정 기록으로 지식 지도를 유지합니다.</p>
+          </div>
+          <div class="case-block wide">
+            <h4>결과물</h4>
+            <ul>
+              <li>사내 LLM 위키(커밋 120건, Next.js 16 + pnpm)와 개인용 custom-llm-wiki(Claude Code 스킬 /wiki-save · /wiki-ask, BM25 + e5-small 임베딩 하이브리드 검색, RAG 채팅).</li>
+              <li>논문 PDF를 메타·요약·개념 노트로 양방향 추적하는 논문 지식 베이스(paper-review), 사내 LLM(Gemma 4)과 BGE-M3 임베딩·자체 호스팅 벡터 DB 기반 의미 검색 설계(cds-librarian).</li>
+              <li>10명이 동시에 Claude Code로 개발할 저장소에서 ADR 66건·요구사항 137건을 3계층 문서로, 다시 결정 기록 표로 이관해 다시 묻지 않는 협업 체계 구축.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-chip"><b>120</b><span>LLM 위키 커밋</span></div>
+          <div class="result-chip"><b>66 + 137</b><span>이관한 ADR·요구사항 건수</span></div>
+          <div class="result-chip"><b>GraphRAG + BM25</b><span>하이브리드 검색</span></div>
+          <div class="result-chip"><b>deny 목록</b><span>헤드리스 인제스트 권한 제한</span></div>
+        </div>
+      </article>
+      </div>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="case-num">02</span>
+          <h3 class="case-title">그 지식 위에 세운 프로그램: GAIA 2.0<small>반도체 설계 사인오프 진행 추적 풀스택 대시보드 (2026-06 ~ 현재)</small></h3>
+        </div>
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>문제</h4>
+            <p>설계 과제의 Task·Checklist 일정과 Run 검증 결과가 엑셀과 메일에 흩어져 있어 사인오프 진행을 한눈에 볼 수 없었습니다. 도메인 규칙이 자주 바뀌어 요구사항이 130건 넘게 쌓였습니다.</p>
+          </div>
+          <div class="case-block">
+            <h4>도구와 접근</h4>
+            <p>Claude Code가 요구사항 인터뷰 → 명세 → 구현 → 변경 분석 → 머지 전 퀴즈까지 수행하는 하네스로 개발했습니다. 검증은 Playwright e2e·vitest·husky 게이트와 셀프호스팅 러너 2대 병렬 CI가 맡고, 사람은 PR 리뷰와 머지만 합니다.</p>
+          </div>
+          <div class="case-block wide">
+            <h4>결과물</h4>
+            <ul>
+              <li>Next.js 16 App Router 단일 앱, Prisma + PostgreSQL 모델 23개, Route Handler 41개, 모듈 19개, 커밋 850건 이상.</li>
+              <li>마일스톤별 Score·추세 대시보드, 인라인 일정 편집 Task Gantt, SOP 체크 이행 화면, Run 파생 트리, react-konva floorplan 편집기, XLSX 적재·내보내기 SOP 워크스페이스, Domain 리포트 이메일 발송, LangGraph 어시스턴트.</li>
+              <li>같은 방식으로 넷리스트 파싱·DB 적재 파이프라인(netlist-agent)과 LangGraph 로그 분석 플로우를 구축. 릴리스·DB 마이그레이션 절차와 러너 운영 노하우는 결정 기록으로 축적.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-chip"><b>850+</b><span>커밋</span></div>
+          <div class="result-chip"><b>23 / 41 / 19</b><span>모델 · API · 모듈</span></div>
+          <div class="result-chip"><b>7 라우트</b><span>Dashboard부터 Summary Report까지</span></div>
+          <div class="result-chip"><b>e2e + CI</b><span>Playwright · 러너 2대 병렬</span></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="case-num">03</span>
+          <h3 class="case-title">에이전트가 사내 서버를 안전하게 쓰게 하는 인프라<small>정책 기반 MCP 서버 · LLM 게이트웨이 API 서버 · Agent Skill 허브 · 이메일 아카이빙 (2026-07 ~ 09)</small></h3>
+        </div>
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>문제</h4>
+            <p>OpenCode·Claude Code·Codex가 공용 원격 서버의 파일과 명령, DB, 내부 API를 써야 하지만, 무엇이든 열어 주면 위험하고 폐쇄망이라 외부 서비스도 쓸 수 없습니다.</p>
+          </div>
+          <div class="case-block">
+            <h4>도구와 접근</h4>
+            <p>디렉터리별 read/write/command 정책으로 접근을 기본 거부하고 관리자가 등록한 것만 여는 MCP 서버를 Python으로 만들고, 사내 LLM 게이트웨이 프록시·MCP REST 릴레이·투명 MCP 프로토콜 프록시를 FastAPI 서버 하나에 담았습니다. 테스트는 소켓 없는 mock으로 폐쇄망 밖에서도 돕니다.</p>
+          </div>
+          <div class="case-block wide">
+            <h4>결과물</h4>
+            <ul>
+              <li>MCP 서버 툴 17개(파일·명령·DB 질의·내부 API·LangGraph 파일 분석·정책 조회), 폐쇄망 pip 미러 배포 절차.</li>
+              <li>OpenCode 호환 Agent Skill 공유 허브(커밋 108건): Node.js 22 + SQLite, 릴리스 불변성(버전·ZIP·체크섬), 감사 로그, ZIP 경로 순회 검증, Docker + nginx.</li>
+              <li>사내 이메일 아카이빙 플랫폼(변환·수집·검색, 서킷 브레이커·중단 복구 클라이언트), fail-closed SAML 랜딩 페이지.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-chip"><b>17</b><span>MCP 툴</span></div>
+          <div class="result-chip"><b>3 in 1</b><span>LLM 프록시 · REST 릴레이 · MCP 프록시</span></div>
+          <div class="result-chip"><b>108</b><span>스킬 허브 커밋</span></div>
+          <div class="result-chip"><b>기본 거부</b><span>디렉터리 정책 · 감사 로그</span></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="case-num">04</span>
+          <h3 class="case-title">개발 방법 자체를 도구로: 하네스와 오케스트레이터<small>dev-env-blindspot · 2-하네스 스웜 · cheap-agent · custom-llm-api · 모델 A/B 벤치마크 (공개)</small></h3>
+        </div>
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>문제</h4>
+            <p>에이전트는 자기가 모르는 것을 모른 채 코드를 쓰고, 같은 질문을 세션마다 다시 하며, 강한 모델을 모든 단계에 쓰면 토큰이 과합니다.</p>
+          </div>
+          <div class="case-block">
+            <h4>도구와 접근</h4>
+            <p>코드를 쓰기 전에 모르는 것을 결정 가능한 질문으로 바꾸는 blindspot-pass 스킬과 읽기 전용 codebase-scanner 에이전트, 세션 시작 hook, append-only 결정 기록을 서브모듈 한 줄로 설치하는 하네스를 만들었습니다. 판단은 Opus/Fable xhigh, 병렬 실행은 Gemini Flash에 배치했습니다.</p>
+          </div>
+          <div class="case-block wide">
+            <h4>결과물</h4>
+            <ul>
+              <li>dev-env-blindspot(공개, 커밋 98건): 15개 이상 프로젝트 적용. 풀 버전의 토큰·시간·사용자 턴 비용을 실측한 뒤 lite로 축소, Claude Code가 계획·리뷰하고 Antigravity가 스웜 실행하는 claude-antigravity-cowork 브랜치 운영.</li>
+              <li>cheap-agent v0.4.1: 구독 중인 CLI의 headless 모드를 실행 엔진으로 재활용하는 자기학습 오케스트레이터(의존성 0, 파일 기반 IPC, best-of-N·세션 재개·비용 상한 등 19개 토글, GitHub Actions CI). custom-llm-api: Antigravity CLI를 API 키 없이 OpenAI 호환 API로 노출. skill-verifier: 스킬 정적 검사 + LLM 리뷰.</li>
+              <li>자율 개발 스택(R14-V2): 이슈 → 스펙 → 구현 → 검증 → 리뷰 → 출하를 서브에이전트가 수행하고 사람은 PR 머지만. 같은 프롬프트 시퀀스로 Next.js 앱을 구축해 Opus와 Fable을 비교한 벤치마크 공개.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-chip"><b>15+</b><span>하네스 적용 프로젝트</span></div>
+          <div class="result-chip"><b>19</b><span>cheap-agent 기능 토글</span></div>
+          <div class="result-chip"><b>2-하네스</b><span>Claude Code 계획 · Antigravity 실행</span></div>
+          <div class="result-chip"><b>공개</b><span>GitHub 저장소 4종 이상</span></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="case-num">05</span>
+          <h3 class="case-title">확산: 팀 세미나 7편과 발표 사이트<small>dkdlqoddi.github.io (2026-07-31 ~ 2026-09-21)</small></h3>
+        </div>
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>문제</h4>
+            <p>혼자 빨라지는 것보다 팀이 같은 방법을 쓰는 것이 어렵습니다. 프롬프트 요령이 아니라 하네스가 결과의 폭을 조이는 원리를 눈으로 보여 줘야 했습니다.</p>
+          </div>
+          <div class="case-block">
+            <h4>도구와 접근</h4>
+            <p>Reveal.js 기반 정적 발표 사이트를 빌드 없이 구축하고, 덱마다 애니메이션 다이어그램과 실습(OpenCode serve API 호출, EDA MCP 연동, Antigravity 실습)을 넣었습니다. 사실 서술은 출처를 달아 검증했고, Playwright 회귀 검증(탐색·목차·모바일·오프라인·PDF)을 스크립트로 자동화했습니다.</p>
+          </div>
+          <div class="case-block wide">
+            <h4>결과물</h4>
+            <ul>
+              <li>설계 AX 전환(07-31) · 안전한 AI 설계 자동화 아키텍처(08-03) · Python Automation: DX vs AX(08-19, 1부) · AI Agent Skills Philosophy(08-19, 2부) · 나만의 돌쇠 AI 만들기(09-01) · AI, 한 걸음 더(09-20) · 내 자료가 이해가 되는 순간: NotebookLM(09-21).</li>
+              <li>같은 사이트에 웹 이력서와 이 포트폴리오를 통합 배포.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-chip"><b>7편</b><span>발표 자료</span></div>
+          <div class="result-chip"><b>2부작</b><span>팀 세미나 (17장 + 28장)</span></div>
+          <div class="result-chip"><b>0 빌드</b><span>정적 HTML · CDN 의존성 없음</span></div>
+          <div class="result-chip"><b>Playwright</b><span>브라우저 회귀 검증</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="roles-title">
+      <div class="keep-together">
+      <h2 class="section-title" id="roles-title">도구별 역할과 운영 방식 <span class="section-title-en">How the Tools Are Used</span></h2>
+      <table class="role-table">
+        <tr><th>Claude Code</th><td>기본 세션(Fable 5.1, 1M 컨텍스트, effort max, 서브에이전트 Opus). 계획·설계·리뷰·머지 게이트처럼 판단이 필요한 자리. 공식 플러그인 9종(frontend-design, code-review, skill-creator, code-simplifier, playwright, claude-md-management, typescript-lsp, feature-dev, firecrawl)과 claude-mem. 셀프호스팅 러너에서 <code>claude -p</code> 헤드리스 실행. 누적 101.0억 토큰.</td></tr>
+        <tr><th>Codex CLI</th><td>같은 스펙을 다른 모델로 다시 구현·검증하는 교차 검증과 Codex용 하네스 브랜치 운영(2026-07 ~, 세션 580건 이상). 누적 3.6억 토큰.</td></tr>
+        <tr><th>Antigravity</th><td>Gemini Flash로 워커·체커 서브에이전트를 대량 병렬 실행하는 스웜 엔진(대화 500건 이상). Antigravity 전용 규칙·스킬·에이전트 파일과 설치 스크립트 유지. 누적 9.3억 토큰.</td></tr>
+        <tr><th>OpenCode · MCP</th><td>사내 표준 에이전트 클라이언트. 정책 기반 MCP 서버, EDA 벤더 MCP 3종, Agent Skill 허브와 연결.</td></tr>
+        <tr><th>검증 게이트</th><td>토큰은 판단에만 쓰고 검사·실행은 CPU에 맡깁니다. hook(세션 시작 규칙 주입·위험 명령 차단), husky, Playwright e2e, vitest, 셀프호스팅 GitHub Actions 러너 20여 개, PR 리뷰 머지 게이트, append-only 결정 기록.</td></tr>
+        <tr><th>비용 관리</th><td>모델 배치 원칙(판단 Opus/Fable xhigh, 탐색 Sonnet/Haiku, 병렬 실행 Gemini Flash), 풀 하네스 비용 실측 후 lite 축소, cheap-agent의 비용 상한·저가 planner 분리, 세 도구 사용량 전수 집계 스크립트 공개.</td></tr>
+      </table>
+      </div>
+
+      <div class="keep-together">
+      <h2 class="section-title" id="links-title">공개 산출물 <span class="section-title-en">Public Artifacts</span></h2>
+      <ul class="link-list">
+        <li><b>dev-env-blindspot</b> <small>에이전트 공용 개발 하네스 (커밋 98건)</small><a href="https://github.com/dkdlqoddi/dev-env-blindspot">github.com/dkdlqoddi/dev-env-blindspot</a></li>
+        <li><b>발표 사이트</b> <small>세미나 7편 · 웹 이력서 · 포트폴리오</small><a href="https://dkdlqoddi.github.io">dkdlqoddi.github.io</a></li>
+        <li><b>jaeyul-woo-resume</b> <small>이력서 원본 · 토큰 집계 스크립트 · 결정 기록</small><a href="https://github.com/dkdlqoddi/jaeyul-woo-resume">github.com/dkdlqoddi/jaeyul-woo-resume</a></li>
+        <li><b>모델 A/B 벤치마크</b> <small>benchmark-nextjs-opus · benchmark-nextjs-fable · benchmark-result</small><a href="https://github.com/dkdlqoddi/benchmark-result">github.com/dkdlqoddi/benchmark-result</a></li>
+        <li><b>document-parser · netlist-agent</b> <small>Antigravity 스웜으로 구축한 파서·파이프라인 (공개)</small><a href="https://github.com/dkdlqoddi/netlist-agent">github.com/dkdlqoddi/netlist-agent</a></li>
+        <li><b>Weight-Changable-Model</b> <small>학부 연구 논문 코드 (2021)</small><a href="https://github.com/dkdlqoddi/Weight-Changable-Model">github.com/dkdlqoddi/Weight-Changable-Model</a></li>
+      </ul>
+      <p class="prose-sm" style="margin-top: 12px;">사내 프로젝트(GAIA 2.0, MCP 서버, API 서버, LLM 위키, 스킬 허브 등)와 cheap-agent·custom-llm-api·skill-verifier는 비공개 저장소이며, 요청 시 구조와 문서를 설명드릴 수 있습니다.</p>
+      </div>
+
+      <div class="keep-together">
+      <h2 class="section-title" id="career-title">경력 · 학력 요약 <span class="section-title-en">Background</span></h2>
+      <ul class="compact-list">
+        <li><strong>삼성전자 파운드리사업부 고객디자인지원팀 · 임베디드 소프트웨어 엔지니어 (2022.03 – 현재):</strong> ARM Cortex-A/M 포팅, Linux 디바이스 드라이버, Trace32 원격 보드 무인 디버깅 시스템, 온프레미스 설계 데이터 웹 뷰어, Docker·Jenkins·GitHub Actions·Coverity·Checkpatch CI/CD. 현재 사내 LLM API 기반 EDA 툴 실행 자동화·설계 파라미터 값 수집·툴 로그 파싱·저장 등 반도체 설계 자동화, 2026년 AI 에이전트 기반 개발 전환과 사내 AI 인프라 구축.</li>
+        <li><strong>SEC 연구소 시스템개발팀 · 소프트웨어 개발자 (2018.01 – 2019.06):</strong> GNU Radio + CPython SDR 실시간 신호처리, 레거시 C 모듈 C-API 결합, 전국 분산 서버·안테나 원격 제어 자동화.</li>
+        <li><strong>Rebellions REBEL Quad(4칩렛 NPU) RTOS·디바이스 드라이버 개발 참여</strong>, Jetson 오프라인 온디바이스 에이전트, Isaac Sim + ROS 2 로봇 시뮬레이션 환경.</li>
+        <li><strong>성균관대학교 반도체시스템공학 학사 (2014 – 2022):</strong> IRIS Lab 학부 연구생(지도교수 고종환, 2020.03 – 2022.02), 논문 <em>A Proposal for a Weight Changeable Model corresponds to Network Packet Errors</em>.</li>
+      </ul>
+      <p class="pf-foot">우제율 · dkdlqoddi@gmail.com · github.com/dkdlqoddi · 지표는 2026-09-22 로컬 사용 기록 전수 집계 기준</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
