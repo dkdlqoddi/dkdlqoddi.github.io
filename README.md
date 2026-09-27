@@ -5,7 +5,7 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 
 ## 공통 Template
 
-전체 발표자료와 sample은 **웜 그레이 종이 배경, 차분한 파스텔, 잉크색 윤곽선과 그림자**의 카툰 스타일을 공유합니다. 발표·읽기·PDF와 내려받는 실습 자료에 같은 팔레트를 적용합니다. 메인은 기존 장식 Galaxy와 최신순 카드 목록으로 구성됩니다.
+전체 발표자료와 sample은 **웜 그레이 종이 배경, 차분한 파스텔, 잉크색 윤곽선과 그림자**의 카툰 스타일을 공유합니다. 발표·읽기·PDF와 내려받는 실습 자료에 같은 팔레트를 적용합니다. 메인은 기존 장식 Galaxy와 추천 학습 순서의 카드 목록으로 구성됩니다. 발표일은 기록 정보로 표시합니다.
 
 - `assets/theme.css`: 색상, Pretendard 글꼴, 버튼, 상단바, 동작 축소와 페이지 전환.
 - `assets/template.js`: 메인·발표·404에서 사용하는 상단바. 스크립트 위치로 홈 주소를 계산하므로 중첩 URL과 `file://`에서도 사용할 수 있습니다.
@@ -17,15 +17,35 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 
 좁은 화면은 읽기 모드로 표시하고, 넓은 도표는 도표 영역에서 가로로 스크롤할 수 있습니다. 인쇄는 덱 전체를 한 장당 한 쪽으로 출력하고 발표 화면으로 복귀합니다. Galaxy는 `scripts/galaxy.js`와 CSS로 동작하며 일시정지, 화면 밖·백그라운드 정지, 시스템 동작 축소 설정을 지원합니다.
 
+## 추천 학습 순서
+
+`slides.json` 배열 순서가 메인 카드의 표시 순서입니다. 날짜로 다시 정렬하지 않습니다. 입문자는 1번부터, 실무 경험이 있는 분은 대상에 맞는 자료부터 시작할 수 있습니다. 기존 발표 내부 순서와 공유 주소는 유지합니다.
+
+| 순서 | 발표 | 학습 단계 | 대상 |
+|---|---|---|---|
+| 01 | [내 자료가 이해가 되는 순간](slides/notebooklm-examples/) | 자료 활용 | AI를 처음 활용하는 분 |
+| 02 | [AI, 한 걸음 더](slides/agent-tools-antigravity/) | 에이전트 입문 | 파일 결과물을 만들고 싶은 분 |
+| 03 | [AI 결과를 업무에 쓰기까지](slides/ai-work-review/) | 업무 적용 | AI 초안을 실제 업무에 쓰는 분 |
+| 04 | [설계 AX 전환](slides/design-ax-transition/) | 개념 정리 | 설계 업무의 AI 전환을 고민하는 분 |
+| 05 | [Python Automation: DX vs AX](slides/dx-vs-ax-automation/) | 자동화 연동 | Python·사내 LLM을 다루는 개발자 |
+| 06 | [AI Agent Skills Philosophy](slides/ai-agent-skills-philosophy/) | 하네스 설계 | 에이전트 작업 방식을 설계하는 팀 |
+| 07 | [나만의 돌쇠 AI 만들기](slides/my-dolsoe-ai/) | 도메인 구현 | EDA·MCP를 다루는 실무자 |
+| 08 | [안전한 AI 설계 자동화 아키텍처](slides/integrated-architecture/) | 아키텍처 | 보안·인프라를 설계하고 결정하는 분 |
+
+3번 **AI 결과를 업무에 쓰기까지**는 도구 입문과 팀 자동화를 잇는 16장 실습 자료입니다. 가상 모임 안내문을 만들며 완료 기준·원문 대조·수정·사람의 최종 확인을 연습합니다. [활동지와 해설](slides/ai-work-review/practice.txt), [발표 PDF](slides/ai-work-review/ai-work-review.pdf)를 함께 제공합니다. 설명 15분과 실습 5분을 권장하며 특정 제품 계정 없이 진행할 수 있습니다.
+
+팀 세미나는 5번 **DX vs AX** → 6번 **AI Agent Skills Philosophy**의 1·2부 순서를 유지합니다. `sample`은 발표 제작용 템플릿으로 공개 학습 목록에서 제외합니다.
+
 ## 새 발표자료 추가
 
 1. `slides/sample/`을 새 폴더로 복사합니다. 폴더 이름은 영문 소문자·하이픈을 사용합니다. 이 이름이 공개 URL입니다. `sample`은 복사용 원본이므로 목록에 등록하지 않습니다.
 2. `index.html`의 제목과 `<section>` 내용을 수정합니다. 공통 CSS와 JS 연결을 유지하고 덱 고유 스타일만 추가합니다. 별도의 `Reveal.initialize()` 호출은 필요 없습니다. `<section id="intro" data-title="소개" data-chapter="시작">`처럼 지정하면 목차와 공유 주소에 사용합니다. 생략하면 순서와 제목에서 자동 생성합니다.
-3. 루트 `slides.json`에 등록합니다:
+3. 루트 `slides.json`에서 선수지식에 맞는 위치에 등록합니다. 배열 순서가 학습 순서이며 `stage`는 학습 단계, `audience`는 권장 대상입니다:
    ```json
-   { "title": "발표 제목", "date": "2026-09-21", "description": "한 줄 설명", "dir": "my-talk" }
+   { "title": "발표 제목", "date": "2026-09-27", "description": "한 줄 설명", "dir": "my-talk", "stage": "업무 적용", "audience": "AI 활용 입문자" }
    ```
-4. 로컬 검증 후 PR 리뷰를 거쳐 `main`에 반영합니다.
+4. `index.html`의 `<noscript>` 목록과 이 문서의 학습 순서를 같은 순서로 갱신합니다. 첫 자료가 바뀌면 `main.js`의 목록 오류 대체 링크도 갱신합니다.
+5. 로컬 검증 후 PR 리뷰를 거쳐 `main`에 반영합니다.
 
 CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일 → `cartoon-deck.css`입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
 
@@ -49,7 +69,7 @@ npm install --prefix /tmp/presentation-check playwright
 NODE_PATH=/tmp/presentation-check/node_modules node scripts/verify_theme.cjs
 ```
 
-필요하면 `CHROME_PATH`, `SITE_URL`, `ARTIFACT_DIR` 환경변수를 지정합니다. 검증은 전체 덱의 배경 밝기·본문 대비, 탐색·목차·읽기 화면·모바일·오프라인·PDF, 프래그먼트, 최신 덱 실습, Galaxy 동작 축소·정지, 목록 오류와 404를 확인합니다. 스크린샷과 PDF는 기본 `/tmp/presentation-theme-check/`에 저장합니다.
+필요하면 `CHROME_PATH`, `SITE_URL`, `ARTIFACT_DIR` 환경변수를 지정합니다. 검증은 전체 덱의 배경 밝기·본문 대비, 탐색·목차·읽기 화면·모바일·오프라인·PDF, 프래그먼트, 최신 덱 실습, Galaxy 동작 축소·정지, 카드·JavaScript 비활성 목록의 학습 순서, 목록 오류와 404를 확인합니다. 스크린샷과 PDF는 기본 `/tmp/presentation-theme-check/`에 저장합니다.
 
 ## 파일과 자산
 

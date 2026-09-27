@@ -121,6 +121,8 @@ async function checkComfortableCanvas(page, label) {
       await page.goto(base);
       await page.waitForSelector('.card');
       assert.equal(await page.locator('.card').count(), slugs.length - 1);
+      assert.deepEqual(await page.locator('.card-title a').evaluateAll(links => links.map(link => link.getAttribute('href'))), slugs.slice(0, -1).map(slug => `slides/${slug}/`), 'Cards must follow curriculum order, not publication dates');
+      assert.deepEqual(await page.locator('.card-index').allTextContents(), slugs.slice(0, -1).map((_, index) => `STEP ${String(index + 1).padStart(2, '0')}`));
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Home overflow at ${width}`);
       assert.equal(await page.locator('#motion-toggle').isVisible(), false);
     }
@@ -142,6 +144,7 @@ async function checkComfortableCanvas(page, label) {
     await fallback.goto(base);
     await fallback.waitForSelector('.retry-button');
     assert(await fallback.locator('#status a').isVisible());
+    assert.equal(await fallback.locator('#status a').getAttribute('href'), `slides/${slugs[0]}/`, 'Failure fallback must open the first learning resource');
     await fallback.unroute('**/slides.json');
     await fallback.route('**/slides.json', route => route.fulfill({ json: [] }));
     await fallback.goto(base);
@@ -170,8 +173,8 @@ async function checkComfortableCanvas(page, label) {
     await fallback.close();
     const nojs = await browser.newPage({ javaScriptEnabled: false });
     await nojs.goto(base);
-    assert(await nojs.locator('.fallback-links a').count() > 0);
-    for (const slug of ['sample', 'agent-tools-antigravity']) {
+    assert.deepEqual(await nojs.locator('.fallback-links a').evaluateAll(links => links.map(link => link.getAttribute('href'))), slugs.slice(0, -1).map(slug => `slides/${slug}/`), 'No-JS links must preserve the complete curriculum order');
+    for (const slug of ['sample', 'agent-tools-antigravity', 'ai-work-review']) {
       await nojs.goto(`${base}/slides/${slug}/`);
       assert(await nojs.locator('.slides > section:visible').count() > 1);
     }

@@ -7,7 +7,7 @@
   const tones = ['var(--lime)', 'var(--lavender)', 'var(--peach)', 'var(--green)'];
   const symbols = ['↗', '✳', '⌘', '↔', '◇', '↗'];
 
-  function buildCard(item, number, order) {
+  function buildCard(item, order) {
     const card = document.createElement('li');
     card.className = 'card';
     card.style.setProperty('--card-tone', tones[order % tones.length]);
@@ -15,7 +15,7 @@
     top.className = 'card-top';
     const index = document.createElement('span');
     index.className = 'card-index';
-    index.textContent = 'LOG ' + String(number).padStart(2, '0');
+    index.textContent = 'STEP ' + String(order + 1).padStart(2, '0');
     const date = document.createElement('time');
     date.dateTime = item.date;
     date.textContent = item.date.replaceAll('-', '.');
@@ -23,7 +23,7 @@
     if (order === 0) {
       const badge = document.createElement('span');
       badge.className = 'card-badge';
-      badge.textContent = 'NEW';
+      badge.textContent = '시작';
       top.append(badge);
     }
     const icon = document.createElement('span');
@@ -39,11 +39,17 @@
     const description = document.createElement('p');
     description.className = 'card-desc';
     description.textContent = item.description || '';
+    const stage = document.createElement('p');
+    stage.className = 'card-stage';
+    stage.textContent = item.stage || '발표 자료';
+    const audience = document.createElement('p');
+    audience.className = 'card-audience';
+    audience.textContent = item.audience ? '대상 · ' + item.audience : '';
     const open = document.createElement('span');
     open.className = 'card-open';
     open.setAttribute('aria-hidden', 'true');
     open.innerHTML = '발표 열어보기 <span>↗</span>';
-    card.append(top, icon, title, description, open);
+    card.append(top, icon, stage, title, description, audience, open);
     return card;
   }
 
@@ -56,8 +62,8 @@
       if (!Array.isArray(list)) throw new Error('목록 형식 오류');
       const valid = list.filter(item => item && typeof item.title === 'string' && item.title.trim() &&
         typeof item.dir === 'string' && /^[a-z0-9-]+$/.test(item.dir) && /^\d{4}-\d{2}-\d{2}$/.test(item.date || ''));
-      const chronological = valid.slice().sort((a, b) => a.date.localeCompare(b.date));
-      chronological.slice().reverse().forEach((item, index) => grid.append(buildCard(item, valid.length - index, index)));
+      // The manifest records prerequisite order; dates remain publication metadata.
+      valid.forEach((item, index) => grid.append(buildCard(item, index)));
       count.textContent = valid.length + '개의 이야기';
       status.hidden = valid.length > 0;
       status.textContent = valid.length ? '' : '아직 기록된 발표가 없습니다.';
@@ -70,8 +76,8 @@
       retry.textContent = '다시 불러오기';
       retry.addEventListener('click', () => location.reload());
       const fallback = document.createElement('a');
-      fallback.href = 'slides/agent-tools-antigravity/';
-      fallback.textContent = '최근 발표 바로 열기 ↗';
+      fallback.href = 'slides/notebooklm-examples/';
+      fallback.textContent = '첫 학습 자료 열기 ↗';
       status.append(retry, document.createTextNode(' '), fallback);
       status.hidden = false;
     });

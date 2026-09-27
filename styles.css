@@ -59,6 +59,9 @@ h1 { font-size: clamp(42px, 4.6vw, 66px); line-height: 1.23; letter-spacing: -.0
 .card:hover, .card:focus-within { translate: 0 -5px; border-color: #80996f; box-shadow: 0 14px 32px #244a2310; }
 .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .card-index { letter-spacing: .06em; }
+.learning-intro { color: var(--muted); font-size: 17px; line-height: 1.7; margin: -10px 0 28px; }
+.card-stage { color: var(--forest); font-size: 13px; font-weight: 750; margin-bottom: 9px; }
+.card-audience { color: var(--muted); font-size: 13px; line-height: 1.5; padding-bottom: 18px; }
 .card-badge { background: var(--lime); color: var(--forest); padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 650; margin-left: auto; }
 .card-icon { display: grid; place-items: center; height: 44px; width: 44px; border-radius: 12px; margin-bottom: 18px; background: var(--card-tone, var(--green)); color: var(--ink); font-size: 27px; font-weight: 400; }
 .card-title { font-size: 23px; letter-spacing: -.045em; line-height: 1.35; font-weight: 700; margin-bottom: 12px; }

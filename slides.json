@@ -1,44 +1,66 @@
 [
   {
-    "title": "설계 AX 전환",
-    "date": "2026-07-31",
-    "description": "프롬프트 엔지니어링에서 Harness 엔지니어링으로",
-    "dir": "design-ax-transition"
-  },
-  {
-    "title": "안전한 AI 설계 자동화 아키텍처",
-    "date": "2026-08-03",
-    "description": "망 연동 보안 아키텍처 및 AI 파이프라인 작동 구조",
-    "dir": "integrated-architecture"
-  },
-  {
-    "title": "Python Automation: DX vs AX",
-    "date": "2026-08-19",
-    "description": "팀 세미나 1부 — 파이프라인의 진화와 사내 LLM 연동 6가지 방법",
-    "dir": "dx-vs-ax-automation"
-  },
-  {
-    "title": "AI Agent Skills Philosophy",
-    "date": "2026-08-19",
-    "description": "팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리와 도구 철학",
-    "dir": "ai-agent-skills-philosophy"
-  },
-  {
-    "title": "나만의 돌쇠 AI 만들기",
-    "date": "2026-09-01",
-    "description": "OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는 반도체 지식 자동화 하네스 & 그래프 엔지니어링",
-    "dir": "my-dolsoe-ai"
+    "title": "내 자료가 이해가 되는 순간",
+    "date": "2026-09-21",
+    "description": "NotebookLM / Gemini Notebook — 여행·독서·복습·회의, 그림으로 배우는 네 가지 활용 예시와 실습",
+    "dir": "notebooklm-examples",
+    "stage": "자료 활용",
+    "audience": "AI를 처음 활용하는 분"
   },
   {
     "title": "AI, 한 걸음 더",
     "date": "2026-09-20",
     "description": "프롬프트에서 AI 도구로 — 큰 글씨와 그림으로 배우는 Codex·Claude Code·Antigravity 입문",
-    "dir": "agent-tools-antigravity"
+    "dir": "agent-tools-antigravity",
+    "stage": "에이전트 입문",
+    "audience": "파일 결과물을 만들고 싶은 분"
   },
   {
-    "title": "내 자료가 이해가 되는 순간",
-    "date": "2026-09-21",
-    "description": "NotebookLM / Gemini Notebook — 여행·독서·복습·회의, 그림으로 배우는 네 가지 활용 예시와 실습",
-    "dir": "notebooklm-examples"
+    "title": "AI 결과를 업무에 쓰기까지",
+    "date": "2026-09-27",
+    "description": "가상 모임 안내문으로 연습하는 완료 기준·원문 대조·수정·최종 확인",
+    "dir": "ai-work-review",
+    "stage": "업무 적용",
+    "audience": "AI 초안을 실제 업무에 쓰는 분"
+  },
+  {
+    "title": "설계 AX 전환",
+    "date": "2026-07-31",
+    "description": "프롬프트 엔지니어링에서 Harness 엔지니어링으로",
+    "dir": "design-ax-transition",
+    "stage": "개념 정리",
+    "audience": "설계 업무의 AI 전환을 고민하는 분"
+  },
+  {
+    "title": "Python Automation: DX vs AX",
+    "date": "2026-08-19",
+    "description": "팀 세미나 1부 — 파이프라인의 진화와 사내 LLM 연동 6가지 방법",
+    "dir": "dx-vs-ax-automation",
+    "stage": "자동화 연동",
+    "audience": "Python·사내 LLM을 다루는 개발자"
+  },
+  {
+    "title": "AI Agent Skills Philosophy",
+    "date": "2026-08-19",
+    "description": "팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리와 도구 철학",
+    "dir": "ai-agent-skills-philosophy",
+    "stage": "하네스 설계",
+    "audience": "에이전트 작업 방식을 설계하는 팀"
+  },
+  {
+    "title": "나만의 돌쇠 AI 만들기",
+    "date": "2026-09-01",
+    "description": "OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는 반도체 지식 자동화 하네스 & 그래프 엔지니어링",
+    "dir": "my-dolsoe-ai",
+    "stage": "도메인 구현",
+    "audience": "EDA·MCP를 다루는 실무자"
+  },
+  {
+    "title": "안전한 AI 설계 자동화 아키텍처",
+    "date": "2026-08-03",
+    "description": "망 연동 보안 아키텍처 및 AI 파이프라인 작동 구조",
+    "dir": "integrated-architecture",
+    "stage": "아키텍처",
+    "audience": "보안·인프라를 설계하고 결정하는 분"
   }
 ]
