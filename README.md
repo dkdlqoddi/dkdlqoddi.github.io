@@ -5,11 +5,12 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 
 ## 공통 Template
 
-전체 사이트는 **AI, 한 걸음 더**(`agent-tools-antigravity`)의 밝은 배경, 숲색·라임·파스텔 색상, 둥근 카드, 부드러운 전환을 공유합니다. 메인은 장식 Galaxy와 최신순 카드 목록으로 구성됩니다.
+전체 발표자료와 sample은 **웜 그레이 종이 배경, 차분한 파스텔, 잉크색 윤곽선과 그림자**의 카툰 스타일을 공유합니다. 발표·읽기·PDF와 내려받는 실습 자료에 같은 팔레트를 적용합니다. 메인은 기존 장식 Galaxy와 최신순 카드 목록으로 구성됩니다.
 
 - `assets/theme.css`: 색상, Pretendard 글꼴, 버튼, 상단바, 동작 축소와 페이지 전환.
 - `assets/template.js`: 메인·발표·404에서 사용하는 상단바. 스크립트 위치로 홈 주소를 계산하므로 중첩 URL과 `file://`에서도 사용할 수 있습니다.
 - `slides/shared/deck-base.css`: 발표 화면, 읽기 화면, 목차, 이동 버튼, 카드·도식 컴포넌트, 인쇄 스타일.
+- `slides/shared/cartoon-deck.css`: 발표 전용 팔레트와 카툰 표현. `<html class="cartoon-theme">`에서 적용하며 덱 고유 스타일 뒤에 불러옵니다. 독립 실습 HTML의 인라인 팔레트도 함께 유지합니다.
 - `slides/shared/deck-template.js`: 공통 발표 셸, Reveal 초기화, 목차·키보드·프래그먼트 이동, 읽기/발표 전환, 메모, 전체화면, 인쇄.
 - `slides/shared/legacy-deck.css`: 기존 960×700 덱의 배치 어댑터. 최신 덱은 1280×720입니다.
 - `slides/agent-tools-antigravity/course.js`: 해당 수업의 퀴즈·복사·실습 버튼만 담당합니다.
@@ -26,7 +27,7 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
    ```
 4. 로컬 검증 후 PR 리뷰를 거쳐 `main`에 반영합니다.
 
-CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
+CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일 → `cartoon-deck.css`입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
 
 ## 로컬 미리보기와 검증
 
@@ -48,7 +49,7 @@ npm install --prefix /tmp/presentation-check playwright
 NODE_PATH=/tmp/presentation-check/node_modules node scripts/verify_theme.cjs
 ```
 
-필요하면 `CHROME_PATH`, `SITE_URL`, `ARTIFACT_DIR` 환경변수를 지정합니다. 검증은 전체 덱의 탐색·목차·읽기 화면·모바일·오프라인·PDF, 프래그먼트, 최신 덱 실습, Galaxy 동작 축소·정지, 목록 오류와 404를 확인합니다. 스크린샷과 PDF는 기본 `/tmp/presentation-theme-check/`에 저장합니다.
+필요하면 `CHROME_PATH`, `SITE_URL`, `ARTIFACT_DIR` 환경변수를 지정합니다. 검증은 전체 덱의 배경 밝기·본문 대비, 탐색·목차·읽기 화면·모바일·오프라인·PDF, 프래그먼트, 최신 덱 실습, Galaxy 동작 축소·정지, 목록 오류와 404를 확인합니다. 스크린샷과 PDF는 기본 `/tmp/presentation-theme-check/`에 저장합니다.
 
 ## 파일과 자산
 

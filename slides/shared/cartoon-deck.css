@@ -1,0 +1,172 @@
+/* Presentation-only cartoon finish. Load last, after each deck's own styles.
+   Keep text, geometry and Reveal transforms intact; outlines don't reflow cards. */
+html.cartoon-theme {
+  --paper: #d5d0c5;
+  --surface: #e7e1d5;
+  --surface-soft: #ddd8cc;
+  --ink: #303832;
+  --muted: #485149;
+  --line: #929689;
+  --stroke: #485047;
+  --forest: #2c5747;
+  --green: #bdcdbb;
+  --lime: #d9cf99;
+  --peach: #dec3ac;
+  --lavender: #cac2db;
+  --orange: #7c4021;
+  --danger: #8b3545;
+  --on-accent: #f0eadc;
+  --cartoon-shadow: 4px 5px 0 #59614f;
+  --cartoon-shadow-small: 2px 3px 0 #59614f;
+  --r-background-color: var(--paper);
+  --r-link-color-hover: #234637;
+  background: var(--paper);
+}
+.cartoon-theme body { background: var(--paper); }
+.cartoon-theme :focus-visible { outline-color: #594e91; }
+
+/* Quiet dotted margins frame the panels without putting a pattern behind text. */
+@media screen {
+  .cartoon-theme body {
+    background-image: radial-gradient(#48504718 .8px, transparent .8px);
+    background-size: 24px 24px;
+  }
+  .cartoon-theme .reveal .slides > section { background: var(--paper); }
+}
+.cartoon-theme .reveal h1,
+.cartoon-theme .reveal h2 { color: var(--ink); text-shadow: 2px 3px 0 var(--surface); }
+.cartoon-theme .reveal h3,
+.cartoon-theme .reveal h4 { color: var(--ink); }
+.cartoon-theme .reveal .eyebrow { color: var(--forest); font-weight: 750; }
+.cartoon-theme .highlight::after { background: var(--lime); border-bottom: 2px solid var(--stroke); }
+.cartoon-theme .reading .reveal .slides > section { border-bottom: 2px dashed var(--line); }
+
+/* Inked panels, speech bubbles and paper cutouts share one visual vocabulary. */
+.cartoon-theme :is(
+  .compare-card, .product, .process-step, .usecase, .toolbox, .setting-card,
+  .plan-sheet, .refine-preview, .verify-card, .quiz-option, .resource-button,
+  .prompt-sheet, .workspace-mock, .example-browser, .panel-card, .summary-box,
+  .hud-box, .hud-box-warning, .term, .code-snippet, .source-tile, .source-focus,
+  .case-card, .source-file, .journey-art, .itinerary-stop, .answer-card,
+  .evidence-card, .audio-art, .study-card, .motion-art, .task-card, .hub-source,
+  .format-card, .mini-slide, .infographic, .story-book, .map-root, .map-branch
+) {
+  border-color: var(--stroke);
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+  box-shadow: var(--cartoon-shadow);
+}
+.cartoon-theme :is(.transfer-grid article, .help-rows > div, .reveal .bottom-line) {
+  border-color: var(--stroke);
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+  box-shadow: var(--cartoon-shadow-small);
+}
+.cartoon-theme :is(
+  .hero-prompt, .hero-agent, .hero-document, .float-file, .notebook-core,
+  .orbit-card, .mini-book, .mini-calendar, .closing-mark, .big-icon,
+  .product-sign, .mock-bubble
+) {
+  border-color: var(--stroke);
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+  box-shadow: var(--cartoon-shadow);
+}
+.cartoon-theme :is(.hero-orbit, .cover-ring),
+.cartoon-theme .hero-orbit::after,
+.cartoon-theme .cover-ring::after {
+  border-color: var(--line);
+  border-style: dashed;
+}
+.cartoon-theme :is(.pill, .ribbon, .tag, .task-date, .revision-state) {
+  border-color: var(--stroke);
+  outline: 1.5px solid var(--stroke);
+  outline-offset: -1.5px;
+}
+.cartoon-theme .reveal .pill { background: var(--surface); }
+.cartoon-theme :is(.prompt-text, .source-file, .source-focus, .answer-card) { background-color: var(--surface); }
+.cartoon-theme :is(.process-step.emphasized, .product.featured) { background: var(--green); }
+.cartoon-theme :is(.workspace-panel.selected, .verify-card[aria-pressed="true"], .quiz-option[aria-pressed="true"]) {
+  background: var(--green);
+  outline: 3px solid var(--forest);
+  outline-offset: -3px;
+}
+.cartoon-theme .workspace-panel.selected { box-shadow: inset 0 -5px 0 var(--forest); }
+.cartoon-theme :is(.product-sign.forest, .map-root, .notebook-core) { color: var(--on-accent); }
+.cartoon-theme .notebook-core span { color: var(--on-accent); }
+.cartoon-theme .hero-document { border-radius: 12px 20px 15px 8px; }
+.cartoon-theme .hero-prompt { border-radius: 24px 24px 24px 4px; }
+.cartoon-theme :is(.route-stop > .icon, .info-route .icon, .headphone-disc) {
+  background: var(--surface);
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+}
+.cartoon-theme :is(.mini-rule, .course-progress) { background: var(--line); }
+.cartoon-theme .mini-gallery i { border-color: var(--surface); box-shadow: var(--cartoon-shadow-small); }
+.cartoon-theme .missing-info { border-color: var(--forest); }
+
+/* Keep legacy diagrams crisp, including their fragments and morphing geometry. */
+.cartoon-theme .legacy-deck .reveal .slides > section:first-child::before {
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+  box-shadow: var(--cartoon-shadow);
+  border-radius: 20px 25px 18px 23px;
+}
+.cartoon-theme .legacy-deck .reveal :is(pre, .kbd, .meter .m-step) {
+  border-color: var(--stroke);
+  box-shadow: var(--cartoon-shadow-small);
+}
+.cartoon-theme .legacy-deck .reveal :is(svg.diag, svg.mini-diag, svg.svg-diagram) {
+  background: var(--surface-soft);
+  border-radius: 16px;
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+}
+.cartoon-theme .reveal svg :is(rect, circle, path, line, polyline, polygon) {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cartoon-theme .reveal svg :is(rect, circle)[stroke-width="1"] { stroke-width: 2; }
+.cartoon-theme .reveal .meter .m-step.on { background: var(--forest); color: var(--on-accent); }
+
+/* Navigation is a row of quiet, tactile comic tabs; no decorative motion. */
+.cartoon-theme :is(.topbar, .course-nav) { background: var(--surface-soft); border-color: var(--stroke); }
+.cartoon-theme .brand-symbol {
+  outline: 2px solid var(--stroke);
+  outline-offset: -2px;
+  box-shadow: var(--cartoon-shadow-small);
+  rotate: -5deg;
+}
+.cartoon-theme :is(.nav-button, .copy-button, .primary-button, .copy-code-btn, .dialog-heading button, .citation-button),
+.cartoon-theme .top-actions #contents-open,
+.cartoon-theme #contents-list button {
+  border-color: var(--stroke);
+  outline: 1.5px solid var(--stroke);
+  outline-offset: -1.5px;
+  box-shadow: var(--cartoon-shadow-small);
+}
+.cartoon-theme .nav-button,
+.cartoon-theme .top-actions #contents-open,
+.cartoon-theme #contents-list button { background: var(--surface); }
+.cartoon-theme .nav-button.next,
+.cartoon-theme .primary-button { background: var(--forest); color: var(--on-accent); }
+.cartoon-theme #contents-list button[aria-current="step"] { background: var(--green); }
+.cartoon-theme :is(.nav-button, .copy-button, .resource-button, .quiz-option):not(:disabled):hover { background: var(--lime); color: var(--ink); }
+.cartoon-theme .primary-button:hover { background: #234637; }
+.cartoon-theme .copy-code-btn:hover { background: var(--green); }
+.cartoon-theme :is(.top-actions button, .dialog-heading button, .nav-button, .copy-button, .primary-button, .citation-button):active:not(:disabled) {
+  box-shadow: none;
+}
+.cartoon-theme dialog { background: var(--surface); border: 2px solid var(--stroke); box-shadow: 7px 8px 0 var(--stroke); }
+.cartoon-theme dialog::backdrop { background: #30383288; }
+
+@media print {
+  html.cartoon-theme,
+  .cartoon-theme body,
+  .cartoon-theme body.reading,
+  .cartoon-theme body.printing { background: var(--paper) !important; }
+  .cartoon-theme .reveal .slides > section { background: var(--paper) !important; }
+  .cartoon-theme .reveal h1,
+  .cartoon-theme .reveal h2 { text-shadow: none; }
+  .cartoon-theme .reveal .slides > section::after { color: var(--muted); }
+}

@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="cartoon-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Python Automation: DX vs AX</title>
   <meta name="description" content="팀 세미나 1부 — LLM 자동화는 무엇을 바꾸는가: 파이프라인의 진화, 긴 꼬리 효과, 사내 LLM 연동 6가지 방법">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#d5d0c5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
@@ -20,7 +20,7 @@
 
   <style>
     /* 공통 규칙은 ../shared/deck-base.css에 있다. 여기는 이 덱 고유 스타일만. */
-    html { background: #fff; color-scheme: light; }
+    html { background: var(--paper); color-scheme: light; }
 
     /* HTML 텍스트용 위계 유틸 (SVG용은 deck-base가 제공) */
     .reveal .dim { color: var(--dim); }
@@ -66,17 +66,8 @@
     .fragment.visible .draw-on-visible { stroke-dashoffset: 0; }
 
     @media print {
-      /* 흐르는 점은 장식 — 종이에서 제거. 그리기 선은 완성 상태로 복구. */
       .travel-dot { display: none !important; }
       .draw-on-visible { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
-      html:not(.print-pdf) .reveal .meter,
-      html:not(.print-pdf) .reveal .meter .m-step { color: #000 !important; border-color: #000 !important; }
-      /* 흑백 인쇄에서 현재 칸은 색이 아니라 반전으로 살린다 — 색만으로 정보를 나르지 않기 */
-      html:not(.print-pdf) .reveal .meter .m-step.on { background: #000 !important; color: #fff !important; }
-      /* 흰 종이에서는 어두운 상자 배경을 걷어낸다 */
-      html:not(.print-pdf) .reveal svg rect[fill="none"],
-      html:not(.print-pdf) .reveal svg circle[fill="none"],
-      html:not(.print-pdf) .reveal svg .panel-fill { fill: none !important; }
     }
     html.reveal-print .travel-dot { display: none !important; }
     html.reveal-print .draw-on-visible { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
@@ -84,6 +75,7 @@
        사라지는 쪽(fade-out)을 숨겨 최종 상태만 내보낸다. */
     html.reveal-print .reveal .fragment.fade-out { display: none !important; }
   </style>
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">

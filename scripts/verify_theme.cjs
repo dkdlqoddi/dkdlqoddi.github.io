@@ -10,6 +10,21 @@ const artifacts = process.env.ARTIFACT_DIR || '/tmp/presentation-theme-check';
 const slugs = JSON.parse(fs.readFileSync(path.join(root, 'slides.json'))).map(item => item.dir).concat('sample');
 fs.mkdirSync(artifacts, { recursive: true });
 
+// Check the rendered canvas rather than requiring a specific palette value.
+async function checkComfortableCanvas(page, label) {
+  const colors = await page.evaluate(() => {
+    const style = getComputedStyle(document.body);
+    return { background: style.backgroundColor, text: style.color };
+  });
+  const luminance = color => color.match(/[\d.]+/g).slice(0, 3).map(Number)
+    .map(value => value / 255).map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4)
+    .reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+  const background = luminance(colors.background);
+  const text = luminance(colors.text);
+  assert(background < .75, `${label}: canvas must avoid near-white glare`);
+  assert((Math.max(background, text) + .05) / (Math.min(background, text) + .05) >= 7, `${label}: body text contrast`);
+}
+
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', args: ['--no-sandbox'] });
   try {
@@ -23,6 +38,7 @@ fs.mkdirSync(artifacts, { recursive: true });
       await page.waitForFunction(() => Reveal.isReady());
       const total = await page.locator('.slides > section').count();
       await page.evaluate(() => document.fonts.ready);
+      await checkComfortableCanvas(page, slug);
       const overflow = await page.evaluate(() => {
         const failures = [];
         Reveal.getSlides().forEach((slide, index) => {
@@ -45,6 +61,7 @@ fs.mkdirSync(artifacts, { recursive: true });
       assert.equal(await page.evaluate(() => Reveal.getIndices().h), total - 1);
       await page.locator('#view-toggle').click();
       await page.waitForFunction(() => document.body.classList.contains('reading'));
+      await checkComfortableCanvas(page, `${slug}: reading`);
       assert.equal(await page.locator('.slides > section:visible').count(), total);
       await page.locator('#view-toggle').click();
       await page.waitForFunction(() => Reveal.isReady());
@@ -140,7 +157,7 @@ fs.mkdirSync(artifacts, { recursive: true });
     fs.copyFileSync(path.join(root, 'slides/agent-tools-antigravity/practice-result.html'), standalone);
     await fallback.goto(pathToFileURL(standalone).href);
     assert(await fallback.locator('h1').isVisible());
-    assert.equal(await fallback.evaluate(() => getComputedStyle(document.body).backgroundColor), 'rgb(255, 255, 255)');
+    await checkComfortableCanvas(fallback, 'standalone practice');
     await fallback.goto(pathToFileURL(path.join(root, '404.html')).href);
     assert.equal(await fallback.locator('.error-link').getAttribute('href'), './index.html');
     // Both old and new print URLs enter the shared print view without initializing Reveal.

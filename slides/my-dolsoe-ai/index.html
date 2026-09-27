@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="cartoon-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>나만의 돌쇠 AI 만들기 — OpenCode MCP 프롬프트 실습</title>
   <meta name="description" content="OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는 반도체 지식 자동화 하네스 & 그래프 엔지니어링 실습">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#d5d0c5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
@@ -20,7 +20,7 @@
 
   <style>
     /* 첫 화면부터 공통 밝은 테마 */
-    html { background: #fff; color-scheme: light; }
+    html { background: var(--paper); color-scheme: light; }
 
     /* ── 전 슬라이드 700px 예산 내 No-Scroll 엄격 규격화 ── */
     .reveal h2 {
@@ -157,23 +157,9 @@
       fill: var(--green);
     }
 
-    @media print {
-      html:not(.print-pdf) .reveal .panel-card {
-        background: #fff !important;
-        border-color: #000 !important;
-        color: #000 !important;
-      }
-      html:not(.print-pdf) .reveal .panel-card h4,
-      html:not(.print-pdf) .reveal .panel-card p {
-        color: #000 !important;
-      }
-      html:not(.print-pdf) .reveal svg rect[fill="none"],
-      html:not(.print-pdf) .reveal svg circle[fill="none"],
-      html:not(.print-pdf) .reveal svg .panel-fill {
-        fill: none !important;
-      }
-    }
+
   </style>
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">

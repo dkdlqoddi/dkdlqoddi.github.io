@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="cartoon-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Agent Skills Philosophy</title>
   <meta name="description" content="팀 세미나 2부 — 하네스가 결과의 폭을 조이는 원리, 층을 조이는 스킬 다섯과 하네스를 담은 제품 다섯">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#d5d0c5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
@@ -22,7 +22,7 @@
 
   <style>
     /* 첫 화면과 읽기 화면 모두 공통 밝은 테마를 사용한다. */
-    html { background: #fff; color-scheme: light; }
+    html { background: var(--paper); color-scheme: light; }
 
     /* ── 이 덱 고유 스타일 ── */
     .reveal .dim { color: var(--dim); }
@@ -93,25 +93,9 @@
       @keyframes dash-march-border { to { stroke-dashoffset: -22; } }
     }
 
-    /* flex 레이아웃이 인쇄에서 무너질 때 svg만이라도 유지 + 배지·미터 검정 복구 */
-    @media print {
-      html:not(.print-pdf) svg, html:not(.print-pdf) svg * { display: block !important; }
-      html:not(.print-pdf) .reveal .tag,
-      html:not(.print-pdf) .reveal .meter,
-      html:not(.print-pdf) .reveal .meter .m-step { color: #000 !important; border-color: #000 !important; }
-      /* 흑백 인쇄에서 현재 칸은 색이 아니라 반전으로 살린다 — 색만으로 정보를 나르지 않기 */
-      html:not(.print-pdf) .reveal .meter .m-step.on { background: #000 !important; color: #fff !important; }
-      /* 흰 종이에서는 어두운 상자 배경을 걷어낸다 */
-      html:not(.print-pdf) .reveal svg rect[fill="none"],
-      html:not(.print-pdf) .reveal svg circle[fill="none"],
-      html:not(.print-pdf) .reveal svg .panel-fill { fill: none !important; }
-      /* 터미널 창도 흰 종이용으로 반전 — 의사요소(❯ ⛭ 마커)는 *에 안 잡히므로 별도 지정 */
-      html:not(.print-pdf) .reveal .term { background: #fff !important; }
-      html:not(.print-pdf) .reveal .term,
-      html:not(.print-pdf) .reveal .term *,
-      html:not(.print-pdf) .reveal .term *::before { color: #000 !important; border-color: #000 !important; }
-    }
+
   </style>
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">

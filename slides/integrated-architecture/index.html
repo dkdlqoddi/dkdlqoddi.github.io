@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="cartoon-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>안전한 AI 설계 자동화 아키텍처</title>
   <meta name="description" content="VWP망 안에서 Docker를 생성하고 안전하게 Opencode를 활용하는 아키텍처">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#d5d0c5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
 
   <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
        상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
@@ -28,7 +28,7 @@
   <style>
 
     /* 첫 화면과 읽기 화면 모두 공통 밝은 테마를 사용한다. */
-    html { background: #fff; color-scheme: light; }
+    html { background: var(--paper); color-scheme: light; }
 
 /* --- CDS STYLES --- */
 
@@ -65,49 +65,7 @@
       to { stroke-dashoffset: -20; }
     }
     
-    @media print {
-      html:not(.print-pdf) svg, html:not(.print-pdf) svg * { display: block !important; }
 
-      /* ── 인쇄 색 복구 — 이 덱은 currentColor 대신 직접 색을 쓴다.
-         화면은 그대로 두고 흰 종이(Ctrl+P)에서만 어두운 색으로 되돌린다.
-         (근본 수리는 currentColor 재작성 — 후속 과제) ── */
-      html:not(.print-pdf) .reveal h1, html:not(.print-pdf) .reveal h2,
-      html:not(.print-pdf) .reveal h3, html:not(.print-pdf) .reveal h4 { color: #000 !important; text-shadow: none; }
-      html:not(.print-pdf) .node-text, html:not(.print-pdf) .node-subtext { fill: #000 !important; }
-      html:not(.print-pdf) .line-flow, html:not(.print-pdf) .line-flow-anim { stroke: #000 !important; }
-      html:not(.print-pdf) .node-office { stroke: #006666 !important; fill: none !important; }
-      html:not(.print-pdf) .node-vwp { stroke: #8b0000 !important; fill: none !important; }
-      html:not(.print-pdf) .node-shield { stroke: #006600 !important; fill: none !important; }
-      html:not(.print-pdf) .fw-line { stroke: #8b0000 !important; }
-      html:not(.print-pdf) .fw-text { fill: #8b0000 !important; }
-      html:not(.print-pdf) .code-snippet { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; }
-      html:not(.print-pdf) .code-red, html:not(.print-pdf) .code-green,
-      html:not(.print-pdf) .code-blue, html:not(.print-pdf) .code-yellow { color: #000 !important; }
-      html:not(.print-pdf) .hud-box { background: none !important; border-color: #000 !important; }
-      html:not(.print-pdf) .hud-box-warning { background: none !important; border-color: #8b0000 !important; box-shadow: none; }
-      /* SVG 속성으로 적힌 밝은 색 → 검정, 네온 → 어두운 동색 */
-      html:not(.print-pdf) svg [fill="var(--ink)"], html:not(.print-pdf) svg [fill="var(--ink)"],
-      html:not(.print-pdf) svg [fill="#ffffff"], html:not(.print-pdf) svg [fill="var(--ink)"],
-      html:not(.print-pdf) svg [fill="var(--muted)"], html:not(.print-pdf) svg [fill="#888"] { fill: #000 !important; }
-      html:not(.print-pdf) svg [stroke="var(--ink)"], html:not(.print-pdf) svg [stroke="var(--ink)"],
-      html:not(.print-pdf) svg [stroke="var(--muted)"] { stroke: #000 !important; }
-      html:not(.print-pdf) svg [fill="var(--forest)"] { fill: #006666 !important; }
-      html:not(.print-pdf) svg [stroke="var(--forest)"] { stroke: #006666 !important; }
-      html:not(.print-pdf) svg [fill="var(--forest)"] { fill: #006600 !important; }
-      html:not(.print-pdf) svg [fill="var(--orange)"], html:not(.print-pdf) svg [fill="var(--orange)"] { fill: #8a5a00 !important; }
-      html:not(.print-pdf) svg [stroke="var(--orange)"], html:not(.print-pdf) svg [stroke="var(--orange)"] { stroke: #8a5a00 !important; }
-      html:not(.print-pdf) svg [fill="var(--danger)"] { fill: #8b0000 !important; }
-      html:not(.print-pdf) svg [stroke="var(--danger)"] { stroke: #8b0000 !important; }
-      html:not(.print-pdf) svg [fill="var(--green)"] { fill: none !important; }
-      html:not(.print-pdf) .btn-return { color: #006666 !important; border-color: #006666 !important; }
-      /* 본문 인라인 색(style 속성)은 값 일치 선택자로 되돌린다 */
-      html:not(.print-pdf) [style*="color: var(--forest)"] { color: #006666 !important; }
-      html:not(.print-pdf) [style*="color: var(--forest)"] { color: #006600 !important; }
-      html:not(.print-pdf) [style*="color: var(--orange)"] { color: #8a5a00 !important; }
-      html:not(.print-pdf) [style*="color: var(--danger)"] { color: #8b0000 !important; }
-      html:not(.print-pdf) [style*="color: var(--ink)"], html:not(.print-pdf) [style*="color: #fff"],
-      html:not(.print-pdf) [style*="color: var(--muted)"] { color: #000 !important; }
-    }
     
     @media (prefers-reduced-motion: no-preference) {
       @view-transition { navigation: auto; }
@@ -199,7 +157,7 @@
     }
     .code-red { color: var(--danger); }
     .code-green { color: var(--forest); }
-    .code-blue { color: #405a96; }
+    .code-blue { color: #344d85; }
     .code-yellow { color: var(--orange); }
 
     .thank-you-neon { font-size: 2.3em !important; letter-spacing: -.04em; margin: 40px 0 25px !important; }
@@ -228,6 +186,7 @@
     }
 
 </style>
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
 </head>
 <body class="reading legacy-deck">
 
@@ -702,7 +661,7 @@
         <h3 style="color: var(--danger); font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1;">
-            <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: #888;">
+            <div class="code-snippet" style="height: 250px; overflow: hidden; font-size: 10px; color: var(--muted);">
 {"log_id": "89312", "timestamp": "2026-07-29T20:51:00", "severity": "INFO", "message": "Transaction verified", "trace": "..."}
 {"log_id": "89313", "timestamp": "2026-07-29T20:51:01", "severity": "WARN", "message": "Memory threshold 80%", "trace": "..."}
 {"log_id": "89314", "timestamp": "2026-07-29T20:51:02", "severity": "INFO", "message": "Connection closed", "trace": "..."}

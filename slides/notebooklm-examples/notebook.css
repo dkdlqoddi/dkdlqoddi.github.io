@@ -18,7 +18,7 @@
 .notebook-cover { position: relative; height: 570px; isolation: isolate; }
 .cover-ring { position: absolute; inset: 54px 12px; border: 1px solid var(--line); border-radius: 50%; }
 .cover-ring::after { content: ''; position: absolute; inset: 48px; border: 1px dashed #c4cfbe; border-radius: 50%; }
-.float-file { position: absolute; background: white; border: 1px solid var(--line); width: 173px; padding: 20px; border-radius: 14px; height: 180px; box-shadow: 0 12px 28px #2031240a; }
+.float-file { position: absolute; background: var(--surface, var(--paper)); border: 1px solid var(--line); width: 173px; padding: 20px; border-radius: 14px; height: 180px; box-shadow: 0 12px 28px #2031240a; }
 .float-file .icon { width: 34px; height: 34px; display: block; margin-bottom: 12px !important; }
 .float-file span { font-size: 25px; font-weight: 650; }
 .float-file i { display: block; height: 3px; margin-top: 13px; width: 92%; background: var(--line); }
@@ -61,7 +61,7 @@
 .journey-art { position: relative; border-radius: 24px; display: flex; align-items: center; justify-content: space-around; gap: 15px; padding: 30px 24px 52px; }
 .route-line { position: absolute; top: 39%; left: 13%; right: 13%; border-top: 3px dashed #c4b69b; }
 .route-stop { z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 22px; }
-.route-stop > .icon { border-radius: 50%; width: 94px; height: 94px; padding: 22px; background: white; color: var(--forest); }
+.route-stop > .icon { border-radius: 50%; width: 94px; height: 94px; padding: 22px; background: var(--surface, var(--paper)); color: var(--forest); }
 .route-stop strong { font-size: 31px; }
 .journey-art .art-caption { position: absolute; bottom: 18px; }
 .itinerary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
@@ -78,10 +78,10 @@
 .answer-card, .evidence-card { border-radius: 25px; padding: 28px; min-height: 343px; border: 1px solid var(--line); }
 .answer-card p { margin-top: 37px; font-size: 37px; line-height: 1.65; }
 .answer-card strong { color: var(--forest); }
-.citation-button { display: inline-grid; place-items: center; width: 49px; height: 49px; border: 1px solid #b8b0d6; color: var(--forest); border-radius: 50%; background: white; font-size: 27px; font-weight: 700; }
+.citation-button { display: inline-grid; place-items: center; width: 49px; height: 49px; border: 1px solid #b8b0d6; color: var(--forest); border-radius: 50%; background: var(--surface, var(--paper)); font-size: 27px; font-weight: 700; }
 .citation-button[aria-expanded="true"] { background: var(--forest); color: white; }
 .citation-hint { display: block; font-size: 23px; color: var(--muted); margin-top: 25px; }
-.evidence-card { background: #fcfdf9; }
+.evidence-card { background: var(--surface, var(--paper)); }
 .evidence-card .pill { font-size: 21px; }
 .evidence-placeholder { display: flex; align-items: center; gap: 22px; margin-top: 50px; color: var(--muted); }
 .evidence-placeholder p { font-size: 31px; }
@@ -109,7 +109,7 @@
 .map-branch strong { font-size: 29px; }
 .audio-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 35px; }
 .audio-art { border-radius: 25px; text-align: center; padding: 25px; }
-.headphone-disc { width: 125px; height: 125px; border-radius: 50%; background: #fff9f1; display: grid; place-items: center; margin: 0 auto; }
+.headphone-disc { width: 125px; height: 125px; border-radius: 50%; background: var(--surface, var(--paper)); display: grid; place-items: center; margin: 0 auto; }
 .headphone-disc > .icon { width: 72px; height: 72px; color: #98632f; }
 .waveform { display: flex; height: 115px; gap: 9px; align-items: center; justify-content: center; }
 .waveform i { display: block; width: 7px; height: var(--bar); border-radius: 8px; background: #ad8051; }
@@ -137,7 +137,7 @@
 .notebook-quiz .quiz-option { padding: 18px 24px; font-size: 31px; }
 .notebook-quiz .answer-letter { width: 50px; height: 50px; font-size: 28px; }
 .task-card { border-radius: 24px; padding: 24px 29px; }
-.task-date { display: inline-block; background: #ffffffc4; padding: 9px 16px; border-radius: 100px; font-size: 28px; color: var(--forest); }
+.task-date { display: inline-block; background: var(--surface, var(--paper)); padding: 9px 16px; border-radius: 100px; font-size: 28px; color: var(--forest); }
 .task-card h3 { margin: 26px 0 17px; font-size: 35px; }
 .assignee { display: flex; align-items: center; gap: 10px; font-size: 27px; }
 .assignee > .icon { width: 29px; height: 29px; }
@@ -176,7 +176,7 @@
 .info-title .pill { font-size: 18px; padding: 8px 12px; }
 .info-route { display: flex; gap: 11px; align-items: center; justify-content: space-between; }
 .info-route > div { text-align: center; }
-.info-route .icon { width: 80px; height: 80px; border-radius: 50%; background: white; padding: 19px; }
+.info-route .icon { width: 80px; height: 80px; border-radius: 50%; background: var(--surface, var(--paper)); padding: 19px; }
 .info-route span { display: block; font-size: 24px; margin: 15px 0 10px; color: var(--forest); }
 .info-route strong { display: block; font-size: 28px; }
 .info-route i { font-style: normal; font-size: 27px; margin-top: -60px; }

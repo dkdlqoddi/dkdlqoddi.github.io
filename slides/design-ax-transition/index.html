@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="cartoon-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>설계 AX 전환</title>
   <meta name="description" content="프롬프트 엔지니어링에서 Harness 엔지니어링으로의 패러다임 전환">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ddf59a'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23182320' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#d5d0c5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
 
   <!-- reveal.js는 저장소에 동봉된 공유 사본(vendor/)을 상대 경로로 사용한다.
        상대 경로여야 GitHub Pages·로컬 서버·오프라인(file://) 모두에서 열린다. -->
@@ -28,18 +28,11 @@
 
   <style>
     /* 첫 화면과 읽기 화면 모두 공통 밝은 테마를 사용한다. */
-    html { background: #fff; color-scheme: light; }
+    html { background: var(--paper); color-scheme: light; }
 
-    /* 인쇄 색 복구 — 이 덱 SVG는 currentColor 대신 직접 색을 쓴다.
-       화면은 그대로 두고 흰 종이(Ctrl+P)에서만 판독 가능한 색으로 되돌린다.
-       (근본 수리는 currentColor 재작성 — 후속 과제) */
-    @media print {
-      html:not(.print-pdf) svg [fill="var(--ink)"], html:not(.print-pdf) svg [fill="var(--muted)"] { fill: #000 !important; }
-      html:not(.print-pdf) svg [stroke="var(--ink)"], html:not(.print-pdf) svg [stroke="var(--muted)"] { stroke: #000 !important; }
-      html:not(.print-pdf) svg [fill="var(--danger)"] { fill: #8b0000 !important; }
-      html:not(.print-pdf) svg [stroke="var(--danger)"] { stroke: #8b0000 !important; }
-    }
+
   </style>
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
 </head>
 <body class="reading legacy-deck">
 <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
