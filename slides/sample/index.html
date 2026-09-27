@@ -32,6 +32,7 @@
     html { background: var(--paper); color-scheme: light; }
   </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
@@ -39,29 +40,45 @@
   <main id="course" class="reveal">
     <div class="slides">
 
-      <section>
-        <p class="eyebrow">DKDLQODDI · PRESENTATION LOG</p>
-        <h2>새 발표자료<br>추가 방법</h2>
-        <p class="small">이 자료가 공통 템플릿의 본보기입니다.<br>
-        <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
-      </section>
+      <section data-jelly-woo="present" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/present.webp" width="512" height="512" alt="도표를 가리키며 설명하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/present.webp 1x, ../../assets/images/jelly-woo/present@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">DKDLQODDI · PRESENTATION LOG</p>
+    <h1>새 발표자료<br><em>추가 방법</em></h1>
+    <p class="lead">이 자료가 공통 템플릿의 본보기입니다.</p>
+    <p class="jelly-cover-meta">→ 키 또는 화면 넘김으로 진행하세요.</p>
+    <p class="jelly-signpost">복사 → 수정 → 등록 → 공개</p>
+  </div>
 
-      <section>
-        <h3>1단계 — 폴더 복사</h3>
+</section>
+
+      <section data-jelly-woo="plan" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/plan.webp 1x, ../../assets/images/jelly-woo/plan@2x.webp 2x">
+  <div class="jelly-main">
+<h3 class="jelly-heading">1단계 — 폴더 복사</h3>
         <p><code>slides/sample/</code> 폴더를 복사해<br><code>slides/my-talk/</code>처럼 새 이름을 붙입니다.</p>
         <p class="small">폴더 이름은 영문 소문자와 하이픈만 사용합니다.<br>
         이 이름이 곧 공유 주소가 됩니다:<br><code>https://dkdlqoddi.github.io/slides/my-talk/</code></p>
-      </section>
+</div>
 
-      <section>
-        <h3>2단계 — 내용 수정</h3>
+</section>
+
+      <section data-jelly-woo="code" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/code.webp 1x, ../../assets/images/jelly-woo/code@2x.webp 2x">
+  <div class="jelly-main">
+<h3 class="jelly-heading">2단계 — 내용 수정</h3>
         <p class="small"><code>index.html</code>의 <code>&lt;section&gt;</code> 하나가 슬라이드 한 장입니다.</p>
         <p class="small">카툰 색상은 <code>shared/cartoon-deck.css</code>,<br>발표 구성은 <code>shared/deck-base.css</code>를 함께 사용합니다.</p>
         <p class="small">공통 템플릿이 목차·읽기 화면·이동·인쇄를 제공합니다.<br>이 파일에는 발표 내용과 고유한 도식만 추가하세요.</p>
-      </section>
+        <p class="small">캐릭터 배치는 <code>shared/jelly-woo.css</code>를 공유합니다.<br>큰 포즈는 왼쪽, 작은 포즈는 오른쪽 위에 둡니다.</p>
+</div>
 
-      <section>
-        <h3>3단계 — 목록에 등록</h3>
+</section>
+
+      <section data-jelly-woo="connect" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">3단계 — 목록에 등록</h3>
         <p class="small">루트 <code>slides.json</code>의 학습 순서에 맞는 위치에 추가합니다.</p>
         <pre><code>{
   "title": "발표 제목",
@@ -72,15 +89,21 @@
   "audience": "AI 활용 입문자"
 }</code></pre>
         <p class="small">메인의 JavaScript 비활성 목록과 README도 같은 순서로 맞춥니다.</p>
-      </section>
+</div>
 
-      <section>
-        <h3>4단계 — 공개</h3>
+</section>
+
+      <section data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h3 class="jelly-heading">4단계 — 공개</h3>
         <p class="small">main 브랜치에 push하면 몇 분 안에 공개됩니다.<br>
         방문자에 따라 목록 반영이 최대 10분 늦을 수 있습니다.</p>
         <p class="small">⚠ 슬라이드 도구(reveal.js 6.0.1)와 글꼴(Pretendard)은<br>
         <code>vendor/</code>의 공유 사본을 쓰므로 인터넷 없이도 동작합니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- 데모 1/2 — 그림 + 단계 공개 (이 두 장이 표현 기법의 실물 견본이다)
            · 그림은 인라인 SVG + currentColor: 인쇄에서 배치가 보존되고 자동으로 검정이 된다
@@ -88,8 +111,9 @@
            · class="fragment fade-up"을 SVG <g>에 붙이면 조각이 화살표 키마다 차례로 등장한다
            · data-auto-animate: 다음 장과 짝 — 같은 data-id 상자가 미끄러지며 이어진다
            · 주의: 모핑이 켜진 장 쌍에서는 data-transition="zoom"이 무시된다 (둘 다는 불가) -->
-      <section data-auto-animate>
-        <h3>보너스 — 단계 공개</h3>
+      <section data-auto-animate data-jelly-woo="present" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/present.webp" width="512" height="512" alt="도표를 가리키며 설명하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">보너스 — 단계 공개</h3>
         <p class="visually-hidden">그림 설명: 복사, 수정, 등록 세 상자가 차례로 나타나며 화살표로 이어집니다.</p>
         <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="복사, 수정, 등록 세 단계가 화살표로 이어지는 그림" xmlns="http://www.w3.org/2000/svg">
           <g data-id="copy">
@@ -114,15 +138,17 @@
           </g>
         </svg>
         <p class="small">화살표 키를 누르면 그림 조각이 차례로 나타납니다.</p>
-      </section>
+
+</section>
 
       <!-- 데모 2/2 — 모핑(auto-animate)
            · 앞 장과 같은 좌표계(viewBox)에서 같은 data-id 상자가 새 위치로 미끄러진다
            · 짝(data-id) 없는 새 요소("4 공개" 상자)는 자동 페이드로 등장한다 — 기본 동작 시연
            · 자동 페이드가 fragment와 겹쳐 거슬리면 data-auto-animate-unmatched="false"를
              section에 붙일 것 (실제 사용례: slides/dx-vs-ax-automation/ 3·4장) -->
-      <section data-auto-animate>
-        <h3>보너스 — 모핑</h3>
+      <section data-auto-animate data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">보너스 — 모핑</h3>
         <p class="visually-hidden">그림 설명: 세 상자가 왼쪽으로 좁혀지며 이동하고, 넷째 상자 공개가 더해집니다.</p>
         <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="세 단계 상자가 이동하고 공개 상자가 더해지는 그림" xmlns="http://www.w3.org/2000/svg">
           <g data-id="copy">
@@ -145,12 +171,17 @@
           </g>
         </svg>
         <p class="small">장을 넘기면 같은 상자가 미끄러지며 이어집니다.</p>
-      </section>
 
-      <section>
-        <h2>끝.</h2>
+</section>
+
+      <section data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h2 class="jelly-heading">끝.</h2>
         <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
-      </section>
+</div>
+
+</section>
 
     </div>
   </main>

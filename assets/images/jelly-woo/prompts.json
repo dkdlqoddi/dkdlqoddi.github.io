@@ -1,0 +1,127 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "reference.png",
+  "useCase": "stylized-concept",
+  "assets": [
+    {
+      "key": "welcome",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Warm welcoming wave, facing slightly left toward the audience, bright friendly smile, one hand waving at shoulder height, the other holding the backpack strap. Standing steadily.",
+      "alt": "손을 흔들며 인사하는 jelly-woo",
+      "file": "welcome.webp",
+      "original": "originals/welcome.png",
+      "retinaFile": "welcome@2x.webp"
+    },
+    {
+      "key": "study",
+      "alt": "책을 읽으며 배우는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Seated reading an open blue book, attentive curious smile, two closed books beside the feet. Book pages have only a few abstract lines, no letters.",
+      "file": "study.webp",
+      "original": "originals/study.png",
+      "retinaFile": "study@2x.webp"
+    },
+    {
+      "key": "code",
+      "alt": "노트북으로 작업하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Sitting at an open dark laptop, typing with focused friendly eyes. The laptop has a tiny blue circular sticker only, no text. Face and hair clearly visible above the laptop.",
+      "file": "code.webp",
+      "original": "originals/code.png",
+      "retinaFile": "code@2x.webp"
+    },
+    {
+      "key": "connect",
+      "alt": "도구와 흐름을 연결하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing holding a small simple model of three connected rounded cubes at chest height, blue, sage and warm cream cubes connected by short dark rods. Proud helpful smile. Only this one compact network prop.",
+      "file": "connect.webp",
+      "original": "originals/connect.png",
+      "retinaFile": "connect@2x.webp"
+    },
+    {
+      "key": "review",
+      "alt": "돋보기로 결과를 검토하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Examining a small cream document with a handheld magnifying glass, thoughtful attentive expression, dark abstract lines and one green checkmark on the document. No readable words.",
+      "file": "review.webp",
+      "original": "originals/review.png",
+      "retinaFile": "review@2x.webp"
+    },
+    {
+      "key": "shield",
+      "alt": "방패로 안전과 권한을 지키는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing confidently holding a rounded blue shield with a simple white checkmark, one hand on hip, calm reassuring expression. Shield is small enough that hoodie and face remain visible.",
+      "file": "shield.webp",
+      "original": "originals/shield.png",
+      "retinaFile": "shield@2x.webp"
+    },
+    {
+      "key": "compare",
+      "alt": "두 선택지를 비교하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing with arms extended a little, comparing two small plain rounded cards, sage card in one hand and lavender card in the other. Curious balanced expression, eyes looking between the cards. Cards have abstract shapes only.",
+      "file": "compare.webp",
+      "original": "originals/compare.png",
+      "retinaFile": "compare@2x.webp"
+    },
+    {
+      "key": "present",
+      "alt": "도표를 가리키며 설명하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing next to a small freestanding presentation board and pointing at three simple ascending blue bars. Friendly smile, board compact, character dominant. No numbers, words, axis labels.",
+      "file": "present.webp",
+      "original": "originals/present.png",
+      "retinaFile": "present@2x.webp"
+    },
+    {
+      "key": "plan",
+      "alt": "할 일을 계획하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Holding a small cream clipboard with three blue checkbox squares and abstract short strokes, a pencil in the other hand poised to plan the next step. Optimistic focused expression. No letters or numbers.",
+      "file": "plan.webp",
+      "original": "originals/plan.png",
+      "retinaFile": "plan@2x.webp"
+    },
+    {
+      "key": "celebrate",
+      "alt": "완료를 기뻐하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Joyful small celebratory jump with both hands raised, wide smile with single front tooth, two tiny golden sparkles beside the head. Full feet visible, no confetti background.",
+      "file": "celebrate.webp",
+      "original": "originals/celebrate.png",
+      "retinaFile": "celebrate@2x.webp"
+    },
+    {
+      "key": "question",
+      "alt": "질문을 떠올리며 생각하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing with one rounded hand on chin, other hand on hip, thoughtful curious eyebrows and small closed smile, looking slightly upward. One small blue question-mark shaped prop floating immediately above one shoulder.",
+      "file": "question.webp",
+      "original": "originals/question.png",
+      "retinaFile": "question@2x.webp"
+    },
+    {
+      "key": "travel",
+      "alt": "지도를 보며 이동을 준비하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing wearing the small backpack, holding an unfolded small cream paper map with simple blue path and a red location pin, ready for a learning journey, friendly adventurous expression. No words.",
+      "file": "travel.webp",
+      "original": "originals/travel.png",
+      "retinaFile": "travel@2x.webp"
+    },
+    {
+      "key": "listen",
+      "alt": "헤드폰으로 듣는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Wearing the same black headphones with blue rings over the ears instead of around the neck, one hand touching an ear cup, eyes softly closed with happy listening smile, other hand relaxed. No music notes or background.",
+      "file": "listen.webp",
+      "original": "originals/listen.png",
+      "retinaFile": "listen@2x.webp"
+    },
+    {
+      "key": "idea",
+      "alt": "전구와 함께 아이디어를 떠올리는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable presentation character sticker, one square PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth when mouth open; charcoal-black hoodie with a simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around the neck, small rounded black shoes. Match the reference's polished soft 3D toy illustration faithfully. No other characters.\nScene/backdrop: actual transparent background with alpha, no white rectangle, no checkerboard, no background scenery. Character and relevant prop only, with generous transparent margin on every side and no cropping.\nStyle: friendly modern high-quality 3D mascot, clear silhouette readable at small slide sizes, soft studio light.\nNo written words, labels, title, watermark, panels, or contact sheet. Only the hoodie code symbol is permitted.\nPose and prop: Standing raising one index finger beside a small glowing yellow light bulb, delighted confident expression, other hand resting on hip. Bulb is simple and close to the raised hand; glow only around bulb, transparent background.",
+      "file": "idea.webp",
+      "original": "originals/idea.png",
+      "retinaFile": "idea@2x.webp"
+    },
+    {
+      "key": "approve",
+      "alt": "확인한 문서를 들고 승인을 표시하는 jelly-woo",
+      "prompt": "Use case: stylized-concept\nAsset type: reusable transparent presentation character sticker, one square 1024x1024 PNG.\nInput image 1 is a CHARACTER IDENTITY REFERENCE, not a layout to reproduce. Create exactly ONE full-body Jelly-woo character in a new human-approval pose.\nIdentity: cheerful glossy orange bean-shaped body, one black curled hair sprout, large expressive white eyes with dark pupils, dark eyebrows, pink cheeks, small single front tooth; charcoal-black hoodie with simple white </> symbol, small dark backpack, black headphones with blue accent rings resting around neck, rounded black shoes. Match reference's polished soft 3D toy illustration faithfully.\nPose: standing steadily, body turned slightly toward the RIGHT to face slide content when placed on the left. Calm confident smile, eyes open. Holding up one cream document with exactly ONE large green checkmark prominently visible, and giving a clear thumbs-up with the other hand beside the document. This means a person has reviewed and approved the work before execution. No shield, no magnifying glass, no pencil, no celebration jump. Keep the hands anatomically clear and props separate from face.\nScene/backdrop: genuine transparent alpha background, no white rectangle, no checkerboard, no scenery, no surface. Full feet and curl visible; generous transparent margin, no cropping. Character fills about 85% of square height with a silhouette clear at 190px.\nStyle: friendly high-quality 3D mascot, soft studio lighting, same material and color palette as reference. Only one character. No written words, labels, letters, numbers, title, watermark, panels or contact sheet. Only permitted symbols: white hoodie </> and single document checkmark.",
+      "file": "approve.webp",
+      "original": "originals/approve.png",
+      "retinaFile": "approve@2x.webp"
+    }
+  ]
+}

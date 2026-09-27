@@ -160,29 +160,30 @@
 
   </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">
     <div class="slides">
 
       <!-- ═══════════════════ SLIDE 1. 표지 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">HARNESS ENGINEERING → GRAPH ENGINEERING</p>
-        <h2>나만의 돌쇠 AI 만들기</h2>
-        <p class="small">OpenCode에 연결된 EDA 3대 MCP를 프롬프트로 부리는<br>
-        반도체 지식 자동화 하네스 & 그래프 엔지니어링 실습</p>
-        <p style="margin-top: 16px;">
-          <span class="kbd">Skill (프롬프트/MCP)</span> <span class="dim">→</span>
-          <span class="kbd">Agent (리서치 일꾼)</span> <span class="dim">→</span>
-          <span class="kbd">Orchestrator (마름)</span>
-        </p>
-        <p class="small dim" style="margin-top: 14px;"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
-      </section>
+      <section data-jelly-woo="code" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/code.webp 1x, ../../assets/images/jelly-woo/code@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">HARNESS → GRAPH ENGINEERING</p>
+    <h1>나만의<br><em>돌쇠 AI</em><br>만들기</h1>
+    <p class="lead">OpenCode에 연결된 EDA 3대 MCP를<br>프롬프트로 부리는 반도체 지식 자동화</p>
+    <p class="jelly-cover-meta">하네스 & 그래프 엔지니어링 실습</p>
+    <p class="jelly-signpost">Skill → Agent → Orchestrator</p>
+  </div>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 2. 왜 하필 돌쇠인가 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">METAPHOR</p>
-        <h3>왜 하필 '돌쇠'인가</h3>
+      <section data-jelly-woo="idea" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/idea.webp" width="512" height="512" alt="전구와 함께 아이디어를 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">METAPHOR</p>
+        <h3 class="jelly-heading">왜 하필 '돌쇠'인가</h3>
         <p class="small">에이전트 시스템의 용어는 추상적입니다. <strong>'숙련된 일꾼에게 어떻게 프롬프트로 연결된 MCP를 쥐여줄 것인가'</strong>로 바꾸면 익숙한 문제가 됩니다.</p>
         
         <div class="cols-2 equal">
@@ -219,12 +220,14 @@
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 3. 파일 배치 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">LAYOUT</p>
-        <h3>돌쇠네 집 구조 · 파일 배치</h3>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">LAYOUT</p>
+        <h3 class="jelly-heading">돌쇠네 집 구조 · 파일 배치</h3>
         <p class="small">OpenCode는 작업 디렉터리에서 git 루트까지 거슬러 올라가며 아래 경로를 자동으로 찾습니다. (스크립트 없이 MCP 직접 호출)</p>
         
         <div class="cols-2">
@@ -257,12 +260,14 @@
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 4. 1단계 Cadence JedAI 매뉴얼 수집 Skill ═══════════════════ -->
-      <section>
-        <p class="eyebrow">SKILL · JEDAI MANUAL</p>
-        <h3>1단계 · Cadence JedAI 매뉴얼 수집 Skill</h3>
+      <section data-jelly-woo="study" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">SKILL · JEDAI MANUAL</p>
+        <h3 class="jelly-heading">1단계 · Cadence JedAI 매뉴얼 수집 Skill</h3>
         <div class="tool-tags">
           <span class="tag t-soft">PROMPT</span>
           <span class="tag t-hard">jedai MCP</span>
@@ -306,12 +311,14 @@ description: jedai MCP 도구를 호출해 최신 매뉴얼 수집
             </svg>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 5. 1단계 Siemens Calibre 매뉴얼 수집 Skill ═══════════════════ -->
-      <section>
-        <p class="eyebrow">SKILL · SIEMENS MANUAL</p>
-        <h3>1단계 · Siemens Calibre 매뉴얼 수집 Skill</h3>
+      <section data-jelly-woo="study" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">SKILL · SIEMENS MANUAL</p>
+        <h3 class="jelly-heading">1단계 · Siemens Calibre 매뉴얼 수집 Skill</h3>
         <div class="tool-tags">
           <span class="tag t-soft">PROMPT</span>
           <span class="tag t-hard">Siemens_MCP</span>
@@ -355,12 +362,14 @@ description: Siemens_MCP 도구를 호출해 Calibre 매뉴얼 수집
             </svg>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 6. 1단계 Synopsys 매뉴얼 수집 Skill ═══════════════════ -->
-      <section>
-        <p class="eyebrow">SKILL · SNPS MANUAL</p>
-        <h3>1단계 · Synopsys 매뉴얼 수집 Skill</h3>
+      <section data-jelly-woo="study" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">SKILL · SNPS MANUAL</p>
+        <h3 class="jelly-heading">1단계 · Synopsys 매뉴얼 수집 Skill</h3>
         <div class="tool-tags">
           <span class="tag t-soft">PROMPT</span>
           <span class="tag t-hard">SNPS_MCP</span>
@@ -404,12 +413,15 @@ description: SNPS_MCP 도구를 호출해 합성/STA 매뉴얼 수집
             </svg>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 7. Harness Engineering 마당 짓기 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">HARNESS</p>
-        <h3>Harness Engineering · 마당 짓기</h3>
+      <section data-jelly-woo="shield" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<p class="jelly-eyebrow eyebrow">HARNESS</p>
+        <h3 class="jelly-heading">Harness Engineering · 마당 짓기</h3>
         <p class="small">모델을 바꾸지 않고 매뉴얼 수집 결과를 바꾸는 층. <code>opencode.json</code>에 MCP를 연결하고, 프롬프트 권한 담장을 칩니다.</p>
 
         <div class="card-grid-2x2">
@@ -434,12 +446,15 @@ description: SNPS_MCP 도구를 호출해 합성/STA 매뉴얼 수집
         <div class="summary-box">
           <code>permission: { webfetch: "deny", bash: "ask", doc_edit: "ask" }</code> — 사내 EDA 기술 자산을 보호하는 돌쇠의 담장
         </div>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 8. 2단계 Agent 만들기 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">AGENT</p>
-        <h3>2단계 · 때를 아는 Agent 만들기</h3>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">AGENT</p>
+        <h3 class="jelly-heading">2단계 · 때를 아는 Agent 만들기</h3>
         <p class="small">이제 어떤 매뉴얼 스킬을 쓸지 사람이 고르지 않습니다. 질문의 EDA 툴 유형에 따라 에이전트가 스스로 프롬프트로 MCP를 호출합니다.</p>
 
         <div class="cols-2">
@@ -473,12 +488,14 @@ permission: { webfetch: "deny" }
             <p class="small dim" style="margin-top: 4px;">매뉴얼 탐색 판단이 사람의 수작업이 아니라 에이전트 지시문으로 자동화되었습니다.</p>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 9. 2단계 opencode.json에 Agent 등록하기 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">AGENT CONFIG</p>
-        <h3>2단계 · opencode.json에 Agent 등록하기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">AGENT CONFIG</p>
+        <h3 class="jelly-heading">2단계 · opencode.json에 Agent 등록하기</h3>
         <div class="tool-tags">
           <span class="tag t-soft">CONFIG</span>
           <span class="tag t-hard">JSON</span>
@@ -518,12 +535,14 @@ permission: { webfetch: "deny" }
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 10. Flow와 Loop ═══════════════════ -->
-      <section>
-        <p class="eyebrow">FLOW / LOOP</p>
-        <h3>Flow와 Loop · 한 줄기와 되풀이</h3>
+      <section data-jelly-woo="compare" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">FLOW / LOOP</p>
+        <h3 class="jelly-heading">Flow와 Loop · 한 줄기와 되풀이</h3>
         <p class="small">프롬프트로 MCP를 1회 호출하는 것이 <strong>Flow</strong>, 원하는 기술 문서가 완벽히 수집될 때까지 프롬프트를 튜닝하며 되돌아가는 구간이 <strong>Loop</strong>입니다.</p>
 
         <div class="cols-2 equal" style="margin-top: 6px;">
@@ -565,12 +584,14 @@ done</code></pre>
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 11. Loop 실행 메커니즘 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">LOOP</p>
-        <h3>Loop 실행 메커니즘</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">LOOP</p>
+        <h3 class="jelly-heading">Loop 실행 메커니즘</h3>
         <p class="small">되풀이의 한 회차마다 opencode CLI 또는 세션에서 돌쇠를 불러 프롬프트로 MCP를 순환 호출합니다.</p>
 
         <div class="cols-2">
@@ -600,12 +621,14 @@ echo "완료 — Synopsys 최신 매뉴얼 확보"</code></pre>
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 12. Loop 실행 프롬프트 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">LOOP</p>
-        <h3>Loop 실행 프롬프트</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">LOOP</p>
+        <h3 class="jelly-heading">Loop 실행 프롬프트</h3>
         <p class="small">같은 되풀이를 세션 대화창에서 사람 말로 시키는 방법 — 세션에 그대로 붙여넣으면 됩니다.</p>
 
         <div class="cols-2">
@@ -635,12 +658,14 @@ echo "완료 — Synopsys 최신 매뉴얼 확보"</code></pre>
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 13. 3단계 마름 Orchestrator ═══════════════════ -->
-      <section>
-        <p class="eyebrow">ORCHESTRATOR</p>
-        <h3>3단계 · 누구에게 시킬지 정하는 마름</h3>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">ORCHESTRATOR</p>
+        <h3 class="jelly-heading">3단계 · 누구에게 시킬지 정하는 마름</h3>
         <p class="small">수집할 툴이 셋이면 문제가 바뀝니다. '어떤 툴 매뉴얼을 읽을까'가 아니라 <strong>'누구에게 시킬까'</strong>입니다.</p>
 
         <div class="cols-2">
@@ -681,12 +706,14 @@ model: codemate/CodeLLMPro
             </svg>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 14. 4단계 언년이 Evaluator ═══════════════════ -->
-      <section>
-        <p class="eyebrow">EVALUATOR</p>
-        <h3>4단계 · 제대로 되었는지 보는 언년이</h3>
+      <section data-jelly-woo="review" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" width="512" height="512" alt="돋보기로 결과를 검토하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">EVALUATOR</p>
+        <h3 class="jelly-heading">4단계 · 제대로 되었는지 보는 언년이</h3>
         <p class="small">가져왔다고 끝이 아닙니다. MCP로 수집된 결과의 최신 릴리즈 날짜와 목차가 완벽한지 판정하는 독립된 눈을 둡니다.</p>
 
         <div class="cols-2">
@@ -717,12 +744,14 @@ model: codemate/CodeLLMPro
             <p class="small dim" style="margin-top: 4px;">검사역은 스스로 문서를 채우지 않고 마름에게 되돌려 피드백 루프를 완성합니다.</p>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 15. Graph Engineering 전체 지도 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">GRAPH</p>
-        <h3>Graph Engineering · 전체 지도로 묶기</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">GRAPH</p>
+        <h3 class="jelly-heading">Graph Engineering · 전체 지도로 묶기</h3>
         <p class="small">노드는 책임 하나, 엣지는 조건. 프롬프트로 MCP를 직접 호출하는 완성형 상태 전이 지도입니다.</p>
         <p class="visually-hidden">그림 설명: 마름, 돌쇠, 개똥이, 언년이가 연결된 EDA 매뉴얼 수집 및 지식화 완성형 상태 전이 그래프</p>
 
@@ -797,12 +826,15 @@ model: codemate/CodeLLMPro
           <rect x="180" y="235" width="540" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="1" class="dim"/>
           <text x="450" y="250" text-anchor="middle" font-size="11" fill="currentColor" class="dim">상태는 data/*_manual.md 로 공유 · 노드 = 책임 하나 · 엣지 = 조건 전이</text>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 16. Local Checklist ═══════════════════ -->
-      <section>
-        <p class="eyebrow">LOCAL CHECKLIST</p>
-        <h3>오늘 만든 것, 그대로 돌려보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<p class="jelly-eyebrow eyebrow">LOCAL CHECKLIST</p>
+        <h3 class="jelly-heading">오늘 만든 것, 그대로 돌려보기</h3>
         <p class="small">외부 의존성 없이 사내 폐쇄망 환경에서 즉시 실행하는 5단계 절차</p>
 
         <div class="cols-2 equal">
@@ -833,12 +865,16 @@ model: codemate/CodeLLMPro
         </div>
 
         <p class="small dim" style="margin-top: 8px;">별도 스크립트 없이 OpenCode에 연결된 MCP를 프롬프트로 직접 호출합니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 17. AI Tool 방법론 지도 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">BEYOND</p>
-        <h3>그래프 다음 · AI Tool 방법론 지도</h3>
+      <section data-jelly-woo="travel" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/travel.webp" width="512" height="512" alt="지도를 보며 이동을 준비하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<p class="jelly-eyebrow eyebrow">BEYOND</p>
+        <h3 class="jelly-heading">그래프 다음 · AI Tool 방법론 지도</h3>
         <p class="small">Skill · Agent · Flow · Loop · Graph 위에 얹는 층들입니다. 앞의 구조는 그대로 씁니다.</p>
 
         <div class="cols-2 equal">
@@ -875,12 +911,15 @@ model: codemate/CodeLLMPro
             </div>
           </div>
         </div>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 18. 5단계 돌쇠들의 마을 게시판 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">AGENT SNS</p>
-        <h3>5단계 · 돌쇠들의 마을 게시판</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">AGENT SNS</p>
+        <h3 class="jelly-heading">5단계 · 돌쇠들의 마을 게시판</h3>
         <p class="small">에이전트가 서로를 발견하고 일을 주고받는 층. 사람이 매번 이어주지 않아도 됩니다.</p>
 
         <div class="cols-2">
@@ -912,12 +951,14 @@ model: codemate/CodeLLMPro
             <p class="small dim" style="margin-top: 3px;">표준: Google A2A · Blackboard 공유 작업판 패턴</p>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 19. 6단계 요구사항과 과정을 문서로 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">SPEC-DRIVEN</p>
-        <h3>6단계 · 요구사항과 과정을 문서로</h3>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">SPEC-DRIVEN</p>
+        <h3 class="jelly-heading">6단계 · 요구사항과 과정을 문서로</h3>
         <p class="small">말로 시키면 세션 종료 시 사라집니다. 명세와 결정을 파일로 남겨야 다음 돌쇠가 이어받습니다.</p>
 
         <div class="cols-2">
@@ -945,12 +986,14 @@ model: codemate/CodeLLMPro
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 20. 7단계 돌쇠의 도서관 만들기 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">RAG · LLM WIKI</p>
-        <h3>7단계 · 돌쇠의 도서관 만들기</h3>
+      <section data-jelly-woo="study" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <p class="jelly-eyebrow eyebrow">RAG · LLM WIKI</p>
+        <h3 class="jelly-heading">7단계 · 돌쇠의 도서관 만들기</h3>
         <p class="small">모르는 것을 지어내지 않게 하려면, 찾아 읽을 자리를 먼저 만들어 줘야 합니다.</p>
 
         <div class="cols-2">
@@ -980,12 +1023,15 @@ model: codemate/CodeLLMPro
             </div>
           </div>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ SLIDE 21. BEYOND THE GRAPH ═══════════════════ -->
-      <section>
-        <p class="eyebrow">BEYOND THE GRAPH</p>
-        <h3>더 있는 방법론들 — 조사로 덧붙임</h3>
+      <section data-jelly-woo="study" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<p class="jelly-eyebrow eyebrow">BEYOND THE GRAPH</p>
+        <h3 class="jelly-heading">더 있는 방법론들 — 조사로 덧붙임</h3>
         <p class="small">그래프 엔지니어링 다음으로 확장되는 5가지 핵심 기법</p>
 
         <div class="cols-2 equal">
@@ -1019,7 +1065,9 @@ model: codemate/CodeLLMPro
           <p class="small dim">출처: A2A · AGENTS.md · ADR · 로컬 RAG · LLM Wiki · MCP (2026)</p>
           <p style="margin-top: 6px;"><a href="../../">← 발표 기록으로 돌아가기</a></p>
         </div>
-      </section>
+</div>
+
+</section>
 
     </div>
   </main>

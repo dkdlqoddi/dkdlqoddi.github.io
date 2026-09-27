@@ -47,7 +47,9 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 4. `index.html`의 `<noscript>` 목록과 이 문서의 학습 순서를 같은 순서로 갱신합니다. 첫 자료가 바뀌면 `main.js`의 목록 오류 대체 링크도 갱신합니다.
 5. 로컬 검증 후 PR 리뷰를 거쳐 `main`에 반영합니다.
 
-CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일 → `cartoon-deck.css`입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
+CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일 → `cartoon-deck.css` → `jelly-woo.css`입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
+
+모든 슬라이드는 내용에 맞는 jelly-woo 포즈와 배치를 사용합니다. [공용 이미지 디렉터리](assets/images/jelly-woo/README.md)에 15종 WebP(512px·고해상도 1024px), 생성 원본 PNG, 캐릭터 기준 시트와 프롬프트가 있습니다. 첫 장은 큰 캐릭터의 `cover` 배치가 필수입니다. 새 장마다 `data-jelly-woo`와 `data-jelly-layout`을 함께 선택합니다. `cover`·`feature`·`guide`는 캐릭터를 왼쪽에 두고 본문을 `.jelly-main`으로 감싸 오른쪽에 배치합니다. 도표 중심의 `banner`·`corner`는 캐릭터를 오른쪽 위에 고정하고 넓은 본문을 유지합니다. 읽기·모바일은 단일 열에서도 같은 좌우 정렬을 유지합니다. `sample`에 예시가 포함되어 있습니다. 배포 PDF는 로컬 서버 실행 후 `NODE_PATH=/tmp/presentation-check/node_modules node scripts/export_pdfs.cjs`로 갱신합니다.
 
 ## 로컬 미리보기와 검증
 

@@ -25,6 +25,61 @@ async function checkComfortableCanvas(page, label) {
   assert((Math.max(background, text) + .05) / (Math.min(background, text) + .05) >= 7, `${label}: body text contrast`);
 }
 
+async function checkCharacters(page, label) {
+  await page.evaluate(() => Promise.all([...document.querySelectorAll('img.jelly-woo')].map(image => image.decode())));
+  const failures = await page.evaluate(() => {
+    const reading = document.body.classList.contains('reading');
+    const printing = document.body.classList.contains('printing');
+    const previous = !reading && !printing && Reveal.getIndices();
+    const failures = [];
+    for (const [index, slide] of [...document.querySelectorAll('.slides > section')].entries()) {
+      if (previous) Reveal.slide(index, 0, 999);
+      const images = slide.querySelectorAll('img.jelly-woo');
+      if (images.length !== 1 || !images[0].complete || !images[0].naturalWidth) {
+        failures.push(`${index + 1}: missing character`);
+        continue;
+      }
+      const image = images[0];
+      if (image.parentElement !== slide) failures.push(`${index + 1}: character must be a direct slide child`);
+      const r = image.getBoundingClientRect();
+      const s = slide.getBoundingClientRect();
+      const layout = slide.dataset.jellyLayout;
+      if (index === 0 && layout !== 'cover') failures.push('First slide must use the cover composition');
+      const minima = { cover: 360, feature: 260, guide: 170, banner: 150, corner: 80 };
+      const leftColumn = ['cover', 'feature', 'guide'].includes(layout);
+      const center = (r.left + r.right) / 2;
+      if (leftColumn ? center >= s.left + s.width / 2 : center <= s.left + s.width / 2) failures.push(`${index + 1}: ${layout} character is on the wrong side`);
+      const slideStyle = getComputedStyle(slide);
+      const canvasHeight = document.body.classList.contains('legacy-deck') ? 700 : 720;
+      if (!reading && Math.abs(parseFloat(slideStyle.height) - canvasHeight) > 1) failures.push(`${index + 1}: character position must use the full slide canvas`);
+      const scale = s.width / parseFloat(slideStyle.width);
+      if (!leftColumn && r.top - s.top > (parseFloat(slideStyle.paddingTop) + 16) * scale + 2) failures.push(`${index + 1}: small character must stay at the top right`);
+      const minimum = reading ? Math.min(minima[layout], s.width * .7) : minima[layout];
+      if (!minimum || parseFloat(getComputedStyle(image).width) < minimum - 1) failures.push(`${index + 1}: ${layout} character is too small`);
+      const main = slide.querySelector('.jelly-main');
+      if (main && (main.scrollWidth > main.clientWidth + 2 || main.scrollHeight > main.clientHeight + 2)) failures.push(`${index + 1}: composed content overflow`);
+      if (r.width < 40 || r.height < 40 || r.left < s.left - 1 || r.right > s.right + 1 || r.top < s.top - 1 || r.bottom > s.bottom + 1) failures.push(`${index + 1}: character outside slide`);
+      const overlaps = q => q.width && q.height && q.left < r.right - 2 && q.right > r.left + 2 && q.top < r.bottom - 2 && q.bottom > r.top + 2;
+      const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (!node.textContent.trim() || node.parentElement.closest('.notes,.visually-hidden,svg,[hidden]')) continue;
+        const style = getComputedStyle(node.parentElement);
+        if (style.visibility === 'hidden' || style.display === 'none' || style.opacity === '0') continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        if ([...range.getClientRects()].some(overlaps)) failures.push(`${index + 1}: character overlaps ${node.textContent.trim().slice(0, 40)}`);
+      }
+      for (const diagram of slide.querySelectorAll('svg[role="img"]')) {
+        if (overlaps(diagram.getBoundingClientRect())) failures.push(`${index + 1}: character overlaps diagram`);
+      }
+    }
+    if (previous) Reveal.slide(previous.h, previous.v, previous.f);
+    return failures;
+  });
+  assert.deepEqual(failures, [], `${label}: characters must load and leave content readable`);
+}
+
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', args: ['--no-sandbox'] });
   try {
@@ -39,6 +94,7 @@ async function checkComfortableCanvas(page, label) {
       const total = await page.locator('.slides > section').count();
       await page.evaluate(() => document.fonts.ready);
       await checkComfortableCanvas(page, slug);
+      await checkCharacters(page, slug);
       const overflow = await page.evaluate(() => {
         const failures = [];
         Reveal.getSlides().forEach((slide, index) => {
@@ -62,6 +118,7 @@ async function checkComfortableCanvas(page, label) {
       await page.locator('#view-toggle').click();
       await page.waitForFunction(() => document.body.classList.contains('reading'));
       await checkComfortableCanvas(page, `${slug}: reading`);
+      await checkCharacters(page, `${slug}: reading`);
       assert.equal(await page.locator('.slides > section:visible').count(), total);
       await page.locator('#view-toggle').click();
       await page.waitForFunction(() => Reveal.isReady());
@@ -70,7 +127,25 @@ async function checkComfortableCanvas(page, label) {
       await page.waitForFunction(() => Reveal.isReady());
       assert.equal(await page.evaluate(() => Reveal.getIndices().h), 2, 'Old numeric links must still work');
       await page.screenshot({ path: path.join(artifacts, `${slug}-desktop.png`) });
+      await page.emulateMedia({ media: 'print' });
+      await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+      await checkCharacters(page, `${slug}: print composition`);
+      await page.emulateMedia({ media: null });
+      await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+      await page.evaluate(() => {
+        window.printFitFailures = null;
+        matchMedia('print').addEventListener('change', event => {
+          if (!event.matches) return;
+          window.printFitFailures = [...document.querySelectorAll('.print-content')].flatMap(frame => {
+            const content = frame.getBoundingClientRect();
+            const slide = frame.parentElement.getBoundingClientRect();
+            return content.height > 651 || content.bottom > slide.bottom - 27
+              ? [frame.parentElement.dataset.pageLabel] : [];
+          });
+        });
+      });
       const pdf = await page.pdf({ path: path.join(artifacts, `${slug}.pdf`), preferCSSPageSize: true, printBackground: true });
+      assert.deepEqual(await page.evaluate(() => window.printFitFailures), [], `${slug}: actual print media must fit content before pagination`);
       assert.equal((pdf.toString('latin1').match(/\/Type \/Page\b/g) || []).length, total, `${slug}: one slide per PDF page`);
       assert.equal(await page.locator('.print-content').count(), 0, 'Print must restore the DOM');
       assert.equal(await page.evaluate(() => Reveal.getIndices().h), 2, 'Print must preserve the active slide');
@@ -81,6 +156,7 @@ async function checkComfortableCanvas(page, label) {
         await page.goto(url);
         await page.waitForFunction(() => document.body.classList.contains('reading') && document.querySelector('#contents-list button'));
         assert.equal(await page.locator('.slides > section:visible').count(), total);
+        await checkCharacters(page, `${slug}: mobile ${width}`);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${slug}: mobile page overflow at ${width}`);
         assert(await page.evaluate(() => [...document.querySelectorAll('.course-nav button:not([hidden])')].filter(e => getComputedStyle(e).display !== 'none').every(e => e.getBoundingClientRect().right <= innerWidth + 1)), `${slug}: mobile controls overflow`);
       }
@@ -88,9 +164,10 @@ async function checkComfortableCanvas(page, label) {
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(pathToFileURL(path.join(root, 'slides', slug, 'index.html')).href);
       await page.waitForFunction(() => Reveal.isReady());
+      await checkCharacters(page, `${slug}: file://`);
       await page.locator('#next').click();
       assert.equal(await page.evaluate(() => Reveal.getIndices().h), 1, 'Offline navigation failed');
-      console.log(`PASS ${slug}: navigation, reading, mobile, file://, ${total}-page PDF`);
+      console.log(`PASS ${slug}: characters, navigation, reading, mobile, file://, ${total}-page PDF`);
     }
     // Fragment navigation uses Reveal.next/prev, rather than skipping to the next slide.
     await page.goto(`${base}/slides/sample/`);
@@ -164,12 +241,22 @@ async function checkComfortableCanvas(page, label) {
     await fallback.goto(pathToFileURL(path.join(root, '404.html')).href);
     assert.equal(await fallback.locator('.error-link').getAttribute('href'), './index.html');
     // Both old and new print URLs enter the shared print view without initializing Reveal.
-    await fallback.addInitScript(() => { window.print = () => { window.printRequested = true; }; });
+    await fallback.addInitScript(() => {
+      window.print = () => {
+        window.printRequested = true;
+        window.charactersReadyAtPrint = [...document.querySelectorAll('img.jelly-woo')].every(image => image.complete && image.naturalWidth > 0);
+      };
+    });
     for (const suffix of ['?view=print', '?print-pdf']) {
       await fallback.goto(`${base}/slides/sample/${suffix}`);
       await fallback.waitForFunction(() => window.printRequested);
+      assert.equal(await fallback.evaluate(() => window.charactersReadyAtPrint), true, 'Print must wait for character images');
       assert.equal(await fallback.locator('.slides > section:visible').count(), 8);
     }
+    await fallback.route('**/jelly-woo/plan.webp', route => route.abort());
+    await fallback.goto(`${base}/slides/sample/?view=print`);
+    await fallback.waitForFunction(() => document.querySelector('#notification').textContent.includes('이미지를 불러오지 못했어요'));
+    assert.equal(await fallback.evaluate(() => Boolean(window.printRequested)), false, 'Failed images must not silently produce an incomplete PDF');
     await fallback.close();
     const nojs = await browser.newPage({ javaScriptEnabled: false });
     await nojs.goto(base);
@@ -177,6 +264,7 @@ async function checkComfortableCanvas(page, label) {
     for (const slug of ['sample', 'agent-tools-antigravity', 'ai-work-review']) {
       await nojs.goto(`${base}/slides/${slug}/`);
       assert(await nojs.locator('.slides > section:visible').count() > 1);
+      assert.equal(await nojs.locator('img.jelly-woo').count(), await nojs.locator('.slides > section').count(), 'Characters must remain available without JS');
     }
     await nojs.close();
     console.log('PASS archive, motion preferences, course exercises, fragments, loading failures, deep 404 and no-JS reading.');

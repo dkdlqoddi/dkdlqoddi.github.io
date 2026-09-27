@@ -33,6 +33,7 @@
 
   </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 <!-- 검은 우주의 흰 별 (장식, 슬라이드 캔버스 밖 고정 층) -->
@@ -40,15 +41,21 @@
   <main id="course" class="reveal">
     <div class="slides">
 
-      <section>
-        <p class="eyebrow">DKDLQODDI · AI STRATEGY</p>
-        <h2>설계 AX 전환</h2>
-        <p class="small">프롬프트 엔지니어링에서 Harness 엔지니어링으로<br>
-        <span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
-      </section>
+      <section data-jelly-woo="idea" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/idea.webp" width="512" height="512" alt="전구와 함께 아이디어를 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/idea.webp 1x, ../../assets/images/jelly-woo/idea@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">DKDLQODDI · AI STRATEGY</p>
+    <h1>설계 AX<br><em>전환</em></h1>
+    <p class="lead">프롬프트 엔지니어링에서<br>Harness 엔지니어링으로</p>
+    <p class="jelly-cover-meta">→ 키 또는 화면 넘김으로 진행하세요.</p>
+    <p class="jelly-signpost">프롬프트 → 작업 환경</p>
+  </div>
 
-      <section>
-        <h3>상반된 AI 모델 경험</h3>
+</section>
+
+      <section data-jelly-woo="compare" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">상반된 AI 모델 경험</h3>
         <p class="visually-hidden">그림 설명: 상용 모델은 단순 지시에도 잘 동작하지만, 오픈소스 모델은 오동작하거나 맥락을 잊어버리는 모습을 비교.</p>
         <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="상용 모델과 오픈소스 모델의 성능 차이 비교" xmlns="http://www.w3.org/2000/svg">
           <!-- 상단: Smart 상용 모델 -->
@@ -94,10 +101,12 @@
             <text x="750" y="325" text-anchor="middle" font-size="16" font-weight="600" fill="var(--danger)">오동작</text>
           </g>
         </svg>
-      </section>
 
-      <section data-auto-animate>
-        <h3>해결책: 프롬프트 엔지니어링</h3>
+</section>
+
+      <section data-auto-animate data-jelly-woo="idea" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/idea.webp" width="512" height="512" alt="전구와 함께 아이디어를 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">해결책: 프롬프트 엔지니어링</h3>
         <p class="visually-hidden">그림 설명: 오픈소스 모델의 한계를 극복하기 위해 세부 지침과 동작 예시(Few-shot)를 결합하여 견고한 프롬프트를 주입하는 구조.</p>
         <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="세부 지침과 예시가 포함된 프롬프트 엔지니어링 파이프라인" xmlns="http://www.w3.org/2000/svg">
           <g>
@@ -130,10 +139,12 @@
             <text x="855" y="137" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">OK</text>
           </g>
         </svg>
-      </section>
 
-      <section data-auto-animate>
-        <h3>패러다임 전환: Harness Engineering</h3>
+</section>
+
+      <section data-auto-animate data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">패러다임 전환: Harness Engineering</h3>
         <p class="visually-hidden">그림 설명: 단순한 텍스트 프롬프트를 넘어 시스템 룰, 도구, 가이드레일이 모델을 묶어내는(Wrapping) 구속구(Harness) 구조로 진화.</p>
         <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Agentic AI 시대의 형식화된 Harness 구조" xmlns="http://www.w3.org/2000/svg">
           <g>
@@ -172,16 +183,22 @@
             <polygon points="665,180 650,173 650,187" fill="var(--ink)"/>
             
             <rect x="680" y="140" width="140" height="80" rx="8" fill="none" stroke="var(--ink)" stroke-width="2"/>
-            <text x="750" y="187" text-anchor="middle" font-size="20" font-weight="600" fill="var(--ink)">안전한<br>출력</text>
+            <text x="750" y="174" text-anchor="middle" font-size="20" font-weight="600" fill="var(--ink)"><tspan x="750">안전한</tspan><tspan x="750" dy="27">출력</tspan></text>
           </g>
         </svg>
         <p class="small">텍스트 기반의 프롬프트가 Agentic AI 아키텍처 내에서 형식화된<br>시스템 구성요소(Harness Engineering)로 발전했습니다.</p>
-      </section>
 
-      <section>
-        <h2>끝.</h2>
+</section>
+
+      <section data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h2 class="jelly-heading">끝.</h2>
+        <p>프롬프트 → 도구·권한 → 검증 순서로<br>내 작업 환경을 점검하세요.</p>
         <p><a href="../../">← 발표 기록으로 돌아가기</a></p>
-      </section>
+</div>
+
+</section>
 
     </div>
   </main>

@@ -187,6 +187,7 @@
 
 </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 
@@ -194,13 +195,22 @@
   <main id="course" class="reveal">
     <div class="slides">
 
-      <section>
-        <h1>안전한 AI 설계 자동화</h1>
-        <h3 style="color: var(--muted); font-size: 1.2em;">망 연동 환경에서의 2가지 아키텍처 대안</h3>
-      </section>
+      <section data-jelly-woo="shield" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/shield.webp 1x, ../../assets/images/jelly-woo/shield@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">AI DESIGN AUTOMATION</p>
+    <h1>안전한 AI<br><em>설계 자동화</em></h1>
+    <p class="lead">망 연동 환경에서의<br>2가지 아키텍처 대안</p>
+    <p class="jelly-cover-meta">통제형 MCP · 완전 격리형 VWP</p>
+    <p class="jelly-signpost">권한과 실행 경계를 먼저 설계합니다</p>
+  </div>
 
-      <section>
-        <h3>오픈소스 모델 제어를 위한 2가지 방법론</h3>
+</section>
+
+      <section data-jelly-woo="compare" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/compare.webp 1x, ../../assets/images/jelly-woo/compare@2x.webp 2x">
+  <div class="jelly-main">
+<h3 class="jelly-heading">오픈소스 모델 제어를 위한 2가지 방법론</h3>
         <p class="visually-hidden">망 분리 환경에서 사내 모델을 활용하여 VWP망의 데이터에 안전하게 접근하기 위한 2가지 아키텍처 방법론을 비교합니다.</p>
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px;">
           <div class="hud-box" style="width: 80%;">
@@ -210,10 +220,13 @@
             <strong style="color: var(--danger);">방법론 2:</strong> VWP망 LLM (Harness 통제) + VWP Docker (완전 격리형)
           </div>
         </div>
-      </section>
+</div>
 
-      <section>
-        <h3>방법론 1: MCP Server 기반 통제형</h3>
+</section>
+
+      <section data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법론 1: MCP Server 기반 통제형</h3>
         <p class="visually-hidden">오피스망의 LLM이 Harness에 감싸져 있고, API Server를 거쳐 VWP망의 MCP 서버를 통해 파일 시스템에 접근하는 구조.</p>
         <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 1 다이어그램">
           <!-- Backgrounds -->
@@ -248,10 +261,12 @@
           <path d="M 640 160 L 720 160" class="line-flow-anim" />
         </svg>
         <p class="small" style="color:var(--forest);">장점: API Server와 MCP Server가 위험한 요청을 필터링하고 통제함.</p>
-      </section>
 
-      <section>
-        <h3>방법론 2: VWP망 내재화 (완전 격리형)</h3>
+</section>
+
+      <section data-jelly-woo="shield" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법론 2: VWP망 내재화 (완전 격리형)</h3>
         <p class="visually-hidden">VWP망 내부에 Harness와 LLM, Docker를 모두 배치하여 망을 넘어갈 필요가 없는 구조.</p>
         <svg class="svg-diagram" viewBox="0 0 900 300" role="img" aria-label="방법론 2 다이어그램">
           <rect x="10" y="20" width="150" height="260" rx="15" fill="rgba(40, 93, 72, 0.05)" stroke="rgba(40, 93, 72, 0.2)" />
@@ -279,10 +294,12 @@
           <path d="M 640 160 L 740 160" class="line-flow-anim" />
         </svg>
         <p class="small" style="color:var(--danger);">장점: 방화벽을 통과하지 않으므로 망 연동 지연(Latency) 제로.</p>
-      </section>
 
-      <section>
-        <h3>한눈에 보는 아키텍처 대조</h3>
+</section>
+
+      <section data-jelly-woo="compare" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">한눈에 보는 아키텍처 대조</h3>
         <p class="visually-hidden">상단은 방법론 1(방화벽 통과형), 하단은 방법론 2(완전 격리형)를 대조하는 통합 다이어그램입니다.</p>
         <svg class="svg-diagram" viewBox="0 0 900 400" role="img" aria-label="통합 대조 다이어그램" style="height: 60vh;">
           <!-- Backgrounds -->
@@ -344,14 +361,16 @@
           
           <text x="590" y="340" text-anchor="middle" font-size="12" fill="var(--forest)" font-weight="bold">방화벽 통과 없음 (지연 ZERO)</text>
         </svg>
-      </section>
+
+</section>
 
 
       
-      <section>
-        <h2>현실적인 제약사항 ①</h2>
+      <section data-jelly-woo="question" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">현실적인 제약사항 ①</h2>
         <h3 style="color: var(--danger); font-size: 1.2em;">VWP망 개발 서버 완전 고갈</h3>
-        <p class="visually-hidden">VWP망 내 가용 개발 서버 5대 중 4대는 GAIA가 점유 중이며, 남은 1대마저 GAIA 2.0과 DLQA Infra 서버 구동으로 과부하 상태입니다. 무거운 Docker를 돌릴 자원이 없습니다.</p>
+        <p class="visually-hidden">VWP망 내 가용 개발 서버 5대 중 4대는 GAIA가 점유 중이며, 남은 1대마저 GAIA 2.0과 DLQA Infra 서버 구동으로 과부하 상태입니다. 컨테이너 기반 설계 작업을 추가 실행할 자원이 없습니다.</p>
         
         <svg class="svg-diagram" viewBox="0 0 900 250" role="img" aria-label="VWP망 서버 상태 다이어그램">
           <!-- Server 1 -->
@@ -384,11 +403,14 @@
           <rect x="710" y="170" width="120" height="24" rx="4" fill="var(--orange)" />
           <text x="770" y="187" text-anchor="middle" font-size="12" font-weight="bold" fill="#000">⚠️ 과부하 (리소스 부족)</text>
         </svg>
-        <p class="small" style="color:var(--orange);">무거운 가상 OS(Docker)를 띄울 만한 유휴 컴퓨팅 자원이 없습니다.</p>
-      </section>
+        <p class="small" style="color:var(--orange);">Docker 컨테이너로 설계 작업을 추가 실행할 유휴 자원이 없습니다.</p>
+        <aside class="notes"><p>Docker 컨테이너는 가상 OS와 구분합니다. 여기서의 제약은 컨테이너 안에서 실행할 설계 작업에 필요한 CPU·메모리 여력입니다. <a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/" target="_blank" rel="noopener noreferrer">Docker 공식 문서: 컨테이너와 가상 머신</a></p></aside>
 
-      <section>
-        <h2>현실적인 제약사항 ②</h2>
+</section>
+
+      <section data-jelly-woo="question" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">현실적인 제약사항 ②</h2>
         <h3 style="color: var(--orange); font-size: 1.2em;">사내 LLM API 제한 (100 RPM &amp; Timeout)</h3>
         <p class="visually-hidden">에이전트가 오동작을 스스로 복구하기 위해 짧은 시간에 수많은 요청을 보내면, 분당 100회 제한에 도달하여 Timeout이 발생합니다.</p>
         
@@ -411,10 +433,12 @@
           <text x="450" y="220" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--danger)">TIMEOUT !</text>
         </svg>
         <p class="small" style="color:var(--muted);">지속적인 Auto-Retry Loop는 현재의 100 RPM 제한 환경에서 치명적인 병목(Bottleneck)이 됩니다.</p>
-      </section>
 
-      <section>
-        <h3>사내 제공 LLM (DS Assistant API) 성능 비교</h3>
+</section>
+
+      <section data-jelly-woo="compare" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">사내 제공 LLM (DS Assistant API) 성능 비교</h3>
         <p class="visually-hidden">Gemma4, GLM 5.2, Kimi V3, DeepSeek V4 등 4종의 모델 성능 비교표. 제한적인 컨텍스트 창과 타임아웃 문제를 보여줍니다.</p>
         
         <table style="width: 100%; font-size: 0.6em; margin-top: 20px; border-collapse: collapse; text-align: center;">
@@ -459,20 +483,22 @@
           </tbody>
         </table>
         <p class="small" style="margin-top: 15px; color: var(--muted); text-align: left;">
-          * 코드를 분석하기 위해서는 최소 32K 이상의 Context 창이 필수적이나,<br>
-          안정적으로 넓은 Context를 지원하는 모델은 응답 지연(Timeout)이 자주 발생합니다.
+          * 내부 비교 자료 · 점수의 측정 조건과 시점은 미기재.<br>
+          이 코드 분석 작업은 32K 이상을 목표로 하며, 긴 입력의 응답 지연도 함께 검증해야 합니다.
         </p>
-      </section>
 
-      <section>
-        <h2 style="color: var(--forest);">결론 및 요청사항</h2>
+</section>
+
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="color: var(--forest);" class="jelly-heading">중간 정리 · 필요한 실행 환경</h2>
         <h3 style="font-size: 1.3em;">개발 서버 추가 구매 (증설) 필요</h3>
         
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div class="hud-box" style="flex: 1; border-color: var(--danger);">
             <h4 style="color: var(--danger); margin-bottom: 10px;">현재의 한계</h4>
             <ul style="font-size: 16px; color: var(--muted); line-height: 1.6;">
-              <li>무거운 가상화(Docker 샌드박스)를 감당할 VWP 서버 여력 제로</li>
+              <li>Docker 샌드박스의 설계 작업을 추가 실행할 VWP 서버 여력 부족</li>
               <li>LLM 100 RPM 제한으로 인한 파이프라인(Agentic Loop) 마비</li>
               <li>대용량 코드를 소화할 수 있는 모델들의 잦은 Timeout</li>
             </ul>
@@ -486,10 +512,13 @@
             </ul>
           </div>
         </div>
-      </section>
 
-      <section>
-        <h3 style="color: var(--orange); font-size: 1.2em;">2차 방어: Payload Compression</h3>
+</section>
+
+      <section data-jelly-woo="connect" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/connect.webp 1x, ../../assets/images/jelly-woo/connect@2x.webp 2x">
+  <div class="jelly-main">
+<h3 style="color: var(--orange); font-size: 1.2em;" class="jelly-heading">2차 방어: Payload Compression</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding-top: 10px;">
             <p style="font-size: 18px; line-height: 1.6;">
@@ -498,10 +527,13 @@
             </p>
           </div>
         </div>
-      </section>
+</div>
 
-      <section>
-        <h3>3차 방어: 물리적 샌드박스</h3>
+</section>
+
+      <section data-jelly-woo="shield" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">3차 방어: 물리적 샌드박스</h3>
         <p class="visually-hidden">그림 설명: 보호 대상 디렉토리는 Read-Only(RO)로 연결하고, 작업 대상 디렉토리만 Read-Write(RW)로 연결하여 파일 손상을 물리적으로 차단합니다.</p>
         <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="Docker 컨테이너를 활용한 VWP망 내부 Read-Only 마운트">
           <!-- Host -->
@@ -540,10 +572,12 @@
             <text x="700" y="237" text-anchor="middle" font-size="18" fill="var(--ink)">읽기/쓰기 마운트</text>
           </g>
         </svg>
-      </section>
 
-      <section>
-        <h2>Agentic Loop </h2>
+</section>
+
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">Agentic Loop </h2>
         <h3 style="color: var(--orange); font-size: 1.2em;">끝내 답을 찾아내는 오동작 복구 과정</h3>
         <svg class="svg-diagram" viewBox="0 0 800 400" role="img" aria-label="Execution Flow Animation">
           <text x="400" y="50" class="node-text loop-label-anim" fill="var(--orange)" font-size="18">
@@ -572,11 +606,13 @@
           <circle cx="0" cy="0" r="4" class="pulse-dot pulse-multi-return" />
           <text x="160" y="160" class="node-text result-multi-text" fill="var(--forest)" font-size="14">최종 결과 Output!</text>
         </svg>
-      </section>
 
-      <section data-auto-animate>
-        <h3>결론: 안전한 설계 자동화 파이프라인</h3>
-        <p class="visually-hidden">멍청한 사내 모델도 이 아키텍처 위에서는 안전하고 자동으로 임무를 수행합니다.</p>
+</section>
+
+      <section data-auto-animate data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">구조 요약 · 안전한 설계 자동화</h3>
+        <p class="visually-hidden">사내 모델의 작업을 VWP 안에서 실행하고, 오류 복구와 검증을 거쳐 최종 결과를 도출하는 구조입니다. 다음 장에서 남은 제약을 살펴봅니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="파이프라인 전체 구조 요약">
           <g data-id="step1">
             <circle cx="150" cy="150" r="65" fill="none" stroke="currentColor" stroke-width="4" class="bright"/>
@@ -595,10 +631,12 @@
             <text x="750" y="245" text-anchor="middle" font-size="20" font-weight="600" class="bright">3 최종 결과 도출</text>
           </g>
         </svg>
-      </section>
 
-<section>
-        <h2>Issue 1: Hallucination</h2>
+</section>
+
+<section data-jelly-woo="question" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">Issue 1: Hallucination</h2>
         <h3 style="color: var(--danger); font-size: 1.2em;">CodeMate LLM의 치명적 오작동 사례</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1; padding: 20px;">
@@ -623,10 +661,12 @@
             </div>
           </div>
         </div>
-      </section>
 
-<section>
-        <h2>Issue 2: Latency</h2>
+</section>
+
+<section data-jelly-woo="question" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">Issue 2: Latency</h2>
         <h3 style="color: var(--danger); font-size: 1.2em; margin-bottom: 5px;">망 분리와 반복 호출의 늪</h3>
         <div style="margin-top: 10px; text-align: center;">
           <p style="font-size: 16px; color: var(--ink); margin-bottom: 5px;">Agentic Loop 1회 동작 시 소요되는 타임라인 (왕복)</p>
@@ -654,10 +694,12 @@
           </div>
           <p style="font-size: 16px; color: var(--danger); font-weight: bold; margin-top: 10px;">총 6.3초 소요. 만약 5번의 Loop를 돌면 30초 이상의 딜레이 발생!</p>
         </div>
-      </section>
 
-<section>
-        <h2>Issue 3: Context Overflow</h2>
+</section>
+
+<section data-jelly-woo="question" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 class="jelly-heading">Issue 3: Context Overflow</h2>
         <h3 style="color: var(--danger); font-size: 1.2em;">방대한 VWP망 데이터 원본 폭격</h3>
         <div style="display: flex; gap: 20px; text-align: left; margin-top: 30px;">
           <div style="flex: 1;">
@@ -679,10 +721,13 @@
             </p>
           </div>
         </div>
-      </section>
 
-<section>
-        <h2>Mitigation & Next Steps</h2>
+</section>
+
+<section data-jelly-woo="plan" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h2 class="jelly-heading">Mitigation & Next Steps</h2>
         <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
           
           <div class="hud-box" style="width: 250px; text-align: center;">
@@ -706,16 +751,23 @@
           </div>
           
         </div>
-      </section>
+</div>
 
-<section class="closing-slide">
-        <h2 class="thank-you-neon">THANK YOU</h2>
+</section>
+
+<section class="closing-slide" data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h2 class="jelly-heading thank-you-neon">THANK YOU</h2>
+        <p class="small">다음 단계: 개발 서버 증설 검토<br>제한된 범위에서 실행·복구·검증 확인</p>
         <a href="../../" class="btn-return">
           RETURN TO LANDING PAGE
         </a>
         
         <div class="closing-symbol" aria-hidden="true">↗</div>
-      </section>
+</div>
+
+</section>
 </div>
   </main>
 

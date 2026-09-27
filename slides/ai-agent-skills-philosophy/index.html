@@ -96,22 +96,29 @@
 
   </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">
     <div class="slides">
 
       <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">TEAM SEMINAR · PART 2 / 2</p>
-        <h1>AI Agent Skills<br>Philosophy</h1>
-        <p class="small dim">하네스 — 결과의 폭을 조이는 장치, 그리고 도구들의 철학<br>도구마다 구조 한 장 + 실제 동작 장면 한 장으로 봅니다</p>
-        <p class="small dim"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
-      </section>
+      <section data-jelly-woo="shield" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/shield.webp 1x, ../../assets/images/jelly-woo/shield@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">TEAM SEMINAR · PART 2 / 2</p>
+    <h1>AI Agent<br><em>Skills</em><br>Philosophy</h1>
+    <p class="lead">하네스 — 결과의 폭을 조이는 장치,<br>그리고 도구들의 철학</p>
+    <p class="jelly-cover-meta">도구마다 구조 한 장 + 실제 동작 장면 한 장</p>
+    <p class="jelly-signpost">지시문 · 도구 · 절차 · 검증</p>
+  </div>
+
+</section>
 
       <!-- ═══════════════════ 2. 하네스 개념 A: 같은 요청, 벌어지는 결과 (모프 1/3) ═══════════════════ -->
-      <section data-auto-animate data-auto-animate-unmatched="false">
-        <h3>같은 요청, 벌어지는 결과</h3>
+      <section data-auto-animate data-auto-animate-unmatched="false" data-jelly-woo="compare" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">같은 요청, 벌어지는 결과</h3>
         <p class="visually-hidden">그림 설명: 왼쪽의 '같은 요청' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼집니다. 부채꼴 안팎으로 한 번의 실행 결과를 뜻하는 표식 12개가 흩어져 있습니다. 잘된 결과 8개는 청록 원이고, 망한 결과 4개는 빨간 엑스입니다. 위쪽 끝 라벨은 '잘된 결과', 아래쪽 끝 라벨은 '망한 결과'이고, 오른쪽 괄호가 전체 높이를 '결과물의 폭'으로 가리킵니다.</p>
         <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 없는 언어모델의 결과물 폭" xmlns="http://www.w3.org/2000/svg">
           <!-- 요청 상자: 짝 슬라이드에서 위치·크기 동일 (글자 상자는 크기 변형 금지) -->
@@ -149,11 +156,13 @@
           <text transform="rotate(-90 889 200)" x="889" y="200" fill="currentColor" class="dim" text-anchor="middle" font-size="16">결과물의 폭</text>
         </svg>
         <p class="small dim" style="margin-top: 10px;">점 하나 = 같은 요청의 1회 실행 결과 · <span class="accent">●</span> 잘된 결과, <span class="danger">✗</span> 망한 결과가 함께 들어 있습니다</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 3. 하네스 개념 B: 하네스가 폭을 조인다 (모프 2/3) ═══════════════════ -->
-      <section data-auto-animate data-auto-animate-unmatched="false">
-        <h3>하네스가 폭을 조인다</h3>
+      <section data-auto-animate data-auto-animate-unmatched="false" data-jelly-woo="shield" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">하네스가 폭을 조인다</h3>
         <p class="visually-hidden">그림 설명: 앞 장의 넓은 부채꼴이 위쪽으로 치우친 좁은 띠로 조여집니다. 원래의 넓은 폭은 점선 윤곽으로 남아 '하네스 없을 때의 폭'이라 적혀 있습니다. 하네스 4층이 띠를 조입니다: 지시문과 작업 절차는 점선 쐐기로 밀고, 도구 제한은 실선 막대로 자르고, 검증 루프 문은 어긋난 결과 하나를 왼쪽으로 되돌려 보냅니다. 반려 화살표는 점선 행진 애니메이션으로 살아 움직입니다. 청록 원 7개는 잘된 결과 쪽으로 올라간 띠 안에 모이고, 1개는 띠 위 바깥에 남습니다. 빨간 엑스 4개는 아래로 걸러지고, 그중 1개는 반려되어 되돌아갑니다.</p>
         <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="하네스 4층이 결과물 폭을 조이는 구조" xmlns="http://www.w3.org/2000/svg">
           <g data-id="req">
@@ -213,11 +222,13 @@
         <p class="small" style="margin-top: 10px;">하네스(harness): 모델을 감싸 힘의 방향을 잡는 운영 장치 — 신입사원에게 회사의 업무 환경을 갖춰 주는 것과 같습니다</p>
         <p class="small">폭을 조여 분포의 중심을 잘된 결과 쪽으로 — 원하는 결과가 <strong>더 자주</strong> 나옵니다</p>
         <p class="small dim">결과를 하나로 고정하진 않습니다 · 탐색 작업은 일부러 폭을 넓게 둡니다</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 4. 오늘의 지도 (모프 3/3) ═══════════════════ -->
-      <section data-auto-animate data-auto-animate-unmatched="false">
-        <h3>오늘의 지도 — 조여진 띠 아래에서</h3>
+      <section data-auto-animate data-auto-animate-unmatched="false" data-jelly-woo="travel" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/travel.webp" width="512" height="512" alt="지도를 보며 이동을 준비하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">오늘의 지도 — 조여진 띠 아래에서</h3>
         <p class="visually-hidden">그림 설명: 앞 장의 조여진 띠가 화면 위쪽의 가는 리본으로 올라가고, 잘된 결과인 청록 원 8개가 그 안에 정렬됩니다. 걸러진 빨간 엑스 4개는 리본 바로 아래에 '걸러진 시도'라는 이름으로 남습니다. 리본 아래에 하네스 4층 이름표가 남고, 그 아래 두 칸이 나타납니다. 왼쪽 칸은 층 하나를 조이는 스킬 다섯(ponytail, grill-me, superpowers, blindspot-flow, fablize)이고 각각 조이는 층 번호가 붙어 있습니다. 오른쪽 칸은 하네스를 통째로 담은 제품 다섯(Aider, Copilot Cloud Agent, LangChain Agent, oh-my-openagent, Devin)입니다.</p>
         <svg class="diag" viewBox="0 0 900 400" role="img" aria-label="스킬 다섯과 제품 다섯을 하네스 층에 이어 붙인 세미나 지도" xmlns="http://www.w3.org/2000/svg">
           <g data-id="req">
@@ -288,11 +299,13 @@
 
           <text x="455" y="392" fill="currentColor" class="dim" text-anchor="middle" font-size="13">스킬 다섯 → 제품 다섯 — 각 장의 배지가 이 지도를 가리킵니다</text>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 5. ponytail ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">ponytail</h2>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">ponytail</h2>
         <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">① 지시문</span><span class="tag t-soft">③ 작업 절차</span></p>
         <p class="visually-hidden">그림 설명: 마름모 세 개(정말 필요한가, 이미 있는 걸로 되는가, 한 줄로 되는가)를 왼쪽부터 차례로 통과해 '최소 코드만 작성' 상자에 도달하는 의사결정 사다리. 앞의 두 마름모에서 탈락하면 아래의 '만들지 않는다'와 '있는 걸 쓴다'로 빠집니다. 실제 사다리는 7단이며 그림 아래 캡션에 전체가 적혀 있습니다.</p>
         <svg class="diag" viewBox="0 0 900 236" role="img" aria-label="ponytail의 방어적 의사결정 사다리 (7단 압축본)" xmlns="http://www.w3.org/2000/svg">
@@ -370,11 +383,14 @@
             <li><strong>철학:</strong> 의존성과 생성 토큰을 줄이되, 이해를 건너뛴 게으름은 금지 — 다 읽고 나서 게으르게.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 5b. ponytail — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>ponytail — 동작 보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">ponytail — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 캐시를 붙여 달라는 요청에 ponytail 사다리가 가동되어, 커스텀 캐시 클래스 대신 표준 라이브러리 한 줄과 근거 주석만 남기는 실제 사용 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">ponytail · 캐시 요청 한 건의 처리</p>
@@ -388,11 +404,14 @@
           </div>
         </div>
         <p class="small dim fragment">"나중에 필요할" 코드는 쓰지 않습니다 — 나중은 나중이 스스로 준비합니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 6. grill-me ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">grill-me</h2>
+      <section data-jelly-woo="question" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">grill-me</h2>
         <p class="tool-tags"><span class="tag">스킬 · Matt Pocock</span><span class="tag t-soft">① 지시문</span></p>
         <p class="visually-hidden">그림 설명: 왼쪽의 모호한 요청이 가운데 질문 루프를 거쳐 오른쪽의 정제된 명세가 됩니다. 루프 위로 점선 화살표가 질문을 반복하며 요청 쪽으로 되돌아가고, 점선 행진 애니메이션으로 살아 움직입니다.</p>
         <svg class="diag" viewBox="0 0 900 220" role="img" aria-label="grill-me의 역질문 인터뷰 루프" xmlns="http://www.w3.org/2000/svg">
@@ -457,11 +476,14 @@
             <li><strong>철학:</strong> 파일을 남기지 않는 무상태 도구 — 산출물은 정제된 합의뿐입니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 6b. grill-me — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>grill-me — 동작 보기</h3>
+      <section data-jelly-woo="question" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">grill-me — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 설계안을 다듬어 달라는 요청에 grill-me가 권장 답이 붙은 질문 세 개를 한 라운드로 던지고, 사용자의 답으로 설계안이 정련되는 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">grill-me · 설계안 압박 질문 한 라운드</p>
@@ -476,11 +498,14 @@
           </div>
         </div>
         <p class="small dim fragment">질문은 라운드로 묶어서, 답은 권장안과 함께 — 마찰이 곧 정련입니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 7. superpowers ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">superpowers</h2>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">superpowers</h2>
         <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">③ 작업 절차</span></p>
         <p class="visually-hidden">그림 설명: 구상, 워크트리 격리, 계획서 작성, 실행 루프 네 상자가 왼쪽부터 이어지는 파이프라인입니다. 마지막 실행 루프 상자 아래에 태스크마다 반복되는 테스트-구현-리뷰 자기 루프 화살표가 있습니다.</p>
         <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="superpowers의 구상-격리-계획-실행 파이프라인과 태스크별 루프" xmlns="http://www.w3.org/2000/svg">
@@ -557,11 +582,14 @@
             <li><strong>철학:</strong> 강제력은 잠금장치가 아니라 "작업 전 관련 스킬부터 확인"하는 규율에서 나옵니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 7b. superpowers — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>superpowers — 동작 보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">superpowers — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 기능 요청 하나가 브레인스토밍, 워크트리 격리, 계획서 작성, 태스크별 테스트 주도 개발과 리뷰 스킬을 차례로 통과하는 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">superpowers · 기능 요청 하나의 여정</p>
@@ -576,11 +604,14 @@
           </div>
         </div>
         <p class="small dim fragment">스킬이 스킬을 부릅니다 — 절차가 사람의 기억이 아니라 시스템에 있습니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 8. blindspot-flow ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">blindspot-flow</h2>
+      <section data-jelly-woo="review" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" width="512" height="512" alt="돋보기로 결과를 검토하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">blindspot-flow</h2>
         <p class="tool-tags"><span class="tag">스킬</span><span class="tag t-soft">③ 작업 절차</span><span class="tag t-hard">④ 검증 루프</span></p>
         <p class="visually-hidden">그림 설명: 인터뷰, 미지 영역, 명세, 보고서와 퀴즈 네 상자가 왼쪽부터 차례로 이어지는 파이프라인입니다. 마지막 상자는 머지 게이트로 강조되어 있고, 아래에 보고서에서 명세로 되돌아오는 점선 구현 루프가 행진 애니메이션과 함께 있습니다.</p>
         <svg class="diag" viewBox="0 0 900 200" role="img" aria-label="blindspot-flow의 4단계 파이프라인과 구현 루프" xmlns="http://www.w3.org/2000/svg">
@@ -655,11 +686,14 @@
             <li><strong>철학:</strong> 비개발자 리뷰어도 변경을 정확히 이해하고 통제할 수 있도록 보장합니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 8b. blindspot-flow — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>blindspot-flow — 동작 보기</h3>
+      <section data-jelly-woo="question" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" width="512" height="512" alt="질문을 떠올리며 생각하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">blindspot-flow — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 기능 하나가 인터뷰, 미지 영역 문서, 명세, 노트를 남기는 구현, 보고서와 퀴즈 게이트를 차례로 통과하는 장면을 한 줄씩 재생합니다. 마지막 줄은 이 발표 자료 자체가 이 파이프라인으로 만들어졌다는 사실입니다.</p>
         <div class="term">
           <p class="term-bar">blindspot-flow · 기능 하나의 수명주기</p>
@@ -674,11 +708,14 @@
           </div>
         </div>
         <p class="small fragment">지금 보고 계신 이 발표 자료가 방금 이 파이프라인을 통과해 만들어졌습니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 9. fablize ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">fablize</h2>
+      <section data-jelly-woo="review" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" width="512" height="512" alt="돋보기로 결과를 검토하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">fablize</h2>
         <p class="tool-tags"><span class="tag">플러그인 · fivetaku</span><span class="tag t-hard">④ 검증 루프</span></p>
         <p class="visually-hidden">그림 설명: AI가 "다 했습니다"라고 선언하면 가운데의 검증 게이트(fablize)가 가로채 증거를 요구합니다. 증거가 있으면 오른쪽 완료 확정으로 통과하고, 없으면 왼쪽 AI에게 반려됩니다. 반려 화살표는 점선 행진 애니메이션으로 살아 움직입니다.</p>
         <svg class="diag" viewBox="0 0 900 210" role="img" aria-label="fablize의 증거 요구 검증 게이트" xmlns="http://www.w3.org/2000/svg">
@@ -747,11 +784,14 @@
             <li><strong>철학:</strong> 사후 게이트만이 아니라, 프롬프트 제출 시점부터 태스크에 맞는 규율을 주입합니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 9b. fablize — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>fablize — 동작 보기</h3>
+      <section data-jelly-woo="review" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" width="512" height="512" alt="돋보기로 결과를 검토하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">fablize — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 차트 페이지 요청에 라우터가 검증 규율을 주입하고, 완료 선언이 실행 근거가 없어 반려되었다가, 실제로 실행해 관찰한 증거를 붙여 통과하는 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">fablize · 완료 선언 하나의 운명</p>
@@ -765,11 +805,14 @@
           </div>
         </div>
         <p class="small dim fragment">'됐다'는 말이 아니라, 실행을 관찰한 증거가 일을 끝냅니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 10. 결과물 해부도 ═══════════════════ -->
-      <section>
-        <h3>스킬 다섯 — 결과물 해부도</h3>
+      <section data-jelly-woo="compare" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">스킬 다섯 — 결과물 해부도</h3>
         <p class="visually-hidden">그림 설명: 망한 결과 패널과 잘된 결과 패널이 나란히 있고, 다섯 부위가 같은 높이에서 좌우로 짝을 이룹니다. 왼쪽 위부터 시키지 않은 것까지 만든 코드, 추측으로 메운 요구, 그때그때 다른 진행, 뒤늦게 터지는 몰랐던 함정, 말뿐인 완료 선언입니다. 오른쪽은 각각 필요한 만큼만 쓴 코드, 질문으로 확인한 요구, 계획과 절차대로 진행, 몰랐던 것을 미리 결정, 증거가 붙은 완료로 바뀝니다. 오른쪽 행 끝에는 그 부위를 바꾸는 스킬 이름과 층 번호 배지가 붙어 있습니다. 그림 아래 설명: 부위 다섯은 스킬 다섯과 하나씩 짝이고, 배지는 오늘의 지도와 같으며, 도구 제한 층은 스킬이 아니라 하네스가 맡습니다.</p>
         <svg class="diag" viewBox="0 0 900 350" role="img" aria-label="다섯 스킬이 결과물의 어느 부위를 바꾸는지 보여주는 좌우 해부도" xmlns="http://www.w3.org/2000/svg">
           <!-- 왼쪽: 망한 결과 -->
@@ -822,11 +865,13 @@
 
           <text x="450" y="330" fill="currentColor" class="dim" text-anchor="middle" font-size="13">부위 다섯 = 스킬 다섯 — 배지는 오늘의 지도와 같습니다 (②도구 제한은 스킬이 아니라 하네스 몫)</text>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 11. 자율성 스펙트럼 ═══════════════════ -->
-      <section>
-        <h3>제품 다섯 — 자율성 스펙트럼</h3>
+      <section data-jelly-woo="compare" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">제품 다섯 — 자율성 스펙트럼</h3>
         <p class="visually-hidden">그림 설명: 왼쪽 '사람이 매 단계 개입'에서 오른쪽 'AI가 통째로 자율'로 이어지는 수평 축 위에 다섯 제품이 차례로 나타납니다. Aider, Copilot Cloud Agent, LangChain Agent, oh-my-openagent, Devin 순서로 오른쪽일수록 자율성이 높습니다.</p>
         <svg class="diag" viewBox="0 0 900 250" role="img" aria-label="다섯 제품을 자율성 순서로 배치한 스펙트럼" xmlns="http://www.w3.org/2000/svg">
           <line x1="70" y1="150" x2="830" y2="150" stroke="currentColor" stroke-width="1.5" class="dim"/>
@@ -871,11 +916,13 @@
           </g>
         </svg>
         <p class="small">오른쪽으로 갈수록 위임 범위가 넓어지고 — 1부의 결론대로 — <span class="bright">더 무거운 하네스</span>가 함께 갑니다.</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 12. Aider ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">Aider</h2>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">Aider</h2>
         <p class="meter" role="img" aria-label="자율성 5단계 중 1단계">
           <span class="m-step on">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step">5</span>
           <span class="m-label">자율성</span>
@@ -912,11 +959,14 @@
             <li><strong>철학:</strong> --auto-test를 켜면 테스트 실패 출력이 그대로 다음 입력이 되어 스스로 고칩니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 12b. Aider — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>Aider — 동작 보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">Aider — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 자동 테스트 옵션을 켠 Aider가 버그 수정 요청을 받아 파일을 고치고 자동 커밋한 뒤, 테스트 실패 출력을 그대로 되먹여 다시 고치고 통과하는 루프를 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">aider · 버그 수정 루프 한 바퀴</p>
@@ -931,11 +981,14 @@
           </div>
         </div>
         <p class="small dim fragment">터미널 출력 전체가 피드백 — 루프가 곧 하네스입니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 13. Copilot Cloud Agent ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">Copilot Cloud Agent</h2>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">Copilot Cloud Agent</h2>
         <p class="meter" role="img" aria-label="자율성 5단계 중 2단계">
           <span class="m-step">1</span><span class="m-step on">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step">5</span>
           <span class="m-label">자율성</span>
@@ -984,11 +1037,14 @@
             <li><strong>철학:</strong> 결과는 브랜치 커밋과 세션 로그로 남고, PR 생성은 사람이 diff를 확인한 뒤 결정합니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 13b. Copilot Cloud Agent — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>Copilot Cloud Agent — 동작 보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">Copilot Cloud Agent — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 이슈 하나를 Copilot에게 할당하면 임시 환경에서 리서치, 계획, 구현이 진행되고 브랜치 커밋과 세션 로그가 남으며, 사람이 diff를 확인한 뒤 PR을 만드는 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">Copilot Cloud Agent · 이슈 하나의 위임</p>
@@ -1002,11 +1058,14 @@
           </div>
         </div>
         <p class="small dim fragment">개발자의 개입 지점이 코드 안에서 이슈와 PR의 경계로 이동합니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 14. LangChain Agent ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">LangChain Agent</h2>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">LangChain Agent</h2>
         <p class="meter" role="img" aria-label="자율성 5단계 중 3단계">
           <span class="m-step">1</span><span class="m-step">2</span><span class="m-step on">3</span><span class="m-step">4</span><span class="m-step">5</span>
           <span class="m-label">자율성</span>
@@ -1053,11 +1112,14 @@
             <li><strong>철학:</strong> 오류 출력도 관찰로 되먹여 재시도 — 루프 자체가 판단의 기록이 됩니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 14b. LangChain Agent — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>LangChain Agent — 동작 보기</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">LangChain Agent — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 매출 질문 하나에 대해 에이전트가 생각, 도구 호출, 관찰을 반복하는 ReAct 추적 로그가 한 줄씩 재생됩니다.</p>
         <div class="term">
           <p class="term-bar">langchain agent · ReAct 추적 로그</p>
@@ -1071,11 +1133,14 @@
           </div>
         </div>
         <p class="small dim fragment">생각 → 행동 → 관찰 로그가 그대로 실행 기록 — 루프가 곧 감사 추적입니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 15. oh-my-openagent ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">oh-my-openagent</h2>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">oh-my-openagent</h2>
         <p class="meter" role="img" aria-label="자율성 5단계 중 4단계">
           <span class="m-step">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step on">4</span><span class="m-step">5</span>
           <span class="m-label">자율성</span>
@@ -1130,11 +1195,14 @@
             <li><strong>철학:</strong> 혼자 다 하는 AI 대신, 에이전트 팀과 도구를 부리는 매니저를 만듭니다 (구 oh-my-opencode에서 개명).</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 15b. oh-my-openagent — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>oh-my-openagent — 동작 보기</h3>
+      <section data-jelly-woo="code" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">oh-my-openagent — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 결제 모듈 추가 요청을 Sisyphus가 분해해 librarian, explore, oracle 에이전트에게 병렬로 위임하고, 각자의 결과를 취합해 구현하는 장면을 한 줄씩 재생합니다.</p>
         <div class="term">
           <p class="term-bar">oh-my-openagent · 작업 하나의 분해와 취합</p>
@@ -1149,11 +1217,14 @@
           </div>
         </div>
         <p class="small dim fragment">위임은 컨텍스트 분리 — 본진의 맥락은 오염되지 않습니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 16. Devin ═══════════════════ -->
-      <section>
-        <h2 style="margin-bottom: 0;">Devin</h2>
+      <section data-jelly-woo="plan" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h2 style="margin-bottom: 0;" class="jelly-heading">Devin</h2>
         <p class="meter" role="img" aria-label="자율성 5단계 중 5단계">
           <span class="m-step">1</span><span class="m-step">2</span><span class="m-step">3</span><span class="m-step">4</span><span class="m-step on">5</span>
           <span class="m-label">자율성</span>
@@ -1204,11 +1275,14 @@
             <li><strong>철학:</strong> 자율 엔지니어 '한 명'이 아니라, 병렬 Devin 여러 세션을 부리는 운영이 기본형입니다.</li>
           </ul>
         </div>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 16b. Devin — 동작 보기 ═══════════════════ -->
-      <section>
-        <h3>Devin — 동작 보기</h3>
+      <section data-jelly-woo="review" data-jelly-layout="guide">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" width="512" height="512" alt="돋보기로 결과를 검토하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <div class="jelly-main">
+<h3 class="jelly-heading">Devin — 동작 보기</h3>
         <p class="visually-hidden">장면 설명: 서비스 구축 작업을 받은 Devin이 계획 초안을 내고, 사람이 계획을 수정한 뒤, 샌드박스의 터미널·에디터·브라우저로 자율 실행해 PR로 보고하는 장면을 한 줄씩 재생합니다. 마지막 줄은 병렬 세션이 동시에 돌고 있다는 문구입니다.</p>
         <div class="term">
           <p class="term-bar">devin · 작업 하나의 위임</p>
@@ -1223,11 +1297,14 @@
           </div>
         </div>
         <p class="small dim fragment">위임의 끝단 — 그래서 '계획 검토'라는 하네스가 맨 앞에 붙습니다.</p>
-      </section>
+</div>
+
+</section>
 
       <!-- ═══════════════════ 17. 정리 ═══════════════════ -->
-      <section>
-        <h3>정리 — 위임하고, 조여라</h3>
+      <section data-jelly-woo="shield" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">정리 — 위임하고, 조여라</h3>
         <p class="visually-hidden">그림 설명: 요청 상자에서 넓게 퍼지는 점선 부채꼴이 1부에서 위임이 키운 폭을 나타냅니다. 그 안의 좁은 강조 띠는 2부에서 하네스가 조인 폭이며, 잘된 결과 쪽인 위쪽으로 치우쳐 있습니다. 띠 안에 청록 원 4개가 모여 있고, 아래쪽에 걸러진 빨간 엑스 1개가 남아 있습니다.</p>
         <svg class="diag" viewBox="0 0 900 280" role="img" aria-label="위임이 키운 폭과 하네스가 조인 폭을 겹쳐 그린 세미나 요약" xmlns="http://www.w3.org/2000/svg">
           <rect x="30" y="128" width="120" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
@@ -1256,14 +1333,19 @@
         <p class="small fragment"><span class="bright">② 조임</span> — 지시문 · 도구 · 절차 · 검증의 4층으로 폭을 조인다</p>
         <p class="small fragment"><span class="bright">③ 증거</span> — 완료 선언이 아니라 검증이 일을 끝낸다</p>
         <p class="small fragment" style="color: var(--accent);">자동화를 한 층 키울 때마다, 하네스도 한 층.</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 18. 끝 ═══════════════════ -->
-      <section>
-        <h2>끝.</h2>
+      <section data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h2 class="jelly-heading">끝.</h2>
         <p class="small"><a href="../dx-vs-ax-automation/">← 1부 — DX vs AX 다시 보기</a></p>
         <p class="small"><a href="../../">← 발표 기록으로 돌아가기</a></p>
-      </section>
+</div>
+
+</section>
 
     </div>
   </main>

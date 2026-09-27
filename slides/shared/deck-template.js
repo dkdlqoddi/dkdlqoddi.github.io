@@ -183,6 +183,21 @@
 
   let restoreReading = false;
   let printFrames = [];
+  const printMedia = window.matchMedia('print');
+  function fitPrintFrames() {
+    if (!printMedia.matches) return;
+    printFrames.forEach(({ frame }) => frame.style.removeProperty('--print-scale'));
+    printFrames.forEach(({ slide, frame }) => {
+      const before = getComputedStyle(slide, '::before');
+      const decoration = before.content === 'none' ? 0 :
+        (parseFloat(before.height) || 0) + (parseFloat(before.marginTop) || 0) + (parseFloat(before.marginBottom) || 0);
+      const scale = Math.min(1, (650 - decoration) / frame.scrollHeight, 924 / frame.scrollWidth);
+      frame.style.setProperty('--print-scale', String(scale));
+    });
+  }
+  // Chromium can fire beforeprint before applying print styles. Fit once the
+  // hidden slides have their real print dimensions, before pagination begins.
+  printMedia.addEventListener('change', fitPrintFrames);
   const localPrintLinks = [...document.querySelectorAll('.slides a[href]')]
     .filter(link => !/^https?:/.test(link.getAttribute('href')))
     .map(link => ({ link, href: link.getAttribute('href') }));
@@ -194,21 +209,19 @@
     localPrintLinks.forEach(({ link }) => link.removeAttribute('href'));
     slides.forEach(slide => { slide.style.visibility = 'visible'; });
     if (legacy && !printFrames.length) {
-      printFrames = slides.map(slide => {
+      // Composed character columns already have a fixed canvas and their own
+      // reserved content area. Only the full-width legacy layouts need fitting.
+      printFrames = slides.filter(slide => !['cover', 'feature', 'guide'].includes(slide.dataset.jellyLayout)).map(slide => {
         const frame = document.createElement('div');
         frame.className = 'print-content';
-        frame.append(...slide.childNodes);
+        // Keep the character outside the scaled content so its reserved corner
+        // stays consistent across screen and PDF layouts.
+        frame.append(...[...slide.childNodes].filter(node => !node.matches?.('.jelly-woo')));
         slide.append(frame);
         return { slide, frame };
       });
-      printFrames.forEach(({ slide, frame }) => {
-        const before = getComputedStyle(slide, '::before');
-        const decoration = before.content === 'none' ? 0 :
-          (parseFloat(before.height) || 0) + (parseFloat(before.marginTop) || 0) + (parseFloat(before.marginBottom) || 0);
-        const scale = Math.min(1, (650 - decoration) / frame.scrollHeight, 924 / frame.scrollWidth);
-        frame.style.setProperty('--print-scale', String(scale));
-      });
     }
+    fitPrintFrames();
   });
   window.addEventListener('afterprint', () => {
     printFrames.forEach(({ frame }) => frame.replaceWith(...frame.childNodes));
@@ -280,6 +293,12 @@
     updateNavigation(initialIndex);
     if (printView) {
       await document.fonts.ready;
+      try {
+        await Promise.all([...document.querySelectorAll('img.jelly-woo')].map(image => image.decode()));
+      } catch {
+        notify('캐릭터 이미지를 불러오지 못했어요. 이미지 폴더를 확인한 뒤 다시 인쇄해 주세요.');
+        return;
+      }
       requestAnimationFrame(() => window.print());
     }
   }

@@ -76,22 +76,29 @@
     html.reveal-print .reveal .fragment.fade-out { display: none !important; }
   </style>
   <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
 </head>
 <body class="reading legacy-deck">
 <main id="course" class="reveal">
     <div class="slides">
 
       <!-- ═══════════════════ 1. 표지 ═══════════════════ -->
-      <section>
-        <p class="eyebrow">TEAM SEMINAR · PART 1 / 2</p>
-        <h2>DX vs AX</h2>
-        <p class="small">LLM 자동화는 무엇을 바꾸는가<br>— 파이프라인의 진화와 사내 LLM 연동 6가지 방법</p>
-        <p class="small dim"><span class="kbd">→</span> 키 또는 화면 넘김으로 진행하세요.</p>
-      </section>
+      <section data-jelly-woo="connect" data-jelly-layout="cover">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/connect.webp 1x, ../../assets/images/jelly-woo/connect@2x.webp 2x">
+  <div class="jelly-main jelly-cover-copy">
+    <p class="eyebrow">TEAM SEMINAR · PART 1 / 2</p>
+    <h1>DX <span class="jelly-title-small">vs</span><br><em>AX</em></h1>
+    <p class="lead">LLM 자동화는 무엇을 바꾸는가</p>
+    <p class="jelly-cover-meta">파이프라인의 진화와 사내 LLM 연동 6가지 방법</p>
+    <p class="jelly-signpost">자동화의 효과 → 연결 → 위임</p>
+  </div>
+
+</section>
 
       <!-- ═══════════════════ 2. 오늘의 여정 ═══════════════════ -->
-      <section>
-        <h3>오늘의 여정</h3>
+      <section data-jelly-woo="travel" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/travel.webp" width="512" height="512" alt="지도를 보며 이동을 준비하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">오늘의 여정</h3>
         <p class="visually-hidden">그림 설명: 세미나 두 부의 지도. 왼쪽 강조 상자가 지금 진행하는 1부(자동화의 효과)로 세 가지 소주제를 담고, 화살표 건너 오른쪽 상자가 2부(하네스)입니다.</p>
         <svg class="diag" viewBox="0 0 900 270" role="img" aria-label="세미나 1부와 2부의 구성을 나란히 놓은 여정 지도" xmlns="http://www.w3.org/2000/svg">
           <g class="accent">
@@ -115,11 +122,13 @@
           </g>
           <text x="450" y="258" text-anchor="middle" font-size="14" fill="currentColor" class="dim">1부의 마지막 질문이 2부의 첫 그림이 됩니다</text>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 3. 용어 정립 ═══════════════════ -->
-      <section>
-        <h3>DX와 AX</h3>
+      <section data-jelly-woo="compare" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">DX와 AX</h3>
         <p class="visually-hidden">그림 설명: 왼쪽에 디지털 전환(DX)의 특성 3가지, 오른쪽에 AI 전환(AX)의 특성 3가지가 상자로 나열되고, 가운데 화살표가 진화 방향을 표시합니다.</p>
         <svg class="diag" viewBox="0 0 900 260" role="img" aria-label="DX 특성 3가지와 AX 특성 3가지를 진화 화살표로 연결한 비교 그림" xmlns="http://www.w3.org/2000/svg">
           <!-- DX 열 -->
@@ -149,11 +158,13 @@
             <text x="735" y="218" text-anchor="middle" font-size="17" fill="currentColor">비정형 · 자연어</text>
           </g>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 4. DX 파이프라인 (짝 전환 1/2) ═══════════════════ -->
-      <section data-auto-animate data-auto-animate-unmatched="false">
-        <h3>DX 자동화 파이프라인</h3>
+      <section data-auto-animate data-auto-animate-unmatched="false" data-jelly-woo="code" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">DX 자동화 파이프라인</h3>
         <p class="visually-hidden">그림 설명: 데이터 수집, 규칙 분기, 고정 처리, 결과 출력 네 상자가 화살표로 일렬로 이어지고, 입력 1건을 뜻하는 점이 파이프라인 위를 흘러갑니다. 클릭하면 규칙 분기 아래로 "규칙에 없는 입력은 실패"라는 약점 표시가 붉은색으로 나타납니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 자동화 선형 파이프라인과 예외 입력에 취약한 지점" xmlns="http://www.w3.org/2000/svg">
           <g data-id="pipe-n1">
@@ -202,11 +213,13 @@
             <text x="640" y="238" text-anchor="middle" font-size="14" fill="currentColor">고정된 규칙은 예외에 취약</text>
           </g>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 5. AX로 진화 (짝 전환 2/2) ═══════════════════ -->
-      <section data-auto-animate data-auto-animate-unmatched="false">
-        <h3>같은 파이프라인, AX로 진화</h3>
+      <section data-auto-animate data-auto-animate-unmatched="false" data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">같은 파이프라인, AX로 진화</h3>
         <p class="visually-hidden">그림 설명: 앞 장과 같은 네 상자 파이프라인에서 규칙 분기가 LLM 판단으로, 고정 처리가 동적 처리로 바뀌고, 입력 점이 여전히 파이프라인 위를 흘러갑니다. 클릭하면 자연어 이해, 맥락 기억, 자기 치유 확장 상자가 아래에 나타나고, 한 번 더 클릭하면 결과에서 LLM 판단으로 되돌아가는 피드백 루프가 점선 행진 애니메이션과 함께 나타납니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="DX 파이프라인이 AX로 진화한 모습과 AX 전용 확장 요소" xmlns="http://www.w3.org/2000/svg">
           <g data-id="pipe-n1" class="accent">
@@ -270,11 +283,13 @@
             <text x="562" y="280" text-anchor="middle" font-size="13" fill="currentColor">피드백 루프 — 결과를 보고 판단을 보정</text>
           </g>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 6. 효과: 긴 꼬리 ═══════════════════ -->
-      <section>
-        <h3>효과 — 규칙이 못 덮는 긴 꼬리</h3>
+      <section data-jelly-woo="present" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/present.webp" width="512" height="512" alt="도표를 가리키며 설명하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">효과 — 규칙이 못 덮는 긴 꼬리</h3>
         <p class="visually-hidden">그림 설명: 가로축은 입력의 다양성(정형에서 비정형·예외 순), 세로축은 빈도인 분포 곡선입니다. 자주 오는 정형 입력이 왼쪽 머리에 몰려 있고 규칙 기반은 이 머리 부분만 덮습니다. 규칙의 한계선 오른쪽 긴 꼬리 입력들은 실패 표시가 붙어 있습니다. 클릭하면 LLM 기반의 덮는 범위가 꼬리 끝까지 그려지며 실패 표시가 처리됨 표시로 바뀝니다.</p>
         <svg class="diag" viewBox="0 0 900 380" role="img" aria-label="입력 다양성 분포에서 규칙 기반이 덮는 머리 부분과 LLM이 덮는 긴 꼬리의 비교" xmlns="http://www.w3.org/2000/svg">
           <!-- 축 -->
@@ -323,11 +338,13 @@
           </g>
         </svg>
         <p class="small fragment" data-fragment-index="1">예외마다 규칙을 하나씩 늘리는 대신, <span class="bright">판단 하나</span>가 꼬리 전체를 덮습니다.</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 7. 로드맵: 연동 6가지 방법 ═══════════════════ -->
-      <section>
-        <h3>사내 LLM에 연결하는 6가지 방법</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">사내 LLM에 연결하는 6가지 방법</h3>
         <p class="visually-hidden">그림 설명: 여섯 방법의 로드맵. 왼쪽 아래에서 HTTP 직접 호출, OpenAI SDK, LangChain이 추상화 계단으로 올라가 opencode 위임이 계단 꼭대기입니다. 같은 높이 오른쪽으로 serve API 호출과 Python 연동이 이어지고, 셋을 묶는 "위임 구간" 표시가 붙습니다. 화살표 키마다 한 칸씩 나타납니다.</p>
         <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="여섯 가지 연동 방법 로드맵 — 추상화 계단 네 칸과 같은 높이의 위임 구간 두 칸" xmlns="http://www.w3.org/2000/svg">
           <!-- 추상화 축 -->
@@ -390,11 +407,13 @@
 
           <text x="480" y="290" text-anchor="middle" font-size="13" fill="currentColor" class="dim">①→③은 LLM을 "호출"하고, ④→⑥은 일을 "위임"합니다</text>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 8. 공통 전제: HTTP 왕복 ═══════════════════ -->
-      <section>
-        <h3>여섯 방법의 공통 전제 — HTTP 왕복</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">여섯 방법의 공통 전제 — HTTP 왕복</h3>
         <p class="visually-hidden">그림 설명: 내 명령이 키보드 입력으로 호출자에게 들어갑니다. 호출자는 내 코드일 수도 있고 opencode일 수도 있습니다. 호출자가 사내 LLM에 HTTP 요청을 보내고, 응답이 조각 스트림 점선으로 되돌아옵니다. 입력 구간에는 HTTP가 아니라는 표시가 있고, 화살표 키로 요청과 응답이 차례로 나타납니다. 그림 아래 설명: 여섯 방법 모두 이 왕복 위에 있고, 다른 것은 감싸는 두께뿐입니다.</p>
         <svg class="diag" viewBox="0 0 900 260" role="img" aria-label="호출자가 사내 LLM에 HTTP 요청을 보내고 조각 스트림 응답을 받는 왕복 구조" xmlns="http://www.w3.org/2000/svg">
           <!-- 출발점: 사람 입력 (HTTP 아님) -->
@@ -438,11 +457,13 @@
           <text x="450" y="242" text-anchor="middle" font-size="13" fill="currentColor" class="dim">여섯 방법 모두 이 왕복 위에 있습니다 — 다른 것은 감싸는 두께뿐입니다</text>
         </svg>
         <p class="small dim">opencode · LLM API 공식 문서 기준 (2026-08-19 확인)</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 9. 방법 1: HTTP 직접 호출 ═══════════════════ -->
-      <section>
-        <h3>방법 1 — HTTP 직접 호출</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 1 — HTTP 직접 호출</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 1번째">
           <span class="m-step on">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -476,11 +497,13 @@ print(resp.json()["choices"][0]["message"]["content"])
 # 출력: "REST API는 자원 중심의 웹 통신 방식입니다."
 # 참고: 표준 라이브러리 urllib만으로도 가능 (설치 0개)</code></pre>
         <p class="small" style="color: var(--secondary);">표준 API 규격 그대로 · 폐쇄망 최소 설치</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 10. 방법 2: OpenAI SDK ═══════════════════ -->
-      <section>
-        <h3>방법 2 — OpenAI SDK</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 2 — OpenAI SDK</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 2번째">
           <span class="m-step">①</span><span class="m-step on">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -519,11 +542,13 @@ resp = client.chat.completions.create(   # 표준 API
 print(resp.choices[0].message.content)
 # 출력: "간결하고 읽기 쉬운 문법입니다."</code></pre>
         <p class="small" style="color: var(--secondary);">타입 · 스트리밍 지원 · 호환 서버의 사실상 표준</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 11. 방법 3: LangChain ═══════════════════ -->
-      <section>
-        <h3>방법 3 — LangChain</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 3 — LangChain</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 3번째">
           <span class="m-step">①</span><span class="m-step">②</span><span class="m-step on">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -562,11 +587,13 @@ prompt = ChatPromptTemplate.from_template(
 result = (prompt | llm).invoke({"topic": "LangChain"})
 print(result.content)  # "LLM 앱 조립 도구입니다."</code></pre>
         <p class="small" style="color: var(--secondary);">프롬프트 · 체인 조립 · 다단계 작업에 적합</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 12. 방법 4: opencode 위임 ═══════════════════ -->
-      <section>
-        <h3>방법 4 — opencode, 에이전트에게 위임</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 4 — opencode, 에이전트에게 위임</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 4번째">
           <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step on">④</span><span class="m-step">⑤</span><span class="m-step">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -603,11 +630,13 @@ result = subprocess.run(
 print(result.stdout)
 # 출력: "현재 디렉토리에는 15개의 파일이 있습니다."</code></pre>
         <p class="small" style="color: var(--secondary);">호출이 아니라 위임 · 도구 사용까지 맡김</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 13. 방법 5: opencode serve + HTTP ═══════════════════ -->
-      <section>
-        <h3>방법 5 — opencode serve 호출</h3>
+      <section data-jelly-woo="connect" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" width="512" height="512" alt="도구와 흐름을 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 5 — opencode serve 호출</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 5번째">
           <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step on">⑤</span><span class="m-step">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -642,11 +671,13 @@ curl -sX POST $U/session/$SID/message \
 # 응답: info(모델·비용) + parts[] — 답변은 type "text"
 # 모델 지정 생략 시 opencode.json의 기본 모델 사용</code></pre>
         <p class="small" style="color: var(--secondary);">상주 서버로 위임 · 기본 무인증 — 로컬 전용 (v1.17.18 검증)</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 14. 방법 6: opencode serve + Python ═══════════════════ -->
-      <section>
-        <h3>방법 6 — serve를 Python으로</h3>
+      <section data-jelly-woo="code" data-jelly-layout="corner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">방법 6 — serve를 Python으로</h3>
         <p class="meter" role="img" aria-label="연동 방법 6가지 중 6번째">
           <span class="m-step">①</span><span class="m-step">②</span><span class="m-step">③</span><span class="m-step">④</span><span class="m-step">⑤</span><span class="m-step on">⑥</span>
           <span class="m-label">연동 방법</span>
@@ -681,11 +712,13 @@ texts = [p["text"] for p in r.json()["parts"]
          if p["type"] == "text"]      # 답변 추출
 print(texts[0])                       # 출력: "2"</code></pre>
         <p class="small" style="color: var(--secondary);">프로그램에 통합 · 응답 파싱 — requests 재사용</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 15. 비교표 ═══════════════════ -->
-      <section>
-        <h3>6가지 방법 비교</h3>
+      <section data-jelly-woo="compare" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" width="512" height="512" alt="두 선택지를 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">6가지 방법 비교</h3>
         <p class="visually-hidden">표 설명: 여섯 방법을 추상화 수준, 설치 부담, 잘 맞는 상황 세 축으로 비교합니다. HTTP 직접은 직접 호출이며 requests 패키지가 필요하고 단발 호출에 맞습니다. OpenAI SDK는 얇은 래퍼이며 openai 패키지가 필요하고 타입과 스트리밍이 필요할 때 맞습니다. LangChain은 프레임워크이며 langchain-openai 패키지가 필요하고 다단계 체인 조립에 맞습니다. opencode는 에이전트 위임이며 별도 CLI 설치가 필요하고 도구 실행까지 통째로 맡길 때 맞습니다. serve API는 위임 서버에 보내는 직접 호출이며 방법 4의 설치를 그대로 쓰고 상주 서비스와 반복 호출에 맞습니다. Python 연동은 위임 서버를 requests로 부르며 requests 패키지만 필요하고 프로그램에 위임을 통합할 때 맞습니다.</p>
         <svg class="diag" viewBox="0 0 900 434" role="img" aria-label="여섯 가지 연동 방법의 추상화 수준, 설치, 적합 상황 비교표" xmlns="http://www.w3.org/2000/svg">
           <!-- 헤더 -->
@@ -783,11 +816,13 @@ print(texts[0])                       # 출력: "2"</code></pre>
             <text x="770" y="401" text-anchor="middle" font-size="13" fill="currentColor" class="dim">프로그램에 위임 통합</text>
           </g>
         </svg>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 16. 브리지: 위임의 대가 ═══════════════════ -->
-      <section>
-        <h3>위임의 대가 — 폭이 벌어진다</h3>
+      <section data-jelly-woo="shield" data-jelly-layout="banner">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/shield.webp" width="512" height="512" alt="방패로 안전과 권한을 지키는 jelly-woo" loading="eager" data-auto-animate-ignore>
+  <h3 class="jelly-heading">위임의 대가 — 폭이 벌어진다</h3>
         <p class="visually-hidden">그림 설명: 왼쪽의 '통째로 위임' 상자에서 오른쪽으로 결과의 폭이 부채꼴로 넓게 퍼집니다. 잘된 결과인 청록 원 5개와 망한 결과인 빨간 엑스 3개가 흩어져 있습니다. 위쪽 끝은 잘된 결과, 아래쪽 끝은 망한 결과입니다. 클릭하면 부채꼴 안에 위쪽으로 치우친 좁은 점선 띠가 나타나며 2부의 하네스가 이 폭을 잘된 결과 쪽으로 조인다는 예고가 표시됩니다.</p>
         <svg class="diag" viewBox="0 0 900 310" role="img" aria-label="위임할수록 결과의 폭이 넓어지는 모습과 하네스 예고" xmlns="http://www.w3.org/2000/svg">
           <rect x="30" y="130" width="170" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" class="bright"/>
@@ -819,14 +854,19 @@ print(texts[0])                       # 출력: "2"</code></pre>
           </g>
         </svg>
         <p class="small">호출은 폭이 좁고, 위임은 능력만큼 폭도 넓습니다.<br>넓어진 폭을 조이는 장치가 <span class="bright">하네스</span> — 2부의 주제입니다.</p>
-      </section>
+
+</section>
 
       <!-- ═══════════════════ 17. 끝 ═══════════════════ -->
-      <section>
-        <h2>1부 끝.</h2>
+      <section data-jelly-woo="celebrate" data-jelly-layout="feature">
+  <img class="jelly-woo" src="../../assets/images/jelly-woo/celebrate.webp" width="512" height="512" alt="완료를 기뻐하는 jelly-woo" loading="eager" data-auto-animate-ignore srcset="../../assets/images/jelly-woo/celebrate.webp 1x, ../../assets/images/jelly-woo/celebrate@2x.webp 2x">
+  <div class="jelly-main">
+<h2 class="jelly-heading">1부 끝.</h2>
         <p class="small"><a href="../ai-agent-skills-philosophy/">2부 — AI Agent Skills Philosophy →</a></p>
         <p class="small"><a href="../../">← 발표 기록으로 돌아가기</a></p>
-      </section>
+</div>
+
+</section>
 
     </div>
   </main>
