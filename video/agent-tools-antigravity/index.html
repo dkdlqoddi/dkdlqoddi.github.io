@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko" class="cartoon-theme">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#d5d0c5">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23d9cf99'/%3E%3Cpath d='M8 23 23 8M8 8h15v15' fill='none' stroke='%23303832' stroke-width='3'/%3E%3C/svg%3E">
+  <title>AI, 한 걸음 더 — 영상 합성 화면</title>
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../../slides/shared/cartoon-deck.css">
+  <link rel="stylesheet" href="video.css">
+</head>
+<body>
+  <svg class="symbol-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="i-arrow" viewBox="0 0 48 48"><path d="M8 24h31M26 11l13 13-13 13"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 48 48"><path d="M10 8h28a4 4 0 0 1 4 4v21a4 4 0 0 1-4 4H20L8 44v-7a4 4 0 0 1-4-4V12a4 4 0 0 1 6-4Z"/><path d="M14 18h20M14 26h12"/></symbol>
+      <symbol id="i-file" viewBox="0 0 48 48"><path d="M11 4h17l10 10v29H11Z"/><path d="M28 4v11h10M18 24h13M18 32h10"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 48 48"><path d="M4 13V8h15l5 6h20v27H4Z"/><path d="M4 20h40"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 48 48"><path d="m24 3 5 15 16 6-16 5-5 16-6-16-15-5 15-6Z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 48 48"><path d="m10 25 9 9 20-21"/></symbol>
+      <symbol id="i-browser" viewBox="0 0 48 48"><rect x="4" y="7" width="40" height="34" rx="4"/><path d="M4 17h40M11 12h1M17 12h1M23 12h1"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 48 48"><path d="M3 24s8-14 21-14 21 14 21 14-8 14-21 14S3 24 3 24Z"/><circle cx="24" cy="24" r="6"/></symbol>
+      <symbol id="i-hand" viewBox="0 0 48 48"><path d="M13 26V12a3 3 0 0 1 6 0v10-15a3 3 0 0 1 6 0v15-12a3 3 0 0 1 6 0v13-8a3 3 0 0 1 6 0v17c0 9-6 13-13 13-6 0-9-3-12-8l-7-10c-3-5 1-7 4-4l7 7"/></symbol>
+      <symbol id="i-screen" viewBox="0 0 48 48"><rect x="4" y="5" width="40" height="29" rx="3"/><path d="M24 34v9M14 43h20"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 48 48"><rect x="5" y="9" width="38" height="34" rx="4"/><path d="M5 21h38M15 4v11M33 4v11M14 29h5M29 29h5M14 36h5"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 48 48"><rect x="8" y="20" width="32" height="24" rx="4"/><path d="M15 20V12a9 9 0 0 1 18 0v8M24 29v7"/></symbol>
+      <symbol id="i-user" viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 43c2-9 8-14 16-14s14 5 16 14"/></symbol>
+      <symbol id="i-warn" viewBox="0 0 48 48"><path d="M24 5 45 41H3Z"/><path d="M24 18v11M24 35v1"/></symbol>
+      <symbol id="i-x" viewBox="0 0 48 48"><path d="M13 13l22 22M35 13 13 35"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><path d="M5 24h38M24 5c7 7 7 31 0 38M24 5c-7 7-7 31 0 38"/></symbol>
+      <symbol id="i-print" viewBox="0 0 48 48"><path d="M13 17V5h22v12"/><rect x="5" y="17" width="38" height="17" rx="3"/><path d="M13 28h22v14H13Z"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 48 48"><path d="M40 24a16 16 0 1 1-4.7-11.3"/><path d="M37 5v9h-9"/></symbol>
+      <symbol id="i-send" viewBox="0 0 48 48"><path d="M5 23 43 6 32 43l-8-14Z"/><path d="m24 29 19-23"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 48 48"><rect x="16" y="16" width="26" height="26" rx="4"/><path d="M32 16v-7a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v20a3 3 0 0 0 3 3h7"/></symbol>
+      <symbol id="i-stop" viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="5"/></symbol>
+    </defs>
+  </svg>
+
+  <div id="stage" role="img" aria-label="AI, 한 걸음 더 발표를 영상으로 옮긴 합성 화면">
+    <div class="ambient" aria-hidden="true"><div class="dots"></div><i class="pool p1"></i><i class="pool p2"></i><i class="pool p3"></i></div>
+    <header class="vbar">
+      <span class="brand-sym"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></span>
+      <span class="brand-name">AI, 한 걸음 더</span>
+      <span class="chapter-slot"></span>
+      <span class="counter"></span>
+    </header>
+    <div id="scenes"></div>
+    <div class="captions" aria-live="off"><div class="cap-box"></div></div>
+    <div id="cards"></div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+    <div id="wipes" aria-hidden="true"></div>
+    <div id="fx-layer" aria-hidden="true"></div>
+    <div id="cursor" aria-hidden="true"><span><svg viewBox="0 0 34 40"><path d="M3 2 3 33 11 25 17 38 23 35 17 23 29 23Z" fill="#f0eadc" stroke="#303832" stroke-width="2.6" stroke-linejoin="round"/></svg></span></div>
+    <div class="end-veil" aria-hidden="true"><div><div class="end-brand"><span class="brand-sym"><svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10"/></svg></span>AI, 한 걸음 더</div><small>발표 기록 · dkdlqoddi.github.io</small></div></div>
+  </div>
+
+  <div id="player" class="player" hidden>
+    <button id="player-toggle" type="button">재생 / 일시정지</button>
+    <input id="player-range" type="range" min="0" max="1000" step="10" value="0" aria-label="재생 위치">
+    <span id="player-time">0:00</span>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="engine.js"></script>
+  <script src="fx.js"></script>
+  <script src="scenes.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

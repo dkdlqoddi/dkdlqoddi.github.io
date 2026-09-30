@@ -35,7 +35,7 @@ assert len({item['dir'] for item in manifest}) == len(manifest), 'Duplicate deck
 for item in manifest:
     assert (ROOT / 'slides' / item['dir'] / 'index.html').is_file(), item['dir']
 
-paths = [ROOT / 'index.html', ROOT / '404.html', ROOT / 'resume' / 'index.html', ROOT / 'resume' / 'portfolio.html', *sorted((ROOT / 'slides').glob('*/*.html'))]
+paths = [ROOT / 'index.html', ROOT / '404.html', ROOT / 'resume' / 'index.html', ROOT / 'resume' / 'portfolio.html', *sorted((ROOT / 'slides').glob('*/*.html')), *sorted((ROOT / 'video').glob('*/index.html'))]
 for path in paths:
     source = path.read_text()
     page = Page(source)

@@ -73,6 +73,16 @@ NODE_PATH=/tmp/presentation-check/node_modules node scripts/verify_theme.cjs
 
 필요하면 `CHROME_PATH`, `SITE_URL`, `ARTIFACT_DIR` 환경변수를 지정합니다. 검증은 전체 덱의 배경 밝기·본문 대비, 탐색·목차·읽기 화면·모바일·오프라인·PDF, 프래그먼트, 최신 덱 실습, Galaxy 동작 축소·정지, 카드·JavaScript 비활성 목록의 학습 순서, 목록 오류와 404를 확인합니다. 스크린샷과 PDF는 기본 `/tmp/presentation-theme-check/`에 저장합니다.
 
+## 영상 만들기
+
+‘AI, 한 걸음 더’는 자막·배경음·효과음이 있는 1080p 60fps 영상으로도 만들 수 있습니다. 영상 장면은 `video/agent-tools-antigravity/`에 있고 자막 원고는 같은 폴더의 `script.js`입니다. 브라우저로 이 폴더의 `index.html`을 열면 미리보기(스페이스 재생, ←/→ 5초 이동, `[`/`]` 장면 이동)가 됩니다. 외부 API 없이 로컬 Chrome·ffmpeg·Python(numpy, scipy)만 사용합니다. 위 HTTP 서버를 실행한 상태에서:
+
+```bash
+NODE_PATH=/tmp/presentation-check/node_modules node scripts/render_video.cjs
+```
+
+결과는 git이 무시하는 `video/out/`의 `ai-tools-intro.mp4`, `.srt` 자막, `.png` 표지 이미지입니다. 영상은 저장소에 커밋하지 말고 외부에 올리세요. `VIDEO_RANGE=0-20`으로 일부 구간만, `VIDEO_WORKERS`로 병렬 수를 정할 수 있습니다. 덱의 장 순서가 바뀌면 렌더가 멈추므로 `script.js`와 `scenes.js`도 함께 고칩니다.
+
 ## 파일과 자산
 
 `vendor/reveal.js/`는 Reveal 6.0.1, `vendor/pretendard/`는 글꼴을 동봉합니다. `vendor/three.js/`와 `vendor/montserrat/`는 과거 자료용 자산으로 보관하며 현재 공통 템플릿에서는 불러오지 않습니다. 라이브러리나 글꼴을 CDN에서 불러오지 마세요.

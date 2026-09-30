@@ -9,6 +9,7 @@ The site is plain static HTML/CSS/JS, with no build step.
 - Preview: `python3 -m http.server 8000`.
 - Static contracts: `python3 scripts/verify_deck.py`.
 - Browser regression: with the server running, install Playwright outside the repo (`npm install --prefix /tmp/presentation-check playwright`), then `NODE_PATH=/tmp/presentation-check/node_modules node scripts/verify_theme.cjs`. `CHROME_PATH` defaults to `/usr/bin/google-chrome`; `SITE_URL` and `ARTIFACT_DIR` are configurable.
+- Video: with the server running, `NODE_PATH=/tmp/presentation-check/node_modules node scripts/render_video.cjs` renders `video/agent-tools-antigravity/` (deterministic WAAPI timeline, local ffmpeg, `scripts/video_audio.py` soundtrack) to the git-ignored `video/out/`. Never commit the MP4.
 
 ## Architecture
 
