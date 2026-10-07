@@ -24,17 +24,20 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 | 순서 | 발표 | 학습 단계 | 대상 |
 |---|---|---|---|
 | 01 | [내 자료가 이해가 되는 순간](slides/notebooklm-examples/) | 자료 활용 | AI를 처음 활용하는 분 |
-| 02 | [AI, 한 걸음 더](slides/agent-tools-antigravity/) | 에이전트 입문 | 파일 결과물을 만들고 싶은 분 |
-| 03 | [AI 결과를 업무에 쓰기까지](slides/ai-work-review/) | 업무 적용 | AI 초안을 실제 업무에 쓰는 분 |
-| 04 | [설계 AX 전환](slides/design-ax-transition/) | 개념 정리 | 설계 업무의 AI 전환을 고민하는 분 |
-| 05 | [Python Automation: DX vs AX](slides/dx-vs-ax-automation/) | 자동화 연동 | Python·사내 LLM을 다루는 개발자 |
-| 06 | [AI Agent Skills Philosophy](slides/ai-agent-skills-philosophy/) | 하네스 설계 | 에이전트 작업 방식을 설계하는 팀 |
-| 07 | [나만의 돌쇠 AI 만들기](slides/my-dolsoe-ai/) | 도메인 구현 | EDA·MCP를 다루는 실무자 |
-| 08 | [안전한 AI 설계 자동화 아키텍처](slides/integrated-architecture/) | 아키텍처 | 보안·인프라를 설계하고 결정하는 분 |
+| 02 | [LLM과 AI Agent, 처음 이해하기](slides/llm-agent-basics/) | AI 기초 이론 | AI의 동작 원리가 궁금한 비개발자 |
+| 03 | [AI, 한 걸음 더](slides/agent-tools-antigravity/) | 에이전트 입문 | 파일 결과물을 만들고 싶은 분 |
+| 04 | [AI 결과를 업무에 쓰기까지](slides/ai-work-review/) | 업무 적용 | AI 초안을 실제 업무에 쓰는 분 |
+| 05 | [설계 AX 전환](slides/design-ax-transition/) | 개념 정리 | 설계 업무의 AI 전환을 고민하는 분 |
+| 06 | [Python Automation: DX vs AX](slides/dx-vs-ax-automation/) | 자동화 연동 | Python·사내 LLM을 다루는 개발자 |
+| 07 | [AI Agent Skills Philosophy](slides/ai-agent-skills-philosophy/) | 하네스 설계 | 에이전트 작업 방식을 설계하는 팀 |
+| 08 | [나만의 돌쇠 AI 만들기](slides/my-dolsoe-ai/) | 도메인 구현 | EDA·MCP를 다루는 실무자 |
+| 09 | [안전한 AI 설계 자동화 아키텍처](slides/integrated-architecture/) | 아키텍처 | 보안·인프라를 설계하고 결정하는 분 |
 
-3번 **AI 결과를 업무에 쓰기까지**는 도구 입문과 팀 자동화를 잇는 16장 실습 자료입니다. 가상 모임 안내문을 만들며 완료 기준·원문 대조·수정·사람의 최종 확인을 연습합니다. [활동지와 해설](slides/ai-work-review/practice.txt), [발표 PDF](slides/ai-work-review/ai-work-review.pdf)를 함께 제공합니다. 설명 15분과 실습 5분을 권장하며 특정 제품 계정 없이 진행할 수 있습니다.
+2번 **LLM과 AI Agent, 처음 이해하기**는 Antigravity 실습 전의 18장 기초 이론 자료입니다. LLM의 문장 생성과 달라진 작업 방식 → 요청·참고자료 → Agent의 선택·실행·결과 확인 → 현실 비유와 사람의 역할 순서로 설명합니다. 짧은 라벨과 도식 중심으로 구성하며 상세 설명은 진행 메모에 있습니다. [발표 PDF](slides/llm-agent-basics/llm-agent-basics.pdf)를 함께 제공하며 약 15분 진행을 권장합니다.
 
-팀 세미나는 5번 **DX vs AX** → 6번 **AI Agent Skills Philosophy**의 1·2부 순서를 유지합니다. `sample`은 발표 제작용 템플릿으로 공개 학습 목록에서 제외합니다.
+4번 **AI 결과를 업무에 쓰기까지**는 도구 입문과 팀 자동화를 잇는 16장 실습 자료입니다. 가상 모임 안내문을 만들며 완료 기준·원문 대조·수정·사람의 최종 확인을 연습합니다. [활동지와 해설](slides/ai-work-review/practice.txt), [발표 PDF](slides/ai-work-review/ai-work-review.pdf)를 함께 제공합니다. 설명 15분과 실습 5분을 권장하며 특정 제품 계정 없이 진행할 수 있습니다.
+
+팀 세미나는 6번 **DX vs AX** → 7번 **AI Agent Skills Philosophy**의 1·2부 순서를 유지합니다. `sample`은 발표 제작용 템플릿으로 공개 학습 목록에서 제외합니다.
 
 ## 새 발표자료 추가
 
@@ -49,7 +52,7 @@ AI와 자동화에 관한 발표·실습 자료를 모은 GitHub Pages 사이트
 
 CSS 순서는 Reveal의 `white.css` → `assets/theme.css` → `deck-base.css` → 필요한 경우 `legacy-deck.css` → 덱 고유 스타일 → `cartoon-deck.css` → `jelly-woo.css`입니다. JS 순서는 Reveal → `assets/template.js` → `deck-template.js` → 덱별 실습 코드입니다.
 
-모든 슬라이드는 내용에 맞는 jelly-woo 포즈와 배치를 사용합니다. [공용 이미지 디렉터리](assets/images/jelly-woo/README.md)에 15종 WebP(512px·고해상도 1024px), 생성 원본 PNG, 캐릭터 기준 시트와 프롬프트가 있습니다. 첫 장은 큰 캐릭터의 `cover` 배치가 필수입니다. 새 장마다 `data-jelly-woo`와 `data-jelly-layout`을 함께 선택합니다. `cover`·`feature`·`guide`는 캐릭터를 왼쪽에 두고 본문을 `.jelly-main`으로 감싸 오른쪽에 배치합니다. 도표 중심의 `banner`·`corner`는 캐릭터를 오른쪽 위에 고정하고 넓은 본문을 유지합니다. 읽기·모바일은 단일 열에서도 같은 좌우 정렬을 유지합니다. `sample`에 예시가 포함되어 있습니다. 배포 PDF는 로컬 서버 실행 후 `NODE_PATH=/tmp/presentation-check/node_modules node scripts/export_pdfs.cjs`로 갱신합니다.
+모든 슬라이드는 내용에 맞는 jelly-woo 포즈와 배치를 사용합니다. [공용 이미지 디렉터리](assets/images/jelly-woo/README.md)에 15종 WebP(512px·고해상도 1024px), 생성 원본 PNG, 캐릭터 기준 시트와 프롬프트가 있습니다. 첫 장은 큰 캐릭터의 `cover` 배치가 필수입니다. 새 장마다 `data-jelly-woo`와 `data-jelly-layout`을 함께 선택합니다. `cover`·`feature`·`guide`는 캐릭터를 왼쪽에 두고 본문을 `.jelly-main`으로 감싸 오른쪽에 배치합니다. 도표 중심의 `banner`·`corner`는 캐릭터를 오른쪽 위에 고정하고 넓은 본문을 유지합니다. 읽기·모바일은 단일 열에서도 같은 좌우 정렬을 유지합니다. `sample`에 예시가 포함되어 있습니다. 배포 PDF는 로컬 서버 실행 후 `NODE_PATH=/tmp/presentation-check/node_modules node scripts/export_pdfs.cjs`로 갱신합니다. 특정 자료만 만들려면 명령 뒤에 덱 폴더 이름을 붙입니다(예: `node scripts/export_pdfs.cjs llm-agent-basics`).
 
 ## 로컬 미리보기와 검증
 

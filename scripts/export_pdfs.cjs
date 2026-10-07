@@ -1,4 +1,4 @@
-/* Regenerate the three PDFs already offered for download. */
+/* Regenerate downloadable PDFs, optionally limited to the slugs passed as arguments. */
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { chromium } = require('playwright');
@@ -8,13 +8,17 @@ const decks = [
   ['agent-tools-antigravity', 'ai-tools-intro.pdf'],
   ['notebooklm-examples', 'notebooklm-examples.pdf'],
   ['ai-work-review', 'ai-work-review.pdf'],
+  ['llm-agent-basics', 'llm-agent-basics.pdf'],
 ];
+const requested = process.argv.slice(2);
+for (const slug of requested) assert(decks.some(([known]) => known === slug), `Unknown PDF deck: ${slug}`);
+const selected = requested.length ? decks.filter(([slug]) => requested.includes(slug)) : decks;
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', args: ['--no-sandbox'] });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
-    for (const [slug, filename] of decks) {
+    for (const [slug, filename] of selected) {
       await page.goto(`${base}/slides/${slug}/?view=read`);
       await page.evaluate(async () => {
         await document.fonts.ready;

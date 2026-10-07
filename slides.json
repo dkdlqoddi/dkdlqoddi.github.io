@@ -8,6 +8,14 @@
     "audience": "AI를 처음 활용하는 분"
   },
   {
+    "title": "LLM과 AI Agent, 처음 이해하기",
+    "date": "2026-10-07",
+    "description": "Antigravity 전에 그림으로 배우는 LLM의 원리·달라진 작업 방식·에이전트의 도구 실행과 현실 비유",
+    "dir": "llm-agent-basics",
+    "stage": "AI 기초 이론",
+    "audience": "AI의 동작 원리가 궁금한 비개발자"
+  },
+  {
     "title": "AI, 한 걸음 더",
     "date": "2026-09-20",
     "description": "프롬프트에서 AI 도구로 — 큰 글씨와 그림으로 배우는 Codex·Claude Code·Antigravity 입문",

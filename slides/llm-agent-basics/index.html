@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko" class="cartoon-theme">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#d5d0c5">
+  <meta name="description" content="Antigravity 실습 전에 그림으로 배우는 LLM과 AI Agent. 문장 생성, 요청과 참고자료, 도구 실행의 반복, 현실 비유와 사람의 역할을 비개발자 눈높이로 설명합니다.">
+  <title>LLM과 AI Agent, 처음 이해하기</title>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/reveal.css" media="screen">
+  <link rel="stylesheet" href="../../vendor/reveal.js/dist/theme/white.css">
+  <link rel="stylesheet" href="../../vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../shared/deck-base.css">
+  <link rel="stylesheet" href="basics.css">
+  <link rel="stylesheet" href="../shared/cartoon-deck.css">
+  <link rel="stylesheet" href="../shared/jelly-woo.css">
+</head>
+<body class="reading basics-deck">
+<main class="reveal" id="course"><div class="slides">
+<section id="start" data-chapter="시작" data-title="LLM과 AI Agent, 처음 이해하기" data-jelly-woo="welcome" data-jelly-layout="cover">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/welcome.webp" srcset="../../assets/images/jelly-woo/welcome.webp 1x, ../../assets/images/jelly-woo/welcome@2x.webp 2x" width="512" height="512" alt="손을 흔들어 맞이하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<div class="jelly-main jelly-cover-copy">
+<p class="eyebrow">Antigravity를 만나기 전 · 기초 이론</p>
+<h1>AI는 어떻게<br><em>답하고,<br>일할까요?</em></h1>
+<p class="lead">LLM과 AI Agent, 처음 이해하기</p>
+<div class="cover-path"><span>말 만들기</span><b aria-hidden="true">→</b><span>도구 쓰기</span></div>
+<p class="jelly-cover-meta">비개발자를 위한 그림 수업 · 약 15분</p></div>
+<aside class="notes"><p>제품을 설치하기 전에 AI가 답을 만들고 작업하는 원리를 살펴봅니다. 모임 안내문이라는 한 가지 가상 사례를 끝까지 사용합니다. 그림은 자체 제작한 학습용 모형이며 실제 AI의 출력이나 실행 기록이 아닙니다. 다음 수업은 Antigravity 실습입니다.</p></aside>
+</section>
+
+<section id="map" data-chapter="1 · LLM 이해하기" data-title="AI 안에, 말을 다루는 모델" data-jelly-woo="study" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" srcset="../../assets/images/jelly-woo/study.webp 1x, ../../assets/images/jelly-woo/study@2x.webp 2x" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">AI 안에, <em>말을 다루는 모델</em></h2>
+<figure class="concept-map" aria-label="AI는 넓은 개념이며 LLM은 그 안에서 언어를 다루는 모델입니다. 에이전트는 모델과 도구를 조합한 시스템입니다.">
+<div class="ai-field"><span class="diagram-label">AI · 인공지능</span><div class="ai-examples"><span>사진 분류</span><span>추천</span></div><div class="llm-island"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><strong>LLM</strong><span>언어를 다루는 모델</span></div></div>
+<div class="map-bridge"><span aria-hidden="true">→</span><span>도구와 연결</span></div>
+<div class="agent-island"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="m38 7-8 8 5 11 11 5 10-9a19 19 0 0 1-24 22L16 60 4 48l17-17A19 19 0 0 1 38 7z"/></svg><strong>AI Agent</strong><span>목표를 수행하는<br>시스템</span></div>
+</figure>
+<aside class="notes"><p>AI는 넓은 이름이며 모든 AI가 대화형인 것은 아닙니다. 이 수업의 Agent는 LLM 기반 에이전트를 뜻합니다. Agent는 LLM보다 큰 모델 이름이 아니라 모델·도구·작업 절차를 묶은 시스템입니다. <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · 에이전트의 동작</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="what-is-llm" data-chapter="1 · LLM 이해하기" data-title="LLM은 말의 패턴을 배운 모델" data-jelly-woo="study" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" srcset="../../assets/images/jelly-woo/study.webp 1x, ../../assets/images/jelly-woo/study@2x.webp 2x" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">LLM은 <em>말의 패턴을 배운 모델</em></h2>
+<div class="term-ribbon"><strong>LLM</strong><span>Large Language Model · 대규모 언어 모델</span></div>
+<figure class="flow three" aria-label="많은 글의 패턴을 학습한 언어 모델에 요청을 주면 요약, 번역, 초안 등을 생성합니다.">
+<article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M32 15C22 7 12 7 4 10v42c10-3 19-2 28 6 9-8 18-9 28-6V10c-8-3-18-3-28 5v43M12 23l12 3M12 35l12 3M40 26l12-3M40 38l12-3"/></svg><h3>많은 글</h3><p>패턴을 학습</p></article><span class="flow-arrow" aria-hidden="true">→</span><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><h3>언어 모델</h3><p>요청에 맞춰 생성</p></article><span class="flow-arrow" aria-hidden="true">→</span><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><h3>새로운 답변</h3><p>요약 · 번역 · 초안</p></article>
+</figure>
+<p class="takeaway">문맥을 바탕으로 <strong>답변을 만들어 냅니다.</strong></p>
+<aside class="notes"><p>LLM은 대량의 데이터에서 언어의 관계와 패턴을 학습한 모델입니다. 입력 문맥에 맞춰 글을 생성합니다. 외워 둔 정답 목록에서만 고르는 방식으로 이해하면 실제 동작을 놓치게 됩니다. <a href="https://developers.google.com/machine-learning/crash-course/llm/transformers">Google · LLM의 원리</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="next-token" data-chapter="1 · LLM 이해하기" data-title="답변은 작은 조각을 이어서" data-jelly-woo="idea" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/idea.webp" srcset="../../assets/images/jelly-woo/idea.webp 1x, ../../assets/images/jelly-woo/idea@2x.webp 2x" width="512" height="512" alt="아이디어를 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">답변은 <em>작은 조각을 이어서</em></h2>
+<figure class="token-demo" aria-label="앞 문맥에 맞는 다음 텍스트 조각을 예측하고 이어 붙이는 과정을 반복하여 문장을 만듭니다.">
+<div class="prompt-strip"><span class="diagram-label">요청</span><strong>“모임에 초대하는 문장을 써 줘.”</strong></div>
+<div class="token-line"><span>우리</span><span>모임에</span><span class="next-token">?</span></div>
+<div class="candidate-line"><span class="diagram-label">다음 조각의 후보</span><span class="candidate chosen">초대</span><span class="candidate">함께</span><span class="candidate">오신</span></div>
+<div class="token-result"><span aria-hidden="true">→</span><strong>우리 모임에 초대합니다.</strong><span class="loop-caption">예측 → 이어 붙이기 → 반복</span></div>
+</figure>
+<p class="footnote">토큰 = 글의 작은 조각 · 위 예시는 설명용이며 실제 분할은 모델마다 달라요.</p>
+<aside class="notes"><p>대화형 생성 모델은 앞의 문맥과 이미 만든 내용을 바탕으로 다음 토큰의 가능성을 계산합니다. 선택된 조각을 붙이고 반복합니다. 항상 가장 가능성이 높은 조각만 고르는 것은 아니어서 같은 요청에도 표현이 달라질 수 있습니다. 후보는 직접 만든 설명 예시입니다. <a href="https://developers.google.com/machine-learning/crash-course/llm">Google · 언어 모델과 토큰</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="what-changed" data-chapter="1 · LLM 이해하기" data-title="사람의 말이 작업의 출발점으로" data-jelly-woo="compare" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" srcset="../../assets/images/jelly-woo/compare.webp 1x, ../../assets/images/jelly-woo/compare@2x.webp 2x" width="512" height="512" alt="두 대상을 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">사람의 말이 <em>작업의 출발점</em>으로</h2>
+<figure class="before-after" aria-label="메뉴와 양식을 찾아 직접 작성하던 대표적 작업이 말로 목적을 전달하고 초안을 받아 다듬는 방식으로 확장됩니다.">
+<article class="panel-card peach"><span class="diagram-label">익숙한 작업 방식</span><div class="mini-route"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="7" width="56" height="41" rx="5"/><path d="M4 17h56M24 48v9M40 48v9M17 58h30M14 28h17M14 37h31"/></svg><span>메뉴 찾기</span><span class="flow-arrow" aria-hidden="true">→</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><span>직접 작성</span></div><div class="paper-lines" aria-hidden="true"><i></i><i></i><i></i></div></article>
+<article class="panel-card green"><span class="diagram-label">LLM과 함께</span><div class="speech">“이 메모를<br><strong>안내문으로 바꿔 줘.</strong>”</div><div class="mini-route"><span>초안 받기</span><span class="flow-arrow" aria-hidden="true">→</span><span>말로 다듬기</span></div></article>
+</figure><p class="takeaway">목적을 말하면, <strong>초안·요약·번역을 같은 대화에서.</strong></p>
+<aside class="notes"><p>모든 옛 프로그램이 메뉴만 사용했다는 역사적 구분은 아닙니다. 비개발자가 경험하는 대표적인 변화는 자연어 요청으로 여러 언어 작업을 시작할 수 있다는 점입니다. 지시를 잘 써도 품질은 확인해야 합니다. 도구 연결 전에는 답변 생성만으로 내 파일이 저장되지는 않습니다.</p></aside>
+</section>
+
+<section id="learning-context" data-chapter="1 · LLM 이해하기" data-title="배운 것과 지금 펼친 자료" data-jelly-woo="compare" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" srcset="../../assets/images/jelly-woo/compare.webp 1x, ../../assets/images/jelly-woo/compare@2x.webp 2x" width="512" height="512" alt="두 대상을 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">배운 것과 <em>지금 펼친 자료</em></h2>
+<div class="two-up context-pair">
+<article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M32 15C22 7 12 7 4 10v42c10-3 19-2 28 6 9-8 18-9 28-6V10c-8-3-18-3-28 5v43M12 23l12 3M12 35l12 3M40 26l12-3M40 38l12-3"/></svg><span class="diagram-label">미리 배운 패턴 · 학습</span><h3>쌓아 둔 경험</h3><div class="book-spines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></article>
+<article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M6 17h21l6 7h25v31H6zM6 17v-6h20l7 6h19v7"/></svg><span class="diagram-label">이번 작업의 정보 · 문맥</span><h3>지금 펼친 책상</h3><div class="desk-papers"><span>요청</span><span>대화</span><span>참고자료</span></div></article>
+</div><p class="takeaway">중요한 자료는 건네고, <strong>길어진 대화는 핵심을 다시 정리.</strong></p>
+<aside class="notes"><p>모델의 학습과 이번 답변에 넣는 문맥은 다릅니다. 문맥에 담을 수 있는 양에는 한계가 있고 중요한 정보를 놓칠 수 있습니다. 제품의 기억·요약 기능과 입력 자료의 보관·학습 이용 정책은 별개의 문제입니다. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic · 현재 작업의 문맥</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="prompt" data-chapter="1 · LLM 이해하기" data-title="프롬프트는 부탁과 필요한 정보" data-jelly-woo="plan" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" srcset="../../assets/images/jelly-woo/plan.webp 1x, ../../assets/images/jelly-woo/plan@2x.webp 2x" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">프롬프트는 <em>부탁과 필요한 정보</em></h2>
+<figure class="request-recipe" aria-label="목적, 참고자료, 원하는 모양을 함께 전달하는 요청 예시입니다.">
+<div class="three-up"><article class="panel-card lime"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 59V7M15 9c13-9 22 10 37 0v26c-15 10-24-9-37 0"/></svg><h3>목적</h3><p>독서모임 안내</p></article><article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M6 17h21l6 7h25v31H6zM6 17v-6h20l7 6h19v7"/></svg><h3>참고자료</h3><p>확정된 메모</p></article><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><h3>원하는 모양</h3><p>큰 글씨 · 5줄</p></article></div>
+<div class="recipe-result"><span aria-hidden="true">↓</span><p>“이 메모로 <strong>독서모임 안내문</strong>을 써 줘.<br><strong>큰 글씨, 5줄</strong>로 만들어 줘.”</p></div>
+</figure>
+<aside class="notes"><p>프롬프트는 모델에 주는 요청이나 지시입니다. 참고자료까지 함께 제공하면 필요한 문맥이 됩니다. 이 세 가지는 수업용 작성 요령이지 반드시 지켜야 하는 제품 문법은 아닙니다. 아직 없는 정보는 임의로 채우지 말고 물어보도록 덧붙일 수 있습니다.</p></aside>
+</section>
+
+<section id="llm-analogy" data-chapter="1 · LLM 이해하기" data-title="LLM은 초안을 제안하는 조언자" data-jelly-woo="idea" data-jelly-layout="feature">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/idea.webp" srcset="../../assets/images/jelly-woo/idea.webp 1x, ../../assets/images/jelly-woo/idea@2x.webp 2x" width="512" height="512" alt="아이디어를 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<div class="jelly-main"><p class="jelly-eyebrow eyebrow">1 · LLM 이해하기</p><h2 class="jelly-heading">LLM은 <em>초안을 제안하는 조언자</em></h2>
+<div class="analogy-scene"><span class="diagram-label">현실에 빗대어 보면</span><div class="speech large">“이렇게 써 보면<br>어떨까요?”</div><div class="analogy-output"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><div><strong>모임 안내문 초안</strong><span>표현을 고르고 · 문장을 다듬기</span></div></div></div>
+<p class="takeaway"><strong>답변을 받음</strong> ≠ 파일 저장·전송 완료</p></div>
+<aside class="notes"><p>글을 잘 쓰는 조언자에게 초안을 부탁하는 장면을 떠올려 보세요. 역할을 이해하기 위한 비유이며 사람이 가진 의도나 책임이 있다는 뜻은 아닙니다. LLM이 저장했다고 말하는 것과 프로그램이 실제로 저장했다는 결과는 구분해야 합니다. 다음 장에서 실행 도구를 연결합니다.</p></aside>
+</section>
+
+<section id="what-is-agent" data-chapter="2 · Agent 이해하기" data-title="Agent는 목표를 향해 작업하는 시스템" data-jelly-woo="connect" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" srcset="../../assets/images/jelly-woo/connect.webp 1x, ../../assets/images/jelly-woo/connect@2x.webp 2x" width="512" height="512" alt="여러 요소를 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">2 · Agent 이해하기</p><h2 class="jelly-heading">Agent는 <em>목표를 향해 작업하는 시스템</em></h2>
+<figure class="agent-system" aria-label="LLM, 도구, 결과를 보고 이어가는 반복 절차를 결합한 AI 에이전트입니다.">
+<span class="system-label">AI Agent · 이 수업의 기본 구조</span>
+<div class="flow three"><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><h3>LLM</h3><p>다음 행동 선택</p></article><span class="flow-arrow" aria-hidden="true">+</span><article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="m38 7-8 8 5 11 11 5 10-9a19 19 0 0 1-24 22L16 60 4 48l17-17A19 19 0 0 1 38 7z"/></svg><h3>도구</h3><p>파일 · 검색 · 계산</p></article><span class="flow-arrow" aria-hidden="true">+</span><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M52 25A22 22 0 0 0 12 16M12 6v12h12M12 39a22 22 0 0 0 40 9M52 58V46H40"/></svg><h3>반복 절차</h3><p>결과를 보고 계속</p></article></div>
+</figure><p class="takeaway">목표: <strong>“모임 안내 페이지를 파일로 만들어 줘.”</strong></p>
+<aside class="notes"><p>여기서는 LLM이 다음 행동을 고르고 도구의 결과를 받아 이어 가는 시스템을 Agent라고 부릅니다. 미리 정한 순서만 따르는 자동화와 구별할 수 있습니다. 제품에 따라 자율성과 사람의 개입 범위는 다릅니다. <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · 에이전트의 동작</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="decide-execute" data-chapter="2 · Agent 이해하기" data-title="LLM은 선택, 프로그램은 실행" data-jelly-woo="plan" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/plan.webp" srcset="../../assets/images/jelly-woo/plan.webp 1x, ../../assets/images/jelly-woo/plan@2x.webp 2x" width="512" height="512" alt="할 일을 계획하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">2 · Agent 이해하기</p><h2 class="jelly-heading">LLM은 <em>선택</em>, 프로그램은 <em>실행</em></h2>
+<div class="goal-strip"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 59V7M15 9c13-9 22 10 37 0v26c-15 10-24-9-37 0"/></svg><span>요청 + 현재 자료 + 사용 가능한 도구</span></div>
+<figure class="execution-loop" aria-label="LLM이 도구와 입력을 선택하면 에이전트 프로그램이 권한을 확인해 도구를 호출합니다. 도구 결과가 LLM으로 돌아와 다음 행동이나 종료를 판단하게 합니다.">
+<div class="flow three"><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><span class="diagram-label">LLM</span><h3>무엇을 할까?</h3><p>도구 · 입력 · 다음 단계</p></article><span class="flow-arrow" aria-hidden="true">→</span><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="13" y="27" width="38" height="31" rx="5"/><path d="M21 27V17a11 11 0 0 1 22 0v10M32 39v9"/></svg><span class="diagram-label">에이전트 프로그램</span><h3>실행해도 되나?</h3><p>권한 확인 · 도구 호출</p></article><span class="flow-arrow" aria-hidden="true">→</span><article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="m38 7-8 8 5 11 11 5 10-9a19 19 0 0 1-24 22L16 60 4 48l17-17A19 19 0 0 1 38 7z"/></svg><span class="diagram-label">도구</span><h3>실제로 작업</h3><p>읽기 · 저장 · 실행</p></article></div>
+<div class="feedback-path"><span aria-hidden="true">←</span><strong>실행 결과를 돌려받기</strong><span>계속 · 질문 · 완료</span></div>
+</figure>
+<aside class="notes"><p>LLM의 선택은 도구 이름과 입력 같은 실행 요청으로 나옵니다. 이를 프로그램이 허용 범위 안에서 실행합니다. 결과나 오류가 다시 입력되면 다음 행동을 고릅니다. 사람이 매 단계 승인해야 한다는 뜻은 아니며 권한 설정에 따라 달라집니다. <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · 에이전트의 동작</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="agent-loop" data-chapter="2 · Agent 이해하기" data-title="결과를 보고 다음 행동을 바꿔요" data-jelly-woo="review" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/review.webp" srcset="../../assets/images/jelly-woo/review.webp 1x, ../../assets/images/jelly-woo/review@2x.webp 2x" width="512" height="512" alt="돋보기로 결과를 확인하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">2 · Agent 이해하기</p><h2 class="jelly-heading">결과를 보고 <em>다음 행동을 바꿔요</em></h2>
+<p class="diagram-label example-label">가상 안내 페이지 만들기 · 학습용 실행 흐름</p>
+<figure aria-label="자료를 읽고 파일을 저장한 뒤 미리보기를 확인합니다. 날짜가 빠졌다면 수정 후 다시 확인하고, 기준을 충족하면 완료하거나 막히면 사람에게 질문합니다.">
+<ol class="storyboard"><li class="panel-card peach"><span class="step-tag">01</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M6 17h21l6 7h25v31H6zM6 17v-6h20l7 6h19v7"/></svg><strong>자료 읽기</strong><span>확정 메모</span></li><li class="panel-card lavender"><span class="step-tag">02</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><strong>파일 저장</strong><span>안내.html</span></li><li class="panel-card lime"><span class="step-tag">03</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="7" width="56" height="41" rx="5"/><path d="M4 17h56M24 48v9M40 48v9M17 58h30M14 28h17M14 37h31"/></svg><strong>미리보기</strong><span>“날짜가 빠졌네”</span></li><li class="panel-card green"><span class="step-tag">04</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="8" y="8" width="48" height="48" rx="12"/><path d="m18 32 10 11 19-22"/></svg><strong>다시 확인</strong><span>날짜 보완 후 점검</span></li></ol>
+<div class="repair-path"><span aria-hidden="true">←</span><strong>부족하면 수정하고 다시 확인</strong><span aria-hidden="true">↵</span></div>
+</figure><p class="takeaway">기준을 채우면 <strong>완료</strong> · 막히면 <strong>사람에게 질문</strong></p>
+<aside class="notes"><p>실제 실행 기록이 아니라 직접 구성한 설명 예시입니다. 안내 파일을 열어 날짜 누락을 발견하면 수정 도구를 다시 호출하는 식으로 진행합니다. 반복 횟수나 시간에 제한을 둘 수도 있습니다. 완료 판단과 검토가 항상 정확하다는 보장은 없습니다. <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · 에이전트의 동작</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="agent-analogy" data-chapter="2 · Agent 이해하기" data-title="Agent를 작은 사무실에 비유하면" data-jelly-woo="connect" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/connect.webp" srcset="../../assets/images/jelly-woo/connect.webp 1x, ../../assets/images/jelly-woo/connect@2x.webp 2x" width="512" height="512" alt="여러 요소를 연결하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">2 · Agent 이해하기</p><h2 class="jelly-heading">Agent를 <em>작은 사무실</em>에 비유하면</h2>
+<figure class="office" aria-label="사람은 목표와 범위를 정합니다. LLM은 할 일을 제안하고, 진행 프로그램은 실행을 연결하며, 도구가 실제 일을 합니다. 이 묶음이 에이전트입니다.">
+<div class="office-owner"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="18" r="11"/><path d="M10 59v-8a22 22 0 0 1 44 0v8M23 43l9 8 9-8"/></svg><strong>나</strong><span>목표 · 허용 범위 · 최종 확인</span></div>
+<div class="office-team"><span class="system-label">AI Agent = 함께 움직이는 업무 체계</span><div class="three-up"><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M10 10h44v32H28L15 53V42h-5z"/><path d="M20 21h24M20 30h16"/></svg><h3>조언자</h3><p>LLM · 다음 할 일</p></article><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M52 25A22 22 0 0 0 12 16M12 6v12h12M12 39a22 22 0 0 0 40 9M52 58V46H40"/></svg><h3>작업 진행자</h3><p>프로그램 · 실행 연결</p></article><article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="m38 7-8 8 5 11 11 5 10-9a19 19 0 0 1-24 22L16 60 4 48l17-17A19 19 0 0 1 38 7z"/></svg><h3>작업 도구</h3><p>자료함 · 문서 앱</p></article></div></div>
+</figure><p class="footnote">역할을 이해하기 위한 비유입니다. AI가 사람처럼 의도·책임을 갖는다는 뜻은 아니에요.</p>
+<aside class="notes"><p>앞서 만난 조언자에게 작업 진행 절차와 도구가 붙은 작은 사무실을 떠올립니다. 프로그램이라는 진행자가 LLM의 실행 요청을 도구에 연결하고 결과를 다시 전합니다. Agent는 이 전체 묶음입니다. 목표와 최종 책임을 맡는 사람은 바깥에 둡니다. 자체 제작한 교육용 비유입니다.</p></aside>
+</section>
+
+<section id="generation-search" data-chapter="3 · 잘 맡기고 확인하기" data-title="생성과 검색은 서로 다른 일" data-jelly-woo="compare" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/compare.webp" srcset="../../assets/images/jelly-woo/compare.webp 1x, ../../assets/images/jelly-woo/compare@2x.webp 2x" width="512" height="512" alt="두 대상을 비교하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">3 · 잘 맡기고 확인하기</p><h2 class="jelly-heading">생성과 검색은 <em>서로 다른 일</em></h2>
+<figure class="search-lanes" aria-label="언어 모델은 문장을 생성합니다. 검색 도구는 외부 자료를 가져오고, 그 자료를 LLM에 전달하면 자료를 바탕으로 답변을 생성할 수 있습니다.">
+<div class="search-lane"><span class="lane-tag green">생성</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><strong>LLM</strong><span class="flow-arrow" aria-hidden="true">→</span><div class="lane-result"><strong>문장 만들기</strong><span>“모임에 초대합니다.”</span></div></div>
+<div class="search-lane"><span class="lane-tag peach">검색</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="27" cy="27" r="18"/><path d="m41 41 16 16M18 27h18M27 18v18"/></svg><strong>검색 도구</strong><span class="flow-arrow" aria-hidden="true">→</span><div class="lane-result"><strong>외부 자료 가져오기</strong><span>도서관의 오늘 공지</span></div></div>
+</figure><p class="takeaway">검색 자료 → LLM → 답변 <strong>· 연결되어 있을 때 가능</strong></p>
+<aside class="notes"><p>답변이 자연스럽다고 해서 지금 인터넷을 검색했다는 뜻은 아닙니다. 검색 도구가 연결되면 외부 정보를 입력으로 가져와 답변에 사용할 수 있습니다. 내 파일도 연결되고 허용된 범위 안에서 접근합니다. 검색한 자료가 최신인지, 믿을 만한지도 별도로 확인합니다.</p></aside>
+</section>
+
+<section id="reliability" data-chapter="3 · 잘 맡기고 확인하기" data-title="자연스러운 문장도 틀릴 수 있어요" data-jelly-woo="question" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/question.webp" srcset="../../assets/images/jelly-woo/question.webp 1x, ../../assets/images/jelly-woo/question@2x.webp 2x" width="512" height="512" alt="질문을 떠올리는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">3 · 잘 맡기고 확인하기</p><h2 class="jelly-heading">자연스러운 문장도 <em>틀릴 수 있어요</em></h2>
+<figure class="evidence-compare" aria-label="확정 메모의 오후 2시와 초안의 오후 3시가 다릅니다. 자연스러운 문장도 원문과 대조해야 합니다.">
+<article class="panel-card green"><span class="diagram-label">확정 메모 · 가상 자료</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><h3>모임 시작</h3><div class="time-value">오후 <strong>2</strong>시</div></article>
+<div class="not-equal"><strong>≠</strong><span>원문과 대조</span></div>
+<article class="panel-card peach"><span class="diagram-label">오류를 넣은 학습용 초안</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M10 10h44v32H28L15 53V42h-5z"/><path d="M20 21h24M20 30h16"/></svg><h3>“함께 만나요!”</h3><div class="time-value">오후 <strong>3</strong>시</div></article>
+</figure><p class="takeaway">근거 없이 내용을 만들기도 해요. <strong>날짜·숫자·출처를 확인.</strong></p>
+<aside class="notes"><p>사실과 다른 내용을 그럴듯하게 생성하는 문제를 환각 또는 허위 생성이라고 부릅니다. 화면의 시간 오류는 직접 넣은 교육 예시입니다. 같은 답을 여러 번 받는 것만으로 사실이라고 확정할 수 없습니다. <a href="https://developers.google.com/machine-learning/crash-course/llm/transformers">Google · LLM의 원리</a> · 확인 2026-10-07.</p></aside>
+</section>
+
+<section id="human-role" data-chapter="3 · 잘 맡기고 확인하기" data-title="사람은 범위와 완료 기준을 정해요" data-jelly-woo="approve" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/approve.webp" srcset="../../assets/images/jelly-woo/approve.webp 1x, ../../assets/images/jelly-woo/approve@2x.webp 2x" width="512" height="512" alt="확인한 문서를 들고 승인하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">3 · 잘 맡기고 확인하기</p><h2 class="jelly-heading">사람은 <em>범위와 완료 기준</em>을 정해요</h2>
+<figure class="human-gates" aria-label="작업 전에는 목표와 필요한 자료, 작업 중에는 허용할 행동, 작업 후에는 실제 파일과 근거를 확인합니다.">
+<div class="three-up"><article class="panel-card lime"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 59V7M15 9c13-9 22 10 37 0v26c-15 10-24-9-37 0"/></svg><h3>시작 전에</h3><p>목표 · 필요한 자료</p></article><article class="panel-card lavender"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="13" y="27" width="38" height="31" rx="5"/><path d="M21 27V17a11 11 0 0 1 22 0v10M32 39v9"/></svg><h3>작업 중에</h3><p>허용할 행동의 범위</p></article><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="8" y="8" width="48" height="48" rx="12"/><path d="m18 32 10 11 19-22"/></svg><h3>완료할 때</h3><p>실제 파일 · 근거 확인</p></article></div>
+<div class="boundary-note"><strong>연습의 약속</strong><span>가상 자료로 만들기</span><span>저장까지 허용</span><span>공유는 확인 후</span></div>
+</figure><p class="takeaway">“완료했어요”라는 답변 뒤에는 <strong>결과물을 직접 열기.</strong></p>
+<aside class="notes"><p>이 수업에서는 가상 자료로 안내문을 만들고 저장까지만 허용합니다. 삭제나 외부 전송처럼 영향이 큰 작업은 실행 전에 확인 지점을 두는 예입니다. 비밀번호와 불필요한 개인정보는 연습 자료에 넣지 않습니다. 서비스마다 도구와 권한 설정이 다르므로 실제 실습에서 확인합니다. 이런 범위 설정은 이 수업이 제안하는 사용 습관입니다.</p></aside>
+</section>
+
+<section id="remember" data-chapter="3 · 잘 맡기고 확인하기" data-title="세 역할만 기억하세요" data-jelly-woo="present" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/present.webp" srcset="../../assets/images/jelly-woo/present.webp 1x, ../../assets/images/jelly-woo/present@2x.webp 2x" width="512" height="512" alt="도표를 가리켜 설명하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">3 · 잘 맡기고 확인하기</p><h2 class="jelly-heading">세 역할만 <em>기억하세요</em></h2>
+<figure class="recap" aria-label="사람은 목표를 정하고 결과를 확인합니다. LLM은 다음 말과 행동을 선택합니다. 프로그램과 도구는 허용된 작업을 실행합니다.">
+<div class="three-up"><article class="panel-card lime"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="18" r="11"/><path d="M10 59v-8a22 22 0 0 1 44 0v8M23 43l9 8 9-8"/></svg><h3>사람</h3><p>목표와 최종 확인</p></article><article class="panel-card green"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="15" y="15" width="34" height="34" rx="9"/><path d="M23 4v11M41 4v11M23 49v11M41 49v11M4 23h11M4 41h11M49 23h11M49 41h11"/><path d="M24 25h16v14H24z"/></svg><h3>LLM</h3><p>다음 말과 행동 선택</p></article><article class="panel-card peach"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="m38 7-8 8 5 11 11 5 10-9a19 19 0 0 1-24 22L16 60 4 48l17-17A19 19 0 0 1 38 7z"/></svg><h3>프로그램 + 도구</h3><p>허용된 작업 실행</p></article></div>
+<div class="recap-loop"><span>선택</span><span class="flow-arrow" aria-hidden="true">→</span><span>실행</span><span class="flow-arrow" aria-hidden="true">→</span><span>결과 확인</span><span class="recap-return">반복하면, Agent의 작업 흐름</span></div>
+</figure>
+<aside class="notes"><p>청중에게 파일 저장을 실제로 수행하는 쪽이 누구인지 물어보세요. LLM은 도구와 입력을 선택하고 프로그램과 도구가 실행합니다. 결과가 다시 LLM에 들어가는 흐름을 한 번 더 짚고, 사람은 목표·범위·최종 확인을 맡는다고 정리합니다.</p></aside>
+</section>
+
+<section id="next-lesson" data-chapter="다음 단계" data-title="이제 Antigravity에서 만나요" data-jelly-woo="code" data-jelly-layout="feature">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/code.webp" srcset="../../assets/images/jelly-woo/code.webp 1x, ../../assets/images/jelly-woo/code@2x.webp 2x" width="512" height="512" alt="노트북으로 작업하는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<div class="jelly-main"><p class="jelly-eyebrow eyebrow">다음 단계</p><h2 class="jelly-heading">이제 <em>Antigravity</em>에서 만나요</h2>
+<div class="handoff-visual"><div class="speech">“모임 안내 페이지를<br><strong>파일로 만들어 줘.</strong>”</div><div class="handoff-result"><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M15 5h24l12 13v41H15zM39 5v14h12M24 29h18M24 39h18M24 49h12"/></svg><strong>안내.html</strong><span class="flow-arrow" aria-hidden="true">→</span><svg class="sketch-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="7" width="56" height="41" rx="5"/><path d="M4 17h56M24 48v9M40 48v9M17 58h30M14 28h17M14 37h31"/></svg></div></div>
+<a class="next-lesson" href="../agent-tools-antigravity/">다음 수업 · AI, 한 걸음 더 <span aria-hidden="true">→</span></a>
+<p class="footnote">부탁하기 → 작업 지켜보기 → 결과 직접 열기</p></div>
+<aside class="notes"><p>이론의 마지막입니다. 다음 발표에서 Antigravity로 작은 안내 페이지를 만듭니다. 기존 발표의 앞부분은 오늘 배운 원리를 제품 화면과 연결하는 복습으로 짧게 진행하면 됩니다. 이 장은 제품의 현재 기능이나 화면을 재현한 것이 아니라 다음 실습의 목표를 보여 줍니다.</p></aside>
+</section>
+
+<section id="resources" data-chapter="다음 단계" data-title="다시 볼 자료와 출처" data-jelly-woo="study" data-jelly-layout="corner">
+<img class="jelly-woo" src="../../assets/images/jelly-woo/study.webp" srcset="../../assets/images/jelly-woo/study.webp 1x, ../../assets/images/jelly-woo/study@2x.webp 2x" width="512" height="512" alt="책을 읽으며 배우는 jelly-woo" loading="eager" data-auto-animate-ignore>
+<p class="jelly-eyebrow eyebrow">다음 단계</p><h2 class="jelly-heading">다시 볼 <em>자료와 출처</em></h2>
+<div class="resource-layout"><article class="panel-card green"><h3>그림으로 다시 보기</h3><a class="resource-link" href="llm-agent-basics.pdf" download>18장 발표 PDF 내려받기 ↗</a><a class="resource-link" href="?view=read">한 페이지로 읽기 ↗</a><a class="resource-link" href="../../#log">전체 학습 순서 ↗</a></article>
+<article class="panel-card lavender"><h3>참고한 공식 설명</h3><a class="resource-link" href="https://developers.google.com/machine-learning/crash-course/llm">Google · 언어 모델과 토큰</a><a class="resource-link" href="https://developers.google.com/machine-learning/crash-course/llm/transformers">Google · LLM의 생성 원리와 한계</a><a class="resource-link" href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · 에이전트와 도구 실행</a><a class="resource-link" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic · 현재 작업의 문맥</a></article></div>
+<p class="footnote">공식 문서 확인 2026-10-07 · 도식·비유·모임 사례는 자체 제작한 학습용 예시</p>
+<aside class="notes"><p>발표 PDF와 읽기 화면에는 모든 도식이 그대로 들어 있습니다. 웹 발표는 로컬 자산만으로 열리며 외부 공식 출처를 방문할 때에는 인터넷이 필요합니다. 세부 수식, 모델 구조와 제품별 설정은 이 기초 수업에서 다루지 않습니다.</p></aside>
+</section>
+</div></main>
+<script src="../../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../../assets/template.js"></script>
+<script src="../shared/deck-template.js"></script>
+</body>
+</html>

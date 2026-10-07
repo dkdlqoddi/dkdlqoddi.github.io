@@ -1,0 +1,212 @@
+/* Diagram-first lessons. Shared files own the shell, character placement and print canvas. */
+.basics-deck .reveal { --diagram-gap: 24px; }
+.basics-deck .reveal figure { margin: 0; }
+.basics-deck .reveal .sketch-icon { width: 82px; height: 82px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2.6; color: var(--forest); margin: 0; }
+.basics-deck .panel-card { min-width: 0; padding: 28px; border-radius: 22px; background: var(--surface); }
+.basics-deck .panel-card.green { background: var(--green); }
+.basics-deck .panel-card.peach { background: var(--peach); }
+.basics-deck .panel-card.lime { background: var(--lime); }
+.basics-deck .panel-card.lavender { background: var(--lavender); }
+.basics-deck .panel-card h3 { font-size: 38px; margin: 16px 0 12px; }
+.basics-deck .panel-card p { font-size: 32px; }
+.basics-deck .diagram-label { display: block; font-size: 24px; line-height: 1.4; font-weight: 600; color: var(--muted); }
+.basics-deck .takeaway { margin-top: 28px; padding: 18px 0 0; border-top: 2px solid var(--line); font-size: 32px; }
+.basics-deck .takeaway strong { color: var(--forest); }
+.basics-deck .flow { display: grid; align-items: center; gap: 14px; }
+.basics-deck .flow.three { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr) 32px minmax(0, 1fr); }
+.basics-deck .flow > .panel-card { height: 100%; box-sizing: border-box; }
+.basics-deck .flow-arrow { font-size: 40px; color: var(--forest); text-align: center; line-height: 1; }
+.basics-deck .two-up, .basics-deck .three-up { display: grid; gap: var(--diagram-gap); }
+.basics-deck .two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.basics-deck .three-up { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.basics-deck .cover-path { display: flex; align-items: center; gap: 22px; margin-top: 30px; font-size: 32px; }
+.basics-deck .cover-path span { border-bottom: 5px solid var(--green); padding-bottom: 8px; }
+
+/* A model is a component; the agent is the assembled system. */
+.basics-deck .concept-map { display: grid; grid-template-columns: 1.5fr 180px 1fr; align-items: center; padding-top: 12px; }
+.basics-deck .ai-field { border: 3px solid var(--stroke); border-radius: 40px; padding: 30px; background: var(--surface); }
+.basics-deck .ai-field > .diagram-label { font-size: 36px; font-weight: 750; color: var(--ink); }
+.basics-deck .ai-examples { display: flex; gap: 24px; margin: 14px 0 24px; font-size: 28px; }
+.basics-deck .llm-island { display: grid; grid-template-columns: 90px 1fr; gap: 6px 15px; border: 2px solid var(--stroke); border-radius: 22px; padding: 24px; background: var(--green); }
+.basics-deck .llm-island .sketch-icon { grid-row: span 2; }
+.basics-deck .llm-island strong, .basics-deck .agent-island strong { font-size: 44px; }
+.basics-deck .llm-island span, .basics-deck .agent-island span { font-size: 30px; line-height: 1.4; }
+.basics-deck .map-bridge { display: grid; text-align: center; font-size: 26px; gap: 16px; }
+.basics-deck .map-bridge > span:first-child { font-size: 80px; color: var(--forest); }
+.basics-deck .agent-island { display: grid; gap: 20px; justify-items: center; padding: 35px 20px; background: var(--lavender); border: 3px dashed var(--stroke); border-radius: 28px; text-align: center; }
+.basics-deck .term-ribbon { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
+.basics-deck .term-ribbon strong { font-size: 48px; color: var(--forest); }
+.basics-deck .term-ribbon span { font-size: 28px; }
+
+/* Text generation, shown as a sequence with possible continuations. */
+.basics-deck .token-demo { padding: 26px 32px; border: 2px solid var(--stroke); border-radius: 26px; background: var(--surface); box-shadow: var(--cartoon-shadow); }
+.basics-deck .prompt-strip { display: flex; align-items: center; gap: 25px; font-size: 32px; }
+.basics-deck .token-line { display: flex; gap: 18px; margin: 26px 0 20px; }
+.basics-deck .token-line > span { padding: 20px 30px; border: 2px solid var(--stroke); border-radius: 16px; background: var(--lavender); font-size: 48px; font-weight: 650; }
+.basics-deck .token-line > .next-token { background: var(--lime); min-width: 60px; text-align: center; border-style: dashed; }
+.basics-deck .candidate-line { display: flex; align-items: center; gap: 18px; }
+.basics-deck .candidate { padding: 9px 20px; border: 1px solid var(--line); border-radius: 12px; font-size: 30px; }
+.basics-deck .candidate.chosen { border: 3px solid var(--forest); background: var(--green); font-weight: 750; }
+.basics-deck .token-result { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; margin-top: 26px; border-top: 2px solid var(--line); padding-top: 20px; font-size: 36px; }
+.basics-deck .loop-caption { margin-left: auto; font-size: 26px; color: var(--forest); }
+
+.basics-deck .before-after { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.basics-deck .mini-route { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 32px; margin-top: 28px; }
+.basics-deck .mini-route .sketch-icon { width: 56px; height: 56px; }
+.basics-deck .paper-lines { width: 75%; background: var(--surface); border: 2px solid var(--stroke); border-radius: 8px; padding: 15px 22px; margin: 30px auto 0; }
+.basics-deck .paper-lines i { display: block; height: 4px; margin: 16px 0; background: var(--line); }
+.basics-deck .paper-lines i:last-child { width: 65%; }
+.basics-deck .speech { border: 2px solid var(--stroke); border-radius: 26px 26px 26px 4px; padding: 25px 28px; background: var(--surface); font-size: 36px; line-height: 1.5; }
+.basics-deck .before-after .speech { margin-top: 25px; }
+.basics-deck .context-pair .panel-card { position: relative; padding: 30px; }
+.basics-deck .context-pair .sketch-icon { position: absolute; right: 28px; top: 26px; width: 68px; height: 68px; }
+.basics-deck .context-pair .diagram-label { padding-right: 78px; }
+.basics-deck .context-pair h3 { margin: 18px 0 38px; }
+.basics-deck .book-spines { display: flex; justify-content: center; gap: 10px; padding: 0 18px; border-bottom: 12px solid var(--stroke); }
+.basics-deck .book-spines i { width: 50px; height: 110px; background: var(--green); border: 2px solid var(--stroke); border-radius: 5px 5px 0 0; }
+.basics-deck .book-spines i:nth-child(even) { background: var(--lavender); height: 130px; margin-top: -20px; }
+.basics-deck .book-spines i:last-child { rotate: 8deg; margin-left: 10px; background: var(--lime); }
+.basics-deck .desk-papers { display: flex; align-items: center; justify-content: center; gap: 14px; border-bottom: 12px solid var(--stroke); padding: 8px 0 25px; }
+.basics-deck .desk-papers span { font-size: 32px; padding: 18px 10px; background: var(--surface); border: 2px solid var(--stroke); rotate: -4deg; }
+.basics-deck .desk-papers span:nth-child(2) { rotate: 5deg; }
+.basics-deck .recipe-result { display: flex; align-items: center; gap: 28px; margin-top: 28px; border: 2px dashed var(--stroke); border-radius: 18px; padding: 22px 30px; }
+.basics-deck .recipe-result > span { font-size: 58px; color: var(--forest); }
+.basics-deck .recipe-result p { font-size: 34px; }
+.basics-deck .analogy-scene .speech { margin: 20px 0 28px; }
+.basics-deck .speech.large { font-size: 46px; background: var(--lime); }
+.basics-deck .analogy-output { display: flex; align-items: center; gap: 24px; }
+.basics-deck .analogy-output strong { display: block; font-size: 36px; margin-bottom: 12px; }
+.basics-deck .analogy-output span { font-size: 28px; }
+
+/* Arrows are ornamental; captions preserve the feedback relationship in reading view. */
+.basics-deck .agent-system, .basics-deck .office-team { border: 3px dashed var(--stroke); border-radius: 28px; padding: 25px; }
+.basics-deck .system-label { display: block; font-size: 28px; font-weight: 650; color: var(--forest); margin-bottom: 24px; }
+.basics-deck .agent-system .panel-card { padding: 22px; }
+.basics-deck .agent-system .panel-card p { font-size: 30px; }
+.basics-deck .goal-strip { display: flex; align-items: center; gap: 18px; font-size: 30px; margin: 0 0 24px; }
+.basics-deck .goal-strip .sketch-icon { width: 40px; height: 40px; }
+.basics-deck .execution-loop .panel-card { padding: 24px; }
+.basics-deck .execution-loop .diagram-label { margin-top: 14px; }
+.basics-deck .execution-loop h3 { font-size: 35px; }
+.basics-deck .execution-loop p { font-size: 28px; }
+.basics-deck .feedback-path { margin: 16px 60px 0; padding: 20px 22px 12px; border: 3px solid var(--forest); border-top: 0; border-radius: 0 0 22px 22px; display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 32px; }
+.basics-deck .feedback-path > span:first-child { font-size: 48px; }
+.basics-deck .feedback-path > span:last-child { font-size: 26px; }
+.basics-deck .example-label { margin: 0 0 24px; }
+.basics-deck .storyboard { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; list-style: none; padding: 0; margin: 0; }
+.basics-deck .storyboard li { position: relative; display: grid; justify-items: start; gap: 16px; padding: 24px; }
+.basics-deck .storyboard li:not(:last-child)::after { content: "→"; position: absolute; top: 50%; right: -25px; font-size: 30px; color: var(--forest); }
+.basics-deck .storyboard strong { font-size: 36px; }
+.basics-deck .storyboard span { font-size: 28px; }
+.basics-deck .storyboard .step-tag { font-size: 24px; color: var(--forest); font-weight: 750; }
+.basics-deck .repair-path { display: flex; justify-content: center; gap: 28px; font-size: 28px; color: var(--forest); border-bottom: 3px dashed var(--forest); padding: 14px; width: 70%; margin: 0 auto; }
+.basics-deck .office-owner { display: flex; justify-content: center; gap: 25px; align-items: center; font-size: 32px; margin-bottom: 25px; }
+.basics-deck .office-owner .sketch-icon { width: 58px; height: 58px; }
+.basics-deck .office-team .panel-card { padding: 22px; }
+.basics-deck .office-team .panel-card p { font-size: 28px; }
+.basics-deck .search-lanes { display: grid; gap: 30px; }
+.basics-deck .search-lane { display: grid; grid-template-columns: 100px 78px 190px 50px 1fr; align-items: center; gap: 24px; padding: 28px; border: 2px solid var(--stroke); border-radius: 22px; background: var(--surface); }
+.basics-deck .lane-tag { font-size: 32px; padding: 12px; border-radius: 14px; text-align: center; }
+.basics-deck .search-lane > strong { font-size: 34px; }
+.basics-deck .lane-result { display: grid; gap: 10px; font-size: 32px; }
+.basics-deck .lane-result > span { color: var(--muted); font-size: 28px; }
+.basics-deck .evidence-compare { display: grid; grid-template-columns: 1fr 160px 1fr; align-items: center; }
+.basics-deck .evidence-compare .panel-card { text-align: center; }
+.basics-deck .evidence-compare .sketch-icon { margin-top: 25px; }
+.basics-deck .not-equal { display: grid; text-align: center; }
+.basics-deck .not-equal strong { font-size: 90px; color: var(--danger); }
+.basics-deck .not-equal span { font-size: 24px; }
+.basics-deck .time-value { font-size: 42px; }
+.basics-deck .time-value strong { font-size: 76px; color: var(--forest); }
+.basics-deck .peach .time-value strong { color: var(--danger); }
+.basics-deck .boundary-note { display: flex; gap: 24px; align-items: center; padding: 24px 0; margin-top: 25px; font-size: 28px; }
+.basics-deck .boundary-note strong { padding: 12px 18px; background: var(--surface); border: 2px solid var(--stroke); border-radius: 12px; }
+.basics-deck .recap .panel-card { text-align: center; padding: 35px 20px; }
+.basics-deck .recap .panel-card h3 { font-size: 36px; }
+.basics-deck .recap-loop { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 25px; padding-top: 40px; font-size: 38px; }
+.basics-deck .recap-return { width: 100%; text-align: center; font-size: 30px; color: var(--forest); padding: 18px; border-bottom: 3px dashed var(--forest); }
+.basics-deck .handoff-result { display: flex; align-items: center; justify-content: center; gap: 25px; padding: 30px 0; font-size: 38px; }
+.basics-deck .next-lesson { display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 32px; font-weight: 650; padding: 24px; background: var(--green); border: 2px solid var(--stroke); border-radius: 18px; box-shadow: var(--cartoon-shadow); }
+.basics-deck .next-lesson:hover { background: var(--lime); color: var(--ink); }
+.basics-deck .resource-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 28px; }
+.basics-deck .resource-link { display: block; font-size: 28px; line-height: 1.45; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: underline; text-underline-offset: 5px; }
+.basics-deck .resource-link:last-child { border-bottom: 0; }
+
+@media screen and (max-width: 1100px) {
+  .reading.basics-deck .concept-map { grid-template-columns: 1.4fr 125px 1fr; }
+  .reading.basics-deck .flow.three { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .reading.basics-deck .flow > .flow-arrow { rotate: 90deg; }
+  .reading.basics-deck .storyboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reading.basics-deck .storyboard li::after { display: none; }
+  .reading.basics-deck .search-lane { grid-template-columns: 80px 64px 1fr; gap: 18px; }
+  .reading.basics-deck .search-lane > .flow-arrow { display: none; }
+  .reading.basics-deck .lane-result { grid-column: 1 / -1; padding-top: 15px; border-top: 1px solid var(--line); }
+  .reading.basics-deck .three-up { grid-template-columns: 1fr; }
+  .reading.basics-deck .feedback-path, .reading.basics-deck .boundary-note { flex-wrap: wrap; }
+  .reading.basics-deck .context-pair .sketch-icon { position: static; margin-bottom: 15px; }
+  .reading.basics-deck .context-pair .diagram-label { padding-right: 0; }
+}
+@media screen and (max-width: 760px) {
+  .reading.basics-deck .reveal h2 { font-size: clamp(34px, 7.4vw, 50px); }
+  .reading.basics-deck .reveal .panel-card { padding: 24px; }
+  .reading.basics-deck .panel-card h3 { font-size: 30px; }
+  .reading.basics-deck .panel-card p, .reading.basics-deck .takeaway { font-size: 25px; }
+  .reading.basics-deck .diagram-label { font-size: 21px; }
+  .reading.basics-deck :is(.two-up, .concept-map, .before-after, .resource-layout, .evidence-compare, .storyboard) { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .reading.basics-deck :is(.prompt-strip, .candidate-line, .term-ribbon, .mini-route, .analogy-output, .office-owner, .handoff-result, .cover-path) { flex-wrap: wrap; }
+  .reading.basics-deck .term-ribbon { gap: 10px; }
+  .reading.basics-deck .term-ribbon span { font-size: 23px; }
+  .reading.basics-deck .ai-field { padding: 22px; }
+  .reading.basics-deck .llm-island { display: flex; flex-direction: column; padding: 22px; }
+  .reading.basics-deck .llm-island span { font-size: 25px; }
+  .reading.basics-deck .map-bridge > span:first-child { rotate: 90deg; font-size: 50px; }
+  .reading.basics-deck .map-bridge { gap: 8px; }
+  .reading.basics-deck .token-demo { padding: 22px 18px; }
+  .reading.basics-deck .prompt-strip { font-size: 25px; gap: 12px; }
+  .reading.basics-deck .token-line { gap: 9px; flex-wrap: wrap; }
+  .reading.basics-deck .token-line > span { padding: 13px; font-size: 29px; }
+  .reading.basics-deck .token-line > .next-token { min-width: 32px; }
+  .reading.basics-deck .candidate { padding: 8px 12px; font-size: 25px; }
+  .reading.basics-deck .candidate-line { gap: 12px; }
+  .reading.basics-deck .candidate-line .diagram-label { flex-basis: 100%; }
+  .reading.basics-deck .token-result { font-size: 28px; }
+  .reading.basics-deck .loop-caption { margin-left: 0; font-size: 22px; }
+  .reading.basics-deck .speech, .reading.basics-deck .speech.large { font-size: 29px; padding: 24px; }
+  .reading.basics-deck .mini-route { gap: 15px; font-size: 27px; }
+  .reading.basics-deck .mini-route .sketch-icon { width: 40px; height: 40px; }
+  .reading.basics-deck .paper-lines { box-sizing: border-box; width: 95%; }
+  .reading.basics-deck .book-spines { gap: 6px; padding: 0; }
+  .reading.basics-deck .book-spines i { width: 26px; }
+  .reading.basics-deck .desk-papers { flex-wrap: wrap; gap: 12px; }
+  .reading.basics-deck .desk-papers span { font-size: 25px; }
+  .reading.basics-deck .recipe-result { display: block; padding: 22px; }
+  .reading.basics-deck .recipe-result p { font-size: 27px; }
+  .reading.basics-deck .analogy-output strong { font-size: 30px; }
+  .reading.basics-deck .analogy-output span { font-size: 24px; }
+  .reading.basics-deck .agent-system, .reading.basics-deck .office-team { padding: 18px; }
+  .reading.basics-deck .system-label { font-size: 25px; }
+  .reading.basics-deck .goal-strip { font-size: 25px; align-items: flex-start; }
+  .reading.basics-deck .feedback-path { margin: 20px 0 0; padding: 18px 10px; font-size: 27px; gap: 14px; text-align: center; }
+  .reading.basics-deck .feedback-path > span:last-child { font-size: 23px; }
+  .reading.basics-deck .storyboard strong { font-size: 32px; }
+  .reading.basics-deck .repair-path { width: auto; font-size: 25px; gap: 10px; margin-top: 20px; }
+  .reading.basics-deck .office-owner { font-size: 27px; gap: 15px; }
+  .reading.basics-deck .office-owner > span { flex-basis: 100%; text-align: center; }
+  .reading.basics-deck .search-lane { grid-template-columns: 64px 1fr; padding: 20px; gap: 15px; }
+  .reading.basics-deck .search-lane > .sketch-icon { display: none; }
+  .reading.basics-deck .search-lane > strong { font-size: 29px; }
+  .reading.basics-deck .lane-tag { font-size: 25px; padding: 12px 6px; }
+  .reading.basics-deck .lane-result { font-size: 28px; }
+  .reading.basics-deck .lane-result > span { font-size: 24px; }
+  .reading.basics-deck .not-equal strong { font-size: 60px; line-height: 1; }
+  .reading.basics-deck .boundary-note { font-size: 25px; gap: 18px; align-items: flex-start; flex-direction: column; }
+  .reading.basics-deck .recap .panel-card h3 { font-size: 30px; }
+  .reading.basics-deck .recap-loop { font-size: 28px; gap: 15px; }
+  .reading.basics-deck .recap-loop .flow-arrow { font-size: 28px; }
+  .reading.basics-deck .recap-return { font-size: 25px; padding: 16px 0; }
+  .reading.basics-deck .handoff-result { font-size: 29px; gap: 16px; }
+  .reading.basics-deck .handoff-result .sketch-icon { width: 55px; height: 55px; }
+  .reading.basics-deck .next-lesson { font-size: 27px; padding: 20px; }
+  .reading.basics-deck .resource-link { font-size: 25px; overflow-wrap: anywhere; }
+  .reading.basics-deck .cover-path { font-size: 25px; gap: 15px; }
+}
