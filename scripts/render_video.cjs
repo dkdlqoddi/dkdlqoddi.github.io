@@ -25,7 +25,7 @@ const work = process.env.VIDEO_WORK_DIR || '/tmp/presentation-video';
 const outDir = path.resolve(root, process.env.VIDEO_OUT_DIR || 'video/out');
 const workers = Math.max(1, Number(process.env.VIDEO_WORKERS) || Math.min(6, Math.floor(os.cpus().length / 3)));
 const pageUrl = `${base}/video/agent-tools-antigravity/?render`;
-const deckFile = path.join(root, 'slides/agent-tools-antigravity/index.html');
+const deckFile = path.join(root, 'video/agent-tools-antigravity/source-slides.json');
 const NAME = 'ai-tools-intro';
 
 const run = (cmd, args, opts = {}) => execFileSync(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 1 << 26, ...opts }).toString();
@@ -90,9 +90,9 @@ const renderSegment = async (index, first, last, fps, progress) => {
   const { info } = probe;
   await probe.browser.close();
 
-  // The video mirrors the deck: same sections, same order.
-  const deckIds = [...fs.readFileSync(deckFile, 'utf8').matchAll(/<section id="([^"]+)"/g)].map(m => m[1]);
-  assert.deepEqual(info.scenes.map(s => s.id), deckIds, 'Video scenes must match the deck sections');
+  // The existing video is pinned to its original 2026-09-20 deck revision.
+  const deckIds = JSON.parse(fs.readFileSync(deckFile, 'utf8')).sectionIds;
+  assert.deepEqual(info.scenes.map(s => s.id), deckIds, 'Video scenes must match their pinned source revision');
   assert.ok(info.animations > 500, 'Composition built too few animations');
 
   const fps = info.fps;

@@ -1,0 +1,20 @@
+{
+  "sw": {
+    "input_id": "log-r1-001",
+    "text": "연결이 끊겼다가 복구됨",
+    "allowed_labels": ["transient_network", "input_error", "unknown"],
+    "expected": {"label": "transient_network", "evidence": "끊겼다가 복구"}
+  },
+  "eda": {
+    "tool": "MockSTA",
+    "version": "r1",
+    "command": "report_mock_timing",
+    "manual": {
+      "document": "manual-r1",
+      "section": "2",
+      "text": "MockSTA r1의 report_mock_timing은 slack을 ns 단위로 출력한다. 음수 slack은 이 가상 예시에서 제약 미충족을 뜻한다."
+    },
+    "report": {"tool": "MockSTA", "version": "r1", "corner": "SS", "unit": "ns", "slack": -0.08},
+    "expected": {"version": "r1", "command": "report_mock_timing", "unit": "ns", "document": "manual-r1", "section": "2"}
+  }
+}

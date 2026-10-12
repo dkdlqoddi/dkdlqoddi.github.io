@@ -17,6 +17,9 @@
   <div id="notification" class="notification" role="status" aria-live="polite"></div>
   `);
   const slides = [...document.querySelectorAll('.slides > section')];
+  // A curriculum revision preserves the meaning of pre-revision numeric links.
+  // New links always use the canonical section ID written by setHash().
+  const previousOrder = (document.body.dataset.previousOrder || '').split(/\s+/).filter(Boolean);
   slides.forEach((slide, index) => {
     if (!slide.id) slide.id = 'slide-' + (index + 1);
     if (!slide.dataset.title) slide.dataset.title = slide.querySelector('h1, h2, h3, h4')?.innerText.replace(/\s+/g, ' ').trim() || `${index + 1}장`;
@@ -56,9 +59,14 @@
   const hashIndex = () => {
     let hash;
     try { hash = decodeURIComponent(location.hash.replace(/^#\/?/, '').split('/')[0]); } catch { return 0; }
-    const named = slides.findIndex(slide => slide.id === hash);
+    if (!hash) return 0;
+    const named = slides.findIndex(slide => slide.id === hash || (slide.dataset.previousIds || "").split(/\s+/).includes(hash));
     if (named >= 0) return named;
     const number = Number(hash);
+    if (/^\d+$/.test(hash) && previousOrder[number]) {
+      const mapped = slides.findIndex(slide => slide.id === previousOrder[number]);
+      if (mapped >= 0) return mapped;
+    }
     return Number.isInteger(number) && number >= 0 && number < slides.length ? number : 0;
   };
 
@@ -69,6 +77,19 @@
       catch { location.hash = hash; }
     }
   }
+
+  // Canonicalize retired section names before Reveal reads a new hash, including
+  // same-document navigation and browser back/forward (not just the first load).
+  function normalizeAliasHash() {
+    let name;
+    try { name = decodeURIComponent(location.hash.replace(/^#\/?/, '').split('/')[0]); } catch { return; }
+    if (!name) return;
+    const mappedName = /^\d+$/.test(name) ? previousOrder[Number(name)] : null;
+    const index = slides.findIndex(slide => mappedName ? slide.id === mappedName : (slide.dataset.previousIds || '').split(/\s+/).includes(name));
+    if (index >= 0) setHash(index);
+  }
+  normalizeAliasHash();
+  window.addEventListener('hashchange', normalizeAliasHash, { capture: true });
 
   function updateNavigation(index) {
     activeIndex = Math.max(0, Math.min(slides.length - 1, index));

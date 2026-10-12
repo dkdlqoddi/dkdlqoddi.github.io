@@ -19,8 +19,10 @@ class Page(HTMLParser):
         self.tags.append((tag, dict(attrs)))
         attrs = dict(attrs)
         if tag == 'section':
-            self.current_slide = {'attrs': attrs, 'characters': []}
+            self.current_slide = {'attrs': attrs, 'characters': [], 'notes': 0}
             self.slides.append(self.current_slide)
+        if tag == 'aside' and 'notes' in attrs.get('class', '').split() and self.current_slide is not None:
+            self.current_slide['notes'] += 1
         if tag == 'img' and 'jelly-woo' in attrs.get('class', '').split() and self.current_slide is not None:
             self.current_slide['characters'].append(attrs)
 
@@ -32,13 +34,23 @@ class Page(HTMLParser):
 manifest = json.loads((ROOT / 'slides.json').read_text())
 assert isinstance(manifest, list) and manifest
 assert len({item['dir'] for item in manifest}) == len(manifest), 'Duplicate deck URL'
+assert len({item['module'] for item in manifest}) == len(manifest), 'Duplicate module ID'
+slugs = {item['dir'] for item in manifest}
 for item in manifest:
     assert (ROOT / 'slides' / item['dir'] / 'index.html').is_file(), item['dir']
+    assert item['track'] in {'novice', 'expert'}
+    assert item['path'] in {'core', 'common', 'sw', 'eda', 'operations'}
+    assert isinstance(item['prerequisites'], str) and item['prerequisites']
+    assert isinstance(item['next'], list) and set(item['next']) <= slugs
+    assert isinstance(item['slideCount'], int) and item['slideCount'] > 0
+    assert Path(item['pdf']).name == item['pdf'] and item['pdf'].endswith('.pdf')
 
-paths = [ROOT / 'index.html', ROOT / '404.html', ROOT / 'resume' / 'index.html', ROOT / 'resume' / 'portfolio.html', *sorted((ROOT / 'slides').glob('*/*.html')), *sorted((ROOT / 'video').glob('*/index.html'))]
+paths = [ROOT / 'index.html', ROOT / '404.html', ROOT / 'resume' / 'index.html', ROOT / 'resume' / 'portfolio.html', *sorted((ROOT / 'slides').glob('*/*.html')), *sorted((ROOT / 'slides/shared/labs').glob('*.html')), *sorted((ROOT / 'video').glob('*/index.html'))]
 for path in paths:
     source = path.read_text()
     page = Page(source)
+    ids = [attrs['id'] for _, attrs in page.tags if attrs.get('id')]
+    assert len(ids) == len(set(ids)), f'{path}: duplicate element ID'
     assets = [attrs.get('href') if tag == 'link' else attrs.get('src')
               for tag, attrs in page.tags if tag in ('link', 'script', 'img')]
     assets = [asset for asset in assets if asset]
@@ -46,8 +58,9 @@ for path in paths:
                for tag, attrs in page.tags if tag == 'img' and 'jelly-woo' in attrs.get('class', '').split()
                for candidate in attrs.get('srcset', '').split(',') if candidate.strip()]
     assert any('assets/theme.css' in asset for asset in assets), f'{path}: missing shared theme'
-    assert any(tag == 'meta' and attrs.get('name') == 'color-scheme' and attrs.get('content') == 'light'
-               for tag, attrs in page.tags), f'{path}: light color scheme required'
+    scheme = 'dark' if any(tag == 'html' and 'chalk-theme' in attrs.get('class', '').split() for tag, attrs in page.tags) else 'light'
+    assert any(tag == 'meta' and attrs.get('name') == 'color-scheme' and attrs.get('content') == scheme
+               for tag, attrs in page.tags), f'{path}: color scheme must match the page theme'
     assert 'maximum-scale' not in source and 'user-scalable=no' not in source, f'{path}: zoom is blocked'
     for asset in assets:
         url = urlsplit(asset)
@@ -80,8 +93,16 @@ for path in paths:
             assert character.get('alt') and character.get('loading') == 'eager', f'{path}: character accessibility/loading'
             assert 'data-auto-animate-ignore' in character, f'{path}: character must not enter diagram morphs'
         assert any('jelly-woo.css' in asset for asset in assets), f'{path}: missing character layout'
-        expected = {'agent-tools-antigravity': 22, 'my-dolsoe-ai': 21}.get(path.parent.name)
+        expected = next((item['slideCount'] for item in manifest if item['dir'] == path.parent.name), None)
         assert expected is None or sections == expected, f'{path}: content was lost'
+        if expected is not None:
+            section_ids = {slide['attrs']['id'] for slide in page.slides}
+            aliases = [alias for slide in page.slides for alias in slide['attrs'].get('data-previous-ids', '').split()]
+            assert len(aliases) == len(set(aliases)) and not section_ids.intersection(aliases), f'{path}: ambiguous retired ID'
+            previous_order = next(attrs.get('data-previous-order', '').split() for tag, attrs in page.tags if tag == 'body')
+            assert set(previous_order) <= section_ids, f'{path}: invalid previous numeric mapping'
+            assert all(slide['notes'] == 1 for slide in page.slides), f'{path}: each lesson needs presenter notes'
+            assert all('<' not in slide['attrs'].get('data-title', '') for slide in page.slides), f'{path}: markup leaked into contents titles'
         for tag, attrs in page.tags:
             if tag == 'svg' and attrs.get('role') == 'img':
                 assert attrs.get('aria-label') or attrs.get('aria-labelledby'), f'{path}: unlabelled diagram'

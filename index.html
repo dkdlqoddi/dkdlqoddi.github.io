@@ -1,65 +1,60 @@
-<!doctype html>
-<html lang="ko">
+<!DOCTYPE html>
+
+<html class="chalk-theme" lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>발표 기록 · dkdlqoddi</title>
-  <meta name="description" content="함께 나눈 생각, 한 걸음 더. AI와 자동화에 관한 발표와 실습 자료를 모았습니다.">
-  <meta property="og:title" content="발표 기록 · dkdlqoddi">
-  <meta property="og:description" content="AI와 자동화에 관한 발표와 실습 자료를 모았습니다.">
-  <meta property="og:type" content="website">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="vendor/pretendard/pretendard.css">
-  <link rel="stylesheet" href="assets/theme.css">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>발표 기록 · dkdlqoddi</title>
+<meta content="함께 나눈 생각, 한 걸음 더. AI와 자동화에 관한 발표와 실습 자료를 모았습니다." name="description"/>
+<meta content="발표 기록 · dkdlqoddi" property="og:title"/>
+<meta content="AI와 자동화에 관한 발표와 실습 자료를 모았습니다." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="dark" name="color-scheme"/>
+<meta content="#192e2b" name="theme-color"/>
+<link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="vendor/pretendard/pretendard.css" rel="stylesheet"/>
+<link href="assets/theme.css" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<link href="assets/chalk-theme.css" rel="stylesheet"/>
 </head>
 <body data-template="site">
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="little-dot" aria-hidden="true"></span> PRESENTATION LOG</p>
-        <h1 id="hero-title">함께 나눈 생각,<br><span class="highlight">한 걸음 더.</span></h1>
-        <p class="hero-description">AI를 이해하고, 일상과 일에 연결하는 과정.<br>배우고 나눈 이야기들을 이곳에 모았습니다.</p>
-        <div class="hero-actions">
-          <a class="primary-link" href="#log">발표 둘러보기 <span aria-hidden="true">↓</span></a>
-          <a class="secondary-link" href="resume/">이력서 보기 <span aria-hidden="true">↗</span></a>
-        </div>
-        <p class="hero-topics">AI <span>·</span> AUTOMATION <span>·</span> TOGETHER</p>
-      </div>
-      <div class="galaxy" id="galaxy" aria-label="생각이 배움과 결과물로 이어지는 은하 그림" role="img">
-        <div class="galaxy-wash" aria-hidden="true"></div>
-        <div class="galaxy-orbit orbit-outer" aria-hidden="true"><i></i></div>
-        <div class="galaxy-orbit orbit-middle" aria-hidden="true"><i></i><i></i></div>
-        <div class="galaxy-orbit orbit-inner" aria-hidden="true"><i></i></div>
-        <div class="galaxy-prompt" aria-hidden="true"><span class="prompt-icon">✳</span><span>생각에서,<br><strong>가능성으로.</strong></span></div>
-        <div class="galaxy-spark" aria-hidden="true">↗</div>
-        <div class="galaxy-document" aria-hidden="true">
-          <div class="document-top"><span class="window-dots"><i></i><i></i><i></i></span><span>LEARNING NOTE</span></div>
-          <div class="document-art"><i></i><i></i><i></i><span>✦</span></div>
-          <strong>작은 배움이<br>새로운 시작으로.</strong>
-          <div class="document-rule"></div>
-          <span class="document-caption"><span>✓</span> 함께 쌓아가는 기록</span>
-        </div>
-        <div class="galaxy-note" aria-hidden="true"><span>✧</span> 오늘보다 한 걸음 더</div>
-        <span class="galaxy-star star-one" aria-hidden="true">✧</span>
-        <span class="galaxy-star star-two" aria-hidden="true">✦</span>
-      </div>
-      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" hidden>움직임 멈추기 <span aria-hidden="true">Ⅱ</span></button>
-    </section>
-
-    <section class="log" id="log" aria-labelledby="log-heading">
-      <div class="log-head"><div><p class="eyebrow">LEARNING PATH</p><h2 id="log-heading">차근차근, 학습 순서<span class="collection-dot">.</span></h2></div><span id="log-count" class="log-count" aria-live="polite"></span></div>
-      <p class="learning-intro">개인 활용 → 업무 적용 → 팀 자동화 → 아키텍처 순서입니다.<br>처음이라면 1번부터, 경험이 있다면 각 자료의 대상을 보고 시작하세요. 날짜는 발표일입니다.</p>
-      <ol class="cards" id="cards" aria-label="추천 학습 순서"></ol>
-      <p class="status" id="status" role="status">발표 목록을 불러오는 중입니다.</p>
-      <noscript><p class="status">추천 학습 순서대로 발표 자료를 열어보세요.</p><ol class="fallback-links"><li><a href="slides/notebooklm-examples/">01 · 자료 활용 — 내 자료가 이해가 되는 순간</a></li><li><a href="slides/llm-agent-basics/">02 · AI 기초 이론 — LLM과 AI Agent, 처음 이해하기</a></li><li><a href="slides/agent-tools-antigravity/">03 · 에이전트 입문 — AI, 한 걸음 더</a></li><li><a href="slides/ai-work-review/">04 · 업무 적용 — AI 결과를 업무에 쓰기까지</a></li><li><a href="slides/design-ax-transition/">05 · 개념 정리 — 설계 AX 전환</a></li><li><a href="slides/dx-vs-ax-automation/">06 · 자동화 연동 — Python Automation: DX vs AX</a></li><li><a href="slides/ai-agent-skills-philosophy/">07 · 하네스 설계 — AI Agent Skills Philosophy</a></li><li><a href="slides/my-dolsoe-ai/">08 · 도메인 구현 — 나만의 돌쇠 AI 만들기</a></li><li><a href="slides/integrated-architecture/">09 · 아키텍처 — 안전한 AI 설계 자동화 아키텍처</a></li></ol><style>#status { display: none; }</style></noscript>
-    </section>
-  </main>
-  <footer class="site-foot"><a class="brand" href="#main"><span class="brand-symbol" aria-hidden="true">↗</span> 발표 기록</a><p>배움은 나눌수록, 더 멀리.</p><a href="resume/" style="color: var(--forest); text-decoration: none; font-weight: 600;">이력서</a><span>DKDLQODDI · 2026</span></footer>
-  <script src="assets/template.js" defer></script>
-  <script src="main.js" defer></script>
-  <script src="scripts/galaxy.js" defer></script>
+<main id="main">
+<section aria-labelledby="hero-title" class="hero">
+<div class="hero-copy" data-chalk-group="sequence">
+<p class="eyebrow"><span aria-hidden="true" class="little-dot"></span> PRESENTATION LOG</p>
+<h1 id="hero-title">함께 나눈 생각,<br/><span class="highlight">한 걸음 더.</span></h1>
+<p class="hero-description">AI를 활용하는 첫걸음부터, 설계·SW 업무의 검증까지.<br/>내 경험과 목적에 맞는 과정을 선택하세요.</p>
+<div class="hero-actions" data-chalk-group="sequence"><a class="primary-link" href="#novice">비전문가 과정 ↓</a><a class="secondary-link" href="#expert">전문가 과정 ↓</a></div>
+<p class="hero-topics">AI <span>·</span> AUTOMATION <span>·</span> TOGETHER</p>
+</div>
+<div aria-label="생각이 배움과 결과물로 이어지는 은하 그림" class="galaxy" data-chalk-group="sequence" id="galaxy" role="img">
+<div aria-hidden="true" class="galaxy-wash"></div>
+<div aria-hidden="true" class="galaxy-orbit orbit-outer" data-chalk="fade"><i></i></div>
+<div aria-hidden="true" class="galaxy-orbit orbit-middle" data-chalk="fade"><i></i><i></i></div>
+<div aria-hidden="true" class="galaxy-orbit orbit-inner" data-chalk="fade"><i></i></div>
+<div aria-hidden="true" class="galaxy-prompt"><span class="prompt-icon">✳</span><span>생각에서,<br/><strong>가능성으로.</strong></span></div>
+<div aria-hidden="true" class="galaxy-spark" data-chalk="fade">↗</div>
+<div aria-hidden="true" class="galaxy-document" data-chalk-group="">
+<div class="document-top"><span class="window-dots"><i></i><i></i><i></i></span><span>LEARNING NOTE</span></div>
+<div class="document-art" data-chalk-group="sequence"><i></i><i></i><i></i><span>✦</span></div>
+<strong>작은 배움이<br/>새로운 시작으로.</strong>
+<div class="document-rule"></div>
+<span class="document-caption"><span>✓</span> 함께 쌓아가는 기록</span>
+</div>
+<div aria-hidden="true" class="galaxy-note"><span>✧</span> 오늘보다 한 걸음 더</div>
+<span aria-hidden="true" class="galaxy-star star-one" data-chalk="fade">✧</span>
+<span aria-hidden="true" class="galaxy-star star-two" data-chalk="fade">✦</span>
+</div>
+<button aria-pressed="false" class="motion-toggle" hidden="" id="motion-toggle" type="button">움직임 멈추기 <span aria-hidden="true">Ⅱ</span></button>
+</section>
+<section aria-labelledby="log-heading" class="log" id="log"><div class="log-head"><div><p class="eyebrow">TWO LEARNING PATHS</p><h2 id="log-heading">목적에 맞춰, 차근차근.</h2></div><span class="log-count" id="log-count">10개 모듈 · 두 가지 과정</span></div><div class="track-choices" data-chalk-group="sequence"><a href="#novice"><strong>비전문가용</strong><span>이해 → 자료 → 파일 작업 → 결과 확인<br/>코딩 경험 없이, 한 가지 결과를 완성합니다.</span></a><a href="#expert"><strong>반도체 설계·SW 전문가용</strong><span>공통 기초 → 설계·검증 → SW 또는 EDA 실습<br/>AI 초심자도 실행 경계부터 시작합니다.</span></a></div><p class="status" hidden="" id="status" role="status"></p><!-- courses:start -->
+<section id="novice" class="course-track" aria-labelledby="novice-heading"><h2 id="novice-heading">비전문가 · 활용하고 확인하기</h2><p class="learning-intro">N1 이해 → N2 내 자료 → N3 파일 작업 → N4 결과 검토. 총 52장, 네 가지 작은 목표를 순서대로 완성합니다.</p><ol class="cards" id="cards" aria-label="비전문가 · 활용하고 확인하기" data-chalk-group="sequence"><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">N1</span><time datetime="2026-10-07">2026.10.07</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">기초</p><h3 class="card-title"><a href="slides/llm-agent-basics/">LLM과 Agent 이해하기</a></h3><p class="card-desc">같은 매출 자료로 웹 질문·Agent 질문·파일 명령을 비교합니다.</p><p class="card-audience">준비 · 브라우저 사용 · AI 경험 불필요</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">N2</span><time datetime="2026-09-21">2026.09.21</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">자료 활용</p><h3 class="card-title"><a href="slides/notebooklm-examples/">내 자료로 답 만들기</a></h3><p class="card-desc">여행 자료 두 개로 답을 만들고 인용과 비용을 직접 확인합니다.</p><p class="card-audience">준비 · N1 · 계정과 실습 TXT 준비</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">N3</span><time datetime="2026-09-20">2026.09.20</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">파일 작업</p><h3 class="card-title"><a href="slides/agent-tools-antigravity/">Agent로 첫 파일 완성하기</a></h3><p class="card-desc">가상 모임 안내 파일 하나를 부탁·계획·작업·확인 순서로 완성합니다.</p><p class="card-audience">준비 · N1 · 도구 설치와 로그인</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">N4</span><time datetime="2026-09-27">2026.09.27</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">결과 검토</p><h3 class="card-title"><a href="slides/ai-work-review/">결과를 검토하고 사용하기</a></h3><p class="card-desc">같은 모임 자료에서 사실 오류와 미정 정보를 구분하고 최종본을 검토합니다.</p><p class="card-audience">준비 · 앞 과정의 결과물 · 계정 없이 참여</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li></ol></section>
+<section id="expert" class="course-track" aria-labelledby="expert-heading"><h2 id="expert-heading">전문가 · 설계하고 재현하기</h2><p class="learning-intro">E0–E2 공통 기초·설계·검증(32장) 뒤 E3 SW(12장) 또는 E4 EDA(14장)를 선택하세요. E5 운영(12장)은 선택 심화이며, EDA에 SW 실습 이수가 필요하지 않습니다.</p><ol class="cards" id="expert-cards" aria-label="전문가 · 설계하고 재현하기" data-chalk-group="sequence"><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E0</span><time datetime="2026-10-12">2026.10.12</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">공통 기초</p><h3 class="card-title"><a href="slides/agent-engineering-basics/">모델·Agent·실행 환경의 경계</a></h3><p class="card-desc">모델 추론·도구 실행·문맥·데이터 이동을 단계별 도식으로 구분합니다.</p><p class="card-audience">준비 · SW 또는 반도체 설계 경험 · AI 초심자 가능</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E1</span><time datetime="2026-07-31">2026.07.31</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">공통 설계</p><h3 class="card-title"><a href="slides/design-ax-transition/">자동화에 AI를 넣는 위치</a></h3><p class="card-desc">규칙 처리와 AI 판단을 배치하고 지시·권한·절차·검증을 설계합니다.</p><p class="card-audience">준비 · E0 · 반복 업무 또는 자동화 경험</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E2</span><time datetime="2026-08-19">2026.08.19</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">공통 검증</p><h3 class="card-title"><a href="slides/ai-agent-skills-philosophy/">검증과 실행 경계 설계</a></h3><p class="card-desc">SW·EDA 예제로 입출력 계약·실패 종료·검증 증거를 정의합니다.</p><p class="card-audience">준비 · E0–E1 · SW/EDA 중 익숙한 사례 선택</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E3</span><time datetime="2026-08-19">2026.08.19</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">SW 선택</p><h3 class="card-title"><a href="slides/dx-vs-ax-automation/">SW: 모델 호출에서 Agent 연동까지</a></h3><p class="card-desc">동일 입력의 모델 호출과 Agent 실행을 비교하고 실패를 재현합니다.</p><p class="card-audience">준비 · E0–E2 · Python·HTTP·JSON 기초</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E4</span><time datetime="2026-09-01">2026.09.01</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">EDA 선택</p><h3 class="card-title"><a href="slides/my-dolsoe-ai/">EDA: 근거를 남기는 설계 업무 Agent</a></h3><p class="card-desc">모의 매뉴얼 도구에서 단일 Agent와 근거 검증까지 직접 실행합니다.</p><p class="card-audience">준비 · E0–E2 · 설계 툴/리포트 경험 (E3 불필요)</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li><li class="card" data-chalk-group="sequence"><div class="card-top"><span class="card-index">E5</span><time datetime="2026-08-03">2026.08.03</time></div><span class="card-icon" aria-hidden="true" data-chalk="fade">↗</span><p class="card-stage">운영 선택 심화</p><h3 class="card-title"><a href="slides/integrated-architecture/">보안·인프라: 실행 환경과 운영 설계</a></h3><p class="card-desc">추론·도구·자료의 배치를 비교하고 측정에 근거한 PoC를 설계합니다.</p><p class="card-audience">준비 · E0–E2 · 네트워크·권한 기초</p><span class="card-open" aria-hidden="true">발표 열어보기 <span>↗</span></span></li></ol></section>
+<!-- courses:end --></section>
+</main>
+<footer class="site-foot"><a class="brand" href="#main"><span aria-hidden="true" class="brand-symbol">↗</span> 발표 기록</a><p>배움은 나눌수록, 더 멀리.</p><a href="resume/" style="color: var(--forest); text-decoration: none; font-weight: 600;">이력서</a><span>DKDLQODDI · 2026</span></footer>
+<script defer="" src="assets/template.js"></script>
+<script defer="" src="main.js"></script>
+<script defer="" src="assets/chalk-motion.js"></script>
 </body>
 </html>

@@ -142,3 +142,14 @@ h1 { font-size: clamp(42px, 4.6vw, 66px); line-height: 1.23; letter-spacing: -.0
 .retry-button { min-height: 44px; padding: 8px 12px; background: var(--green); border: 1px solid var(--line); border-radius: 8px; color: var(--forest); }
 /* Orbit boxes may rotate beyond their drawn circle; contain that decoration locally. */
 .galaxy { overflow: clip; overflow-clip-margin: 16px; }
+
+/* Two complete, readable paths; no client-side filter hides either curriculum. */
+.track-choices { display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:20px 0 44px; }
+.track-choices a { display:flex;flex-direction:column;gap:16px;padding:28px;border:1px solid var(--line);border-radius:16px;text-decoration:none;background:var(--paper); }
+.track-choices strong { font-size:25px;color:var(--forest); }
+.track-choices span { font-size:17px;line-height:1.8;color:var(--muted); }
+.course-track { margin-top:50px;scroll-margin-top:100px; }
+.course-track > h2 { font-size:30px;margin:0 0 25px; }
+.course-track .learning-intro { max-width:1050px;margin-bottom:28px; }
+#expert-cards .card:nth-child(4),#expert-cards .card:nth-child(5),#expert-cards .card:nth-child(6) { border-style:dashed; }
+@media(max-width:760px){.track-choices{grid-template-columns:1fr}.track-choices a{padding:22px}.course-track>h2{font-size:25px}.course-track{margin-top:40px}}

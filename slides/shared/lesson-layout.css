@@ -1,0 +1,165 @@
+/* Shared lesson diagrams; the chalk animation never owns content. */
+.basics-deck .reveal .slides > section { padding: 30px 42px; }
+.basics-deck .reveal h2 { font-size: 56px; margin: 8px 0 28px; }
+.basics-deck .reveal .eyebrow { font-size: 21px; letter-spacing: .04em; }
+.basics-deck .reveal p { line-height: 1.45; }
+.basics-deck .reveal .board-intro { color: var(--muted); margin: -14px 0 24px; font-size: 29px; }
+.basics-deck .reveal .jelly-cover-copy h1 { font-size: 82px; }
+.basics-deck .reveal .jelly-cover-copy .lead { font-size: 27px; }
+.cover-equation { display: flex; gap: 17px; align-items: center; margin-top: 30px; font-family: var(--chalk-font); font-size: 40px; color: var(--chalk-yellow); }
+.cover-equation span { border-bottom: 2px dashed currentColor; }
+.cover-equation b { font-family: var(--font-sans); font-size: 30px; font-weight: 400; }
+.board-flow, .execution-loop { display: grid; grid-template-columns: 1fr 64px 1fr 64px 1fr; align-items: center; gap: 4px; margin-top: 22px; }
+.flow-node { position: relative; min-height: 186px; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 25px 20px; border: 2px solid var(--line); border-radius: 7px 12px 8px 6px; background: #1d332e; text-align: center; }
+.flow-node strong { font-size: 35px; line-height: 1.2; }
+.flow-node > span:last-child { font-size: 24px; color: var(--ink); line-height: 1.4; }
+.chalk-arrow { width: 64px; height: 38px; margin: 0 !important; overflow: visible; }
+.chalk-arrow path { fill: none; stroke: var(--chalk-yellow); stroke-width: 3; }
+.board-label { display: block; color: var(--muted); font-size: 21px; line-height: 1.4; }
+.yellow { --tone: var(--chalk-yellow); }
+.blue { --tone: var(--chalk-blue); }
+.pink { --tone: var(--chalk-pink); }
+.flow-node, .board-card { border-color: var(--tone,var(--line)); }
+.flow-node strong, .board-card h3 { color: var(--tone,var(--ink)) !important; }
+.board-grid { display: grid; gap: 26px; margin-top: 20px; }
+.board-grid.two { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.board-grid.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.board-card { min-width: 0; border: 2px solid var(--tone,var(--line)); border-radius: 5px 10px 7px 12px; padding: 26px; background: #1d332e88; }
+.basics-deck .reveal .board-card h3 { font-size: 37px; margin: 16px 0 22px; line-height: 1.2; }
+.basics-deck .reveal .board-card p { font-size: 28px; line-height: 1.65; }
+.basics-deck .reveal .board-card .small-copy { font-size: 23px; color: var(--muted); }
+.basics-deck .reveal .board-takeaway { font-size: 30px; margin-top: 30px; padding-top: 21px; border-top: 1px dashed var(--line); line-height: 1.55; }
+.board-takeaway strong { color: var(--chalk-yellow); font-weight: 700; }
+.basics-deck .reveal .board-source { position: absolute; left: 42px; bottom: 23px; font-size: 17px; color: var(--muted); line-height: 1.4; margin: 0; max-width: calc(100% - 180px); }
+.board-source a { color: var(--muted); text-decoration-color: var(--line); }
+.token-writing { display: flex; align-items: center; gap: 14px; margin-top: 25px; font-size: 28px; }
+.token-writing > span:not(:first-child) { padding: 6px 16px; border-bottom: 2px dashed var(--chalk-yellow); color: var(--chalk-yellow); font-family: var(--chalk-font); font-size: 39px; }
+.token-writing > span:first-child { margin-right: auto; }
+.board-contrast { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 0; font-size: 26px; }
+.board-contrast > span { color: var(--muted); }
+.board-contrast > strong { color: var(--chalk-yellow); }
+.open-route, .shared-capabilities, .evolution-line { display: flex; justify-content: center; align-items: center; gap: 18px; font-size: 26px; margin-top: 28px; }
+.open-route b { font-weight: 400; color: var(--chalk-yellow); }
+.agent-bracket { border: 2px dashed var(--line); padding: 20px 24px; border-radius: 8px; }
+.bracket-label { display: block; font-size: 24px; color: var(--chalk-yellow); }
+.agent-bracket .flow-node { min-height: 170px; }
+.return-arrow { margin: 24px 0 0; font-size: 27px; color: var(--chalk-pink); text-align: center; }
+.opensource-tools { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 0 0; font-size: 26px; }
+.opensource-tools > strong { color: var(--chalk-yellow); }
+.opensource-tools > span:last-child { flex-basis: 100%; font-size: 24px; color: var(--muted); }
+.prompt-example { border-left: 4px solid var(--chalk-yellow); padding: 14px 22px; font-size: 34px; background: #f4d99008; }
+.prompt-example > span { display: block; margin-top: 8px; color: var(--muted); font-size: 23px; }
+.scenario-caption { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 24px; border-bottom: 1px dashed var(--line); padding: 10px 0 22px; }
+.scenario-caption b { font-size: 22px; color: var(--chalk-blue); font-weight: 550; }
+.scenario-caption span { font-size: 29px; }
+.result-strip { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 25px; padding: 22px 24px; border: 2px solid var(--chalk-yellow); margin-top: 27px; }
+.result-strip .result-label { font-size: 23px; color: var(--chalk-yellow); }
+.result-strip strong { font-size: 32px; }
+.result-strip > span:last-child { font-size: 24px; margin-left: auto; color: var(--muted); }
+.loop-feedback { display: flex; align-items: center; justify-content: center; gap: 20px; color: var(--chalk-pink); margin-top: 20px; font-size: 23px; line-height: 1.4; }
+.loop-feedback b { font-size: 44px; }
+#agent-loop .flow-node { min-height: 169px; }
+#agent-loop .result-strip { margin-top: 17px; padding: 15px 24px; }
+.basics-deck .reveal .comparison-table { width: 100%; margin: 0; border-collapse: collapse; font-size: 28px; line-height: 1.4; }
+.comparison-table caption { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+.basics-deck .reveal .comparison-table th, .basics-deck .reveal .comparison-table td { padding: 19px 20px; border-bottom: 1px dashed var(--line); }
+.comparison-table thead th:nth-child(2) { color: var(--chalk-blue); }
+.comparison-table thead th:nth-child(3) { color: var(--chalk-yellow); }
+.comparison-table tbody th { font-size: 23px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.location-map { display: grid; grid-template-columns: 1fr 238px 1fr; align-items: center; margin-top: 50px; }
+.location-zone { padding: 33px 24px; border: 2px solid var(--chalk-blue); border-radius: 8px; min-height: 242px; text-align: center; }
+.location-zone h3 { margin: 25px 0 !important; }
+.cloud-zone { border-style: dashed; border-color: var(--chalk-yellow); }
+.basics-deck .reveal .cloud-zone p { font-size: 24px; }
+.location-wire { display: grid; justify-items: center; gap: 14px; font-size: 20px; color: var(--muted); }
+.location-wire svg { width: 100px; }
+.local-files { display: flex; gap: 8px; justify-content: center; font-size: 23px; }
+.local-files span { padding: 8px 10px; border: 1px dashed var(--line); }
+.latest-tools .board-card { padding: 28px; }
+.shared-capabilities span { padding: 8px 14px; border-bottom: 2px dashed var(--line); }
+.evolution-line { font-size: 24px; }
+.evolution-line strong { color: var(--chalk-yellow); }
+.resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; border: 1px dashed var(--line); padding: 28px 32px; }
+.resource-grid .board-label { margin-bottom: 15px; color: var(--chalk-yellow); }
+.resource-grid a { display: block; font-size: 25px; margin: 8px 0; }
+.board-downloads { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 28px; }
+.board-downloads a { padding: 14px 20px; border: 1px solid var(--chalk-yellow); color: var(--chalk-yellow); font-size: 25px; text-decoration: none; }
+@media screen {
+  .reading.basics-deck .reveal .slides > section { padding: 40px 42px 50px; }
+  .reading.basics-deck .board-source { position: static; max-width: 100%; margin-top: 30px; }
+}
+@media screen and (max-width: 1000px) {
+  .reading .board-grid.three { grid-template-columns: 1fr; }
+  .reading .board-flow, .reading .execution-loop { grid-template-columns: 1fr; gap: 12px; }
+  .reading .chalk-arrow { justify-self: center; transform: rotate(90deg); }
+  .reading .flow-node { min-height: 145px; }
+  .reading.basics-deck .location-map { grid-template-columns: 1fr; gap: 20px; }
+  .reading.basics-deck .location-wire { padding: 8px; }
+  .reading.basics-deck .location-wire svg { transform: rotate(90deg); }
+}
+@media screen and (max-width: 760px) {
+  .reading.basics-deck .reveal .slides > section { padding: 30px 22px 42px; }
+  .reading.basics-deck .reveal h2 { font-size: 43px; margin-bottom: 24px; }
+  .reading.basics-deck .reveal .eyebrow { font-size: 17px; }
+  .reading.basics-deck .reveal .jelly-cover-copy h1 { font-size: 66px; }
+  .reading .board-grid.two, .reading .resource-grid { grid-template-columns: 1fr; }
+  .reading .board-grid { gap: 18px; }
+  .reading .board-card { padding: 22px; }
+  .reading.basics-deck .reveal .board-card h3 { font-size: 33px; }
+  .reading.basics-deck .reveal .board-card p { font-size: 25px; }
+  .reading.basics-deck .reveal .board-takeaway { font-size: 25px; }
+  .reading.basics-deck .token-writing, .reading.basics-deck .board-contrast, .reading.basics-deck .open-route, .reading.basics-deck .shared-capabilities, .reading.basics-deck .evolution-line { flex-wrap: wrap; justify-content: flex-start; font-size: 23px; }
+  .reading.basics-deck .token-writing > span:first-child { flex-basis: 100%; }
+  .reading.basics-deck .token-writing > span:not(:first-child) { font-size: 32px; padding: 3px 8px; }
+  .reading.basics-deck .prompt-example { font-size: 28px; }
+  .reading.basics-deck .scenario-caption span { font-size: 26px; }
+  .reading.basics-deck .result-strip { padding: 20px; }
+  .reading.basics-deck .result-strip > span:last-child { margin-left: 0; }
+  .reading.basics-deck .result-strip strong { font-size: 28px; }
+  .reading.basics-deck .agent-bracket { padding: 18px; }
+  .reading.basics-deck .return-arrow { font-size: 24px; }
+  .reading.basics-deck .comparison-table { font-size: 21px; }
+  .reading.basics-deck .reveal .comparison-table th, .reading.basics-deck .reveal .comparison-table td { padding: 15px 6px; }
+  .reading.basics-deck .comparison-table tbody th { font-size: 18px; white-space: normal; }
+  .reading .resource-grid { padding: 22px; gap: 26px; }
+  .reading.basics-deck .board-downloads a { font-size: 22px; }
+  .reading.basics-deck .board-source { font-size: 17px; }
+}
+@media print {
+  .basics-deck .reveal .slides > section { padding: 30px 42px !important; }
+  .basics-deck .reveal h2 { font-size: 56px !important; }
+  .basics-deck .reveal .jelly-cover-copy h1 { font-size: 82px !important; }
+}
+
+/* Shared lesson diagrams. Full content stays visible without JavaScript. */
+.lesson-deck .reveal .slides > section { padding-bottom: 54px; }
+.lesson-deck .reveal h2 { font-size: 51px; margin-bottom: 24px; }
+.lesson-deck .reveal .board-card h3 { font-size: 34px; }
+.lesson-deck .reveal .board-card p { font-size: 28px; line-height: 1.5; }
+.lesson-deck .reveal .board-takeaway { font-size: 28px; margin-top: 24px; padding-top: 17px; }
+.lesson-deck .reveal .flow-node { min-height: 205px; }
+.lesson-deck .reveal .flow-node strong { font-size: 33px; }
+.lesson-deck .reveal .flow-node > span:last-child { font-size: 26px; }
+.lesson-strip { margin-top: 22px; padding: 15px 22px; border-left: 4px solid var(--chalk-yellow); background: #ffffff06; font-size: 27px; line-height: 1.5; }
+.lesson-strip b { color: var(--chalk-yellow); }
+.lesson-split { display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:stretch; }
+.lesson-code { margin:0!important; padding:24px!important; white-space:pre-wrap; overflow-wrap:anywhere; font:25px/1.55 ui-monospace,Consolas,monospace!important; background:#0c221d!important; border:1px dashed var(--line); box-shadow:none!important; width:100%!important; color:var(--ink)!important; }
+.lesson-deck .reveal .lesson-code code { max-height:none; padding:0; background:transparent; color:inherit; }
+.lesson-table { width:100%; font-size:28px; border-collapse:collapse; margin:12px 0!important; }
+.lesson-table th,.lesson-table td {padding:18px!important;border-bottom:1px dashed var(--line)!important;vertical-align:top;line-height:1.45;}
+.lesson-table thead th {color:var(--chalk-yellow);font-size:25px;}
+.lesson-route {display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px;font-size:26px;}
+.lesson-route a {border:1px solid var(--line);padding:12px 18px;border-radius:8px;text-decoration:none;}
+.lesson-caption {font-size:20px!important;color:var(--muted);margin-top:13px!important;}
+.lesson-model {border:2px dashed var(--chalk-blue);padding:22px 24px; margin-top:20px;border-radius:10px;}
+.lesson-model > strong {font-size:28px;color:var(--chalk-blue);}
+.lesson-model .board-flow {margin:16px 0 0;}
+.lesson-model .flow-node {min-height:140px!important;}
+.lesson-deck .jelly-cover-meta {font-size:24px!important;line-height:1.55;}
+.lesson-deck .reveal .jelly-cover-copy h1 {font-size:72px;}
+.lesson-deck .reveal .cover-equation {font-size:32px;flex-wrap:wrap;}
+.course-links {display:flex;gap:15px;flex-wrap:wrap;font-size:24px;margin-top:20px;}
+.course-links a {padding:10px 14px;border:1px solid var(--line);border-radius:8px;}
+.static-answer {font-size:24px;padding:14px 18px;border:1px dashed var(--line);margin-top:18px;}
+@media screen and (max-width:760px){.reading .lesson-split{grid-template-columns:1fr}.reading .lesson-table{font-size:21px}.reading .lesson-table th,.reading .lesson-table td{padding:12px 7px!important}.reading .lesson-table thead th{font-size:19px}.reading .lesson-code{font-size:19px!important}.reading .lesson-strip{font-size:23px}.reading.lesson-deck .reveal h2{font-size:39px}.reading.lesson-deck .reveal .jelly-cover-copy h1{font-size:55px}.reading .lesson-route,.reading .course-links{font-size:21px}.reading .lesson-model{padding:16px}.reading .lesson-route a,.reading .course-links a{max-width:100%}.reading .cover-equation{gap:10px}}
+@media print{.lesson-deck .reveal h2{font-size:51px!important}.lesson-deck .reveal .jelly-cover-copy h1{font-size:72px!important}.course-links{font-size:20px}.lesson-deck .reveal .board-source{font-size:16px;bottom:18px}}

@@ -1,2 +1,4 @@
 .playwright-mcp/
 video/out/
+__pycache__/
+slides/shared/labs/out/

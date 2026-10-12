@@ -1,0 +1,97 @@
+/* A local, opt-in chalkboard finish. Keep the original deck geometry intact. */
+html.chalk-theme {
+  color-scheme: dark;
+  --paper: #192e2b; --surface: #223a35; --surface-soft: #203530;
+  --ink: #f3f0df; --muted: #c3cdc1; --line: #6f8980; --stroke: #91a99a;
+  --forest: #b9e8bf; --green: #29473c; --lime: #49472f;
+  --peach: #493c33; --lavender: #393c50; --orange: #f3c393; --danger: #ffb4b8;
+  --on-accent: #192e2b; --chalk-yellow: #f4d990; --chalk-blue: #a7d8ef;
+  --chalk-pink: #f1b8c8; --chalk-font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --cartoon-shadow: none; --cartoon-shadow-small: none;
+  --r-background-color: var(--paper); --r-link-color-hover: #f4d990;
+  background: var(--paper);
+}
+.chalk-theme body {
+  background-color: var(--paper); color: var(--ink);
+  background-image: url('chalk-grain.svg'); background-size: 240px 240px;
+}
+.chalk-theme :focus-visible { outline-color: var(--chalk-yellow); }
+.chalk-theme .reveal .slides > section { background: transparent; }
+.chalk-theme .reveal :is(h1,h2), .chalk-theme :is(.hero h1,.log h2) {
+  font-family: var(--chalk-font); font-weight: 750; letter-spacing: -.04em;
+  color: var(--ink); text-shadow: none;
+}
+.chalk-theme .reveal :is(h3,h4) { color: var(--ink); }
+.chalk-theme .reveal :is(em,.eyebrow) { color: var(--chalk-yellow); }
+.chalk-theme .reveal em { text-decoration: underline; text-decoration-style: solid; text-decoration-color: #f4d99099; text-underline-offset: .16em; text-decoration-thickness: 2px; }
+.chalk-theme :is(.topbar,.course-nav) { background: #172925f5; border-color: var(--line); }
+.chalk-theme :is(.brand-symbol,.pill,.tag,.ribbon) { border-radius: 5px 9px 4px 7px; box-shadow: none; }
+.chalk-theme :is(.top-actions #contents-open,.nav-button,#contents-list button,dialog,.dialog-heading button) {
+  background: var(--surface); border-color: var(--line); color: var(--ink); box-shadow: none;
+}
+.chalk-theme :is(.primary-button,.primary-link,.nav-button.next,.product-sign.forest,.map-root,.notebook-core,.meter .m-step.on) {
+  background: var(--forest); color: var(--paper);
+}
+.chalk-theme .notebook-core span { color: var(--paper); }
+.chalk-theme :is(.primary-button,.primary-link):hover { background: var(--chalk-yellow); color: var(--paper); }
+.chalk-theme .highlight::after { background: transparent; border-bottom: 3px solid var(--chalk-yellow); inset: 80% -4px -4%; border-radius: 40%; }
+.chalk-theme :is(.compare-card,.product,.process-step,.usecase,.toolbox,.setting-card,.plan-sheet,.refine-preview,.verify-card,.quiz-option,.resource-button,.prompt-sheet,.workspace-mock,.example-browser,.panel-card,.summary-box,.hud-box,.hud-box-warning,.term,.code-snippet,.source-tile,.source-focus,.case-card,.source-file,.journey-art,.itinerary-stop,.answer-card,.evidence-card,.audio-art,.study-card,.motion-art,.task-card,.hub-source,.format-card,.mini-slide,.infographic,.story-book,.map-root,.map-branch) {
+  border-color: var(--line); outline: 1px solid var(--line); outline-offset: -4px; box-shadow: none;
+  border-radius: 5px 10px 6px 8px;
+}
+.chalk-theme :is(.hero-prompt,.hero-document,.hero-agent,.float-file,.orbit-card,.big-icon,.mock-bubble) { border-color: var(--line); box-shadow: none; }
+.chalk-theme .reveal .slides > section[data-jelly-layout="cover"]::before { background: transparent; border: 2px dashed var(--line); box-shadow: none; }
+.chalk-theme .jelly-woo { filter: drop-shadow(0 4px 5px #09181555); }
+.chalk-theme :is(.product-sign.ink,.product-sign.clay,.process-step::after,.return-loop) { color: var(--ink); }
+.chalk-theme .legacy-deck .reveal :is(svg.diag,svg.mini-diag,svg.svg-diagram) { background: #203530; outline: 1px dashed var(--line); }
+.chalk-theme .reveal svg :is(path,line,polyline,rect,circle,ellipse) { stroke-linecap: round; stroke-linejoin: round; }
+:where(.chalk-theme .reveal svg text:not([fill])) { fill: var(--ink); }
+.chalk-theme .reveal .code-blue { color: var(--chalk-blue); }
+.chalk-theme .revision-state.confirmed, .chalk-theme .mini-calendar > span { color: var(--paper); }
+.chalk-theme .practice-links .primary-button { color: var(--paper) !important; }
+.chalk-theme .reveal :is(pre,code) { color: var(--ink); background-color: var(--surface); }
+.chalk-theme .reveal .slides > section::after { color: var(--muted); }
+.chalk-theme .reading .reveal .slides > section { border-bottom: 2px dashed var(--line); }
+
+/* Archive: the same board, outlined note cards and sketched orbital lines. */
+.chalk-theme .hero { border-bottom: 1px dashed var(--line); }
+.chalk-theme .hero h1 { font-size: clamp(52px,5.7vw,82px); }
+.chalk-theme :is(.card,.card:first-child,.galaxy-document) { background: var(--surface); border: 1px solid var(--line); box-shadow: none; border-radius: 7px 14px 8px 11px; }
+.chalk-theme .card { outline: 1px dashed #91a99a55; outline-offset: -6px; }
+.chalk-theme .card:hover { border-color: var(--chalk-yellow); box-shadow: 3px 4px 0 #0c211a; }
+.chalk-theme .card-icon { background: var(--green); color: var(--chalk-yellow); }
+.chalk-theme .galaxy-wash { background: none; }
+.chalk-theme .galaxy-orbit { border: 2px dashed var(--line); }
+.chalk-theme :is(.galaxy-prompt,.galaxy-note) { border-color: var(--line); box-shadow: none; }
+.chalk-theme .prompt-icon { color: var(--chalk-pink); }
+.chalk-theme .galaxy-spark { color: var(--chalk-yellow); border: 2px solid currentColor; background: var(--paper); box-shadow: none; }
+.chalk-theme :is(.galaxy,.hero-copy,.galaxy *) { animation: none; }
+.chalk-theme .galaxy-orbit i { border-color: var(--paper); background: var(--chalk-yellow); }
+.chalk-theme .document-art { border: 1px dashed var(--line); background: transparent; }
+.chalk-theme .document-art i { background: var(--chalk-blue); border-color: #6eaab8; }
+.chalk-theme .document-art i:nth-child(2) { background: var(--chalk-yellow); border-color: #bdaa6b; }
+.chalk-theme .document-art i:nth-child(3) { background: var(--chalk-pink); border-color: #bb8e9f; }
+.chalk-theme .motion-toggle { display: none; }
+
+/* The page is complete by default; JS opts in only while an animation runs. */
+.chalk-controls { display: flex; align-items: center; gap: 4px; }
+.chalk-theme .chalk-controls button { font-size: 15px; padding: 7px 9px; min-height: 44px; border: 1px dashed var(--line); border-radius: 5px; background: transparent; }
+.chalk-theme .chalk-controls button:hover { color: var(--chalk-yellow); background: var(--surface); }
+.chalk-theme .chalk-controls button:disabled { opacity: .5; }
+.chalk-cursor { position: absolute; width: 18px; height: 6px; background: #f3efda; border: 1px solid #c3c2b1; border-radius: 2px; rotate: -38deg; pointer-events: none; z-index: 4; box-shadow: -5px 3px 8px #f4eac540; }
+.chalk-theme .chalk-writing { will-change: clip-path, opacity; }
+.chalk-theme .chalk-step:focus-within { clip-path: none !important; opacity: 1 !important; }
+.chalk-theme .reading .chalk-cursor, .chalk-theme .reading .chalk-controls { display: none; }
+.chalk-theme .reading .chalk-step { clip-path: none !important; opacity: 1 !important; }
+@media (max-width: 1100px) { .chalk-theme .chalk-controls button { font-size: 13px; padding: 7px; } }
+@media (max-width: 760px) { .chalk-theme .hero h1 { font-size: clamp(49px,11vw,70px); } .chalk-controls { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chalk-step { clip-path: none !important; opacity: 1 !important; }
+  .chalk-cursor, .chalk-controls { display: none !important; }
+}
+@media print {
+  html.chalk-theme, .chalk-theme body, .chalk-theme body.printing, .chalk-theme .reveal .slides > section { background: var(--paper) !important; color: var(--ink) !important; }
+  .chalk-controls, .chalk-cursor { display: none !important; }
+  .chalk-step { clip-path: none !important; opacity: 1 !important; }
+  .chalk-theme .reveal [data-chalk-stroke] { stroke-dashoffset: 0 !important; }
+}

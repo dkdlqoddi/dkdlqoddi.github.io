@@ -7,7 +7,8 @@ const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
 const base = process.env.SITE_URL || 'http://127.0.0.1:8000';
 const artifacts = process.env.ARTIFACT_DIR || '/tmp/presentation-theme-check';
-const slugs = JSON.parse(fs.readFileSync(path.join(root, 'slides.json'))).map(item => item.dir).concat('sample');
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'slides.json')));
+const slugs = manifest.map(item => item.dir).concat('sample');
 fs.mkdirSync(artifacts, { recursive: true });
 
 // Check the rendered canvas rather than requiring a specific palette value.
@@ -91,6 +92,7 @@ async function checkCharacters(page, label) {
       const url = `${base}/slides/${slug}/`;
       await page.goto(url);
       await page.waitForFunction(() => Reveal.isReady());
+      assert.equal(await page.evaluate(() => Reveal.getIndices().h), 0, `${slug}: an empty hash must open the cover`);
       const total = await page.locator('.slides > section').count();
       await page.evaluate(() => document.fonts.ready);
       await checkComfortableCanvas(page, slug);
@@ -125,7 +127,8 @@ async function checkCharacters(page, label) {
       assert.equal(await page.evaluate(() => Reveal.getIndices().h), total - 1, 'Reading toggle must preserve location');
       await page.goto(url + '#/2');
       await page.waitForFunction(() => Reveal.isReady());
-      assert.equal(await page.evaluate(() => Reveal.getIndices().h), 2, 'Old numeric links must still work');
+      const numericTarget = await page.evaluate(() => { const old = (document.body.dataset.previousOrder || '').split(/\s+/).filter(Boolean); return old[2] ? Reveal.getSlides().findIndex(s => s.id === old[2]) : 2; });
+      assert.equal(await page.evaluate(() => Reveal.getIndices().h), numericTarget, 'Old numeric links must map to the corresponding lesson');
       await page.screenshot({ path: path.join(artifacts, `${slug}-desktop.png`) });
       await page.emulateMedia({ media: 'print' });
       await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
@@ -148,7 +151,7 @@ async function checkCharacters(page, label) {
       assert.deepEqual(await page.evaluate(() => window.printFitFailures), [], `${slug}: actual print media must fit content before pagination`);
       assert.equal((pdf.toString('latin1').match(/\/Type \/Page\b/g) || []).length, total, `${slug}: one slide per PDF page`);
       assert.equal(await page.locator('.print-content').count(), 0, 'Print must restore the DOM');
-      assert.equal(await page.evaluate(() => Reveal.getIndices().h), 2, 'Print must preserve the active slide');
+      assert.equal(await page.evaluate(() => Reveal.getIndices().h), numericTarget, 'Print must preserve the active slide');
       for (const width of [320, 390]) {
         if (width === 320) {
           await Promise.all([page.waitForURL(/view=read/), page.setViewportSize({ width, height: 844 })]);
@@ -199,16 +202,18 @@ async function checkCharacters(page, label) {
       await page.waitForSelector('.card');
       assert.equal(await page.locator('.card').count(), slugs.length - 1);
       assert.deepEqual(await page.locator('.card-title a').evaluateAll(links => links.map(link => link.getAttribute('href'))), slugs.slice(0, -1).map(slug => `slides/${slug}/`), 'Cards must follow curriculum order, not publication dates');
-      assert.deepEqual(await page.locator('.card-index').allTextContents(), slugs.slice(0, -1).map((_, index) => `STEP ${String(index + 1).padStart(2, '0')}`));
+      assert.deepEqual(await page.locator('.card-index').allTextContents(), manifest.map(item => item.module));
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Home overflow at ${width}`);
       assert.equal(await page.locator('#motion-toggle').isVisible(), false);
     }
     await page.screenshot({ path: path.join(artifacts, 'home-desktop.png'), fullPage: true });
     await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.locator('#motion-toggle').click();
-    assert.equal(await page.locator('#motion-toggle').getAttribute('aria-pressed'), 'true');
-    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.orbit-outer')).animationPlayState === 'paused'));
-    await page.locator('#motion-toggle').click();
+    await page.locator('[data-chalk-replay]').click();
+    await page.locator('[data-chalk-pause]').click();
+    assert.equal(await page.locator('[data-chalk-pause]').getAttribute('aria-pressed'), 'true');
+    assert(await page.evaluate(() => document.querySelector('.hero-copy').getAnimations({ subtree: true }).every(a => a.playState === 'paused')));
+    await page.locator('[data-chalk-finish]').click();
+    assert.equal(await page.evaluate(() => document.querySelector('.hero-copy').getAnimations({ subtree: true }).length), 0);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.orbit-outer')).animationName), 'none');
     await page.setViewportSize({ width: 390, height: 844 });
@@ -225,10 +230,11 @@ async function checkCharacters(page, label) {
     await fallback.unroute('**/slides.json');
     await fallback.route('**/slides.json', route => route.fulfill({ json: [] }));
     await fallback.goto(base);
-    await fallback.waitForFunction(() => document.querySelector('#status').textContent.includes('아직'));
+    await fallback.waitForFunction(() => document.querySelector('#status').textContent.includes('저장된'));
+    assert.equal(await fallback.locator('.card').count(), manifest.length, 'Empty manifest keeps static courses');
     await fallback.route('**/vendor/reveal.js/dist/reveal.js', route => route.abort());
     await fallback.goto(`${base}/slides/agent-tools-antigravity/`);
-    assert.equal(await fallback.locator('.slides > section:visible').count(), 22);
+    assert.equal(await fallback.locator('.slides > section:visible').count(), manifest.find(d => d.module === 'N3').slideCount);
     await fallback.route('**/missing/deep/page', route => route.fulfill({ contentType: 'text/html', body: fs.readFileSync(path.join(root, '404.html'), 'utf8') }));
     await fallback.goto(`${base}/missing/deep/page`);
     assert.equal(await fallback.locator('.topbar').count(), 1);
@@ -260,7 +266,7 @@ async function checkCharacters(page, label) {
     await fallback.close();
     const nojs = await browser.newPage({ javaScriptEnabled: false });
     await nojs.goto(base);
-    assert.deepEqual(await nojs.locator('.fallback-links a').evaluateAll(links => links.map(link => link.getAttribute('href'))), slugs.slice(0, -1).map(slug => `slides/${slug}/`), 'No-JS links must preserve the complete curriculum order');
+    assert.deepEqual(await nojs.locator('.cards .card-title a').evaluateAll(links => links.map(link => link.getAttribute('href'))), slugs.slice(0, -1).map(slug => `slides/${slug}/`), 'No-JS links must preserve the complete curriculum order');
     for (const slug of ['sample', 'agent-tools-antigravity', 'ai-work-review']) {
       await nojs.goto(`${base}/slides/${slug}/`);
       assert(await nojs.locator('.slides > section:visible').count() > 1);

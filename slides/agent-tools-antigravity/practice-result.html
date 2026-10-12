@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ko" class="cartoon-theme">
+<html lang="ko" class="cartoon-theme chalk-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light"><meta name="theme-color" content="#d5d0c5">
+  <meta name="color-scheme" content="dark"><meta name="theme-color" content="#192e2b">
   <link rel="stylesheet" href="../../assets/theme.css">
-  <title>우리 동네 책모임 — 실습 완성 예시</title>
+  <title>산들 독서모임 — 실습 완성 예시</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; background: var(--paper); color: var(--ink, #182320); }
@@ -50,14 +50,21 @@ html.cartoon-theme {
 .label, .books { outline: 2px solid var(--stroke); outline-offset: -2px; box-shadow: var(--cartoon-shadow); }
 .books i { outline: 2px solid var(--stroke); outline-offset: -2px; }
 dl { border-color: var(--stroke); }
+
+/* Standalone chalk palette; remains usable without the site assets. */
+html.chalk-theme { color-scheme:dark; --paper:#192e2b; --surface:#223a35; --surface-soft:#203530; --ink:#f3f0df; --muted:#c3cdc1; --line:#6f8980; --stroke:#91a99a; --forest:#b9e8bf; --green:#29473c; --lime:#49472f; --peach:#493c33; --lavender:#393c50; --orange:#f3c393; --danger:#ffb4b8; --cartoon-shadow:none; --cartoon-shadow-small:none; background:var(--paper); }
+.chalk-theme :is(dt,footer) { color:var(--muted); }
+.chalk-theme .service-link { color:var(--paper); }
+.chalk-theme .notice { color:var(--paper); }
 </style>
+<link rel="stylesheet" href="../../assets/chalk-theme.css">
 </head>
 <body>
   <main>
     <span class="label">함께 읽는 즐거움</span>
-    <h1>우리 동네<br>책모임</h1>
+    <h1>산들<br>독서모임</h1>
     <div class="books" aria-hidden="true"><i></i><i></i><i></i></div>
-    <dl><dt>언제</dt><dd>10월 10일 · 오후 2시</dd><dt>어디서</dt><dd>동네 도서관 2층</dd></dl>
+    <dl><dt>언제</dt><dd>10월 12일 · 오후 2시</dd><dt>어디서</dt><dd>산들도서관 2층 모임방</dd><dt>인원</dt><dd>12명</dd><dt>참가비</dt><dd>확인 중</dd></dl>
     <p class="invitation">책 한 권, 편안한 마음.<br>함께 읽고 이야기를 나눠요.</p>
     <footer>AI 도구 입문 수업의 실습 예시입니다.<br>실제로 열리는 행사가 아닌 가상의 모임입니다.</footer>
   </main>

@@ -4,12 +4,8 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
 const base = process.env.SITE_URL || 'http://127.0.0.1:8000';
-const decks = [
-  ['agent-tools-antigravity', 'ai-tools-intro.pdf'],
-  ['notebooklm-examples', 'notebooklm-examples.pdf'],
-  ['ai-work-review', 'ai-work-review.pdf'],
-  ['llm-agent-basics', 'llm-agent-basics.pdf'],
-];
+const fs = require('node:fs');
+const decks = JSON.parse(fs.readFileSync(path.join(root, 'slides.json'))).map(item => [item.dir, item.pdf]);
 const requested = process.argv.slice(2);
 for (const slug of requested) assert(decks.some(([known]) => known === slug), `Unknown PDF deck: ${slug}`);
 const selected = requested.length ? decks.filter(([slug]) => requested.includes(slug)) : decks;

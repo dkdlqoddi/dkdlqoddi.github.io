@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const grid = document.getElementById('cards');
+  const expertGrid = document.getElementById('expert-cards');
   const status = document.getElementById('status');
   const count = document.getElementById('log-count');
   const tones = ['var(--lime)', 'var(--lavender)', 'var(--peach)', 'var(--green)'];
@@ -10,17 +11,18 @@
   function buildCard(item, order) {
     const card = document.createElement('li');
     card.className = 'card';
+    card.dataset.chalkGroup = 'sequence';
     card.style.setProperty('--card-tone', tones[order % tones.length]);
     const top = document.createElement('div');
     top.className = 'card-top';
     const index = document.createElement('span');
     index.className = 'card-index';
-    index.textContent = 'STEP ' + String(order + 1).padStart(2, '0');
+    index.textContent = item.module;
     const date = document.createElement('time');
     date.dateTime = item.date;
     date.textContent = item.date.replaceAll('-', '.');
     top.append(index, date);
-    if (order === 0) {
+    if (item.module === 'N1' || item.module === 'E0') {
       const badge = document.createElement('span');
       badge.className = 'card-badge';
       badge.textContent = '시작';
@@ -28,6 +30,7 @@
     }
     const icon = document.createElement('span');
     icon.className = 'card-icon';
+    icon.dataset.chalk = 'fade';
     icon.setAttribute('aria-hidden', 'true');
     icon.textContent = symbols[order % symbols.length];
     const title = document.createElement('h3');
@@ -44,7 +47,7 @@
     stage.textContent = item.stage || '발표 자료';
     const audience = document.createElement('p');
     audience.className = 'card-audience';
-    audience.textContent = item.audience ? '대상 · ' + item.audience : '';
+    audience.textContent = '준비 · ' + item.prerequisites;
     const open = document.createElement('span');
     open.className = 'card-open';
     open.setAttribute('aria-hidden', 'true');
@@ -61,22 +64,26 @@
     .then(list => {
       if (!Array.isArray(list)) throw new Error('목록 형식 오류');
       const valid = list.filter(item => item && typeof item.title === 'string' && item.title.trim() &&
-        typeof item.dir === 'string' && /^[a-z0-9-]+$/.test(item.dir) && /^\d{4}-\d{2}-\d{2}$/.test(item.date || ''));
-      // The manifest records prerequisite order; dates remain publication metadata.
-      valid.forEach((item, index) => grid.append(buildCard(item, index)));
-      count.textContent = valid.length + '개의 이야기';
-      status.hidden = valid.length > 0;
-      status.textContent = valid.length ? '' : '아직 기록된 발표가 없습니다.';
+        typeof item.dir === 'string' && /^[a-z0-9-]+$/.test(item.dir) && /^\d{4}-\d{2}-\d{2}$/.test(item.date || '') &&
+        /^(N[1-9]\d*|E\d+)$/.test(item.module || '') && ['novice', 'expert'].includes(item.track) && typeof item.prerequisites === 'string');
+      if (!valid.length) throw new Error('사용 가능한 과정 목록 없음');
+      // The static cards also serve file://, no-JS and failed-fetch readers.
+      const novice = valid.filter(item => item.track === 'novice');
+      const expert = valid.filter(item => item.track === 'expert');
+      grid.replaceChildren(...novice.map(buildCard));
+      expertGrid.replaceChildren(...expert.map(buildCard));
+      count.textContent = valid.length + '개 모듈 · 두 가지 과정';
+      status.hidden = true;
     })
     .catch(() => {
-      status.replaceChildren(document.createTextNode('발표 목록을 불러오지 못했습니다. '));
+      status.replaceChildren(document.createTextNode('최신 목록을 불러오지 못해 저장된 과정 목록을 표시합니다. '));
       const retry = document.createElement('button');
       retry.className = 'retry-button';
       retry.type = 'button';
       retry.textContent = '다시 불러오기';
       retry.addEventListener('click', () => location.reload());
       const fallback = document.createElement('a');
-      fallback.href = 'slides/notebooklm-examples/';
+      fallback.href = 'slides/llm-agent-basics/';
       fallback.textContent = '첫 학습 자료 열기 ↗';
       status.append(retry, document.createTextNode(' '), fallback);
       status.hidden = false;
